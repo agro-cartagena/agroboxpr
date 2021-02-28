@@ -13,6 +13,7 @@ import {
   ScrollView,
   View,
   Text,
+  Button,
   StatusBar,
 } from 'react-native';
 
@@ -41,6 +42,7 @@ const App: () => React$Node = () => {
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
+              <Button title="Click Me"/>
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.js</Text> to change this
                 screen and then come back to see your edits.

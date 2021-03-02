@@ -7,7 +7,7 @@ const { boxController } = require('../controllers')
 //insert new box to box db
 router.post('/', boxController.postBox)
 
-//Delete box from db
+//Delete box from db - uses box name to delete
 router.post('/removeBox', boxController.deleteBox)
 
 //retrieve a list of boxes in the db

@@ -30,8 +30,8 @@ const deleteBoxDb = async (boxName) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
 
-	const deleted = await collection.remove(boxName, true)
-	return deleted
+	return await collection.deleteOne(boxName)
+
 }
 
 module.exports = {

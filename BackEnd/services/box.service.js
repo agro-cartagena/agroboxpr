@@ -23,7 +23,9 @@ const readAllBoxes = async () => {
 }
 
 const deleteBoxFunc = async (boxName) => {
+    console.log('\nRemoving box entry \n', boxName);
     try {
+        console.log('\nDeletion successfull\n');
         return await deleteBoxDb(boxName)
     } catch (e) {
         throw new Error(e.message)

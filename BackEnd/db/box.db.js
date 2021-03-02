@@ -31,11 +31,24 @@ const deleteBoxDb = async (boxName) => {
 	const collection = db.collection('box')
 
 	return await collection.deleteOne(boxName)
+}
 
+const getProductsDb = async (boxDetail) => {
+	const box = await findEntry(boxDetail)
+	return box.price
+}
+
+//Helper entry finding function
+const findEntry = async (boxDetail) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('box')
+
+	return collection.findOne(boxDetail)
 }
 
 module.exports = {
 	createBoxDb,
 	findAllBoxesDb,
 	deleteBoxDb,
+	getProductsDb
 }

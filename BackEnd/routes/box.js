@@ -14,13 +14,12 @@ router.post('/removeBox', boxController.deleteBox)
 router.get('/', boxController.getBox)
 
 //Getter Methods
-router.get('/getProducts', (req, res) => {
-	res.send({ action: 'get product list' })
-})
-router.get('/getPrice', (req, res) => {
+router.post('/getProducts',boxController.getProducts)
+
+router.post('/getPrice', (req, res) => {
 	res.send({ action: 'get box price' })
 })
-router.get('/getName', (req, res) => {
+router.post('/getName', (req, res) => {
 	res.send({ action: 'get box name' })
 })
 

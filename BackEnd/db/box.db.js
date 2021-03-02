@@ -33,9 +33,19 @@ const deleteBoxDb = async (boxName) => {
 	return await collection.deleteOne(boxName)
 }
 
-const getProductsDb = async (boxDetail) => {
+const getBoxProductsDb = async (boxDetail) => {
 	const box = await findEntry(boxDetail)
-	return box.price
+	return box[0].Content
+}
+
+const getBoxPriceDb = async (boxDetail) => {
+	const box = await findEntry(boxDetail)
+	return box[0].price
+}
+
+const getBoxNameDb = async (boxDetail) => {
+	const box = await findEntry(boxDetail)
+	return box[0].name
 }
 
 //Helper entry finding function
@@ -43,12 +53,14 @@ const findEntry = async (boxDetail) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
 
-	return collection.findOne(boxDetail)
+	return collection.find(boxDetail.toString()).toArray()
 }
 
 module.exports = {
 	createBoxDb,
 	findAllBoxesDb,
 	deleteBoxDb,
-	getProductsDb
+	getBoxProductsDb,
+	getBoxNameDb,
+	getBoxPriceDb,
 }

@@ -16,12 +16,9 @@ router.get('/', boxController.getBox)
 //Getter Methods
 router.post('/getProducts',boxController.getProducts)
 
-router.post('/getPrice', (req, res) => {
-	res.send({ action: 'get box price' })
-})
-router.post('/getName', (req, res) => {
-	res.send({ action: 'get box name' })
-})
+router.post('/getPrice', boxController.getPrice)
+
+router.post('/getName', boxController.getName)
 
 //Setter Methods
 router.post('/addProduct', (req, res) => {

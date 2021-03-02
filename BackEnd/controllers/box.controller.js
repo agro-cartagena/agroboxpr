@@ -1,6 +1,7 @@
 const { response } = require('express')
 const { boxService } = require('../services')
-const { insertBox, readAllBoxes, deleteBoxFunc, getProductList } = boxService
+const { insertBox, readAllBoxes, deleteBoxFunc} = boxService
+const { getBoxName, getBoxPrice, getBoxProductList } = boxService
 
 const postBox = async (req, res, next) => {
 	const box = req.body
@@ -40,7 +41,33 @@ const getProducts = async (req, res, next) => {
 	const box = req.body
 
 	try {
-		await getProductList(box).then( products => {
+		await getBoxProductList(box).then( products => {
+			res.status(200).send(products)
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getPrice = async (req, res, next) => {
+	const box = req.body
+
+	try {
+		await getBoxPrice(box).then( products => {
+			res.status(200).send(products)
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getName = async (req, res, next) => {
+	const box = req.body
+
+	try {
+		await getBoxName(box).then( products => {
 			res.status(200).send(products)
 		})
 	} catch (e) {
@@ -53,5 +80,7 @@ module.exports = {
 	postBox,
 	getBox,
 	deleteBox,
-	getProducts
+	getProducts,
+	getName,
+	getPrice
 }

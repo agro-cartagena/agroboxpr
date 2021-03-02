@@ -1,6 +1,7 @@
 var mdb = require('./mdb')
 
 const dotenv = require('dotenv')
+
 dotenv.config()
 
 const createBoxDb = async (box) => {
@@ -25,9 +26,16 @@ const findAllBoxesDb = async () => {
 	return collection.find({}).toArray()
 }
 
-// const
+const deleteBoxDb = async (boxName) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('box')
+
+	const deleted = await collection.remove(boxName, true)
+	return deleted
+}
 
 module.exports = {
-    createBoxDb,
-    findAllBoxesDb
+	createBoxDb,
+	findAllBoxesDb,
+	deleteBoxDb,
 }

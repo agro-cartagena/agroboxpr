@@ -1,6 +1,6 @@
 const { boxDb } = require('../db')
 
-const { createBoxDb, findAllBoxesDb } = boxDb
+const { createBoxDb, findAllBoxesDb, deleteBoxDb } = boxDb
 
 const insertBox = async (box) => {
 	console.log('\nInside box service\n', box)
@@ -22,7 +22,17 @@ const readAllBoxes = async () => {
     }
 }
 
+const deleteBoxFunc = async (boxName) => {
+    try {
+        return await deleteBoxDb(boxName)
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
+
 module.exports = {
     insertBox,
-    readAllBoxes
+    readAllBoxes,
+    deleteBoxFunc
 }

@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors');
 const db = require('./db/mdb')
-const { productRouter } = require('./routes');
+const { productRouter, boxRouter } = require('./routes');
 
 //Get environment variables
 const dotenv = require('dotenv');
@@ -28,6 +28,7 @@ db.connect(process.env.CONNECTION_STRING, function(err) {
 
 //Use Express Routers
 app.use('/api/product', productRouter);
+app.use('/api/box', boxRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

@@ -125,11 +125,13 @@
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native';
 import LoginScreen from './screens/LoginScreen/LoginScreen'
+import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 
 class App extends React.Component {
   render() {
     return (
-      <LoginScreen/>
+      // <LoginScreen/>
+      <RegisterScreen/>
     )
   }
 }

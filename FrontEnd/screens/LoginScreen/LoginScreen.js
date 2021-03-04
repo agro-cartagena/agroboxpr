@@ -7,7 +7,7 @@ export default class LoginScreen extends React.Component {
     render() {
         return (
             <ScrollView contentContainerStyle={[styles.container, styles.screen]}>
-                <View style={styles.container}>
+                <View style={styles.logoContainer}>
                     <Image
                         style={styles.logo}
                         source={require('../../assets/agrobox_logo.png')}
@@ -26,13 +26,15 @@ export default class LoginScreen extends React.Component {
                     />
                 </View>
 
-                <View style={styles.container}>
+                <View style={[styles.container, styles.buttonContainer]}>
+                    <Text>Olvidó contraseña o nombre de usuario?</Text>
+
                     <Button
                         style={styles.button}
-                        title="Sign in"
+                        title="Acceder"
                     />
-                    <Text>New to AgroBoxPR? </Text>
-                    <Text>Register here</Text>                   
+
+                    <Text>Crear cuenta nueva</Text>                   
                 </View>
             </ScrollView>
         )

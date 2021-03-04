@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -14,30 +13,45 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
 
-    logo: {
-        maxWidth: '80%',
-        maxHeight: '70%',
+    logoContainer: {
+        width: '60%',
+        height: '25%',
+        // borderWidth: 2
+    },
 
-        flex: 1,
+    logo: {
+        width: '100%',
+        height: '100%',
+
         resizeMode: 'contain',
-        backgroundColor: 'red'
+        // backgroundColor: 'blue'
     },
 
     form: {
-        backgroundColor: 'red',
-        width: '100%'
+        // backgroundColor: 'red',
+        width: '100%',
+        height: '20%',
+        justifyContent: 'space-evenly'
     },
 
     textEntry: {
-        width: '85%',
-        margin: 8,
+        width: '75%',
+        height: 35,
 
         textAlign: 'center',
-        borderRadius: 5,
+        borderRadius: 100,
         borderWidth: 1,
         borderColor: 'black',
 
+        // shadowColor: 'gray',
+        // shadowOffset: {width: 0, height: 2},
+        // shadowOpacity: 10,
+        // shadowRadius: 3,
         backgroundColor: 'lightgray'
+    },
+
+    buttonContainer: {
+        // backgroundColor: 'yellow'
     },
 
     button: {

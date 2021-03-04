@@ -130,8 +130,8 @@ import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 class App extends React.Component {
   render() {
     return (
-      // <LoginScreen/>
-      <RegisterScreen/>
+      <LoginScreen/>
+      // <RegisterScreen/>
     )
   }
 }

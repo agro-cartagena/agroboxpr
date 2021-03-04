@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        flexDirection: 'column',
+        // flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -15,14 +15,14 @@ const styles = StyleSheet.create({
     logo: {
         maxWidth :'45%',
         maxHeight: '35%',
-        marginTop: 80,
+        // marginTop: 80,
 
         // flex: 1,
         resizeMode: 'contain',
-        // backgroundColor: 'red'
+        backgroundColor: 'red'
     },
     form:{
-        // backgroundColor:'red',
+        backgroundColor:'red',
         // width: '100%'
         
     },
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         marginBottom: '5%',
 
         backgroundColor: '#E5E5E5',
-        borderRadius: 22
+        borderRadius: 100
     },
     button: {
         width:'40%',

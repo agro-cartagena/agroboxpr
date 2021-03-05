@@ -49,12 +49,27 @@ const getBoxNameDb = async (boxDetail) => {
 }
 
 //Helper entry finding function
+
+//Uses string version of the JSON file since findOne 
+//method fails when using the _id box param in JSON format
 const findEntry = async (boxDetail) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
 
 	return collection.find(boxDetail.toString()).toArray()
 }
+
+const updateFirstEntry = async (paramList) => {
+	// const db = mdb.get().db(process.env.DB_NAME)
+	// const collection = db.collection('box')
+
+	const query = paramList[0]
+	const update = paramList[1]
+
+	console.log(query, update);
+
+}
+
 
 module.exports = {
 	createBoxDb,
@@ -63,4 +78,5 @@ module.exports = {
 	getBoxProductsDb,
 	getBoxNameDb,
 	getBoxPriceDb,
+	updateFirstEntry,
 }

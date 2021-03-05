@@ -1,7 +1,7 @@
-const { response } = require('express')
 const { boxService } = require('../services')
-const { insertBox, readAllBoxes, deleteBoxFunc} = boxService
+const { insertBox, readAllBoxes, deleteBoxFunc } = boxService
 const { getBoxName, getBoxPrice, getBoxProductList } = boxService
+const {updateFirst} = boxService
 
 const postBox = async (req, res, next) => {
 	const box = req.body
@@ -41,7 +41,7 @@ const getProducts = async (req, res, next) => {
 	const box = req.body
 
 	try {
-		await getBoxProductList(box).then( products => {
+		await getBoxProductList(box).then((products) => {
 			res.status(200).send(products)
 		})
 	} catch (e) {
@@ -54,7 +54,7 @@ const getPrice = async (req, res, next) => {
 	const box = req.body
 
 	try {
-		await getBoxPrice(box).then( products => {
+		await getBoxPrice(box).then((products) => {
 			res.status(200).send(products)
 		})
 	} catch (e) {
@@ -67,9 +67,21 @@ const getName = async (req, res, next) => {
 	const box = req.body
 
 	try {
-		await getBoxName(box).then( products => {
+		await getBoxName(box).then((products) => {
 			res.status(200).send(products)
 		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const update = async (req, res, next) => {
+	const params = req.body
+
+	try {
+		await updateFirst(params)
+		res.sendStatus(200) && next()
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(500) && next(e)
@@ -82,5 +94,6 @@ module.exports = {
 	deleteBox,
 	getProducts,
 	getName,
-	getPrice
+	getPrice,
+	update
 }

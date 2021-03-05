@@ -21,6 +21,8 @@ router.post('/getPrice', boxController.getPrice)
 router.post('/getName', boxController.getName)
 
 //Setter Methods
+router.post('/update', boxController.update)
+
 router.post('/addProduct', (req, res) => {
     res.send({"action": "add box products"})
 })

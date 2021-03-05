@@ -6,49 +6,51 @@ import styles from './RegisterScreenStylesheet';
 export default class RegisterScreen extends React.Component {
     render() {
         return (
-            <ScrollView contentContainerStyle={styles.container, styles.screen}> 
+            <ScrollView contentContainerStyle={[styles.container, styles.screen]}> 
                
                {/* <View> */}
                    {/* Back button to be implemented HERE*/}
                {/* </View> */}
 
-                <View style={styles.container}>
+                <View style={styles.logoContainer}>
                     <Image
                         style = {styles.logo} 
                         source = {require('../../assets/agrobox_logo.png')}
                     />
                 </View>
 
-                <View style = {styles.container,styles.form}>
+                <View style = {[styles.container,styles.form]}>
                     <TextInput
                         style = {styles.textinput}
-                        placeholder = 'Nombre'    
+                        placeholder = 'Nombre y Apellidos'    
                     />
-                    <TextInput
+                    {/* <TextInput
                         style = {styles.textinput}
                         placeholder = 'Apellidos'
-                    />
+                    /> */}
 
-                    <TextInput
-                        style = {styles.textinput}
-                        placeholder = 'Nombre de usuario'
-                    />
                     <TextInput
                         style = {styles.textinput}
                         placeholder = 'Correo Electrónico'
                     />
-                    <TextInput
-                        style = {styles.textinput}
-                        placeholder = 'Número de teléfono'
-                    />
+                    
                     <TextInput
                         style = {styles.textinput}
                         placeholder = 'Contraseña'
                         secureTextEntry = {true}
-                    />    
+                    />  
+                    <TextInput
+                        style = {styles.textinput}
+                        placeholder = 'Entre la Contraseña nuevamente'
+                        secureTextEntry = {true}
+                    />  
+                    <TextInput
+                        style = {styles.textinput}
+                        placeholder = 'Número de teléfono'
+                    />
                 </View>
 
-                <View style={styles.container}>
+                <View style={[styles.container,styles.buttonContainer]}>
                     <Button
                         style={styles.button}
                         title="Registrar"

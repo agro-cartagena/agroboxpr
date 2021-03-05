@@ -17,12 +17,12 @@ export default class LoginScreen extends React.Component {
                 <View style={[styles.container, styles.form]}>
                     <TextInput
                         style={styles.textEntry}
-                        placeholder='email'
+                        placeholder='Correo Electrónico'
                     />
 
                     <TextInput
                         style={styles.textEntry}
-                        placeholder='password'
+                        placeholder='Contraseña'
                     />
 
                     <Text>Problemas para acceder?<Text style={{color: '#5EAE33'}}> Presione aquí.</Text></Text>

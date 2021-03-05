@@ -59,15 +59,26 @@ const findEntry = async (boxDetail) => {
 	return collection.find(boxDetail.toString()).toArray()
 }
 
-const updateFirstEntry = async (paramList) => {
-	// const db = mdb.get().db(process.env.DB_NAME)
-	// const collection = db.collection('box')
+// * paramList will be a JSON list, where the first index is the search query
+// * to use and the second index is the properties to update
+const updateEntryDb = async (paramList) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('box')
 
+	//Separate query and undate parameters from the parameter JSON list recieved
 	const query = paramList[0]
 	const update = paramList[1]
 
-	console.log(query, update);
+	// console.log(query, JSON.stringify(query));
+	console.log('Updating...\n');
+	return collection.updateOne(query, {$set: update}, );
 
+}
+
+
+const addProductDb = async (paramList) => {
+	const boxQuery = paramList[0]
+	return
 }
 
 
@@ -78,5 +89,5 @@ module.exports = {
 	getBoxProductsDb,
 	getBoxNameDb,
 	getBoxPriceDb,
-	updateFirstEntry,
+	updateEntryDb,
 }

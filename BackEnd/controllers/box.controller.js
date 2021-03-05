@@ -1,7 +1,7 @@
 const { boxService } = require('../services')
 const { insertBox, readAllBoxes, deleteBoxFunc } = boxService
 const { getBoxName, getBoxPrice, getBoxProductList } = boxService
-const {updateFirst} = boxService
+const { updateEntry } = boxService
 
 const postBox = async (req, res, next) => {
 	const box = req.body
@@ -80,7 +80,7 @@ const update = async (req, res, next) => {
 	const params = req.body
 
 	try {
-		await updateFirst(params)
+		await updateEntry(params)
 		res.sendStatus(200) && next()
 	} catch (e) {
 		console.log(e.message)
@@ -95,5 +95,5 @@ module.exports = {
 	getProducts,
 	getName,
 	getPrice,
-	update
+	update,
 }

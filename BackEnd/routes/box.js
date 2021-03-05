@@ -21,19 +21,22 @@ router.post('/getPrice', boxController.getPrice)
 router.post('/getName', boxController.getName)
 
 //Setter Methods
+// * Updates cannot currently use _id as a search query
 router.post('/update', boxController.update)
 
 router.post('/addProduct', (req, res) => {
     res.send({"action": "add box products"})
 })
 
-router.post('/setPrice', (req, res) => {
-    res.send({"action": "set box price"})
-})
 
-router.post('/setName', (req, res) => {
-    res.send({"action": "set box name"})
-})
+// * Setting box name and/or price can simply be done using /update
+// * while properly formating the JSON object. 
+// router.post('/setPrice', (req, res) => {
+//     res.send({"action": "set box price"})
+// })
+// router.post('/setName', (req, res) => {
+//     res.send({"action": "set box name"})
+// })
 
 
 

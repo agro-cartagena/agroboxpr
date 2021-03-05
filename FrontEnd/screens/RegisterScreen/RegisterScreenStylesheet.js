@@ -39,28 +39,34 @@ const styles = StyleSheet.create({
         height: 40,
 
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: 'lightgrey',
         backgroundColor: '#E5E5E5',
-        borderRadius: 100
+        borderRadius: 100,
+        shadowColor: 'grey',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 8,
+        shadowRadius: 3,
     },
-    butttonContainer:{
-        backgroundColor: 'blue'   
+    buttonContainer:{
+        // backgroundColor: 'blue'  ,
+        marginTop: '5%',
     },
     button: {
-        width:'100%',
-        height: '100%',
-        // marginTop: 10,
-        // fontSize: 20,
-        // justifyContent:'center',
+        justifyContent:'center',
 
-        // backgroundColor: '#5EAE33',
-        // borderRadius: 10
+        shadowColor: 'grey',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 8,
+        shadowRadius: 3,
+        backgroundColor: '#5EAE33',
+        borderRadius: 15
     },
     // Used for TouchableOpacity
     btntext: {
-        fontSize: 22,
+        fontSize: 17,
         alignSelf:'center',
-        color: 'white'
+        color: 'white',
+        padding: "2.5%"
     }
 
 })

@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 8,
         shadowRadius: 3,
         backgroundColor: '#5EAE33',
-        borderRadius: 15
+        borderRadius: 12
     },
     // Used for TouchableOpacity
     btntext: {

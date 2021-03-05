@@ -61,12 +61,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#5EAE33',
         borderRadius: 12
     },
-    // Used for TouchableOpacity
     btntext: {
         fontSize: 17,
         alignSelf:'center',
         color: 'white',
         padding: "2.5%"
+    },
+    textDecoration: {
+        marginTop: '5%'
+    },
+    textClick:{
+        color: '#5EAE33'
+        
     }
 
 })

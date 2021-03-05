@@ -49,14 +49,14 @@ export default class RegisterScreen extends React.Component {
                 </View>
 
                 <View style={styles.container}>
-                    <Button
+                    {/* <Button
                         style={styles.button}
                         title="Registrar"
-                    />
+                    /> */}
 
-                    {/* <TouchableOpacity style = {styles.button} >
+                    <TouchableOpacity style = {styles.button} >
                         <Text style = {styles.btntext}> Registrar</Text>
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         )

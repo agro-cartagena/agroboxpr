@@ -30,24 +30,26 @@ const styles = StyleSheet.create({
     form: {
         // backgroundColor: 'red',
         width: '100%',
-        height: '20%',
-        justifyContent: 'space-evenly'
+        height: '17%',
+
+        margin: '8%',
+        justifyContent: 'space-between'
     },
 
     textEntry: {
         width: '75%',
-        height: 35,
+        height: 40,
 
         textAlign: 'center',
         borderRadius: 100,
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: 'lightgray',
 
-        // shadowColor: 'gray',
-        // shadowOffset: {width: 0, height: 2},
-        // shadowOpacity: 10,
-        // shadowRadius: 3,
-        backgroundColor: 'lightgray'
+        shadowColor: 'gray',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 8,
+        shadowRadius: 3,
+        backgroundColor: '#E5E5E5'
     },
 
     buttonContainer: {
@@ -55,9 +57,20 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        width: '100%',
-        height: '100%',
-        padding: 10
+        padding: '2.5%',
+        marginBottom: '2.5%',
+
+        backgroundColor: '#5EAE33',
+        borderRadius: 15,
+
+        shadowColor: 'gray',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 8,
+        shadowRadius: 2,
+    },
+
+    buttonText: {
+        color: 'white'
     }
 })
 

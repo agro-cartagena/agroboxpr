@@ -24,9 +24,8 @@ router.post('/getName', boxController.getName)
 // * Updates cannot currently use _id as a search query
 router.post('/update', boxController.update)
 
-router.post('/addProduct', (req, res) => {
-    res.send({"action": "add box products"})
-})
+// * Uses query and takes in a JSON list of products as second param
+router.post('/addProduct', boxController.addProducts)
 
 
 // * Setting box name and/or price can simply be done using /update

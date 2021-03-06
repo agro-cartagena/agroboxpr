@@ -50,7 +50,7 @@ const getBoxNameDb = async (boxDetail) => {
 
 //Helper entry finding function
 
-//Uses string version of the JSON file since findOne 
+//Uses string version of the JSON file since findOne
 //method fails when using the _id box param in JSON format
 const findEntry = async (boxDetail) => {
 	const db = mdb.get().db(process.env.DB_NAME)
@@ -70,17 +70,19 @@ const updateEntryDb = async (paramList) => {
 	const update = paramList[1]
 
 	// console.log(query, JSON.stringify(query));
-	console.log('Updating...\n');
-	return collection.updateOne(query, {$set: update}, );
-
+	console.log('Updating...\n')
+	return collection.updateOne(query, { $set: update })
 }
 
+const addProductListDb = async (paramList) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('box')
 
-const addProductDb = async (paramList) => {
-	const boxQuery = paramList[0]
-	return
+	const query = paramList[0]
+	const update = paramList[1]
+
+	return collection.update(query, {$push: {Content:{$each: update}}})
 }
-
 
 module.exports = {
 	createBoxDb,
@@ -90,4 +92,5 @@ module.exports = {
 	getBoxNameDb,
 	getBoxPriceDb,
 	updateEntryDb,
+	addProductListDb,
 }

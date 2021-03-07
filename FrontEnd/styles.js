@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 
     screen: {
         width: '100%',
-        height: '100%',
+        height: '90%',
         backgroundColor: '#8C0634'
     },
 
@@ -24,6 +24,11 @@ const styles = StyleSheet.create({
 
         // backgroundColor: '#E5E5E5',
         backgroundColor: 'white',
+    },
+
+    text: {
+        color: 'white',
+        fontSize: 16
     },
 
     shadow: {

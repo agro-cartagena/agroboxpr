@@ -18,15 +18,10 @@ const styles = StyleSheet.create({
     form: {
         // backgroundColor: 'red',
         width: '100%',
-        height: '18%',
+        height: '20%',
 
         margin: '8%',
         justifyContent: 'space-between'
-    },
-
-    text: {
-        color: 'white',
-        fontSize: 16
     }
 })
 

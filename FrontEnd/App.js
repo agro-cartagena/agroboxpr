@@ -124,6 +124,8 @@
 
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native';
+import global_styles from './styles'
+
 import LoginScreen from './screens/LoginScreen/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 import PremadeBoxesScreen from './screens/PremadeBoxesScreen/PremadeBoxesScreen'
@@ -141,15 +143,10 @@ class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
     width: '100%',
     height: '100%',
-    backgroundColor: 'beige',
-
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center'
+    backgroundColor: 'black'
   }
 })
 

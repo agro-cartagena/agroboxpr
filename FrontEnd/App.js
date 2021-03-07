@@ -124,7 +124,6 @@
 
 import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native';
-import global_styles from './styles'
 
 import LoginScreen from './screens/LoginScreen/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
@@ -133,11 +132,11 @@ import PremadeBoxesScreen from './screens/PremadeBoxesScreen/PremadeBoxesScreen'
 class App extends React.Component {
   render() {
     return (
-
-      // <LoginScreen/>
-      <RegisterScreen/>
-      // <PremadeBoxesScreen/>
-
+      <ScrollView contentContainerStyle={styles.screen}>
+        {/* <LoginScreen/> */}
+        <RegisterScreen/>
+        {/* <PremadeBoxesScreen/> */}
+      </ScrollView>
     )
   }
 }

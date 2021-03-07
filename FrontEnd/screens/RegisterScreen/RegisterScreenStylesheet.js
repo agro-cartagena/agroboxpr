@@ -17,25 +17,15 @@ const styles = StyleSheet.create({
     form:{
         // backgroundColor:'red',
         width: '100%',
-        height: '42%',
+        height: '45%',
         justifyContent: 'space-evenly',  
-        marginTop: '10%'
+        margin: '2%'
+    },
 
-    },
-    btntext: {
-        fontSize: 17,
-        color: 'white',
-    },
-    textDecoration: {
-        marginTop: '5%',
-        color: 'white'
-
-    },
     textClick:{
         color: '#5EAE33'
         
     }
-
 })
 
 export default styles;

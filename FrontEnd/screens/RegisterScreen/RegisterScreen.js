@@ -55,10 +55,10 @@ export default class RegisterScreen extends React.Component {
                 <View style={global_styles.container}>
 
                     <TouchableOpacity style = {[global_styles.button, global_styles.shadow]} >
-                        <Text style = {styles.btntext}> Registrar</Text>
+                        <Text style = {global_styles.text}> Registrar</Text>
                     </TouchableOpacity>
 
-                    <Text style = {styles.textDecoration}> Ya tienes una cuenta? <Text style = {styles.textClick}> Presione aquí</Text></Text>
+                    <Text style = {global_styles.text}> Ya tienes una cuenta? <Text style = {styles.textClick}> Presione aquí</Text></Text>
                 </View>
 
             </ScrollView>

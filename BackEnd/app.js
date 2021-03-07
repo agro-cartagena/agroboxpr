@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors');
 const db = require('./db/mdb')
-const { productRouter } = require('./routes');
+const { productRouter, authRouter } = require('./routes');
 
 //Get environment variables
 const dotenv = require('dotenv');
@@ -15,8 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-console.log("Connection String: ", process.env.CONNECTION_STRING)
-
+//Connect to MongoDB cluster
 db.connect(process.env.CONNECTION_STRING, function(err) {
     if (err) {
       console.log('Unable to connect to Mongo.')
@@ -28,6 +27,7 @@ db.connect(process.env.CONNECTION_STRING, function(err) {
 
 //Use Express Routers
 app.use('/api/product', productRouter);
+app.use('/api/auth', authRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

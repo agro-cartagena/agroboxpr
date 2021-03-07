@@ -2,11 +2,12 @@ import React from 'react';
 import { ScrollView, View, Image, TextInput, Button, Text, TouchableOpacity } from 'react-native';
 
 import styles from './RegisterScreenStylesheet';
+import global_styles from '../../styles';
 
 export default class RegisterScreen extends React.Component {
     render() {
         return (
-            <ScrollView contentContainerStyle={[styles.container, styles.screen]}> 
+            <ScrollView contentContainerStyle={[global_styles.container, global_styles.screen]}> 
                
                {/* <View> */}
                    {/* Back button to be implemented HERE*/}
@@ -19,51 +20,45 @@ export default class RegisterScreen extends React.Component {
                     />
                 </View>
 
-                <View style = {[styles.container,styles.form]}>
+                <View style = {[global_styles.container,styles.form]}>
                     <TextInput
-                        style = {styles.textinput}
-                        placeholder = 'Nombre y Apellidos'    
+                        style = {[global_styles.textEntry, global_styles.shadow]}
+                        placeholder = 'Nombre y Apellidos' 
+                        placeholderTextColor='black'   
                     />
 
                     <TextInput
-                        style = {styles.textinput}
+                        style = {[global_styles.textEntry, global_styles.shadow]}
                         placeholder = 'Correo Electrónico'
+                        placeholderTextColor='black'
                     />
                     
                     <TextInput
-                        style = {styles.textinput}
+                        style = {[global_styles.textEntry, global_styles.shadow]}
                         placeholder = 'Contraseña'
+                        placeholderTextColor='black'
                         secureTextEntry = {true}
                     />  
                     <TextInput
-                        style = {styles.textinput}
+                        style = {[global_styles.textEntry, global_styles.shadow]}
                         placeholder = 'Entre la Contraseña nuevamente'
+                        placeholderTextColor='black'
                         secureTextEntry = {true}
                     />  
                     <TextInput
-                        style = {styles.textinput}
+                        style = {[global_styles.textEntry, global_styles.shadow]}
                         placeholder = 'Número de teléfono'
+                        placeholderTextColor='black'
                     />
                 </View>
 
-<<<<<<< HEAD
-                <View style={[styles.container,styles.buttonContainer]}>
-=======
-                <View style={styles.container}>
-                    {/* <Button
-                        style={styles.button}
-                        title="Registrar"
-                    /> */}
->>>>>>> ad59f5abd20308ecabaa78e9ca66d84b51bf3937
+                <View style={global_styles.container}>
 
-                    <TouchableOpacity style = {styles.button} >
+                    <TouchableOpacity style = {[global_styles.button, global_styles.shadow]} >
                         <Text style = {styles.btntext}> Registrar</Text>
                     </TouchableOpacity>
-<<<<<<< HEAD
 
                     <Text style = {styles.textDecoration}> Ya tienes una cuenta? <Text style = {styles.textClick}> Presione aquí</Text></Text>
-=======
->>>>>>> ad59f5abd20308ecabaa78e9ca66d84b51bf3937
                 </View>
 
             </ScrollView>

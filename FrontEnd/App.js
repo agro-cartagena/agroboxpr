@@ -133,8 +133,8 @@ class App extends React.Component {
     return (
 
       // <LoginScreen/>
-      // <RegisterScreen/>
-      <PremadeBoxesScreen/>
+      <RegisterScreen/>
+      // <PremadeBoxesScreen/>
 
     )
   }

@@ -46,13 +46,24 @@ export default class RegisterScreen extends React.Component {
                     />
                 </View>
 
+<<<<<<< HEAD
                 <View style={[styles.container,styles.buttonContainer]}>
+=======
+                <View style={styles.container}>
+                    {/* <Button
+                        style={styles.button}
+                        title="Registrar"
+                    /> */}
+>>>>>>> ad59f5abd20308ecabaa78e9ca66d84b51bf3937
 
                     <TouchableOpacity style = {styles.button} >
                         <Text style = {styles.btntext}> Registrar</Text>
                     </TouchableOpacity>
+<<<<<<< HEAD
 
                     <Text style = {styles.textDecoration}> Ya tienes una cuenta? <Text style = {styles.textClick}> Presione aquí</Text></Text>
+=======
+>>>>>>> ad59f5abd20308ecabaa78e9ca66d84b51bf3937
                 </View>
 
             </ScrollView>

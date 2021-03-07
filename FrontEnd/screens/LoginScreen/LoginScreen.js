@@ -2,11 +2,12 @@ import React from 'react';
 import { ScrollView, View, Image, TextInput, Button, Text, TouchableOpacity } from 'react-native';
 
 import styles from './LoginScreenStylesheet';
+import global_styles from '../../styles';
 
 export default class LoginScreen extends React.Component {
     render() {
         return (
-            <ScrollView contentContainerStyle={[styles.container, styles.screen]}>
+            <ScrollView contentContainerStyle={[global_styles.container, global_styles.screen]}>
                 <View style={styles.logoContainer}>
                     <Image
                         style={styles.logo}
@@ -14,27 +15,29 @@ export default class LoginScreen extends React.Component {
                     />
                 </View>
                 
-                <View style={[styles.container, styles.form]}>
+                <View style={[global_styles.container, styles.form]}>
                     <TextInput
-                        style={styles.textEntry}
+                        style={[global_styles.textEntry, global_styles.shadow]}
                         placeholder='Correo Electrónico'
+                        placeholderTextColor='black'
                     />
 
                     <TextInput
-                        style={styles.textEntry}
+                        style={[global_styles.textEntry, global_styles.shadow]}
                         placeholder='Contraseña'
+                        placeholderTextColor='black'
                     />
 
-                    <Text>Problemas para acceder?<Text style={{color: '#5EAE33'}}> Presione aquí.</Text></Text>
+                    <Text style={styles.text}>Problemas para acceder?<Text style={{color: '#5EAE33'}}> Presione aquí.</Text></Text>
                 </View>
 
-                <View style={[styles.container, styles.buttonContainer]}>
+                <View style={global_styles.container}>
 
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Acceder</Text>
+                    <TouchableOpacity style={[global_styles.button, global_styles.shadow]}>
+                        <Text style={styles.text}>Acceder</Text>
                     </TouchableOpacity>
 
-                    <Text style={{textDecorationLine: 'underline'}}>Crear cuenta nueva</Text>                
+                    <Text style={styles.text}>Crear cuenta nueva</Text>                
                 </View>
             </ScrollView>
         )

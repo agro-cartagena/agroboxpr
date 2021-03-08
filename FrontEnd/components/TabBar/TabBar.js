@@ -12,7 +12,7 @@ export default class TabBar extends React.Component {
             defaultIcon={require('../../assets/icons/cart.png')}
             activeIcon={require('../../assets/icons/cart-active.png')}
             active={false}
-            key={0}
+            key="cart-tab"
             // onTouch={() => alert("Toggled Cart")}
         />,
 
@@ -21,7 +21,7 @@ export default class TabBar extends React.Component {
             activeIcon={require('../../assets/icons/user-profile-active.png')}
             // onTouch={() => alert("Toggled Profile")}
             active={false}
-            key={1}
+            key="user-tab"
         />,
 
         <Tab
@@ -29,7 +29,7 @@ export default class TabBar extends React.Component {
             activeIcon={require('../../assets/icons/home-active.png')}
             // onTouch={() => alert("Toggled Home")}
             active={false}
-            key={2}
+            key="home-tab"
         />,
 
         <Tab
@@ -37,7 +37,7 @@ export default class TabBar extends React.Component {
             activeIcon={require('../../assets/icons/orders-active.png')}
             // onTouch={() => alert("Toggled Orders")}
             active={false}
-            key={3}
+            key="orders-tab"
         />,
 
         <Tab
@@ -45,7 +45,7 @@ export default class TabBar extends React.Component {
             activeIcon={require('../../assets/icons/menu-active.png')}
             // onTouch={() => alert("Toggled Menu")}
             active={false}
-            key={4}
+            key="menu-tab"
         />                            
     ]
 

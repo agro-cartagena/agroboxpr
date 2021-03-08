@@ -1,6 +1,11 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
+    app: {
+        flex: 1,
+        backgroundColor: '#8C0634'
+    },
+
     container: {
         display: 'flex',
         justifyContent: 'center',
@@ -9,8 +14,7 @@ const styles = StyleSheet.create({
 
     screen: {
         width: '100%',
-        height: '90%',
-        backgroundColor: '#8C0634'
+        height: '100%'
     },
 
     textEntry: {

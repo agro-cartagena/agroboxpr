@@ -123,30 +123,31 @@
 
 
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView } from 'react-native';
+
+import global_styles from './styles'
 
 import LoginScreen from './screens/LoginScreen/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 import PremadeBoxesScreen from './screens/PremadeBoxesScreen/PremadeBoxesScreen'
+import TabBar from './components/TabBar/TabBar'
+import styles from './styles';
 
 class App extends React.Component {
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.screen}>
-        {/* <LoginScreen/> */}
-        <RegisterScreen/>
-        {/* <PremadeBoxesScreen/> */}
-      </ScrollView>
+      <View style={styles.app}>
+        <ScrollView contentContainerStyle={global_styles.screen}>
+          <LoginScreen/>
+          {/* <RegisterScreen/> */}
+          {/* <PremadeBoxesScreen/> */}
+        </ScrollView>
+
+        <TabBar/>
+      </View>
+
     )
   }
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'black'
-  }
-})
 
 export default App;

@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, View, Image, TextInput, Button, Text, TouchableOpacity } from 'react-native';
 
 import styles from './BrowseBoxesScreenStyleSheet';
+// import BoxesCard from '../../components/BoxesCard/BoxesCard.js'
 
 // const user = require('FrontEnd/screens/PremadeBoxesScreen/PremadeDBTest.json');
 

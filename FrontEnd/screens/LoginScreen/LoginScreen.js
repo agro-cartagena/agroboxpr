@@ -3,6 +3,7 @@ import { ScrollView, View, Image, TextInput, Button, Text, TouchableOpacity } fr
 
 import styles from './LoginScreenStylesheet';
 import global_styles from '../../styles';
+import { goToRegister } from '../../Navigator';
 
 export default class LoginScreen extends React.Component {
     render() {
@@ -28,7 +29,7 @@ export default class LoginScreen extends React.Component {
                         placeholderTextColor='black'
                     />
 
-                    <Text style={global_styles.text}>Problemas para acceder?<Text style={{color: '#5EAE33'}}> Presione aquí.</Text></Text>
+                    <Text style={global_styles.text}>Problemas para acceder?<Text style={styles.clickText}> Presione aquí.</Text></Text>
                 </View>
 
                 <View style={global_styles.container}>
@@ -37,7 +38,7 @@ export default class LoginScreen extends React.Component {
                         <Text style={global_styles.text}>Acceder</Text>
                     </TouchableOpacity>
 
-                    <Text style={global_styles.text}>Crear cuenta nueva</Text>                
+                    <Text style={global_styles.text}  onPress={goToRegister}>Crear cuenta nueva</Text>                
                 </View>
             </ScrollView>
         )

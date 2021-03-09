@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
 
         margin: '8%',
         justifyContent: 'space-between'
+    },
+
+    clickText: {
+        color: '#5EAE33',
+        fontWeight: "bold"
     }
 })
 

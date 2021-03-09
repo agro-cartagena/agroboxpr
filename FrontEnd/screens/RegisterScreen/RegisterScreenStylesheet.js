@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
         margin: '2%'
     },
 
-    textClick:{
-        color: '#5EAE33'
-        
+    clickText: {
+        color: '#5EAE33',
+        fontWeight: "bold"
     }
 })
 

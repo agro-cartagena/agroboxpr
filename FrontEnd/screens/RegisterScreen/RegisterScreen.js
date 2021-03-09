@@ -3,6 +3,7 @@ import { ScrollView, View, Image, TextInput, Button, Text, TouchableOpacity } fr
 
 import styles from './RegisterScreenStylesheet';
 import global_styles from '../../styles';
+import { goToLogin } from '../../Navigator';
 
 export default class RegisterScreen extends React.Component {
     render() {
@@ -23,7 +24,7 @@ export default class RegisterScreen extends React.Component {
                 <View style = {[global_styles.container,styles.form]}>
                     <TextInput
                         style = {[global_styles.textEntry, global_styles.shadow]}
-                        placeholder = 'Nombre y Apellidos' 
+                        placeholder = 'Nombre y Apellido(s)' 
                         placeholderTextColor='black'   
                     />
 
@@ -41,13 +42,13 @@ export default class RegisterScreen extends React.Component {
                     />  
                     <TextInput
                         style = {[global_styles.textEntry, global_styles.shadow]}
-                        placeholder = 'Entre la Contraseña nuevamente'
+                        placeholder = 'Entre Contraseña Nuevamente'
                         placeholderTextColor='black'
                         secureTextEntry = {true}
                     />  
                     <TextInput
                         style = {[global_styles.textEntry, global_styles.shadow]}
-                        placeholder = 'Número de teléfono'
+                        placeholder = 'Número de Teléfono'
                         placeholderTextColor='black'
                     />
                 </View>
@@ -58,7 +59,7 @@ export default class RegisterScreen extends React.Component {
                         <Text style = {global_styles.text}> Registrar</Text>
                     </TouchableOpacity>
 
-                    <Text style = {global_styles.text}> Ya tienes una cuenta? <Text style = {styles.textClick}> Presione aquí</Text></Text>
+                    <Text style = {global_styles.text}> Ya tienes una cuenta? <Text style = {styles.clickText} onPress={goToLogin}> Presione aquí.</Text></Text>
                 </View>
 
             </ScrollView>

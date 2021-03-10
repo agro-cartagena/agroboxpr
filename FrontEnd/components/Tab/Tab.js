@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Image } from 'react-native';
 
 import global_styles from '../../styles'
 import styles from './TabStyleSheet';
 
 export default class Tab extends React.Component {
-    icons = {};
-    action; // Function
 
     constructor (props) {
         super(props);
-
         this.state = {
             active: props.active
         };
-
-        this.action = props.onTouch;
     }
 
     toggle = () => {

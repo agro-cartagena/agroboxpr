@@ -45,39 +45,36 @@ export default class TabBar extends React.Component {
             key="menu-tab"
             defaultIcon={require('../../assets/icons/Menu.png')}
             activeIcon={require('../../assets/icons/menu-active.png')}
-            onTouch={(cmp) => {this.state.activeTab = cmp; this.state.activeTab.toggle()}}
-            active={false}
+            onTouch={(cmp) => this.touchHandler(cmp)}
+            active={true}
         />                            
     ]
 
     constructor() {
         super()
 
-        this.state = {
-            activeTab: this.tabs["home-tab"]
-        }
-        // Activate default tab => 
-        //this.state.activeTab.toggle()
-        
-    }
-
-    touchHandler = (value) => {
-        // Deactivate current tab => 
-        // this.state.activeTab.toggle()
-
-        // this.setState({
-        //     activeTab: value
+        // Instead of looping array, should be able to index it using key.
+        // this.tabs.forEach((tab) => {
+        //     if(tab.props.active){
+        //         this.state = {
+        //             activeTab: tab.key
+        //         }
+        //     }
         // })
 
-        // Activate next tab => 
-        // this.state.activeTab.toggle()
+        this.state = {
+            activeTab: this.tabs[1].key
+        }
+    }
 
-        this.state.activeTab.toggle(); 
-        this.setState({
-            activeTab: value
-        })
+    touchHandler = (tab) => {
+
+        // this.state.activeTab.toggle(); 
+        // this.setState({
+        //     activeTab: tab.key
+        // })
         // this.state.activeTab = value; 
-        value.toggle()
+        tab.toggle()
     }
 
     render() {

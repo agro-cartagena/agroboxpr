@@ -1,5 +1,6 @@
 
 export default class UserAuthenticationService {
+
     // Declare Singleton instance for Service
     static instance = UserAuthenticationService.instance || new UserAuthenticationService()
     _url = "http://localhost:3000";
@@ -18,29 +19,36 @@ export default class UserAuthenticationService {
     }
 
     sendLogin(data) {
-
         // Declare payload
         let payload = {
-            email: data["email"],
-            password: data["password"]
-        }
-
-        alert(JSON.stringify(payload))
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: data["email"],
+                password: data["password"]
+            })
+        };
 
         // Send payload within request
-        // fetch(this._url)
-        //     .then((response) => {
-        //         this._webToken = response.body["jwt"]
-        //         alert(JSON.stringify(this._webToken))
-        //     })
-        //     .catch((error) => {
-        //         console.error(error)
-        //     })
-        //     .finally(() => {
-        //         alert(this._webToken)
-        //         if response is error code, then alert "email or password incorrect"
-        //         else Navigate to Home Page (token should already be stored)
-        //     })
+        fetch(this._url, payload)
+            .then(async (response) => {
+
+                response = await response.json()
+                // alert(response.jwt)
+                this._webToken = response.jwt
+
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+            .finally(() => {
+                alert(this._webToken)
+                // if response is error code, then alert "email or password incorrect"
+                // else Navigate to Home Page (token should already be stored)
+            })
     }
 
     sendRegistration(data) {
@@ -51,27 +59,34 @@ export default class UserAuthenticationService {
         else {
             // Declare payload.
             let payload = {
-                full_name: data["full_name"],
-                email: data["email"],
-                password: data["password"],
-                phone: data["phone"]
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    full_name: data["full_name"],
+                    email: data["email"],
+                    password: data["password"],
+                    phone: data["phone"]
+                })
             }
 
-            alert(JSON.stringify(payload))
-
             // Send payload within request.
-            // fetch(this._url)
-            //     .then(response => {
-            //         this._webToken = response.body["jwt"]
-            //     })
-            //     .catch(error => {
-            //         console.error(error)
-            //     })
-            //     .finally(() => {
-            //         // alert(this._webToken)
-            //         // if response is email error, then alert "email already exists"
-            //         // else, navigate to Home Screen (token should already be stored)
-            //     })
+            fetch(this._url, payload)
+                .then(async response => {
+                    response = await response.json()
+                    // alert(response.jwt)
+                    this._webToken = response.jwt
+                })
+                .catch(error => {
+                    console.error(error)
+                })
+                .finally(() => {
+                    alert(this._webToken)
+                    // if response is email error, then alert "email already exists"
+                    // else, navigate to Home Screen (token should already be stored)
+                })
         }
     }
 }

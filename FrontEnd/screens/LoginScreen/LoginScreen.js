@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScrollView, View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './LoginScreenStylesheet';
 import global_styles from '../../styles';
@@ -19,7 +20,10 @@ const LoginScreen = () => {
     }
 
     return (
-        <ScrollView contentContainerStyle={[global_styles.container, global_styles.screen]}>
+        <KeyboardAwareScrollView 
+            contentContainerStyle={[global_styles.container, global_styles.screen]}
+            resetScrollToCoords={{x: 0, y: 0}}
+        >
             <View style={styles.logoContainer}>
                 <Image
                     style={styles.logo}
@@ -55,7 +59,7 @@ const LoginScreen = () => {
 
                 <Text style={global_styles.text}  onPress={goToRegister}>Crear cuenta nueva</Text>                
             </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
     )
 }
 

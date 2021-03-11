@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScrollView, View, Image, TextInput, Button, Text, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './RegisterScreenStylesheet';
 import global_styles from '../../styles';
@@ -23,7 +24,10 @@ const RegisterScreen = () => {
     }
 
     return (
-        <ScrollView contentContainerStyle={[global_styles.container, global_styles.screen]}> 
+        <KeyboardAwareScrollView 
+            contentContainerStyle={[global_styles.container, global_styles.screen]}
+            resetScrollToCoords={{x: 0, y: 0}}
+        > 
            
             <View style={styles.logoContainer}>
                 <Image
@@ -76,7 +80,7 @@ const RegisterScreen = () => {
                 <Text style = {global_styles.text}> Ya tienes una cuenta? <Text style = {styles.clickText} onPress={goToLogin}> Presione aquí.</Text></Text>
             </View>
 
-        </ScrollView>
+        </KeyboardAwareScrollView>
     )
 }
 

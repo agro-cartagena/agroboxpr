@@ -4,34 +4,26 @@ import { View, Image } from 'react-native';
 import global_styles from '../../styles'
 import styles from './TabStyleSheet';
 
-export default class Tab extends React.Component {
+const Tab = (props) => {
+    const [active, toggleActive] = React.useState(props.active)
 
-    constructor (props) {
-        super(props);
-        this.state = {
-            active: props.active
-        };
+    const toggle = () => {
+        toggleActive(!active)
     }
 
-    toggle = () => {
-        this.setState({
-            active: !this.state.active
-        })
-    }
-
-    render() {
-        return(
-            <View style={[
-                    styles.tab, 
-                    global_styles.container, 
-                    this.state.active ? styles.activeBorder: styles.defaultBorder
-                ]} onTouchEnd={()=> this.props.onTouch(this)}>
-                
-                <Image
-                    style={styles.icon}
-                    source={this.state.active ? this.props.activeIcon : this.props.defaultIcon}
-                />
-            </View>
-        )
-    }
+    return (
+        <View style={[
+                styles.tab, 
+                global_styles.container, 
+                active ? styles.activeBorder: styles.defaultBorder
+            ]} onTouchEnd={toggle}>
+        
+            <Image
+                style={styles.icon}
+                source={active ? props.activeIcon : props.defaultIcon}
+            />
+        </View>        
+    )
 }
+
+export default Tab

@@ -6,10 +6,10 @@ const { registerNewUserDb, findUserByFilterDb } = userDb
 
 const registerUser = async (name, email, password) => {
 
-    findUserByFilterDb({ email: email })
+    return await findUserByFilterDb({ email: email })
         .then(user => {
             if (user.length > 0) {
-                console.log("Email already exists!")
+                throw new Error("Email already exists!")
             } else {
                 const saltRounds = 10;
                 bcrypt.genSalt(saltRounds, async function (err, salt) {
@@ -43,10 +43,7 @@ const loginUser = async (email, password) => {
     const token = await findUserByFilterDb({ email: email }).then(async user => {
         console.log("HERE")
         if (user.length < 1) {
-            // return res.status(404).json({
-            //     errors: [{ user: "not found" }],
-            // });
-            console.log("User not found!")
+            throw new Error("Invalid Credentials!")
         } else {
             console.log("THERE", user)
             console.log(password)
@@ -54,13 +51,8 @@ const loginUser = async (email, password) => {
 
             console.log("Match?: ", isMatch)
             if (!isMatch) {
-                // return res.status(400).json({
-                //     errors: [{
-                //         password:
-                //             "incorrect"
-                //     }]
-                // });
                 console.log("Wrong password!")
+                throw new Error("Invalid Credentials!")
             }
 
             let access_token = createJWT(

@@ -2,8 +2,10 @@
 
 const productRouter = require('./product');
 const boxRouter = require('./box');
+const authRouter = require('./auth');
 
 module.exports = {
     productRouter,
-    boxRouter
+    boxRouter,
+    authRouter,
 }

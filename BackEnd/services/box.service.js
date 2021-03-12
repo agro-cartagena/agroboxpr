@@ -1,7 +1,5 @@
 const { boxDb } = require('../db')
-
-const { createBoxDb, findAllBoxesDb, deleteBoxDb } = boxDb
-const { getBoxProductsDb, getBoxNameDb, getBoxPriceDb } = boxDb
+const { createBoxDb, findAllBoxesDb, getBoxByIdDb } = boxDb
 const { updateEntryDb, addProductListDb } = boxDb
 
 const insertBox = async (box) => {
@@ -24,35 +22,9 @@ const readAllBoxes = async () => {
 	}
 }
 
-const deleteBoxFunc = async (boxName) => {
-	console.log('\nRemoving box entry \n', boxName)
+const getBoxById = async (id) => {
 	try {
-		console.log('\nDeletion successfull\n')
-		return await deleteBoxDb(boxName)
-	} catch (e) {
-		throw new Error(e.message)
-	}
-}
-
-const getBoxProductList = async (boxDetail) => {
-	try {
-		return await getBoxProductsDb(boxDetail)
-	} catch (e) {
-		throw new Error(e.message)
-	}
-}
-
-const getBoxName = async (boxDetail) => {
-	try {
-		return await getBoxNameDb(boxDetail)
-	} catch (e) {
-		throw new Error(e.message)
-	}
-}
-
-const getBoxPrice = async (boxDetail) => {
-	try {
-		return await getBoxPriceDb(boxDetail)
+		return await getBoxByIdDb(id)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -77,10 +49,7 @@ const addProductList = async (paramList) => {
 module.exports = {
 	insertBox,
 	readAllBoxes,
-	deleteBoxFunc,
-	getBoxName,
-	getBoxPrice,
-	getBoxProductList,
+	getBoxById,
 	updateEntry,
 	addProductList,
 }

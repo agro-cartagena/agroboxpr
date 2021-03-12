@@ -1,9 +1,16 @@
 var mdb = require('./mdb')
+const { ObjectId } = require('mongodb')
 
 const dotenv = require('dotenv')
 
 dotenv.config()
 
+/**
+ * Creates a Box object using data from within the box JSON object parameter
+ * to insert in the "box" collection of the database. Logs into console
+ * whether or not the box has been properly inserted
+ * @param  {JSON} box JSON Object containing all the data of the box
+ */
 const createBoxDb = async (box) => {
 	console.log('Inserting to box db', box)
 
@@ -19,6 +26,11 @@ const createBoxDb = async (box) => {
 		.catch((error) => console.error(error))
 }
 
+/**
+ * Searches the "box" colection of the database for all available products and
+ * returns a array containing the search results
+ * @return {Array}  array containing all available boxes in the database
+ */
 const findAllBoxesDb = async () => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
@@ -26,41 +38,25 @@ const findAllBoxesDb = async () => {
 	return collection.find({}).toArray()
 }
 
-const deleteBoxDb = async (boxName) => {
+/**
+ * Searches the "box" colection of the database for a specidied box utilizing 
+ * its object id and returns a array containing the search results 
+ * @param  {[type]} arg1 [description]
+ * @param  {[type]} arg2 [description]
+ * @return {[type]}      [description]
+ */
+const getBoxByIdDb = async (id) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
 
-	return await collection.deleteOne(boxName)
+	return collection.findOne({ _id: ObjectId(id) })
 }
 
-const getBoxProductsDb = async (boxDetail) => {
-	const box = await findEntry(boxDetail)
-	return box[0].Content
-}
-
-const getBoxPriceDb = async (boxDetail) => {
-	const box = await findEntry(boxDetail)
-	return box[0].price
-}
-
-const getBoxNameDb = async (boxDetail) => {
-	const box = await findEntry(boxDetail)
-	return box[0].name
-}
-
-//Helper entry finding function
-
-//Uses string version of the JSON file since findOne
-//method fails when using the _id box param in JSON format
-const findEntry = async (boxDetail) => {
-	const db = mdb.get().db(process.env.DB_NAME)
-	const collection = db.collection('box')
-
-	return collection.find(boxDetail.toString()).toArray()
-}
-
-// * paramList will be a JSON list, where the first index is the search query
-// * to use and the second index is the properties to update
+/**
+ * Updates a single object entry in the "box" colecction within the databes
+ * @param JSON-List First index contains the query parameter for the database search.
+ * Second parameter contains update informations.
+ */
 const updateEntryDb = async (paramList) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
@@ -74,6 +70,11 @@ const updateEntryDb = async (paramList) => {
 	return collection.updateOne(query, { $set: update })
 }
 
+/**
+ * Inserts a product to the specified box, updating the Content list.
+ * @param JSON-List First index contains the query parameter for the database search.
+ * Second parameter contains Product object to be inserted.
+ */
 const addProductListDb = async (paramList) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
@@ -81,16 +82,13 @@ const addProductListDb = async (paramList) => {
 	const query = paramList[0]
 	const update = paramList[1]
 
-	return collection.update(query, {$push: {Content:{$each: update}}})
+	return collection.update(query, { $push: { Content: { $each: update } } })
 }
 
 module.exports = {
 	createBoxDb,
 	findAllBoxesDb,
-	deleteBoxDb,
-	getBoxProductsDb,
-	getBoxNameDb,
-	getBoxPriceDb,
+	getBoxByIdDb,
 	updateEntryDb,
 	addProductListDb,
 }

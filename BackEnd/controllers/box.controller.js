@@ -1,6 +1,5 @@
 const { boxService } = require('../services')
-const { insertBox, readAllBoxes, deleteBoxFunc } = boxService
-const { getBoxName, getBoxPrice, getBoxProductList } = boxService
+const { insertBox, readAllBoxes, getBoxById } = boxService
 const { updateEntry, addProductList } = boxService
 
 const postBox = async (req, res, next) => {
@@ -15,60 +14,23 @@ const postBox = async (req, res, next) => {
 	}
 }
 
-const getBox = async (req, res, next) => {
+const getById = async (req, res, next) => {
+	const id = req.params.id
+
+	try {
+		await getBoxById(id).then((products) => {
+			res.status(200).send(products)
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getAllBoxes = async (req, res, next) => {
 	try {
 		await readAllBoxes().then((boxes) => {
 			res.status(200).send(boxes)
-		})
-	} catch (e) {
-		console.log(e.message)
-		res.sendStatus(500) && next(e)
-	}
-}
-
-const deleteBox = async (req, res, next) => {
-	const boxName = req.body
-	try {
-		await deleteBoxFunc(boxName)
-		res.sendStatus(200) && next()
-	} catch (e) {
-		console.log(e.message)
-		res.sendStatus(500) && next(e)
-	}
-}
-
-const getProducts = async (req, res, next) => {
-	const box = req.body
-
-	try {
-		await getBoxProductList(box).then((products) => {
-			res.status(200).send(products)
-		})
-	} catch (e) {
-		console.log(e.message)
-		res.sendStatus(500) && next(e)
-	}
-}
-
-const getPrice = async (req, res, next) => {
-	const box = req.body
-
-	try {
-		await getBoxPrice(box).then((products) => {
-			res.status(200).send(products)
-		})
-	} catch (e) {
-		console.log(e.message)
-		res.sendStatus(500) && next(e)
-	}
-}
-
-const getName = async (req, res, next) => {
-	const box = req.body
-
-	try {
-		await getBoxName(box).then((products) => {
-			res.status(200).send(products)
 		})
 	} catch (e) {
 		console.log(e.message)
@@ -95,18 +57,15 @@ const addProducts = async (req, res, next) => {
 		await addProductList(params)
 		res.sendStatus(200) && next()
 	} catch (e) {
-		console.log(e.message);
+		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }
 
 module.exports = {
 	postBox,
-	getBox,
-	deleteBox,
-	getProducts,
-	getName,
-	getPrice,
+	getAllBoxes,
+	getById,
 	update,
 	addProducts,
 }

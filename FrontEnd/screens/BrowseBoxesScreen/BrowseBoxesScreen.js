@@ -4,7 +4,6 @@ import { ScrollView, View, Image, TextInput, Button, Text, TouchableOpacity } fr
 import styles from './BrowseBoxesScreenStyleSheet';
 import BoxesCard from '../../components/BoxesCard/BoxesCard.js';
 
-// const user = require('FrontEnd/screens/PremadeBoxesScreen/PremadeDBTest.json');
 
 export default class BrowseBoxesScreen extends React.Component {
     render() {
@@ -12,10 +11,8 @@ export default class BrowseBoxesScreen extends React.Component {
             <ScrollView contentContainerStyle = {[styles.container, styles.screen]}>
                 <View>
                     {/* <Text>This is a test!!</Text> */}
-                    {/* <Text> user.name</Text> */}
                     <BoxesCard/>
-                    {/* <BoxesCard/>
-                    <BoxesCard/> */}
+
                 </View>
             </ScrollView>
         )

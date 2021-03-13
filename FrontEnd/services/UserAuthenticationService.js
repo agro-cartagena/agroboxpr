@@ -1,21 +1,31 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class UserAuthenticationService {
 
     // Declare Singleton instance for Service
     static instance = UserAuthenticationService.instance || new UserAuthenticationService()
-    _url = "http://localhost:3000";
+    _url = "http://localhost:5000/api/auth";
     _webToken;
 
     constructor(){
-        this._webToken = null;
+        this.loadWebToken();
     }
 
     get webToken() {
-        return this._webToken;
+        return this._webToken
     }
 
-    set webToken(token) {
-        this._webToken = token;
+    // This method gets called only once on init to fetch the token from storage.
+    loadWebToken = async () => {
+        await AsyncStorage.getItem('jwt_key')
+            .then(token => this._webToken = token)
+            .catch(error => alert("error loading token"))
+    }
+
+    setWebToken = async (token) => {
+        await AsyncStorage.setItem('jwt_key', token)
+            .then(() => this._webToken = token)
+            .catch(error => alert("error storing token"))
     }
 
     sendLogin(data) {
@@ -33,21 +43,28 @@ export default class UserAuthenticationService {
         };
 
         // Send payload within request
-        fetch(this._url, payload)
+        fetch(this._url + '/login', payload)
             .then(async (response) => {
+                switch(response.status){
+                    case 200: 
+                        let webToken = await response.text()
+                        this.setWebToken(webToken)
 
-                response = await response.json()
-                // alert(response.jwt)
-                this._webToken = response.jwt
+                        alert("logged in.")
+                        // Redirect user to HomeScreen
+                        break;
+                    
+                    case 403:
+                        alert("Correo o contraseña incorrecta.")
+                        break;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente mas tarde.")
+                }
 
             })
             .catch((error) => {
                 console.error(error)
-            })
-            .finally(() => {
-                alert(this._webToken)
-                // if response is error code, then alert "email or password incorrect"
-                // else Navigate to Home Page (token should already be stored)
             })
     }
 
@@ -55,6 +72,9 @@ export default class UserAuthenticationService {
         // Validate Passwords
         if(data["password"] != data["password_confirmation"])
             alert("Contraseñas no concuerdan.")
+
+        else if(data["password"] == "password")
+            alert("Contraseña no es válida.")
 
         else {
             // Declare payload.
@@ -65,7 +85,7 @@ export default class UserAuthenticationService {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    full_name: data["full_name"],
+                    name: data["full_name"],
                     email: data["email"],
                     password: data["password"],
                     phone: data["phone"]
@@ -73,19 +93,27 @@ export default class UserAuthenticationService {
             }
 
             // Send payload within request.
-            fetch(this._url, payload)
+            fetch(this._url + '/signup', payload)
                 .then(async response => {
-                    response = await response.json()
-                    // alert(response.jwt)
-                    this._webToken = response.jwt
+                    switch(response.status){
+                        case 201:
+                            // let webToken = await response.text()
+                            // this.setWebToken(webToken)
+                            alert("Gracias por registrarse!")
+                            // Redirect user to HomeScreen.
+                            break;
+
+                        case 409:
+                            alert("Correo electrónico ya existe en la base de datos.")
+                            break;
+
+                        default:
+                            alert("Ha ocurrido un error. Por favor intente mas tarde.")
+                            break;
+                    }
                 })
                 .catch(error => {
                     console.error(error)
-                })
-                .finally(() => {
-                    alert(this._webToken)
-                    // if response is email error, then alert "email already exists"
-                    // else, navigate to Home Screen (token should already be stored)
                 })
         }
     }

@@ -8,6 +8,7 @@ const postSignup = async (req, res, next) => {
     try {
         await registerUser(name, email, password).then(result => {
             console.log("Result: ", result)
+            console.log(`Successfully registered user: ${req.body}` )
             res.sendStatus(201)
             next()
         })
@@ -22,7 +23,7 @@ const postSignup = async (req, res, next) => {
         }
         
         
-        next(error)
+        // next(error)
     }
 }
 
@@ -44,7 +45,7 @@ const postLogin = async (req, res, next) => {
         } else {
             res.sendStatus(500)
         }
-        next(error)
+        // next(error)
     }
 }
 

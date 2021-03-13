@@ -19,6 +19,11 @@ const LoginScreen = () => {
         UserAuthenticationService.instance.sendLogin(form)
     }
 
+    // This method is for debugging only.
+    const displayToken = () => {
+        alert(UserAuthenticationService.instance.webToken)
+    }
+
     return (
         <KeyboardAwareScrollView 
             contentContainerStyle={[global_styles.container, global_styles.screen]}
@@ -37,6 +42,7 @@ const LoginScreen = () => {
                     onChangeText = {text => form.email = text} 
                     keyboardType = "email-address"
                     autoCompleteType = "email"
+                    autoCapitalize="none"
                 />
 
                 <FormInput
@@ -46,7 +52,7 @@ const LoginScreen = () => {
                     autoCompleteType="password"
                     secureTextEntry = {true}
                 />
-                <Text style={global_styles.text}>Problemas para acceder?<Text style={styles.clickText}> Presione aquí.</Text></Text>
+                <Text style={global_styles.text}>Problemas para acceder?<Text style={styles.clickText} onPress={displayToken}> Presione aquí.</Text></Text>
             </View>
 
             <View style={global_styles.container}>

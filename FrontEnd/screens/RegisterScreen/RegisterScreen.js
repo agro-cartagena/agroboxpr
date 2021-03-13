@@ -48,6 +48,7 @@ const RegisterScreen = () => {
                     onChangeText = {text => form.email = text} 
                     keyboardType = "email-address"
                     autoCompleteType = "email"
+                    autoCapitalize="none"
                 />
                 
                 <FormInput

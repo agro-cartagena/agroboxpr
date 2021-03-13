@@ -7,3 +7,7 @@ export const goToLogin = () => {
 export const goToRegister = () => {
     Actions.register()
 }
+
+export const goToHome = () => {
+    Actions.home()
+}

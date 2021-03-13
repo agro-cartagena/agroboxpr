@@ -7,13 +7,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         // backgroundColor: 'green'
     },
-    logo: {
-        width :'100%',
-        height: '100%',
-       
-        resizeMode: 'contain',
-        // backgroundColor: 'red'
-    },
+    
     form:{
         // backgroundColor:'red',
         width: '100%',

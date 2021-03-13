@@ -5,9 +5,19 @@ import styles from './TabBarStyleSheet'
 import global_styles from '../../styles'
 
 import Tab from '../Tab/Tab'
-import { goToLogin } from '../../Navigator'
+import { 
+    goToLogin,
+    goToHome 
+} from '../../Navigator'
 
 const TabBar = () => {
+
+    const touchHandler = (tab) => {
+        alert("Hello World")
+        // tabs[activeTab].toggle()
+        // setActiveTab(tab.key)
+        // tab.toggle()
+    }
 
     let tabs = [
         <Tab
@@ -22,7 +32,7 @@ const TabBar = () => {
             key="user-tab"
             defaultIcon={require('../../assets/icons/user-profile.png')}
             activeIcon={require('../../assets/icons/user-profile-active.png')}
-            onTouch={touchHandler}
+            onTouch={() => { goToLogin() }}
             active={false}
         />,
 
@@ -30,8 +40,8 @@ const TabBar = () => {
             key="home-tab"
             defaultIcon={require('../../assets/icons/home.png')}
             activeIcon={require('../../assets/icons/home-active.png')}
-            onTouch={touchHandler}
-            active={true}
+            onTouch={() => { goToHome() }}
+            active={false}
         />,
 
         <Tab
@@ -52,14 +62,6 @@ const TabBar = () => {
     ]
 
     const [activeTab, setActiveTab] = React.useState(tabs[2].key)
-
-    const touchHandler = (tab) => {
-        alert("Hello World")
-        // tabs[activeTab].toggle()
-        // setActiveTab(tab.key)
-        // tab.toggle()
-    }
-
 
     return (
         <View style={[styles.bar, global_styles.container]}>

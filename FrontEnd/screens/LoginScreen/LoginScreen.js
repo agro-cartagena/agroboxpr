@@ -31,7 +31,7 @@ const LoginScreen = () => {
         >
             <View style={styles.logoContainer}>
                 <Image
-                    style={styles.logo}
+                    style={global_styles.logo}
                     source={require('../../assets/agrobox_logo.png')}
                 />
             </View>

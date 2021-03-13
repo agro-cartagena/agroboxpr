@@ -16,7 +16,7 @@ const Tab = (props) => {
                 styles.tab, 
                 global_styles.container, 
                 active ? styles.activeBorder: styles.defaultBorder
-            ]} onTouchEnd={toggle}>
+            ]} onTouchEnd={props.onTouch}>
         
             <Image
                 style={styles.icon}

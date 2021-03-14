@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
 import TabBar from './components/TabBar/TabBar'
 import styles from './styles';
@@ -8,10 +8,10 @@ import Routes from './Routes';
 class App extends React.Component {
   render() {
     return (
-      <View style={styles.app}>        
+      <SafeAreaView style={styles.app}>        
         <Routes/>
         <TabBar/>
-      </View>
+      </SafeAreaView>
     )
   }
 }

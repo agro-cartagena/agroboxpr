@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     },
 
     clickText: {
-        color: '#5EAE33',
+        color: 'rgb(151, 184, 56)',
         fontWeight: "bold"
     }
 })

@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     logoContainer:{
-        width: '55%',
-        height: '20%',
+        width: '60%',
+        height: '25%',
         alignSelf: 'center',
         // backgroundColor: 'green'
     },
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     },
 
     clickText: {
-        color: '#5EAE33',
+        color: 'rgb(151, 184, 56)',
         fontWeight: "bold"
     }
 })

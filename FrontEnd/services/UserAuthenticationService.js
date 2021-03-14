@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class UserAuthenticationService {
-
     // Declare Singleton instance for Service
     static instance = UserAuthenticationService.instance || new UserAuthenticationService()
     _url = "http://localhost:5000/api/auth";
@@ -16,13 +15,13 @@ export default class UserAuthenticationService {
     }
 
     // This method gets called only once on init to fetch the token from storage.
-    loadWebToken = async () => {
+    async loadWebToken() {
         await AsyncStorage.getItem('jwt_key')
             .then(token => this._webToken = token)
             .catch(error => alert("error loading token"))
     }
 
-    setWebToken = async (token) => {
+    async setWebToken(token) {
         await AsyncStorage.setItem('jwt_key', token)
             .then(() => this._webToken = token)
             .catch(error => alert("error storing token"))

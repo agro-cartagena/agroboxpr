@@ -6,7 +6,7 @@ import BoxCard from '../../components/BoxCard/BoxCard'
 import styles from './HomeScreenStyleSheet'
 import global_styles from '../../styles'
 
-import box_list from '../../box.db'
+import box_list from '../../db_mockup/box.db'
 
 const HomeScreen = () => {
     let boxes = []
@@ -18,14 +18,17 @@ const HomeScreen = () => {
         box_list.forEach((box) => {
             boxes.push(
                 <BoxCard
+                    key={box.id}
                     id={box.id}
-                    key={box.name}
+                    name={box.name}
                     image={box.uri}
+                    price={box.price}
                 />
             )
         })
     }
 
+    // On screen init
     loadBoxes()
 
     return (

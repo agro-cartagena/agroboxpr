@@ -6,6 +6,8 @@ import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 import LoginScreen from './screens/LoginScreen/LoginScreen'
 import HomeScreen from './screens/HomeScreen/HomeScreen'
 
+import BoxScreen from './screens/BoxScreen/BoxScreen'
+
 const Routes = () => {
     return(
         <Router sceneStyle={styles.app}>
@@ -13,6 +15,7 @@ const Routes = () => {
                 <Scene key="login" component={LoginScreen} title="Login" hideNavBar={true}/>
                 <Scene key="register" component={RegisterScreen} title="Register" hideNavBar={true}/>
                 <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true} initial={true}/>
+                <Scene key="box" component={BoxScreen} title="Box" hideNavBar={true}/>
             </Scene>
         </Router>
     )

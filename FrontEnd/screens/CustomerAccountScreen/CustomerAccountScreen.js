@@ -4,18 +4,97 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import styles from './CustomerAccountScreenStylesheet';
 import global_styles from '../../styles';
+import AccountInfo from '../../components/AccountInfo/AccountInfo'
+
+import { TextInput } from 'react-native-gesture-handler';
+
 
 const CustomerAccountScreen = () => {
     return (
-        <ScrollView>
-            <View>
-                {/* Customer name */}
-                <Text>This is a test!</Text>
-            </View>
-            <View>
-                {/* Customer information Name, addres, phone number,  */}
+        <KeyboardAwareScrollView
+            contentContainerStyle={[global_styles.container, global_styles.screen]}
+            resetScrollToCoords={{x: 0, y: 0}}
+        >
+            <View style = {styles.logoContainer}>
+                <Image
+                    style={styles.logo}
+                    source={require('../../assets/agrobox_logo.png')}
+                />
             </View>
 
+            <View style = {[global_styles.container, styles.formContainer]}>
+                <AccountInfo></AccountInfo>
+                <AccountInfo></AccountInfo>
+                {/* <View> */}
+                    {/* <Text>Nombre: </Text><TextInput
+                        style={styles.form}
+                        editable
+                        maxLength={40}
+                    >
+                        Value
+                    </TextInput> */}
+                {/* </View> */}
+
+                {/* <View>
+                <TextInput 
+                    style = {styles.form}
+                    editable
+                    maxLength={40}
+                >
+                    Value
+                </TextInput>
+            </View>
+
+            <View>
+                <TextInput 
+                    style = {styles.form}
+                    editable
+                    maxLength={40}
+                >
+                    Value
+                </TextInput>
+            </View>
+
+            <View>
+                <TextInput 
+                    style = {styles.form}
+                    editable
+                    maxLength={40}
+                >
+                    Value
+                </TextInput>
+            </View>
+
+            <View>
+                <TextInput 
+                    style = {styles.form}
+                    editable
+                    maxLength={40}
+                >
+                    Value
+                </TextInput>
+            </View>
+
+            <View>
+                <TextInput 
+                    style = {styles.form}
+                    editable
+                    maxLength={40}
+                >
+                    Value
+                </TextInput>
+            </View>
+
+            <View>
+                <TextInput 
+                    style = {styles.form}
+                    editable
+                    maxLength={40}
+                >
+                    Value
+                </TextInput>
+                </View> */}
+            </View>
             {/* <View style={styles.logoContainer}>
                 <Image
                     style={global_styles.logo}
@@ -68,7 +147,7 @@ const CustomerAccountScreen = () => {
                 <Text style={global_styles.text}> Ya tienes una cuenta? <Text style={styles.clickText} onPress={goToLogin}> Presione aquí.</Text></Text>
             </View> */}
 
-        </ScrollView>
+        </KeyboardAwareScrollView>
     )
 }
 

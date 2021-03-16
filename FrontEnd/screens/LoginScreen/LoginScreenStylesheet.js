@@ -7,14 +7,6 @@ const styles = StyleSheet.create({
         // borderWidth: 2
     },
 
-    logo: {
-        width: '100%',
-        height: '100%',
-
-        resizeMode: 'contain',
-        // backgroundColor: 'blue'
-    },
-
     form: {
         // backgroundColor: 'red',
         width: '100%',
@@ -22,6 +14,11 @@ const styles = StyleSheet.create({
 
         margin: '8%',
         justifyContent: 'space-between'
+    },
+
+    clickText: {
+        color: 'rgb(151, 184, 56)',
+        fontWeight: "bold"
     }
 })
 

@@ -1,0 +1,75 @@
+import React from 'react';
+import { View, Image, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+import styles from './CustomerAccountScreenStylesheet';
+import global_styles from '../../styles';
+
+const CustomerAccountScreen = () => {
+    return (
+        <ScrollView>
+            <View>
+                {/* Customer name */}
+                <Text>This is a test!</Text>
+            </View>
+            <View>
+                {/* Customer information Name, addres, phone number,  */}
+            </View>
+
+            {/* <View style={styles.logoContainer}>
+                <Image
+                    style={global_styles.logo}
+                    source={require('../../assets/agrobox_logo.png')}
+                />
+            </View>
+
+            <View style={[global_styles.container, styles.form]}>
+                <FormInput
+                    placeholder='Nombre y Apellido(s)'
+                    onChangeText={text => form.full_name = text}
+                    textContentType="name"
+                />
+
+                <FormInput
+                    placeholder='Correo Electrónico'
+                    onChangeText={text => form.email = text}
+                    keyboardType="email-address"
+                    autoCompleteType="email"
+                    autoCapitalize="none"
+                />
+
+                <FormInput
+                    placeholder='Contraseña'
+                    onChangeText={text => form.password = text}
+                    textContentType="password"
+                    secureTextEntry={true}
+                />
+
+                <FormInput
+                    placeholder='Entre Contraseña Nuevamente'
+                    onChangeText={text => form.password_confirmation = text}
+                    textContentType="password"
+                    secureTextEntry={true}
+                />
+
+                <FormInput
+                    placeholder='Número de Teléfono'
+                    onChangeText={text => form.phone = text}
+                    keyboardType="phone-pad"
+                />
+            </View>
+
+            <View style={global_styles.container}>
+
+                <TouchableOpacity style={[global_styles.button, global_styles.shadow]} >
+                    <Text style={global_styles.text} onPress={sendCredentials}> Registrar</Text>
+                </TouchableOpacity>
+
+                <Text style={global_styles.text}> Ya tienes una cuenta? <Text style={styles.clickText} onPress={goToLogin}> Presione aquí.</Text></Text>
+            </View> */}
+
+        </ScrollView>
+    )
+}
+
+export default CustomerAccountScreen

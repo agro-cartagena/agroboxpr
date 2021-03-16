@@ -33,7 +33,7 @@ const TabBar = () => {
             defaultIcon={require('../../assets/icons/user-profile.png')}
             activeIcon={require('../../assets/icons/user-profile-active.png')}
             onTouch={() => { goToLogin() }}
-            active={false}
+            active={true}
         />,
 
         <Tab

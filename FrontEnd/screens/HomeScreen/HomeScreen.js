@@ -32,10 +32,10 @@ const HomeScreen = () => {
     loadBoxes()
 
     return (
-        <ScrollView>
-            <View contentContainerStyle={styles.logoContainer}>
+        <ScrollView style={styles.screen}>
+            <View style={styles.logoContainer}>
                 <Image
-                    styles={global_styles.logo}
+                    style={global_styles.logo}
                     source={require('../../assets/agrobox_logo.png')}
                 />
             </View>

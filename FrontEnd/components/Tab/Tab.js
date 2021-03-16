@@ -8,7 +8,7 @@ const Tab = (props) => {
     const [active, toggleActive] = React.useState(props.active)
 
     const toggle = () => {
-        toggleActive(!active)
+        toggleActive(!props.active)
     }
 
     return (

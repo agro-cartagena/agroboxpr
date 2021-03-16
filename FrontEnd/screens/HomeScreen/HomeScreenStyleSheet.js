@@ -1,12 +1,17 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    logoContainer: {
-        display: 'flex',
-        width: '50%',
-        height: '50%',
+    screen: {
+        padding: 10,
+    },
 
-        backgroundColor: 'black'
+    logoContainer: {
+        width: '100%',
+        height: '20%',
+        alignSelf: 'center',
+
+        marginTop: 20,
+        marginBottom: 20
     }
 })
 

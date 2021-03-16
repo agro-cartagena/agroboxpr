@@ -18,13 +18,13 @@ const BoxCard = (props) => {
                     props.price 
                 )
             }}>
-            <Card containerStyle={[styles.card, global_styles.shadow]}>
+            <Card containerStyle={[styles.card, global_styles.shadow, styles.radius]}>
                 {/* Card title will be stored in props.name */}
                 {/* <Card.Title>AGROBOX PLUS</Card.Title> */}
                 
                 <Card.Image 
                     source={props.image}
-                    style={styles.image}
+                    style={[styles.image, styles.radius]}
                 ></Card.Image>
             </Card>
         </TouchableOpacity>

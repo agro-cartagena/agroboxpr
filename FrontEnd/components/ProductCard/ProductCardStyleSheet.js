@@ -1,20 +1,44 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
+    cardContainer: {
+        width: '48%',
+        marginTop: 7,
+        marginBottom: 7,
+    }, 
+
+    textContainer : {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        padding: 1,
+    },
+
+    productName: {
+        color: "white",
+        fontWeight: "bold"
+    },
+
+    productQuantity: {
+        color: 'rgb(151, 184, 56)',
+        fontWeight: "bold"
+    },
+
     card: {
-        width: '45%',
-        // height: '20%',
+        height: 100,
         padding: 0, 
+        margin: 0,
 
         borderWidth: 1,
-        borderRadius: 15
+        borderColor: 'black'
     },
 
     image: {
-        maxWidth: '100%',
-        maxHeight: '100%',
-        overflow: 'hidden',
-        resizeMode: 'contain'
+        height: '100%', 
+        resizeMode: 'stretch'
+    },
+
+    radius: {
+        borderRadius: 15
     }
 })
 

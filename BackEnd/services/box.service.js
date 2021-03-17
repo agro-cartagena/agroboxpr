@@ -13,10 +13,20 @@ const insertBox = async (box) => {
 }
 
 const readAllBoxes = async () => {
-	console.log('\nRetrieving boxes \n')
+	// console.log('\nRetrieving boxes \n')
 
 	try {
-		return await findAllBoxesDb()
+		const boxes = await findAllBoxesDb()
+		//Only return to client: name, price, imageUrl & boxId
+		const response = boxes.map(box => {
+			return {
+				boxId : box._id,
+				boxName : box.name,
+				boxPrice : box.price,
+				boxImage : box.imageUrl
+			}
+		})
+		return response
 	} catch (e) {
 		throw new Error(e.message)
 	}

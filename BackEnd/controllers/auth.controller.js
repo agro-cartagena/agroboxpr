@@ -3,13 +3,12 @@ const { authService } = require('../services')
 const { registerUser, loginUser } = authService
 
 const postSignup = async (req, res, next) => {
-    const { name, email, password, confirmPassword } = req.body
+    const { name, email, password, phone } = req.body
     //TODO: Add validation for new user
     try {
-        await registerUser(name, email, password).then(result => {
+        await registerUser(name, email, password, phone).then(result => {
             console.log("Result: ", result)
-            console.log(`Successfully registered user: ${req.body}` )
-            res.sendStatus(201)
+            res.status(201).send(result)
             next()
         })
     } catch (err) {

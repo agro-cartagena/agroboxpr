@@ -4,39 +4,45 @@ const { userDb } = require('../db')
 
 const { registerNewUserDb, findUserByFilterDb } = userDb
 
-const registerUser = async (name, email, password) => {
+const registerUser = async (name, email, password, phone) => {
 
-    return await findUserByFilterDb({ email: email })
-        .then(user => {
+    const token = await findUserByFilterDb({ email: email })
+        .then(async user => {
             if (user.length > 0) {
                 throw new Error("Email already exists!")
             } else {
                 const saltRounds = 10;
-                bcrypt.genSalt(saltRounds, async function (err, salt) {
-                    await bcrypt.hash(password, salt, function (err, hash) {
-                        if (err) throw err;
-                        const newUser = {
-                            name: name,
-                            email: email,
-                            password: hash
-                        }
+                const toky = await bcrypt.hash(password, saltRounds).then(async (hash) => {
+                    const newUser = {
+                        name: name,
+                        email: email,
+                        password: hash,
+                        phone: phone
+                    }
 
-                        return registerNewUserDb(newUser).then(res => {
-                            console.log("New user created!")
-                        }).catch(err => {
-                            throw new Error(err.message)
-                        })
-                    });
+                    const tok = await registerNewUserDb(newUser).then(res => {
+                        // console.log("New user created!", res)
+                        const user = res
+
+                        let access_token = createJWT(
+                            user.email,
+                            user._id
+                        );
+
+                        return access_token
+                    }).catch(err => {
+                        throw new Error(err.message)
+                    })
+                    return tok
+                }).catch(err => {
+                    throw new Error(err.message)
                 });
+                return toky
             }
         }).catch(err => {
             throw new Error(err.message)
         })
-    // try {
-    //   return await createProductDb(product)
-    // } catch (e) {
-    //   throw new Error(e.message)
-    // }
+    return token
 }
 
 const loginUser = async (email, password) => {
@@ -62,7 +68,7 @@ const loginUser = async (email, password) => {
             );
             console.log("Access Token", access_token)
             return access_token
-            
+
         }
     }).catch(err => {
         throw new Error(err.message)

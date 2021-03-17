@@ -10,7 +10,7 @@ const registerNewUserDb = async (newUser) => {
 
   return await collection.insertOne(newUser)
   .then(results => {
-    return results['ops'][0]['_id'];
+    return results['ops'][0];
   }).catch(error => console.error(error))
 }
 

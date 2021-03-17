@@ -8,21 +8,20 @@ const postSignup = async (req, res, next) => {
     try {
         await registerUser(name, email, password).then(result => {
             console.log("Result: ", result)
+            console.log(`Successfully registered user: ${req.body}` )
             res.sendStatus(201)
             next()
         })
-    } catch (e) {
-        console.log("Error: ", e.message)
-        if(e.message === "Email already exists!"){
+    } catch (err) {
+        console.log("Error: ", err.message)
+        if(err.message === "Email already exists!"){
             res.status(409).json({
                 errors: [{ email: "Email already exists!" }],
             });
         }else {
             res.sendStatus(500)
         }
-        
-        
-        next(error)
+        next(err)
     }
 }
 
@@ -35,16 +34,16 @@ const postLogin = async (req, res, next) => {
             res.status(200).send(result)
             next()
         })
-    } catch (e) {
-        console.log(e.message)
-        if(e.message === "Invalid Credentials!"){
+    } catch (err) {
+        console.log(err.message)
+        if(err.message === "Invalid Credentials!"){
             res.status(403).json({
                 errors: [{ user: "Invalid Credentials!" }],
             });
         } else {
             res.sendStatus(500)
         }
-        next(error)
+        next(err)
     }
 }
 

@@ -1,6 +1,11 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
+    app: {
+        flex: 1,
+        backgroundColor: '#8C0634'
+    },
+
     container: {
         display: 'flex',
         justifyContent: 'center',
@@ -9,21 +14,14 @@ const styles = StyleSheet.create({
 
     screen: {
         width: '100%',
-        height: '90%',
-        backgroundColor: '#8C0634'
+        height: '100%'
     },
 
-    textEntry: {
-        width: '80%',
-        height: 45,
+    logo: {
+        width: '100%',
+        height: '100%',
 
-        textAlign: 'center',
-        borderRadius: 100,
-        borderWidth: 1,
-        borderColor: 'lightgray',
-
-        // backgroundColor: '#E5E5E5',
-        backgroundColor: 'white',
+        resizeMode: 'contain',
     },
 
     text: {
@@ -32,7 +30,7 @@ const styles = StyleSheet.create({
     },
 
     shadow: {
-        shadowColor: 'gray',
+        shadowColor: '#8a795d',
         shadowOffset: {width: 0, height: 2},
         shadowOpacity: 8,
         shadowRadius: 3
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
         padding: '2.5%',
         marginBottom: '2.5%',
 
-        backgroundColor: '#5EAE33',
+        backgroundColor: 'rgb(151, 184, 56)',
         borderRadius: 10,
     }
 })

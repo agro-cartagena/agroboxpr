@@ -2,18 +2,12 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     logoContainer:{
-        width: '55%',
-        height: '20%',
+        width: '60%',
+        height: '25%',
         alignSelf: 'center',
         // backgroundColor: 'green'
     },
-    logo: {
-        width :'100%',
-        height: '100%',
-       
-        resizeMode: 'contain',
-        // backgroundColor: 'red'
-    },
+    
     form:{
         // backgroundColor:'red',
         width: '100%',
@@ -22,9 +16,9 @@ const styles = StyleSheet.create({
         margin: '2%'
     },
 
-    textClick:{
-        color: '#5EAE33'
-        
+    clickText: {
+        color: 'rgb(151, 184, 56)',
+        fontWeight: "bold"
     }
 })
 

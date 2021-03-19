@@ -75,7 +75,7 @@ const BoxScreen = (props) => {
                     {/* Minus Button */}
                     <TouchableOpacity 
                         style={styles.iconContainer}
-                        onPress={() => { if(quantity > 0) setQuantity(quantity-1) }}
+                        onPress={() => { if(quantity > 1) setQuantity(quantity-1) }}
                     >
                         <Image
                             source={require('../../assets/icons/minus-sign.png')}

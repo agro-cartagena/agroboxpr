@@ -86,12 +86,11 @@ const BoxScreen = (props) => {
                     {/* Input field */}
                     <TextInput
                         style={styles.inputField}
-                        placeholder={String(quantity)}
-                        placeholderTextColor="black"
                         keyboardType="numeric"
-
                         onChangeText={(quantity) => { setQuantity(Number(quantity)) }}
-                    />
+                    >
+                        <Text>{String(quantity)}</Text>
+                    </TextInput>
 
                     {/* Plus Button*/}
                     <TouchableOpacity 

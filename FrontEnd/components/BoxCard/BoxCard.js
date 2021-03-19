@@ -20,7 +20,7 @@ const BoxCard = (props) => {
             }}>
             <Card containerStyle={[styles.card, global_styles.shadow, styles.radius]}>
                 {/* Card title will be stored in props.name */}
-                {/* <Card.Title>AGROBOX PLUS</Card.Title> */}
+                {/* <Card.Title>{props.name}</Card.Title> */}
                 
                 <Card.Image 
                     source={props.image}

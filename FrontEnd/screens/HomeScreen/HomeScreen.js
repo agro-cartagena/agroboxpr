@@ -33,7 +33,7 @@ const HomeScreen = () => {
 
     return (
         <ScrollView style={styles.screen}>
-            <View style={styles.logoContainer}>
+            <View style={global_styles.logoContainer}>
                 <Image
                     style={global_styles.logo}
                     source={require('../../assets/agrobox_logo.png')}

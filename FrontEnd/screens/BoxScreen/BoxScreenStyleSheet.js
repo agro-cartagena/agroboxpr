@@ -2,11 +2,11 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     screen: {
-        padding: 10,
+        padding: 10
     },
 
     arrow: {
-        width: '10%',
+        width: 40,
         height: 30,
 
         marginTop: 15,
@@ -16,36 +16,96 @@ const styles = StyleSheet.create({
     },
 
     card: {
+        width: '70%',
         padding: 0,
-        margin: 0, 
 
-        marginTop: 25,
-        marginBottom: 25,
+        backgroundColor: 'rgb(151, 184, 56)',
+        borderColor: 'black',
 
-        // backgroundColor: 'rgb(151, 184, 56)'
-        borderColor: 'black'
+        alignSelf: 'center',
+        justifyContent: 'center',
+        borderRadius: 10
     },
 
-    radius: {
-        borderRadius: 10,
+    cardTitle: {
+        fontSize: 22
+    },
+
+    cardText: {
+        margin: 8
+    },
+
+    imageRadius: {
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
     },
 
     productContainer: {
-        marginTop: 25,
-
         flex: 1,
         flexDirection: "row",
         flexWrap: 'wrap',
 
         alignItems: 'flex-start',
-        justifyContent: 'space-between'
+        justifyContent: 'space-evenly'
     },
 
     text: {
+        margin: 25,
+        alignSelf: 'center',
+
         color: 'white',
         fontWeight: "bold",
-        fontSize: 18,
-        alignSelf: 'center'
+        fontSize: 18
+    },
+
+    addToCartContainer: {
+        width: '90%',
+        height: 50,
+
+        marginTop: 40,
+        marginBottom: 50,
+
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignSelf: 'center',
+        alignItems: 'center',
+        // backgroundColor: 'white'
+    },
+
+    inputContainer: {
+        width: '50%',
+        height: 45,
+
+        flexDirection: 'row',
+        backgroundColor: 'white',
+
+        borderRadius: 25,
+        borderColor: 'black',
+        borderWidth: 1
+    },
+
+    icon: {
+        width: '100%',
+        height: '80%',
+
+        resizeMode: 'contain',
+        tintColor: 'rgb(151, 184, 56)'
+    },
+
+    iconContainer: {
+        alignSelf: 'center',
+        width: '33.33%'
+    },
+
+    inputField: {
+        width: '33.33%',
+        backgroundColor: 'lightgray',
+        textAlign: 'center',
+    },
+    
+    button: {
+        width: '20%',
+        height: '80%',
     }
 })
 

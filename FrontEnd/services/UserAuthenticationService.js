@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default class UserAuthenticationService {
     // Declare Singleton instance for Service
     static instance = UserAuthenticationService.instance || new UserAuthenticationService()
-    _url = "http://localhost:5000/api/auth";
+    _url = "http://localhost:5434/api/auth";
     _webToken;
 
     constructor(){

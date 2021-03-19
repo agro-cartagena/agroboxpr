@@ -17,10 +17,24 @@ const styles = StyleSheet.create({
         height: '100%'
     },
 
-    logo: {
-        width: '100%',
-        height: '100%',
+    logoContainer: {
+        width: 175,
+        height: 175,
 
+        alignSelf: 'center',
+        justifyContent: 'center',
+
+        margin: 20,
+        backgroundColor: 'white',
+
+        borderRadius: 100
+    },
+    
+    logo: {
+        width: '90%',
+        height: '90%',
+
+        alignSelf: 'center',
         resizeMode: 'contain',
     },
 
@@ -37,11 +51,11 @@ const styles = StyleSheet.create({
     },
 
     button: {
-        padding: '2.5%',
-        marginBottom: '2.5%',
-
         backgroundColor: 'rgb(151, 184, 56)',
         borderRadius: 10,
+
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 

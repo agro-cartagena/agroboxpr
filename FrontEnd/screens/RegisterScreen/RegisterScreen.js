@@ -29,7 +29,7 @@ const RegisterScreen = () => {
             resetScrollToCoords={{x: 0, y: 0}}
         > 
            
-            <View style={styles.logoContainer}>
+            <View style={global_styles.logoContainer}>
                 <Image
                     style = {global_styles.logo} 
                     source = {require('../../assets/agrobox_logo.png')}
@@ -74,7 +74,7 @@ const RegisterScreen = () => {
 
             <View style={global_styles.container}>
 
-                <TouchableOpacity style = {[global_styles.button, global_styles.shadow]} >
+                <TouchableOpacity style = {[global_styles.button, global_styles.shadow, styles.button]} >
                     <Text style = {global_styles.text} onPress={sendCredentials}> Registrar</Text>
                 </TouchableOpacity>
 

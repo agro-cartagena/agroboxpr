@@ -9,7 +9,10 @@ const styles = StyleSheet.create({
         margin: 0,
         
         marginTop: 12,
-        marginBottom: 12
+        marginBottom: 12,
+
+        width: '90%',
+        alignSelf: 'center'
     },
 
     image: {
@@ -17,7 +20,7 @@ const styles = StyleSheet.create({
     },
 
     radius: {
-        borderRadius: 20
+        borderRadius: 15
     }
 })
 

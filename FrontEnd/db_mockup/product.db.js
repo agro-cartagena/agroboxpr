@@ -35,12 +35,17 @@ const products = [
         units: "lbs"
     },
     {
-        name: "China y Lima (Verde)",
-        quantity: 6, 
+        name: "China",
+        quantity: 3, 
         units: "unidad(es)"
     },
     {
-        name: "Pimiento para Cocinar",
+        name: "Lima (Verde)",
+        quantity: 3, 
+        units: "unidad(es)"
+    },
+    {
+        name: "Pimiento",
         quantity: "1/2", 
         units: "lbs"
     },

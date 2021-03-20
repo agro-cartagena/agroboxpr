@@ -7,6 +7,7 @@ import styles from './HomeScreenStyleSheet'
 import global_styles from '../../styles'
 
 import box_list from '../../db_mockup/box.db'
+import Logo from '../../components/Logo/Logo'
 
 const HomeScreen = () => {
     let boxes = []
@@ -17,13 +18,14 @@ const HomeScreen = () => {
         // alert(JSON.stringify(box_list))
         box_list.forEach((box) => {
             boxes.push(
-                <BoxCard
-                    key={box.id}
-                    id={box.id}
-                    name={box.name}
-                    image={box.uri}
-                    price={box.price}
-                />
+                <View key={box.id} style={styles.cardContainer}>
+                    <BoxCard
+                        id={box.id}
+                        name={box.name}
+                        image={box.uri}
+                        price={box.price}
+                    />
+                </View>
             )
         })
     }
@@ -33,13 +35,8 @@ const HomeScreen = () => {
 
     return (
         <ScrollView style={styles.screen}>
-            <View style={global_styles.logoContainer}>
-                <Image
-                    style={global_styles.logo}
-                    source={require('../../assets/agrobox_logo.png')}
-                />
-            </View>
-
+            <Logo/>
+            
             <View>
                 {boxes}
             </View>

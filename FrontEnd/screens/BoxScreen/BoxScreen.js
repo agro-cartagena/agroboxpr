@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, View, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Card } from 'react-native-elements'
+import Button from '../../components/Button/Button'
 
 import styles from './BoxScreenStyleSheet';
 import global_styles from '../../styles'
@@ -9,6 +10,8 @@ import { goToHome } from '../../Navigator'
 
 import ProductCard from '../../components/ProductCard/ProductCard'
 import BoxService from '../../services/BoxService'
+import CartService from '../../services/CartService'
+
 import products_list from '../../db_mockup/product.db'
 
 // Route parameters are stored in props.params object
@@ -34,6 +37,24 @@ const BoxScreen = (props) => {
         })
     }
     
+    const verifyQuantity = () => {
+        if(quantity < 1 || quantity > 99)
+            alert("Cantidad de cajas debe ser entre 1 a 99 cajas.")
+
+        else{
+            let item = {
+                box_id: props.params.box_id,
+                box_name: props.params.box_name,
+                box_image: props.params.box_image,
+                box_price: props.params.box_price,
+                box_quantity: quantity
+            }
+
+            CartService.instance.addToCart(item)
+            // alert(JSON.stringify(item))
+        }
+    }
+
     // On component init.
     loadProducts(props.params.box_id)
 
@@ -106,20 +127,10 @@ const BoxScreen = (props) => {
                 </View>
 
                 {/* Add Button */}
-                <TouchableOpacity 
-                    style={[global_styles.button, global_styles.shadow, styles.button]}
-                    onPress={ () => {
-                        if(quantity < 1 || quantity > 99)
-                            alert("Cantidad de cajas debe ser entre 1 a 99 cajas.")
-
-                        else
-                            // If quantity is valid, 
-                            // CartService adds props.params.box_id and quantity to Cart.
-                            alert(quantity)
-                    }}
-                >
-                    <Text style={global_styles.text}>Agregar</Text>
-                </TouchableOpacity>
+                <Button
+                    onTouch={verifyQuantity}
+                    text="Agregar"
+                />
             </View>
 
         </KeyboardAwareScrollView>

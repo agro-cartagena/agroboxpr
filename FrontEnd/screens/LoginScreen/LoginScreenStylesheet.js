@@ -10,11 +10,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
 
-    button: {
-        padding: '2.5%',
-        margin: '4%'
-    },
-
     clickText: {
         color: 'rgb(151, 184, 56)',
         fontWeight: "bold"

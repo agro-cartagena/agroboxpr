@@ -8,6 +8,9 @@ import { goToRegister } from '../../Navigator';
 
 import FormInput from '../../components/FormInput/FormInput'
 import UserAuthenticationService from '../../services/UserAuthenticationService'
+import Logo from '../../components/Logo/Logo';
+
+import Button from '../../components/Button/Button'
 
 const LoginScreen = () => {
     const [form, changeForm] = React.useState({
@@ -29,12 +32,7 @@ const LoginScreen = () => {
             contentContainerStyle={[global_styles.container, global_styles.screen]}
             resetScrollToCoords={{x: 0, y: 0}}
         >
-            <View style={global_styles.logoContainer}>
-                <Image
-                    style={global_styles.logo}
-                    source={require('../../assets/agrobox_logo.png')}
-                />
-            </View>
+            <Logo/>
             
             <View style={[global_styles.container, styles.form]}>
                 <FormInput
@@ -56,12 +54,10 @@ const LoginScreen = () => {
             </View>
 
             <View style={global_styles.container}>
-
-                <TouchableOpacity style={[global_styles.button, global_styles.shadow, styles.button]}>
-                    <Text 
-                        style={global_styles.text} 
-                        onPress={sendCredentials}>Acceder</Text>
-                </TouchableOpacity>
+                <Button
+                    onTouch={sendCredentials}
+                    text="Acceder"
+                />
 
                 <Text style={global_styles.text}  onPress={goToRegister}>Crear cuenta nueva</Text>                
             </View>

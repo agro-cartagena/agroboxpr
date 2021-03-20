@@ -7,7 +7,8 @@ import global_styles from '../../styles'
 import Tab from '../Tab/Tab'
 import { 
     goToLogin,
-    goToHome 
+    goToHome,
+    goToCart 
 } from '../../Navigator'
 
 const TabBar = () => {
@@ -24,7 +25,7 @@ const TabBar = () => {
             key="cart-tab"
             defaultIcon={require('../../assets/icons/cart.png')}
             activeIcon={require('../../assets/icons/cart-active.png')}
-            onTouch={touchHandler}
+            onTouch={() => { goToCart() }}
             active={false}
         />,
 

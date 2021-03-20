@@ -10,14 +10,16 @@ const BoxCard = (props) => {
 
     return(
         // onPress should redirect to BoxScreen passing props.id as param
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity 
+            onPress={() => {
                 goToBox(
                     props.id,
                     props.name,
                     props.image,
                     props.price 
-                )
-            }}>
+                    )
+                }}
+            >
             <Card containerStyle={[styles.card, global_styles.shadow, styles.radius]}>
                 {/* Card title will be stored in props.name */}
                 {/* <Card.Title>{props.name}</Card.Title> */}

@@ -61,15 +61,13 @@ const styles = StyleSheet.create({
     addToCartContainer: {
         width: '90%',
         height: 50,
-
-        marginTop: 40,
-        marginBottom: 50,
+        margin: 50,
 
         flexDirection: 'row',
         justifyContent: 'space-evenly',
+
         alignSelf: 'center',
         alignItems: 'center',
-        // backgroundColor: 'white'
     },
 
     inputContainer: {

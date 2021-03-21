@@ -8,7 +8,8 @@ import Tab from '../Tab/Tab'
 import { 
     goToLogin,
     goToHome,
-    goToCart 
+    goToCart, 
+    goToProduct
 } from '../../Navigator'
 
 const TabBar = () => {
@@ -57,7 +58,7 @@ const TabBar = () => {
             key="menu-tab"
             defaultIcon={require('../../assets/icons/Menu.png')}
             activeIcon={require('../../assets/icons/menu-active.png')}
-            onTouch={touchHandler}
+            onTouch={() => { goToProduct() }}
             active={false}
         />                            
     ]

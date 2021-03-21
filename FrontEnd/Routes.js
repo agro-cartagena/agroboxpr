@@ -8,6 +8,7 @@ import HomeScreen from './screens/HomeScreen/HomeScreen'
 
 import BoxScreen from './screens/BoxScreen/BoxScreen'
 import CartScreen from './screens/CartScreen/CartScreen'
+import ProductScreen from './screens/ProductScreen/ProductScreen'
 
 const Routes = () => {
     return(
@@ -15,9 +16,10 @@ const Routes = () => {
             <Scene key="root">
                 <Scene key="login" component={LoginScreen} title="Login" hideNavBar={true}/>
                 <Scene key="register" component={RegisterScreen} title="Register" hideNavBar={true} />
-                <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true} initial={true}/>
+                <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true}/>
                 <Scene key="box" component={BoxScreen} title="Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
+                <Scene key="product" component={ProductScreen} title="Product" hideNavBar={true} initial={true}/>
             </Scene>
         </Router>
     )

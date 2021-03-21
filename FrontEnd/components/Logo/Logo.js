@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, Image } from 'react-native'
-import global_styles from '../../styles'
+import styles from './LogoStyleSheet'
 
 const Logo = () => {
     return (
-        <View style={global_styles.logoContainer}>
+        <View style={styles.logoContainer}>
             <Image
-                style={global_styles.logo}
+                style={styles.logo}
                 source={require('../../assets/agrobox_logo.png')}
             />
         </View>

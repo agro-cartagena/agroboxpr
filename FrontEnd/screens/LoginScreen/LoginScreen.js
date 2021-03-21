@@ -29,29 +29,36 @@ const LoginScreen = () => {
 
     return (
         <KeyboardAwareScrollView 
-            contentContainerStyle={[global_styles.container, global_styles.screen]}
+            contentContainerStyle={[global_styles.container, global_styles.screen, {height: '100%'}]}
             resetScrollToCoords={{x: 0, y: 0}}
         >
             <Logo/>
             
-            <View style={[global_styles.container, styles.form]}>
-                <FormInput
-                    placeholder = 'Correo Electrónico'
-                    onChangeText = {text => form.email = text} 
-                    keyboardType = "email-address"
-                    autoCompleteType = "email"
-                    autoCapitalize="none"
-                />
+            <View style={[styles.form]}>
+                <View style={global_styles.formEntry}>
+                    <FormInput
+                        placeholder = 'Correo Electrónico'
+                        onChangeText = {text => form.email = text} 
+                        keyboardType = "email-address"
+                        autoCompleteType = "email"
+                        autoCapitalize="none"
+                    />
+                </View>
 
-                <FormInput
-                    placeholder = 'Contraseña'
-                    onChangeText = {text => form.password = text} 
-                    textContentType="password"
-                    autoCompleteType="password"
-                    secureTextEntry = {true}
-                />
-                <Text style={global_styles.text}>Problemas para acceder?<Text style={styles.clickText} onPress={displayToken}> Presione aquí.</Text></Text>
+                <View style={global_styles.formEntry}>
+                    <FormInput
+                        placeholder = 'Contraseña'
+                        onChangeText = {text => form.password = text} 
+                        textContentType="password"
+                        autoCompleteType="password"
+                        secureTextEntry = {true}
+                    />
+                </View>
             </View>
+
+            <Text style={[global_styles.text, styles.problemText]}>Problemas para acceder?
+                <Text style={styles.clickText} onPress={displayToken}> Presione aquí.</Text>
+            </Text>
 
             <View style={[global_styles.container, styles.buttonContainer]}>
                 <Button
@@ -59,6 +66,7 @@ const LoginScreen = () => {
                     text="Acceder"
                 />
             </View>
+            
             <Text style={global_styles.text}  onPress={goToRegister}>Crear cuenta nueva</Text>                
         </KeyboardAwareScrollView>
     )

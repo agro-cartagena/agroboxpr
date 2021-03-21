@@ -13,29 +13,7 @@ const styles = StyleSheet.create({
     },
 
     screen: {
-        width: '100%',
-        height: '100%'
-    },
-
-    logoContainer: {
-        width: 175,
-        height: 175,
-
-        alignSelf: 'center',
-        justifyContent: 'center',
-
-        margin: 20,
-        backgroundColor: 'white',
-
-        borderRadius: 100
-    },
-    
-    logo: {
-        width: '90%',
-        height: '90%',
-
-        alignSelf: 'center',
-        resizeMode: 'contain',
+        padding: 10
     },
 
     text: {
@@ -50,12 +28,10 @@ const styles = StyleSheet.create({
         shadowRadius: 3
     },
 
-    button: {
-        backgroundColor: 'rgb(151, 184, 56)',
-        borderRadius: 10,
-
-        justifyContent: 'center',
-        alignItems: 'center'
+    formEntry: {
+        width: '100%',
+        height: 45,
+        margin: 8
     }
 })
 

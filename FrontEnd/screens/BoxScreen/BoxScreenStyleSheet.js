@@ -1,18 +1,9 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    screen: {
-        padding: 10
-    },
-
-    arrow: {
-        width: 40,
-        height: 30,
-
-        marginTop: 15,
-        marginBottom: 15,
-
-        resizeMode: 'contain',
+    arrowContainer: {
+        marginTop: 10,
+        marginBottom: 10,
     },
 
     card: {

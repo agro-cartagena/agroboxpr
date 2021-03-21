@@ -3,20 +3,19 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
     form: {
         // backgroundColor: 'red',
-        width: '100%',
-        height: '20%',
+        width: '90%',
+        alignItems: 'center',
+        margin: '2%',
+    },
 
-        margin: '4%',
-        justifyContent: 'space-between'
+    buttonContainer: {
+        marginTop: 25,
+        margin: 15
     },
 
     clickText: {
         color: 'rgb(151, 184, 56)',
         fontWeight: "bold"
-    },
-
-    buttonContainer: {
-        margin: 15
     }
 })
 

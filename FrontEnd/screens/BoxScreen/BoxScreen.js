@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { Card } from 'react-native-elements'
@@ -15,6 +15,7 @@ import CartService from '../../services/CartService'
 
 import products_list from '../../db_mockup/product.db'
 import PlusMinus from '../../components/PlusMinus/PlusMinus'
+import BackArrow from '../../components/BackArrow/BackArrow'
 
 // Route parameters are stored in props.params object
 // i.e., alert(props.params.box_name)
@@ -64,16 +65,13 @@ const BoxScreen = (props) => {
 
     return (
         <KeyboardAwareScrollView 
-            style={styles.screen}
+            style={global_styles.screen}
         >
 
             {/* GO BACK ARROW */}
-            <TouchableOpacity onPress={goToHome}>
-                <Image 
-                    source={require('../../assets/icons/ArrowBackward.png')} 
-                    style={styles.arrow}
-                />
-            </TouchableOpacity>
+            <View style={styles.arrowContainer}> 
+                <BackArrow onTouch={goToHome}/>
+            </View>
 
             {/* BOX CARD */}
             <Text style={[styles.text, styles.cardText, styles.cardTitle]}>{props.params.box_name}</Text>

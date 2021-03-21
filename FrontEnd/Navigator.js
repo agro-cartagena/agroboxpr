@@ -26,3 +26,7 @@ export const goToBox = (id, name, uri, price) => {
 export const goToCart = () => {
     Actions.cart()
 }
+
+export const goToProduct = () => {
+    Actions.product()
+}

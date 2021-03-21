@@ -46,7 +46,7 @@ const HomeScreen = () => {
     loadBoxes()
 
     return (
-        <ScrollView style={styles.screen}>
+        <ScrollView style={global_styles.screen}>
             <Logo/>
             {boxes}
         </ScrollView>

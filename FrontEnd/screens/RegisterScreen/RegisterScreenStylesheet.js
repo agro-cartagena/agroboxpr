@@ -8,9 +8,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',  
     },
 
-    button: {
-        padding: '2.5%',
-        margin: '4%'
+    buttonContainer: {
+        margin: 15
     },
 
     clickText: {

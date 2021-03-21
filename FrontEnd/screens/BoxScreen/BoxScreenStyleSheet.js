@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
 
+    productCard: {
+        width: '45%',
+        height: 150,
+    },
+
     text: {
         margin: 25,
         alignSelf: 'center',
@@ -60,7 +65,7 @@ const styles = StyleSheet.create({
 
     addToCartContainer: {
         width: '90%',
-        height: 50,
+        height: 40,
         margin: 50,
 
         flexDirection: 'row',
@@ -70,40 +75,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
-    inputContainer: {
+    plusMinusContainer: {
         width: '50%',
-        height: 45,
-
-        flexDirection: 'row',
-        backgroundColor: 'white',
-
-        borderRadius: 25,
-        borderColor: 'black',
-        borderWidth: 1
-    },
-
-    icon: {
-        width: '100%',
-        height: '80%',
-
-        resizeMode: 'contain',
-        tintColor: 'rgb(151, 184, 56)'
-    },
-
-    iconContainer: {
-        alignSelf: 'center',
-        width: '33.33%'
-    },
-
-    inputField: {
-        width: '33.33%',
-        backgroundColor: 'lightgray',
-        textAlign: 'center',
-    },
-    
-    button: {
-        width: '20%',
-        height: '80%',
     }
 })
 

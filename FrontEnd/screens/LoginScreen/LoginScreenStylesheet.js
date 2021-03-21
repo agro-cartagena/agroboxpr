@@ -13,6 +13,10 @@ const styles = StyleSheet.create({
     clickText: {
         color: 'rgb(151, 184, 56)',
         fontWeight: "bold"
+    },
+
+    buttonContainer: {
+        margin: 15
     }
 })
 

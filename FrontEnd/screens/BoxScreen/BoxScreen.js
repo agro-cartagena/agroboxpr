@@ -1,6 +1,7 @@
 import React from 'react';
-import { ScrollView, View, Image, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import { Card } from 'react-native-elements'
 import Button from '../../components/Button/Button'
 
@@ -13,6 +14,7 @@ import BoxService from '../../services/BoxService'
 import CartService from '../../services/CartService'
 
 import products_list from '../../db_mockup/product.db'
+import PlusMinus from '../../components/PlusMinus/PlusMinus'
 
 // Route parameters are stored in props.params object
 // i.e., alert(props.params.box_name)
@@ -26,18 +28,20 @@ const BoxScreen = (props) => {
         // let products_list = await BoxService.instance.getBoxContentWith(box_id)
         products_list.forEach((product) => {
             products.push(
-                <ProductCard
-                    key={product.name}
-                    name={product.name}
-                    quantity={product.quantity}
-                    units={product.units}
-                    // image={product.uri}
-                />
+                <View style={styles.productCard} key={product.name}>
+                    <ProductCard
+                        name={product.name}
+                        quantity={product.quantity}
+                        units={product.units}
+                        // image={product.uri}
+                    />
+                </View>
             )
         })
     }
     
     const verifyQuantity = () => {
+        alert(quantity)
         if(quantity < 1 || quantity > 99)
             alert("Cantidad de cajas debe ser entre 1 a 99 cajas.")
 
@@ -91,39 +95,15 @@ const BoxScreen = (props) => {
 
             {/* ADD TO CART */}
             <View style={styles.addToCartContainer}>
-                
-                <View style={styles.inputContainer}>
-                    {/* Minus Button */}
-                    <TouchableOpacity 
-                        style={styles.iconContainer}
-                        onPress={() => { if(quantity > 1) setQuantity(quantity-1) }}
-                    >
-                        <Image
-                            source={require('../../assets/icons/minus-sign.png')}
-                            style={styles.icon}
-                        />
-                    </TouchableOpacity>
-                    
-                    {/* Input field */}
-                    <TextInput
-                        style={styles.inputField}
-                        keyboardType="numeric"
-                        onChangeText={(quantity) => { setQuantity(Number(quantity)) }}
-                    >
-                        <Text>{String(quantity)}</Text>
-                    </TextInput>
 
-                    {/* Plus Button*/}
-                    <TouchableOpacity 
-                        style={styles.iconContainer}
-                        onPress={()=>{ if(quantity < 100) setQuantity(quantity+1) }}
-                    >
-                        <Image
-                            source={require('../../assets/icons/plus-sign.png')}
-                            style={styles.icon}
-                        />
-                    </TouchableOpacity>
-
+                {/* Input field */}
+                <View style={styles.plusMinusContainer}>
+                    <PlusMinus
+                        onMinus={() => { if(quantity > 1) setQuantity(quantity-1) }}
+                        onPlus={()=>{ if(quantity < 100) setQuantity(quantity+1) }}
+                        onText={(quantity) => { setQuantity(Number(quantity)) }}
+                        placeholder={quantity}
+                    />
                 </View>
 
                 {/* Add Button */}

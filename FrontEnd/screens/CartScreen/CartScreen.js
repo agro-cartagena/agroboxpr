@@ -18,7 +18,7 @@ const CartScreen = () => {
             // alert(JSON.stringify(item))
             cart.push(
                 <View style={styles.itemContainer}>
-                    <View key={item.box_id} style={styles.cardContainer}>
+                    <View key={item.box_name} style={styles.cardContainer}>
                         <BoxCard
                             id={item.box_id}
                             name={item.box_name}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './RegisterScreenStylesheet';
@@ -68,14 +68,13 @@ const RegisterScreen = () => {
                 />
             </View>
 
-            <View style={global_styles.container}>
+            <View style={[global_styles.container, styles.buttonContainer]}>
                 <Button
                     onTouch={sendCredentials}
                     text="Registrar"
                 />
-                <Text style = {global_styles.text}> Ya tienes una cuenta? <Text style = {styles.clickText} onPress={goToLogin}> Presione aquí.</Text></Text>
             </View>
-
+            <Text style = {global_styles.text}> Ya tienes una cuenta? <Text style = {styles.clickText} onPress={goToLogin}> Presione aquí.</Text></Text>
         </KeyboardAwareScrollView>
     )
 }

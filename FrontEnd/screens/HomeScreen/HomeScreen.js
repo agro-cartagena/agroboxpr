@@ -1,12 +1,13 @@
 import React from 'react'
-import { ScrollView, View, Image, Text } from 'react-native'
-import BoxService from '../../services/BoxService'
+import { ScrollView, View, TouchableOpacity } from 'react-native'
+import { goToBox } from '../../Navigator'
 
+import BoxService from '../../services/BoxService'
 import BoxCard from '../../components/BoxCard/BoxCard'
+import box_list from '../../db_mockup/box.db'
+
 import styles from './HomeScreenStyleSheet'
 import global_styles from '../../styles'
-
-import box_list from '../../db_mockup/box.db'
 import Logo from '../../components/Logo/Logo'
 
 const HomeScreen = () => {
@@ -18,14 +19,25 @@ const HomeScreen = () => {
         // alert(JSON.stringify(box_list))
         box_list.forEach((box) => {
             boxes.push(
-                <View key={box.id} style={styles.cardContainer}>
+                <TouchableOpacity 
+                    key={box.id} 
+                    style={styles.cardContainer}
+                    onPress={() => {
+                        goToBox(
+                            box.id,
+                            box.name,
+                            box.image,
+                            box.price 
+                            )
+                        }}
+                >
                     <BoxCard
                         id={box.id}
                         name={box.name}
                         image={box.uri}
                         price={box.price}
                     />
-                </View>
+                </TouchableOpacity>
             )
         })
     }
@@ -36,10 +48,7 @@ const HomeScreen = () => {
     return (
         <ScrollView style={styles.screen}>
             <Logo/>
-            
-            <View>
-                {boxes}
-            </View>
+            {boxes}
         </ScrollView>
     )
 }

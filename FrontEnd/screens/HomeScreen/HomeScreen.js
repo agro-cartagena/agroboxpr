@@ -20,22 +20,15 @@ const HomeScreen = () => {
         box_list.forEach((box) => {
             boxes.push(
                 <TouchableOpacity 
-                    key={box.id} 
+                    key={box.box_id} 
                     style={styles.cardContainer}
-                    onPress={() => {
-                        goToBox(
-                            box.id,
-                            box.name,
-                            box.image,
-                            box.price 
-                            )
-                        }}
+                    onPress={() => { goToBox(box) }}
                 >
                     <BoxCard
-                        id={box.id}
-                        name={box.name}
-                        image={box.uri}
-                        price={box.price}
+                        id={box.box_id}
+                        name={box.box_name}
+                        image={box.box_image}
+                        price={box.box_price}
                     />
                 </TouchableOpacity>
             )

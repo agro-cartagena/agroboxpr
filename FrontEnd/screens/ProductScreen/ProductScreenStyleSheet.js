@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     imageContainer: {
-        width: '80%',
-        height: 250,
+        width: '70%',
+        height: 200,
 
         alignSelf: 'center',
         backgroundColor: 'lightgray',
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },
 
     formContainer: {
-        width: '90%',
+        width: '85%',
     
         alignItems: 'center',
         alignSelf: 'center',

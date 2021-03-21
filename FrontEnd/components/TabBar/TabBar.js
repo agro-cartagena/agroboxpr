@@ -58,7 +58,7 @@ const TabBar = () => {
             key="menu-tab"
             defaultIcon={require('../../assets/icons/Menu.png')}
             activeIcon={require('../../assets/icons/menu-active.png')}
-            onTouch={() => { goToProduct() }}
+            onTouch={() => { goToProduct("new") }}
             active={false}
         />                            
     ]

@@ -14,7 +14,7 @@ const ProductCard = (props) => {
             </View>
             <Card containerStyle={[styles.card, styles.radius, global_styles.shadow]}>
                 <Card.Image 
-                    source={require('../../assets/products/Broccoli.jpeg')}
+                    source={props.uri}
                     style={[styles.image, styles.radius]}
                 />
             </Card>

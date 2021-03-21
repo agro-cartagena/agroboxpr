@@ -34,7 +34,7 @@ const BoxScreen = (props) => {
                         name={product.name}
                         quantity={product.quantity}
                         units={product.units}
-                        // image={product.uri}
+                        uri={product.image}
                     />
                 </View>
             )
@@ -79,7 +79,7 @@ const BoxScreen = (props) => {
                 {/* <Card.Image source={props.params.box_image}> */}
                 <Card.Image 
                     style={styles.imageRadius}
-                    source={require('../../assets/boxes/AgroBox.jpeg')}
+                    source={props.params.box_image}
                     resizeMode="stretch"
                 />
                 <Text style={[styles.text, styles.cardText]}>Precio: <Text style={{color: 'rgb(252,0,29)'}}>${props.params.box_price}</Text></Text>

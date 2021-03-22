@@ -42,7 +42,10 @@ const styles = StyleSheet.create({
 
     productCard: {
         width: '45%',
-        height: 150,
+        height: 120,
+
+        marginTop: 10, 
+        marginBottom: 10, 
     },
 
     text: {

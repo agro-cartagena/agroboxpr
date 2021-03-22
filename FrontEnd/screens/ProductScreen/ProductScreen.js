@@ -8,6 +8,8 @@ import BackArrow from '../../components/BackArrow/BackArrow'
 import FormInput from '../../components/FormInput/FormInput'
 import Button from '../../components/Button/Button'
 
+import { goToInventory } from '../../Navigator'
+
 const ProductScreen = (props) => {
     let _isNewProduct, _product
 
@@ -31,7 +33,7 @@ const ProductScreen = (props) => {
     
     return (
         <ScrollView style={global_styles.screen}>
-            <BackArrow/>
+            <BackArrow onTouch={goToInventory}/>
 
             <View style={[styles.imageContainer, styles.radius]}>
                 <Image
@@ -44,7 +46,7 @@ const ProductScreen = (props) => {
                 <Text style={[global_styles.text, styles.formText]}>Nombre del Producto</Text>
                 <View style={global_styles.formEntry}>
                     <FormInput
-                        placeholder = { _isNewProduct ? 'ejemplo: Brocoli' : "viejo"}
+                        placeholder = { _isNewProduct ? 'ejemplo: Brocoli' : formData.name}
                         onChangeText = { (text) => formData.name = text }
                     />
                 </View>
@@ -52,7 +54,7 @@ const ProductScreen = (props) => {
                 <Text style={[global_styles.text, styles.formText]}>Catálogo del Producto</Text>
                 <View style={global_styles.formEntry}>
                     <FormInput
-                        placeholder = { _isNewProduct ? 'ejemplo: Vegetales': "viejo"}
+                        placeholder = { _isNewProduct ? 'ejemplo: Vegetales': formData.catalog}
                         onChangeText = { (text) => formData.catalog = text }
                     />
                 </View>
@@ -61,7 +63,7 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         keyboardType = "numeric"
-                        placeholder = { _isNewProduct ? 'ejemplo: 3': "viejo"}
+                        placeholder = { _isNewProduct ? 'ejemplo: 3': String(formData.quantity)}
                         onChangeText = { (text) => formData.quantity = text }
                     />
                 </View>
@@ -70,7 +72,7 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         autoCapitalize="none"
-                        placeholder = { _isNewProduct ? 'ejemplo: lbs' : "viejo"}
+                        placeholder = { _isNewProduct ? 'ejemplo: lbs' : formData.units}
                         onChangeText = { (text) => formData.units = text }
                     />
                 </View>
@@ -79,7 +81,7 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         keyboardType = "numeric"
-                        placeholder = { _isNewProduct ? 'ejemplo: 2.49' : "viejo"}
+                        placeholder = { _isNewProduct ? 'ejemplo: 2.49' : String(formData.price)}
                         onChangeText = { (text) => formData.price = text }
                     />
                 </View>

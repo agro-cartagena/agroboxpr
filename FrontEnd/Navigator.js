@@ -20,6 +20,10 @@ export const goToCart = () => {
     Actions.cart()
 }
 
+export const goToInventory = () => {
+    Actions.inventory()
+}
+
 export const goToProduct = (product) => {
     Actions.product({ params: product })
 }

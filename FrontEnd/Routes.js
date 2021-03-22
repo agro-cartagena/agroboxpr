@@ -10,6 +10,8 @@ import BoxScreen from './screens/BoxScreen/BoxScreen'
 import CartScreen from './screens/CartScreen/CartScreen'
 import ProductScreen from './screens/ProductScreen/ProductScreen'
 
+import InventoryManagementScreen from './screens/InventoryManagementScreen/InventoryManagementScreen'
+
 const Routes = () => {
     return(
         <Router sceneStyle={styles.app}>
@@ -19,7 +21,8 @@ const Routes = () => {
                 <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true}/>
                 <Scene key="box" component={BoxScreen} title="Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
-                <Scene key="product" component={ProductScreen} title="Product" hideNavBar={true} initial={true}/>
+                <Scene key="product" component={ProductScreen} title="Product" hideNavBar={true}/>
+                <Scene key="inventory" component={InventoryManagementScreen} title="Inventory Management" hideNavBar={true} initial={true}/>
             </Scene>
         </Router>
     )

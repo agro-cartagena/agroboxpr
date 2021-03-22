@@ -9,7 +9,7 @@ import {
     goToLogin,
     goToHome,
     goToCart, 
-    goToProduct
+    goToInventory
 } from '../../Navigator'
 
 const TabBar = () => {
@@ -58,7 +58,7 @@ const TabBar = () => {
             key="menu-tab"
             defaultIcon={require('../../assets/icons/Menu.png')}
             activeIcon={require('../../assets/icons/menu-active.png')}
-            onTouch={() => { goToProduct("new") }}
+            onTouch={() => { goToInventory() }}
             active={false}
         />                            
     ]

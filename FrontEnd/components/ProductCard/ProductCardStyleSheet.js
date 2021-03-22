@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
     cardContainer: {
         width: '100%',
-        height: '100%'
+        height: '100%',
     }, 
 
     textContainer : {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        height: 100,
+        height: '90%',
         padding: 0, 
         margin: 0,
 
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     },
 
     image: {
+        width: '100%',
         height: '100%', 
         resizeMode: 'stretch'
     },

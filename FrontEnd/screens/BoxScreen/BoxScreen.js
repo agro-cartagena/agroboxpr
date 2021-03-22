@@ -105,10 +105,12 @@ const BoxScreen = (props) => {
                 </View>
 
                 {/* Add Button */}
-                <Button
-                    onTouch={verifyQuantity}
-                    text="Agregar"
-                />
+                <View style={styles.buttonContainer}>
+                    <Button
+                        onTouch={verifyQuantity}
+                        text="Agregar"
+                    />
+                </View>
             </View>
 
         </KeyboardAwareScrollView>

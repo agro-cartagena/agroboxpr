@@ -11,6 +11,8 @@ import CartScreen from './screens/CartScreen/CartScreen'
 import ProductScreen from './screens/ProductScreen/ProductScreen'
 
 import InventoryManagementScreen from './screens/InventoryManagementScreen/InventoryManagementScreen'
+import ProductManagementScreen from './screens/ProductManagementScreen/ProductManagementScreen'
+import BoxManagementScreen from './screens/BoxManagementScreen/BoxManagementScreen'
 
 const Routes = () => {
     return(
@@ -21,8 +23,10 @@ const Routes = () => {
                 <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true}/>
                 <Scene key="box" component={BoxScreen} title="Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
+                <Scene key="inventory_management" component={InventoryManagementScreen} title="Inventory Management" hideNavBar={true} initial={true}/>
+                <Scene key="box_management" component={BoxManagementScreen} title="Box Management" hideNavBar={true}/>
+                <Scene key="product_management" component={ProductManagementScreen} title="Product Management" hideNavBar={true}/>
                 <Scene key="product" component={ProductScreen} title="Product" hideNavBar={true}/>
-                <Scene key="inventory" component={InventoryManagementScreen} title="Inventory Management" hideNavBar={true} initial={true}/>
             </Scene>
         </Router>
     )

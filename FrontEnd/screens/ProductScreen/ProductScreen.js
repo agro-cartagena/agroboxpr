@@ -8,7 +8,7 @@ import BackArrow from '../../components/BackArrow/BackArrow'
 import FormInput from '../../components/FormInput/FormInput'
 import Button from '../../components/Button/Button'
 
-import { goToInventory } from '../../Navigator'
+import { goToProductManagement } from '../../Navigator'
 
 const ProductScreen = (props) => {
     let _isNewProduct, _product
@@ -33,7 +33,7 @@ const ProductScreen = (props) => {
     
     return (
         <ScrollView style={global_styles.screen}>
-            <BackArrow onTouch={goToInventory}/>
+            <BackArrow onTouch={goToProductManagement}/>
 
             <View style={[styles.imageContainer, styles.radius]}>
                 <Image

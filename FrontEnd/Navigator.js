@@ -20,10 +20,18 @@ export const goToCart = () => {
     Actions.cart()
 }
 
-export const goToInventory = () => {
-    Actions.inventory()
+export const goToInventoryManagement = () => {
+    Actions.inventory_management()
+}
+
+export const goToProductManagement = () => {
+    Actions.product_management()
 }
 
 export const goToProduct = (product) => {
     Actions.product({ params: product })
+}
+
+export const goToBoxManagement = () => {
+    Actions.box_management()
 }

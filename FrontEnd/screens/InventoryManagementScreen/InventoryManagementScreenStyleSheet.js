@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     screen: {
-        marginTop: '10%'
+        height: '100%',
+        justifyContent: 'center'
     },
 
     header: {
@@ -11,31 +12,18 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
 
-    productCardContainer: {
-        width: '45%',
-        height: 120,
-
-        marginTop: 12,
-        marginBottom: 12
-
-        // backgroundColor: 'black'
-    },
-
-    menuContainer: {
-        marginTop: '10%',
-        marginBottom: '10%'
-    },
-
-    dropDownContainer: {
-        width: '100%'
-    },
-
     buttonContainer: {
-        width: '75%',
+        width: '100%',
+        height: '30%',
 
-        padding: '2.5%',
-        marginBottom: '25%',
-        alignSelf: 'center'
+        justifyContent: 'space-evenly',
+    },
+
+    button: {
+        width: '80%',
+        height: 50,
+
+        alignSelf: 'center',
     }
 })
 

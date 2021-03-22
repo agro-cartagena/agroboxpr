@@ -12,8 +12,9 @@ const styles = StyleSheet.create({
         padding: 15,
         // backgroundColor: 'white',
 
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: '#BA104970',
+        // borderColor: 'white',
 
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     title: {
         color: 'white',
         fontSize: 18,
-        fontWeight: "bold"
+        // fontWeight: "bold"
     },
 
     arrowContainer: {

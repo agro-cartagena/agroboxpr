@@ -9,6 +9,8 @@ import ProductCard from '../../components/ProductCard/ProductCard'
 import catalog from '../../db_mockup/product.catalog.db'
 
 import { goToProduct } from '../../Navigator'
+import Button from '../../components/Button/Button'
+import Logo from '../../components/Logo/Logo'
 
 const InventoryManagementScreen = () => {
     let _dropMenus = []
@@ -34,28 +36,34 @@ const InventoryManagementScreen = () => {
         })
 
         return product_cards
-
     }
 
     // catalog gets fetched from back end.
     Object.entries(catalog).forEach((category) => {
         _dropMenus.push(
-            <DropDown
-                key={category[0]}
-                title={category[0]}
-                list={generateCards(category[1])}
-            />
+            <View key={category[0]} style={styles.dropDownContainer}>
+                <DropDown
+                    title={category[0]}
+                    list={generateCards(category[1])}
+                />
+            </View>
         )
-        // alert(JSON.stringify(item[1]))
-        // category[1].forEach(prod => alert(JSON.stringify(prod)))
     })
 
     return(
-        <ScrollView>
-            <Text style={global_styles.text}>Manejar el inventario</Text>
+        <ScrollView contentContainerStyle={styles.screen}>
+            <Logo/>
+            <Text style={[global_styles.text, styles.header]}>Manejar el inventario</Text>
 
-            <View style={styles.dropMenuContainer}>
+            <View style={styles.menuContainer}>
                 {_dropMenus}
+            </View>
+
+            <View style={styles.buttonContainer}>
+                <Button
+                    text="Añadir Producto Nuevo"
+                    onTouch={() => goToProduct("new")}
+                />
             </View>
         </ScrollView>
     )

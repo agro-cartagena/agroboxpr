@@ -13,7 +13,8 @@ const styles = StyleSheet.create({
     },
 
     screen: {
-        padding: 10
+        padding: 10,
+        paddingBottom: '10%'
     },
 
     text: {

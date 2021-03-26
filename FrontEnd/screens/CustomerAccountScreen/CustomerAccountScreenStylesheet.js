@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     logoContainer:{
-        width: '35%',
+        width: '30%',
         height: '17%',
         alignSelf: 'center',
         backgroundColor: 'white',
@@ -16,27 +16,43 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         resizeMode: 'contain'
     },
-    
     formContainer:{
-        // flexDirection : 'row',
-        backgroundColor:'red',
         width: '100%',
         height: '60%',
-        justifyContent: 'space-evenly',  
-        
-        // margin: '2%'
+        justifyContent: 'space-evenly', 
+    },
+    fContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        // justifyContent: 'space-evenly',
+        // backgroundColor: 'red'
     },
     form: {
-        width: '80%',
+        flexDirection: 'row',
+        width: '78%',
         height: 60,
-        borderBottomColor: '#000000',
-        borderBottomWidth: 1,
-        backgroundColor: 'yellow'
+        borderBottomWidth: 2,
+        borderBottomColor: '#EAC71D',
+        // backgroundColor: 'yellow'
     },
-
-    clickText: {
-        color: 'rgb(151, 184, 56)',
-        fontWeight: "bold"
+    text:{
+        // justifyContent: 'center',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        // backgroundColor: 'green',
+        // alignSelf: 'center',
+        color: 'white',
+        width: '18%',
+        fontSize: 15
+    },
+    textinput:{
+        fontSize: 15,
+        color: 'white'
+    },
+    buttonContainer:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly'
     }
 })
 

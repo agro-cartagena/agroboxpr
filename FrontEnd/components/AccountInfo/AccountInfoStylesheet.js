@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
     formContainer: {
         flexDirection: 'row',
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         // width: '100%',
         // height: '60%',
         justifyContent: 'space-evenly',
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         height: 60,
         borderBottomColor: '#000000',
         borderBottomWidth: 1,
-        backgroundColor: 'yellow'
+        backgroundColor: 'yellow',
     }
 })
 export default styles;

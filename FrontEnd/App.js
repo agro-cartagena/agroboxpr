@@ -11,9 +11,9 @@ class App extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.app}>        
-        {/* <Routes/>
-        <TabBar/> */}
+        <Routes/>
         <CustomerAccountScreen/>
+        <TabBar/>
       </SafeAreaView>
     )
   }

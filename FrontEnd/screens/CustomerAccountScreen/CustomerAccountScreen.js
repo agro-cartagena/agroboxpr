@@ -8,6 +8,7 @@ import AccountInfo from '../../components/AccountInfo/AccountInfo'
 
 import { TextInput } from 'react-native-gesture-handler';
 
+// Faltar set las rutas, y conectar al DB
 
 
 const CustomerAccountScreen = () => {

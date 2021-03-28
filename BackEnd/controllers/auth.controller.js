@@ -4,7 +4,7 @@ const { registerUser, loginUser } = authService
 
 const postSignup = async (req, res, next) => {
     const { name, email, password, phone } = req.body
-    //TODO: Add validation for new user
+    
     try {
         await registerUser(name, email, password, phone).then(result => {
             console.log("Result: ", result)
@@ -13,6 +13,7 @@ const postSignup = async (req, res, next) => {
         })
     } catch (err) {
         console.log("Error: ", err.message)
+
         if(err.message === "Email already exists!"){
             res.status(409).json({
                 errors: [{ email: "Email already exists!" }],

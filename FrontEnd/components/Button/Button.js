@@ -8,7 +8,7 @@ const Button = (props) => {
     return (
         <TouchableOpacity 
             onPress={props.onTouch} 
-            style={[styles.button, global_styles.shadow]}
+            style={[styles.button, global_styles.shadow, props.style]}
         >
                 <Text style={global_styles.text}>{props.text}</Text>
         </TouchableOpacity>

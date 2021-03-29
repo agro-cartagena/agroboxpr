@@ -9,6 +9,16 @@ const styles = StyleSheet.create({
         zIndex: 2,
         position: 'absolute',
         bottom: '5%'
+    },
+
+    activeBorder: {
+        borderWidth: 2,
+        borderColor: 'yellow',
+        borderRadius: 10
+    },
+
+    inactiveBorder: {
+
     }
 })
 

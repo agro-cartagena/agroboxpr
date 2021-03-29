@@ -41,11 +41,18 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        width: '25%',
-        height: 40,
-        alignSelf: 'center',
         marginTop: 30,
         marginBottom: 50,
+        width: '90%',
+
+        flexDirection: 'row',
+        alignSelf: 'center',
+        justifyContent: 'space-evenly'
+    },
+
+    button: {
+        width: '25%',
+        height: 40
     },
 
     header: {

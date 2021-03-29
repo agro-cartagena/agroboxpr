@@ -64,15 +64,10 @@ const EditBoxScreen = (props) => {
         // Product does not yet exist in content list
         if (typeof product_quantity == "undefined")
             boxData.box_content[product_id] = 1
-            
-        else if (product_quantity == 99)
-            alert("Cantidad máxima excedida.")
-            
+    
         // Product already exists in content list
         else
             boxData.box_content[product_id] += 1
-
-        alert(JSON.stringify(boxData))
     }
 
     const decreaseProductQuantity = (product_id) => {
@@ -81,11 +76,26 @@ const EditBoxScreen = (props) => {
         if (typeof product_quantity != "undefined")
             product_quantity == 1 ? delete boxData.box_content[product_id] : boxData.box_content[product_id] -= 1
         
-        alert(JSON.stringify(boxData))
+        // alert(JSON.stringify(boxData))
     }
 
     const changeProductQuantity = (product_id, newQuantity) => {
-        boxData.box_content[product_id] = Number(newQuantity)
+        if (newQuantity == 0)
+            delete boxData.box_content[product_id]
+        else
+            boxData.box_content[product_id] = newQuantity
+    }
+
+    const displayDeleteButton = () => {
+        if(!_isNewBox)
+            return (
+                <View style={styles.button}>
+                    <Button
+                        text="Eliminar"
+                        style={ _isNewBox ? {display: 'none'} : {backgroundColor: 'red'} }
+                    />
+                </View>
+            )
     }
 
     return(
@@ -125,10 +135,13 @@ const EditBoxScreen = (props) => {
             </View>
 
             <View style={styles.buttonContainer}>
-                <Button
-                    text="Guardar"
-                    onTouch={() => alert(JSON.stringify(boxData))}
-                />
+                {displayDeleteButton()}
+                <View style={styles.button}>
+                    <Button
+                        text="Guardar"
+                        onTouch={() => alert(JSON.stringify(boxData))}
+                    />
+                </View>
             </View>
         </ScrollView>
     )

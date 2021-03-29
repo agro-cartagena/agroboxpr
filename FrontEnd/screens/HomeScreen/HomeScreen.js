@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, View, TouchableOpacity } from 'react-native'
-import { goToBox } from '../../Navigator'
+import { goToViewBox } from '../../Navigator'
 
 import BoxService from '../../services/BoxService'
 import BoxCard from '../../components/BoxCard/BoxCard'
@@ -22,7 +22,7 @@ const HomeScreen = () => {
                 <TouchableOpacity 
                     key={box.box_id} 
                     style={styles.cardContainer}
-                    onPress={() => { goToBox(box) }}
+                    onPress={() => { goToViewBox(box) }}
                 >
                     <BoxCard
                         id={box.box_id}

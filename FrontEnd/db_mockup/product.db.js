@@ -3,13 +3,13 @@ const products = [
         name: "Piña",
         quantity: 1, 
         units: "unidad(es)",
-        image: require('../assets/products/Broccoli.jpeg')
+        image: {uri: 'http://dakahliaproduce.com/wp-content/uploads/2015/01/fresh-yellow-onion.jpg'}
     },
     {
         name: "Plátanos",
         quantity: "5-8", 
         units: "unidad(es)",
-        image: require('../assets/products/Broccoli.jpeg')
+        image: {uri: 'http://dakahliaproduce.com/wp-content/uploads/2015/01/fresh-yellow-onion.jpg'}
     },
     {
         name: "Calabaza",

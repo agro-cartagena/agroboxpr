@@ -12,8 +12,8 @@ export const goToHome = () => {
     Actions.home()
 }
 
-export const goToBox = (box) => {
-    Actions.box({ params: box })
+export const goToViewBox = (box) => {
+    Actions.view_box({ params: box })
 }
 
 export const goToCart = () => {
@@ -28,10 +28,14 @@ export const goToProductManagement = () => {
     Actions.product_management()
 }
 
-export const goToProduct = (product) => {
-    Actions.product({ params: product })
+export const goToEditProduct = (product) => {
+    Actions.edit_product({ params: product })
 }
 
 export const goToBoxManagement = () => {
     Actions.box_management()
+}
+
+export const goToEditBox = (box) => {
+    Actions.edit_box({ params: box })
 }

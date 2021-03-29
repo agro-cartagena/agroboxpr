@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     screen: {
-
     },
 
     arrowContainer: {
@@ -12,7 +11,7 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 22,
         fontWeight: "bold",
-        alignSelf: 'center',
+        textAlign: 'center',
         margin: 20
     },
 
@@ -20,13 +19,13 @@ const styles = StyleSheet.create({
         width: '45%',
         height: 120,
 
-        marginTop: 12,
-        marginBottom: 12
+        marginTop: 10,
+        marginBottom: 10
     },
 
     menuContainer: {
-        marginTop: '10%',
-        marginBottom: '10%'
+        marginTop: 10,
+        marginBottom: 10
     },
 
     dropDownContainer: {
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
         height: 50,
 
         alignSelf: 'center',
-        marginBottom: 50
+        margin: 50
     }
 })
 

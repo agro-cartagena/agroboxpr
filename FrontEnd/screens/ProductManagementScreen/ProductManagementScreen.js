@@ -8,22 +8,21 @@ import DropDown from '../../components/DropDown/DropDown'
 import ProductCard from '../../components/ProductCard/ProductCard'
 import catalog from '../../db_mockup/product.catalog.db'
 
-import { goToProduct, goToInventoryManagement } from '../../Navigator'
+import { goToEditProduct, goToInventoryManagement } from '../../Navigator'
 import Button from '../../components/Button/Button'
 import BackArrow from '../../components/BackArrow/BackArrow'
+
+import InteractiveProductCard from '../../components/InteractiveProductCard/InteractiveProductCard'
 
 const InventoryManagementScreen = () => {
     let _dropMenus = []
 
     const generateCards = (products) => {
-        let product_cards = []
-
-        products.forEach(product => {
-            product_cards.push(
+        return products.map (product => 
                 <TouchableOpacity 
                     key={product.id} 
                     style={styles.productCardContainer} 
-                    onPress={() => goToProduct(product)}
+                    onPress={() => goToEditProduct(product)}
                 >
                     <ProductCard
                         name={product.name}
@@ -31,12 +30,23 @@ const InventoryManagementScreen = () => {
                         units={product.units}
                         uri={product.image}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> 
             )
-        })
-
-        return product_cards
     }
+
+    // const generateCards = (products) => {
+    //     return products.map (product => 
+    //             <View 
+    //                 key={product.id} 
+    //                 style={styles.productCardContainer} 
+    //                 // onPress={() => goToProduct(product)}
+    //             >
+    //                 <InteractiveProductCard
+    //                     product={product}
+    //                 />
+    //             </View> 
+    //         )
+    // }
 
     // catalog gets fetched from back end.
     Object.entries(catalog).forEach((category) => {
@@ -66,7 +76,7 @@ const InventoryManagementScreen = () => {
             <View style={styles.buttonContainer}>
                 <Button
                     text="Añadir Producto Nuevo"
-                    onTouch={() => goToProduct("new")}
+                    onTouch={() => goToEditProduct("new")}
                 />
             </View>
         </ScrollView>

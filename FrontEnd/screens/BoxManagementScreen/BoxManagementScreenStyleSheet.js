@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     },
 
     cardContainer: {
-        height: 120,
-        width: '75%',
+        height: 200,
+        width: '95%',
 
         margin: 15,
         alignSelf: 'center'

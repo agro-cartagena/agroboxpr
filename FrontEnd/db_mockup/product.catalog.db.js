@@ -4,7 +4,7 @@ const catalog = {
             id: 1,
             name: 'Brocoli',
             catalog: 'Vegetales',
-            image: require('../assets/products/Broccoli.jpeg'),
+            image: {uri: 'https://solidstarts.com/wp-content/uploads/Broccoli_edited-480x320@2x.jpg'},
             quantity: 3,
             units: 'lbs',
             price: 2.49
@@ -13,7 +13,7 @@ const catalog = {
             id: 2,
             name: 'Cebolla',
             catalog: 'Vegetales',
-            image: require('../assets/products/Broccoli.jpeg'),
+            image: {uri: 'http://dakahliaproduce.com/wp-content/uploads/2015/01/fresh-yellow-onion.jpg'},
             quantity: 5,
             units: 'lbs',
             price: 1.10

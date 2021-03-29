@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScrollView, View, Image, Text, TextInput } from 'react-native'
 
-import styles from './ProductScreenStyleSheet'
+import styles from './EditProductScreenStyleSheet'
 import global_styles from '../../styles'
 
 import BackArrow from '../../components/BackArrow/BackArrow'
@@ -15,14 +15,7 @@ const ProductScreen = (props) => {
 
     if(props.params == "new"){
         _isNewProduct = true;
-        _product = {
-            name: "",
-            catalog: "",
-            quantity: "",
-            units: "",
-            price: "",
-            image: ""
-        }
+        _product = {}
     }
     else {
         _isNewProduct = false

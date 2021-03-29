@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Card } from 'react-native-elements'
 import Button from '../../components/Button/Button'
 
-import styles from './BoxScreenStyleSheet';
+import styles from './ViewBoxScreenStyleSheet';
 import global_styles from '../../styles'
 import { goToHome } from '../../Navigator'
 

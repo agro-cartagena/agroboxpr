@@ -6,9 +6,10 @@ import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 import LoginScreen from './screens/LoginScreen/LoginScreen'
 import HomeScreen from './screens/HomeScreen/HomeScreen'
 
-import BoxScreen from './screens/BoxScreen/BoxScreen'
+import ViewBoxScreen from './screens/ViewBoxScreen/ViewBoxScreen'
 import CartScreen from './screens/CartScreen/CartScreen'
-import ProductScreen from './screens/ProductScreen/ProductScreen'
+import EditProductScreen from './screens/EditProductScreen/EditProductScreen'
+import EditBoxScreen from './screens/EditBoxScreen/EditBoxScreen'
 
 import InventoryManagementScreen from './screens/InventoryManagementScreen/InventoryManagementScreen'
 import ProductManagementScreen from './screens/ProductManagementScreen/ProductManagementScreen'
@@ -21,12 +22,13 @@ const Routes = () => {
                 <Scene key="login" component={LoginScreen} title="Login" hideNavBar={true}/>
                 <Scene key="register" component={RegisterScreen} title="Register" hideNavBar={true} />
                 <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true}/>
-                <Scene key="box" component={BoxScreen} title="Box" hideNavBar={true}/>
+                <Scene key="view_box" component={ViewBoxScreen} title="Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
                 <Scene key="inventory_management" component={InventoryManagementScreen} title="Inventory Management" hideNavBar={true} initial={true}/>
                 <Scene key="box_management" component={BoxManagementScreen} title="Box Management" hideNavBar={true}/>
+                <Scene key="edit_box" component={EditBoxScreen} title="Edit Box" hideNavBar={true}/>
                 <Scene key="product_management" component={ProductManagementScreen} title="Product Management" hideNavBar={true}/>
-                <Scene key="product" component={ProductScreen} title="Product" hideNavBar={true}/>
+                <Scene key="edit_product" component={EditProductScreen} title="Edit Product" hideNavBar={true}/>
             </Scene>
         </Router>
     )

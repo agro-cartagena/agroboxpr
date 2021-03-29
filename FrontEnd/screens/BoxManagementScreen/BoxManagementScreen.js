@@ -9,7 +9,7 @@ import Button from '../../components/Button/Button'
 import BoxCard from '../../components/BoxCard/BoxCard'
 
 import boxes from '../../db_mockup/box.db'
-import { goToInventoryManagement } from '../../Navigator'
+import { goToInventoryManagement, goToEditBox } from '../../Navigator'
 
 const BoxManagementScreen = () => {
     let _boxes = []
@@ -19,7 +19,7 @@ const BoxManagementScreen = () => {
             <TouchableOpacity 
                 key={box.box_id} 
                 style={styles.cardContainer}
-                // onPress={() => { goToBox(box) }}
+                onPress={() => { goToEditBox(box) }}
             >
                 <BoxCard
                     id={box.box_id}
@@ -46,6 +46,7 @@ const BoxManagementScreen = () => {
             <View style={styles.buttonContainer}>
                 <Button
                     text="Crear Caja Nueva"
+                    onTouch={() => goToEditBox("new")}
                 />
             </View>
         </ScrollView>

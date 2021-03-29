@@ -12,10 +12,7 @@ import { goToEditProduct, goToInventoryManagement } from '../../Navigator'
 import Button from '../../components/Button/Button'
 import BackArrow from '../../components/BackArrow/BackArrow'
 
-import InteractiveProductCard from '../../components/InteractiveProductCard/InteractiveProductCard'
-
 const InventoryManagementScreen = () => {
-    let _dropMenus = []
 
     const generateCards = (products) => {
         return products.map (product => 
@@ -34,31 +31,22 @@ const InventoryManagementScreen = () => {
             )
     }
 
-    // const generateCards = (products) => {
-    //     return products.map (product => 
-    //             <View 
-    //                 key={product.id} 
-    //                 style={styles.productCardContainer} 
-    //                 // onPress={() => goToProduct(product)}
-    //             >
-    //                 <InteractiveProductCard
-    //                     product={product}
-    //                 />
-    //             </View> 
-    //         )
-    // }
+    const displayDropMenus = () => {
+        let _dropMenus = []
 
-    // catalog gets fetched from back end.
-    Object.entries(catalog).forEach((category) => {
-        _dropMenus.push(
-            <View key={category[0]} style={styles.dropDownContainer}>
-                <DropDown
-                    title={category[0]}
-                    list={generateCards(category[1])}
-                />
-            </View>
-        )
-    })
+        for(category in catalog) {
+            _dropMenus.push(
+                <View key={category} style={styles.dropDownContainer}>
+                    <DropDown
+                        title={category}
+                        list={generateCards(catalog[category])}
+                    />
+                </View>
+            )
+        }
+
+        return _dropMenus
+    }
 
     return(
         <ScrollView contentContainerStyle={styles.screen}>
@@ -70,7 +58,7 @@ const InventoryManagementScreen = () => {
             <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Productos)</Text>
 
             <View style={styles.menuContainer}>
-                {_dropMenus}
+                {displayDropMenus()}
             </View>
 
             <View style={styles.buttonContainer}>

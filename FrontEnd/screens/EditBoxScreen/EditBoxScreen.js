@@ -82,6 +82,7 @@ const EditBoxScreen = (props) => {
     const changeProductQuantity = (product_id, newQuantity) => {
         if (newQuantity == 0)
             delete boxData.box_content[product_id]
+            
         else
             boxData.box_content[product_id] = newQuantity
     }

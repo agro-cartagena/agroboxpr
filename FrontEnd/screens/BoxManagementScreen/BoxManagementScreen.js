@@ -12,24 +12,30 @@ import boxes from '../../db_mockup/box.db'
 import { goToInventoryManagement, goToEditBox } from '../../Navigator'
 
 const BoxManagementScreen = () => {
-    let _boxes = []
 
-    boxes.forEach(box => {
-        _boxes.push(
-            <TouchableOpacity 
-                key={box.box_id} 
-                style={styles.cardContainer}
-                onPress={() => { goToEditBox(box) }}
-            >
-                <BoxCard
-                    id={box.box_id}
-                    name={box.box_name}
-                    image={box.box_image}
-                    price={box.box_price}
-                />
-            </TouchableOpacity>
-        )
-    })
+    const displayBoxes = () => {
+        let _boxes = []
+
+        // Insert fetch API call here.
+        boxes.forEach(box => {
+            _boxes.push(
+                <TouchableOpacity 
+                    key={box.box_id} 
+                    style={styles.cardContainer}
+                    onPress={() => { goToEditBox(box) }}
+                >
+                    <BoxCard
+                        id={box.box_id}
+                        name={box.box_name}
+                        image={box.box_image}
+                        price={box.box_price}
+                    />
+                </TouchableOpacity>
+            )
+        })
+
+        return _boxes
+    }
 
     return (
         <ScrollView style={global_styles.screen}>
@@ -40,7 +46,7 @@ const BoxManagementScreen = () => {
             <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Cajas)</Text>
 
             <View style={styles.boxCardContainer}>
-                {_boxes}
+                {displayBoxes()}
             </View>
 
             <View style={styles.buttonContainer}>

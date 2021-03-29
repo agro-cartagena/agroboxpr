@@ -11,14 +11,15 @@ import global_styles from '../../styles'
 import Logo from '../../components/Logo/Logo'
 
 const HomeScreen = () => {
-    let boxes = []
 
-    const loadBoxes = async () => {
+    const loadBoxes = () => {
+        let _boxes = []
+
         // BoxService shall be used to fetch box_list over HTTP
         // let box_list = await BoxService.instance.getBoxList()
         // alert(JSON.stringify(box_list))
         box_list.forEach((box) => {
-            boxes.push(
+            _boxes.push(
                 <TouchableOpacity 
                     key={box.box_id} 
                     style={styles.cardContainer}
@@ -33,15 +34,14 @@ const HomeScreen = () => {
                 </TouchableOpacity>
             )
         })
-    }
 
-    // On screen init
-    loadBoxes()
+        return _boxes
+    }
 
     return (
         <ScrollView style={global_styles.screen}>
             <Logo/>
-            {boxes}
+            {loadBoxes() }
         </ScrollView>
     )
 }

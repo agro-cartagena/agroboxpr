@@ -11,16 +11,14 @@ import Button from '../../components/Button/Button'
 import { goToProductManagement } from '../../Navigator'
 
 const ProductScreen = (props) => {
-    let _isNewProduct, _product
-
-    if(props.params == "new"){
-        _isNewProduct = true;
-        _product = {}
-    }
-    else {
-        _isNewProduct = false
-        _product = props.params
-    }
+    let _isNewProduct = props.params == "new", 
+        _product = _isNewProduct ? {
+            name: "",
+            catalog: "",
+            quantity: "",
+            units: "",
+            price: ""
+        } : props.params
 
     const [formData, changeFormData] = React.useState(_product)
     

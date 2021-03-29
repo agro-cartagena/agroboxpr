@@ -20,15 +20,16 @@ import BackArrow from '../../components/BackArrow/BackArrow'
 // Route parameters are stored in props.params object
 // i.e., alert(props.params.box_name)
 const BoxScreen = (props) => {
-    let products = []
 
     // Quantity of Box to be added to Cart. Default value is 1.
     const [quantity, setQuantity] = React.useState(1)
 
-    const loadProducts = async (box_id) => {
+    const loadProducts = (box_id) => {
+        let _products = []
+
         // let products_list = await BoxService.instance.getBoxContentWith(box_id)
         products_list.forEach((product) => {
-            products.push(
+            _products.push(
                 <View style={styles.productCard} key={product.name}>
                     <ProductCard
                         name={product.name}
@@ -39,6 +40,8 @@ const BoxScreen = (props) => {
                 </View>
             )
         })
+
+        return _products
     }
     
     const verifyQuantity = () => {
@@ -58,10 +61,7 @@ const BoxScreen = (props) => {
             CartService.instance.addToCart(item)
             // alert(JSON.stringify(item))
         }
-    }
-
-    // On component init.
-    loadProducts(props.params.box_id)
+    }    
 
     return (
         <KeyboardAwareScrollView 
@@ -88,7 +88,7 @@ const BoxScreen = (props) => {
 
             {/* PRODUCT LIST */}
             <View style={styles.productContainer}>
-                {products}
+                {loadProducts(props.params.box_id)}
             </View>
 
             {/* ADD TO CART */}

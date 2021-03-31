@@ -27,7 +27,7 @@ const AccountInfo = (props) => {
                 maxLength={40}
                 placeholderTextColor ='white'
                 {...props}
-            >
+            > 
                     </TextInput>
         </View>
     )

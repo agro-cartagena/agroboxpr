@@ -13,6 +13,7 @@ import global_styles from '../../styles'
 import { goToBoxManagement } from '../../Navigator'
 
 import catalog from '../../db_mockup/product.catalog.db'
+import box_content from '../../db_mockup/box.content.db'
 
 const EditBoxScreen = (props) => {
     let _isNewBox = props.params == "new",
@@ -20,22 +21,22 @@ const EditBoxScreen = (props) => {
             box_name: "",
             box_price: "",
             box_content: { }
-        } : props.params
+        } : { ...props.params, box_content: box_content }    // fetch box_content from API
 
     const [boxData, changeBoxData] = React.useState(_box)
 
     const generateCards = (products) => {
         return products.map (product => 
                 <View 
-                    key={product.id} 
+                    key={product.product_id} 
                     style={styles.productCardContainer} 
                 >
                     <InteractiveProductCard
                         product={product}
-                        onMinus={() => decreaseProductQuantity(product.name)}
-                        onPlus={() => increaseProductQuantity(product.name)}
-                        onText={(text) => changeProductQuantity(product.name, text)}
-                        placeholder={boxData.box_content[product.name] || 0}
+                        onMinus={() => decreaseProductQuantity(product)}
+                        onPlus={() => increaseProductQuantity(product)}
+                        onText={(text) => changeProductQuantity(product, text)}
+                        placeholder={typeof boxData.box_content[product.product_name]=="undefined" ? 0 : boxData.box_content[product.product_name]['product_quantity_box']}
                     />
                 </View> 
             )
@@ -58,25 +59,33 @@ const EditBoxScreen = (props) => {
         return _dropMenus
     }
 
-    const increaseProductQuantity = (product_id) => {
-        let product_quantity = boxData.box_content[product_id]
+    const increaseProductQuantity = (product) => {
+        let product_key = product.product_name,
+            product_data = boxData.box_content[product_key]
 
         // Product does not yet exist in content list
-        if (typeof product_quantity == "undefined")
-            boxData.box_content[product_id] = 1
+        if (typeof product_data == "undefined")
+            boxData.box_content[product_key] = {
+                ... product,
+                product_quantity_box: 1
+            }
     
         // Product already exists in content list
         else
-            boxData.box_content[product_id] += 1
+            product_data.product_quantity_box += 1
     }
 
-    const decreaseProductQuantity = (product_id) => {
-        let product_quantity = boxData.box_content[product_id]
+    const decreaseProductQuantity = (product) => {
+        let product_key = product.product_name,
+            product_data = boxData.box_content[product_key]
 
-        if (typeof product_quantity != "undefined")
-            product_quantity == 1 ? delete boxData.box_content[product_id] : boxData.box_content[product_id] -= 1
-        
-        // alert(JSON.stringify(boxData))
+        if (typeof product_data != "undefined"){
+            if(product_data.product_quantity_box == 1)
+                delete boxData.box_content[product_key]
+
+            else
+                product_data.product_quantity_box -= 1
+        }        
     }
 
     const changeProductQuantity = (product_id, newQuantity) => {

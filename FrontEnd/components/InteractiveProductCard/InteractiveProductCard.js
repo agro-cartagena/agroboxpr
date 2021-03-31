@@ -9,7 +9,7 @@ const InteractiveProductCard = (props) => {
     const [quantity, setQuantity] = React.useState(props.placeholder)
 
     const increaseQuantity = () => {
-        if(quantity == props.product.quantity)
+        if(quantity == props.product.product_quantity_stock)
             alert("Cantidad máxima alcanzada.")
 
         else{
@@ -27,7 +27,7 @@ const InteractiveProductCard = (props) => {
 
     const changeQuantity = (text) => {
         let newQuantity = Number(text)
-        if(newQuantity > props.product.quantity){
+        if(newQuantity > props.product.product_quantity_stock){
             alert("Cantidad máxima excedida.")
         }
 
@@ -38,12 +38,12 @@ const InteractiveProductCard = (props) => {
     }
 
     return (
-        <View style={quantity > 0 ? styles.activeBorder : styles.inactiveBorder}>
+        <View style={quantity > 0 ? {/*styles.activeBorder*/} : styles.inactiveBorder}>
             <ProductCard
-                name={props.product.name}
-                quantity={props.product.quantity}
-                units={props.product.units}
-                uri={props.product.image}
+                name={props.product.product_name}
+                quantity={props.product.product_quantity_stock}
+                units={props.product.product_units}
+                uri={props.product.product_image}
             />
 
             <View style={styles.inputContainer}>

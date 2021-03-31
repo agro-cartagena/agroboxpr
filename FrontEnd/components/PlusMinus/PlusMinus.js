@@ -3,12 +3,14 @@ import { View, TouchableOpacity, Image, Text, TextInput } from 'react-native'
 import styles from './PlusMinusStyleSheet'
 
 const PlusMinus = (props) => {
+    const [quantity, changeQuantity] = React.useState(props.placeholder)
+
     return(
         <View style={styles.inputContainer}>
             {/* Minus Button */}
             <TouchableOpacity 
                 style={styles.iconContainer}
-                onPress={props.onMinus}
+                onPress={() => {props.onMinus(); }}
             >
                 <Image
                     source={require('../../assets/icons/minus-sign.png')}
@@ -28,7 +30,7 @@ const PlusMinus = (props) => {
             {/* Plus Button*/}
             <TouchableOpacity 
                 style={styles.iconContainer}
-                onPress={props.onPlus}
+                onPress={() => {props.onPlus(); }}
             >
                 <Image
                     source={require('../../assets/icons/plus-sign.png')}

@@ -50,7 +50,7 @@ const TabBar = () => {
             key="orders-tab"
             defaultIcon={require('../../assets/icons/orders.png')}
             activeIcon={require('../../assets/icons/orders-active.png')}
-            onTouch={touchHandler}
+            onTouch={() => { touchHandler() }}
             active={false}
         />,
 

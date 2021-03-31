@@ -17,15 +17,15 @@ const InventoryManagementScreen = () => {
     const generateCards = (products) => {
         return products.map (product => 
                 <TouchableOpacity 
-                    key={product.id} 
+                    key={product.product_id} 
                     style={styles.productCardContainer} 
                     onPress={() => goToEditProduct(product)}
                 >
                     <ProductCard
-                        name={product.name}
-                        quantity={product.quantity}
-                        units={product.units}
-                        uri={product.image}
+                        name={product.product_name}
+                        quantity={product.product_quantity_stock}
+                        units={product.product_units}
+                        uri={product.product_image}
                     />
                 </TouchableOpacity> 
             )

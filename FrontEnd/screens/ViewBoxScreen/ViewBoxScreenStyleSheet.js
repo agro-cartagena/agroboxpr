@@ -2,8 +2,7 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     arrowContainer: {
-        marginTop: 10,
-        marginBottom: 10,
+        margin: 15
     },
 
     card: {
@@ -40,6 +39,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly'
     },
 
+    productCardContainer: {
+        width: '45%',
+        height: 120,
+
+        marginTop: 10,
+        marginBottom: 10
+    },
+
     productCard: {
         width: '45%',
         height: 120,
@@ -51,6 +58,7 @@ const styles = StyleSheet.create({
     text: {
         margin: 25,
         alignSelf: 'center',
+        textAlign: 'center',
 
         color: 'white',
         fontWeight: "bold",
@@ -60,7 +68,7 @@ const styles = StyleSheet.create({
     addToCartContainer: {
         width: '90%',
         height: 40,
-        margin: 50,
+        marginBottom: 50,
 
         flexDirection: 'row',
         justifyContent: 'space-evenly',
@@ -71,6 +79,15 @@ const styles = StyleSheet.create({
 
     plusMinusContainer: {
         width: '50%',
+    },    
+    
+    buildContainer: {
+        marginTop: 15,
+        marginBottom: 15
+    },
+
+    dropDownContainer: {
+        width: '100%'
     }
 })
 

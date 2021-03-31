@@ -13,11 +13,11 @@ import { goToProductManagement } from '../../Navigator'
 const ProductScreen = (props) => {
     let _isNewProduct = props.params == "new", 
         _product = _isNewProduct ? {
-            name: "",
-            catalog: "",
-            quantity: "",
-            units: "",
-            price: ""
+            product_name: "",
+            product_category: "",
+            product_quantity_stock: "",
+            product_units: "",
+            product_price: ""
         } : props.params
 
     const [formData, changeFormData] = React.useState(_product)
@@ -37,16 +37,16 @@ const ProductScreen = (props) => {
                 <Text style={[global_styles.text, styles.formText]}>Nombre del Producto</Text>
                 <View style={global_styles.formEntry}>
                     <FormInput
-                        placeholder = { _isNewProduct ? 'ejemplo: Brocoli' : formData.name}
-                        onChangeText = { (text) => formData.name = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: Brocoli' : formData.product_name}
+                        onChangeText = { (text) => formData.product_name = text }
                     />
                 </View>
 
                 <Text style={[global_styles.text, styles.formText]}>Catálogo del Producto</Text>
                 <View style={global_styles.formEntry}>
                     <FormInput
-                        placeholder = { _isNewProduct ? 'ejemplo: Vegetales': formData.catalog}
-                        onChangeText = { (text) => formData.catalog = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: Vegetales': formData.product_category}
+                        onChangeText = { (text) => formData.product_category = text }
                     />
                 </View>
 
@@ -54,8 +54,8 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         keyboardType = "numeric"
-                        placeholder = { _isNewProduct ? 'ejemplo: 3': String(formData.quantity)}
-                        onChangeText = { (text) => formData.quantity = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: 3': String(formData.product_quantity_stock)}
+                        onChangeText = { (text) => formData.product_quantity_stock = text }
                     />
                 </View>
 
@@ -63,8 +63,8 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         autoCapitalize="none"
-                        placeholder = { _isNewProduct ? 'ejemplo: lbs' : formData.units}
-                        onChangeText = { (text) => formData.units = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: lbs' : formData.product_units}
+                        onChangeText = { (text) => formData.product_units = text }
                     />
                 </View>
 
@@ -72,8 +72,8 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         keyboardType = "numeric"
-                        placeholder = { _isNewProduct ? 'ejemplo: 2.49' : String(formData.price)}
-                        onChangeText = { (text) => formData.price = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: 2.49' : String(formData.product_price)}
+                        onChangeText = { (text) => formData.product_price = text }
                     />
                 </View>
             </View>

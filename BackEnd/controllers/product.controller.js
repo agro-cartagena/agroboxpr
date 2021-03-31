@@ -1,6 +1,6 @@
 const { productService } = require('../services')
 
-const { insertProduct, readAllProducts, getProductById } = productService
+const { insertProduct, readAllProducts, getProductById, updateProduct } = productService
 
 const postProduct = async (req, res, next) => {
 	const product = req.body
@@ -40,8 +40,23 @@ const getById = async (req, res, next) => {
 	}
 }
 
+const update = async (req, res, next) => {
+    const params = req.body
+
+    try {
+        await updateProduct(params)
+        res.sendStatus(200)
+		next()
+    
+    } catch (e) {
+        console.log(e.message)
+        res.sendStatus(500) && next(e)
+    }
+}
+
 module.exports = {
 	postProduct,
 	getProducts,
 	getById,
+    update
 }

@@ -1,13 +1,13 @@
 const { productDb } = require('../db')
 
-const { createProductDb, findAllProductsDb, getProductByIdDb } = productDb
-const { validateDb } = productDb
+const { createProductDb, findAllProductsDb, getProductByIdDb, updateProductDb } = productDb
+const { validateInsertDb, validateGetDb } = productDb
 
 const insertProduct = async (product) => {
 	console.log('Inside product service!', product)
 
 	try {
-        await validateDb(product)
+        await validateInsertDb(product)
 		return await createProductDb(product)
 	} catch (e) {
 		throw new Error(e.message)
@@ -34,9 +34,18 @@ const getProductById = async (id) => {
 	}
 }
 
+const updateProduct = async (paramList) => {
+    try {
+        await validateGetDb(paramList[0])
+        return await updateProductDb(paramList)
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
 
 module.exports = {
 	insertProduct,
 	readAllProducts,
 	getProductById,
+    updateProduct
 }

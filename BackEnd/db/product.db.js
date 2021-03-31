@@ -32,35 +32,63 @@ const getProductByIdDb = async (id) => {
 	return collection.findOne({ _id: ObjectId(id) })
 }
 
-const validateDb = async (product) => {
+const validateInsertDb = async (product) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')
 
 	console.log('\nValidating...\n')
 
-	var query = 'placeholder'
+	var searchResult = 'placeholder'
 
 	// * Searches the database using the name of the product to be inserted
 	await collection
 		.findOne({ name: product.name })
-		.then((result) => {
-			query = result
-		})
-		.catch((error) => {
-			console.log(error)
-		})
+		.then((result) => { searchResult = result	})
+		.catch((error) => { console.log(error) })
 
 	// * if a product is found within the database we will throw a new Error
-	if (query != null)
+	if (searchResult != null)
 		throw new Error(`'${product.name}' is already within the database.`)
 	
   // * otherwise we can continue with the insertion process
-	else return
+	else 
+    return
+}
+
+	// * Searches the database using the name of the product to be updated
+const validateGetDb = async (query) => {
+  const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('product')
+
+
+  var searchResult = 'placeholder'
+
+  await collection
+    .findOne(query)
+    .then((result) => {searchResult = result})
+    .catch((error)=> {console.log(error)})
+  
+  if (searchResult == null) 
+    throw new Error("Product is not available in the database.")
+  else
+    return
+}
+
+const updateProductDb = async (paramList) => {
+  const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('product')
+
+  const query = paramList[0]
+  const changes = paramList[1]
+
+  return collection.updateOne(query, {$set: changes})
 }
 
 module.exports = {
 	createProductDb,
 	findAllProductsDb,
 	getProductByIdDb,
-	validateDb,
+  updateProductDb,
+	validateInsertDb,
+  validateGetDb
 }

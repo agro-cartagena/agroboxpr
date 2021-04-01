@@ -6,7 +6,7 @@ import global_styles from '../../styles'
 
 import DropDown from '../../components/DropDown/DropDown'
 import ProductCard from '../../components/ProductCard/ProductCard'
-import catalog from '../../db_mockup/product.catalog.db'
+import ProductService from '../../services/ProductService'
 
 import { goToEditProduct, goToInventoryManagement } from '../../Navigator'
 import Button from '../../components/Button/Button'
@@ -14,8 +14,18 @@ import BackArrow from '../../components/BackArrow/BackArrow'
 
 const InventoryManagementScreen = () => {
 
+    const [productCatalog, setProductCatalog] = React.useState({})
+
+    React.useEffect(() => {
+        async function fetchData() {
+            setProductCatalog(await ProductService.instance.getProductCatalog())
+        }
+
+        fetchData()
+    }, []);
+
     const generateCards = (products) => {
-        return products.map (product => 
+        return products.map((product) => 
                 <TouchableOpacity 
                     key={product.product_id} 
                     style={styles.productCardContainer} 
@@ -34,12 +44,12 @@ const InventoryManagementScreen = () => {
     const displayDropMenus = () => {
         let _dropMenus = []
 
-        for(category in catalog) {
+        for(category in productCatalog) {
             _dropMenus.push(
                 <View key={category} style={styles.dropDownContainer}>
                     <DropDown
                         title={category}
-                        list={generateCards(catalog[category])}
+                        list={generateCards(productCatalog[category])}
                     />
                 </View>
             )

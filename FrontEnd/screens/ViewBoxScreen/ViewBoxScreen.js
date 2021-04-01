@@ -9,13 +9,11 @@ import styles from './ViewBoxScreenStyleSheet';
 import global_styles from '../../styles'
 import { goToHome } from '../../Navigator'
 
-import ProductCard from '../../components/ProductCard/ProductCard'
-import InteractiveProductCard from '../../components/InteractiveProductCard/InteractiveProductCard'
 import BoxService from '../../services/BoxService'
+import ProductService from '../../services/ProductService'
 import CartService from '../../services/CartService'
 
-import box_content from '../../db_mockup/box.content.db'
-import catalog from '../../db_mockup/product.catalog.db'
+import InteractiveProductCard from '../../components/InteractiveProductCard/InteractiveProductCard'
 import PlusMinus from '../../components/PlusMinus/PlusMinus'
 import BackArrow from '../../components/BackArrow/BackArrow'
 import DropDown from '../../components/DropDown/DropDown'
@@ -25,13 +23,26 @@ import DropDown from '../../components/DropDown/DropDown'
 const BoxScreen = (props) => {
     let _isBuildYourBox = props.params.box_name.includes("Crea")
 
-    // Box Data to be added to Cart. Default value is 1.
-    const [boxData, changeBoxData] = React.useState({
-        ...props.params,
-        box_quantity: 1,
-        box_accumulated_price: _isBuildYourBox ? 0 : props.params.box_price,
-        box_content: _isBuildYourBox ? {} : box_content  // fetch box_content from API with props.params.box_id
-    })
+    const [boxData, setBoxData] = React.useState({})
+
+    const [productCatalog, setProductCatalog] = React.useState({})
+
+    React.useEffect(() => {
+        async function fetchData() {
+            let _box = {
+                ...props, 
+                box_quantity: 1,
+                box_accumulated_price: _isBuildYourBox ? 0 : props.params.box_price,
+                box_content: _isBuildYourBox ? {} : await BoxService.instance.getBoxContent()
+            }
+
+            setBoxData(_box)
+            if (_isBuildYourBox)
+                setProductCatalog(await ProductService.instance.getProductCatalog())
+        }
+
+        fetchData()
+    }, []);
 
     const verifyQuantity = () => {
         alert(JSON.stringify(boxData.box_content))
@@ -70,7 +81,7 @@ const BoxScreen = (props) => {
         else 
             product_data.product_quantity_box += 1
 
-        changeBoxData({
+        setBoxData({
             ...boxData,
             box_accumulated_price: Number((boxData.box_accumulated_price += product.product_price).toFixed(2)),
             box_content: box_content
@@ -92,7 +103,7 @@ const BoxScreen = (props) => {
                 product_data.product_quantity_box -= 1
             
 
-            changeBoxData({
+            setBoxData({
                 ...boxData,
                 box_accumulated_price: Number((boxData.box_accumulated_price -= product.product_price).toFixed(2)),
                 box_content: box_content
@@ -114,8 +125,8 @@ const BoxScreen = (props) => {
             let _products = []
     
             // let products_list = await BoxService.instance.getBoxContentWith(box_id)
-            for(product_key in box_content){
-                let product = box_content[product_key]
+            for(product_key in boxData.box_content){
+                let product = boxData.box_content[product_key]
 
                 _products.push(
                     <View style={styles.productCardContainer} key={product_key}>
@@ -167,12 +178,12 @@ const BoxScreen = (props) => {
             let _dropMenus = []
 
             // catalog gets fetched from API call
-            for (category in catalog){
+            for (category in productCatalog){
                 _dropMenus.push(
                     <View key={category} style={styles.dropDownContainer}>
                         <DropDown
                             title={category}
-                            list={loadProductCatalog(catalog[category])}
+                            list={loadProductCatalog(productCatalog[category])}
                         />
                     </View>
                 )           
@@ -229,8 +240,8 @@ const BoxScreen = (props) => {
                 {/* Input field */}
                 <View style={styles.plusMinusContainer}>
                     <PlusMinus
-                        onMinus={() => { if(boxData.box_quantity > 1) changeBoxData({ ...boxData, box_quantity: boxData.box_quantity -= 1})}}
-                        onPlus={()=>{ if(boxData.box_quantity < 100) changeBoxData({ ...boxData, box_quantity: boxData.box_quantity += 1}) }}
+                        onMinus={() => { if(boxData.box_quantity > 1) setBoxData({ ...boxData, box_quantity: boxData.box_quantity -= 1})}}
+                        onPlus={()=>{ if(boxData.box_quantity < 100) setBoxData({ ...boxData, box_quantity: boxData.box_quantity += 1}) }}
                         // onText={(quantity) => { boxData.box_quantity = Number(quantity) }}
                         placeholder={ boxData.box_quantity }
                     />

@@ -4,26 +4,40 @@ import { ScrollView, View, Image, Text } from 'react-native'
 import BackArrow from '../../components/BackArrow/BackArrow'
 import FormInput from '../../components/FormInput/FormInput'
 import Button from '../../components/Button/Button'
-import DropDown from '../../components/DropDown/DropDown'
 
+import DropDown from '../../components/DropDown/DropDown'
 import InteractiveProductCard from '../../components/InteractiveProductCard/InteractiveProductCard'
 
 import styles from './EditBoxScreenStyleSheet'
 import global_styles from '../../styles'
 import { goToBoxManagement } from '../../Navigator'
 
-import catalog from '../../db_mockup/product.catalog.db'
-import box_content from '../../db_mockup/box.content.db'
+import ProductService from '../../services/ProductService'
+import BoxService from '../../services/BoxService'
 
 const EditBoxScreen = (props) => {
-    let _isNewBox = props.params == "new",
-        _box = _isNewBox ? {
-            box_name: "",
-            box_price: "",
-            box_content: { }
-        } : { ...props.params, box_content: box_content }    // fetch box_content from API
+    let _isNewBox = props.params == "new"
 
-    const [boxData, changeBoxData] = React.useState(_box)
+    const [boxData, setBoxData] = React.useState({})
+    const [productCatalog, setProductCatalog] = React.useState({})
+
+    React.useEffect(() => {
+        async function fetchData() {            
+            let _box = _isNewBox ? {
+                box_name: "",
+                box_price: "",
+                box_content: { }
+            } : {
+                ...props.params, 
+                box_content: await BoxService.instance.getBoxContent()
+            }
+            
+            setBoxData(_box)
+            setProductCatalog(await ProductService.instance.getProductCatalog())
+        }
+
+        fetchData()
+    }, [])
 
     const generateCards = (products) => {
         return products.map (product => 
@@ -45,12 +59,12 @@ const EditBoxScreen = (props) => {
     const displayDropMenus = () => {
         let _dropMenus = []
 
-        for (category in catalog){
+        for (category in productCatalog){
             _dropMenus.push(
                 <View key={category} style={styles.dropDownContainer}>
                     <DropDown
                         title={category}
-                        list={generateCards(catalog[category])}
+                        list={generateCards(productCatalog[category])}
                     />
                 </View>
             )           
@@ -97,7 +111,7 @@ const EditBoxScreen = (props) => {
     }
 
     const displayDeleteButton = () => {
-        if(!_isNewBox)
+        if(_isNewBox == false)
             return (
                 <View style={styles.button}>
                     <Button
@@ -126,7 +140,7 @@ const EditBoxScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewBox? 'ejemplo: AgroBox' : boxData.box_name}
-                        onChangeText = { (text) => boxData.box_name = text }
+                        onChangeText = { (text) => setBoxData({...boxData, box_name: text}) }
                     />
                 </View>
 
@@ -134,7 +148,7 @@ const EditBoxScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewBox ? 'ejemplo: 45.00': String(boxData.box_price) }
-                        onChangeText = { (text) => boxData.box_price = text }
+                        onChangeText = { (text) => setBoxData({...boxData, box_price: text}) }
                     />
                 </View>
             </View>

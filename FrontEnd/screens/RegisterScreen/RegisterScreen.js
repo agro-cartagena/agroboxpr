@@ -13,7 +13,7 @@ import Button from '../../components/Button/Button'
 
 const RegisterScreen = () => {
 
-    const [form, changeForm] = React.useState({
+    const [formData, changeFormData] = React.useState({
         full_name: '',
         email: '',
         password: '',
@@ -22,7 +22,7 @@ const RegisterScreen = () => {
     })
 
     const sendCredentials = () => {
-        UserAuthenticationService.instance.sendRegistration(form)
+        UserAuthenticationService.instance.sendRegistration(formData)
     }
 
     return (
@@ -36,7 +36,7 @@ const RegisterScreen = () => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = 'Nombre y Apellido(s)'
-                        onChangeText = {text => form.full_name = text} 
+                        onChangeText = {text => changeFormData({...formData, full_name: text})} 
                         textContentType="name"
                     />
                 </View>
@@ -44,7 +44,7 @@ const RegisterScreen = () => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = 'Correo Electrónico'
-                        onChangeText = {text => form.email = text} 
+                        onChangeText = {text => changeFormData({...formData, email: text})} 
                         keyboardType = "email-address"
                         autoCompleteType = "email"
                         autoCapitalize="none"
@@ -54,7 +54,7 @@ const RegisterScreen = () => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = 'Contraseña'
-                        onChangeText = {text => form.password = text} 
+                        onChangeText = {text => changeFormData({...formData, password: text})} 
                         textContentType="password"
                         secureTextEntry = {true}
                     />  
@@ -63,7 +63,7 @@ const RegisterScreen = () => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = 'Entre Contraseña Nuevamente'
-                        onChangeText = {text => form.password_confirmation = text} 
+                        onChangeText = {text => changeFormData({...formData, password_confirmation: text})} 
                         textContentType="password"
                         secureTextEntry = {true}
                     />
@@ -72,7 +72,7 @@ const RegisterScreen = () => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = 'Número de Teléfono'
-                        onChangeText = {text => form.phone = text} 
+                        onChangeText = {text => changeFormData({...formData, phone: text})} 
                         keyboardType = "phone-pad"
                     />
                 </View>

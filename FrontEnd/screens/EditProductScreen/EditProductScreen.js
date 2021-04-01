@@ -20,7 +20,7 @@ const ProductScreen = (props) => {
             product_price: ""
         } : props.params
 
-    const [formData, changeFormData] = React.useState(_product)
+    const [productData, changeProductData] = React.useState(_product)
     
     return (
         <ScrollView style={global_styles.screen}>
@@ -37,16 +37,16 @@ const ProductScreen = (props) => {
                 <Text style={[global_styles.text, styles.formText]}>Nombre del Producto</Text>
                 <View style={global_styles.formEntry}>
                     <FormInput
-                        placeholder = { _isNewProduct ? 'ejemplo: Brocoli' : formData.product_name}
-                        onChangeText = { (text) => formData.product_name = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: Brocoli' : productData.product_name}
+                        onChangeText = { (text) => changeProductData({...productData, product_name: text}) }
                     />
                 </View>
 
                 <Text style={[global_styles.text, styles.formText]}>Catálogo del Producto</Text>
                 <View style={global_styles.formEntry}>
                     <FormInput
-                        placeholder = { _isNewProduct ? 'ejemplo: Vegetales': formData.product_category}
-                        onChangeText = { (text) => formData.product_category = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: Vegetales': productData.product_category}
+                        onChangeText = { (text) => changeProductData({...productData, product_category: text}) }
                     />
                 </View>
 
@@ -54,8 +54,8 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         keyboardType = "numeric"
-                        placeholder = { _isNewProduct ? 'ejemplo: 3': String(formData.product_quantity_stock)}
-                        onChangeText = { (text) => formData.product_quantity_stock = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: 3': String(productData.product_quantity_stock)}
+                        onChangeText = { (text) => changeProductData({...productData, product_quantity_stock: text}) }
                     />
                 </View>
 
@@ -63,8 +63,8 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         autoCapitalize="none"
-                        placeholder = { _isNewProduct ? 'ejemplo: lbs' : formData.product_units}
-                        onChangeText = { (text) => formData.product_units = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: lbs' : productData.product_units}
+                        onChangeText = { (text) => changeProductData({...productData, product_units: text}) }
                     />
                 </View>
 
@@ -72,14 +72,14 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         keyboardType = "numeric"
-                        placeholder = { _isNewProduct ? 'ejemplo: 2.49' : String(formData.product_price)}
-                        onChangeText = { (text) => formData.product_price = text }
+                        placeholder = { _isNewProduct ? 'ejemplo: 2.49' : String(productData.product_price)}
+                        onChangeText = { (text) => changeProductData({...productData, product_price: text}) }
                     />
                 </View>
             </View>
 
             <View style={[global_styles.container, styles.buttonContainer]}>
-                <Button text="Guardar" onTouch={() => alert(JSON.stringify(formData))}/>
+                <Button text="Guardar" onTouch={() => alert(JSON.stringify(productData))}/>
             </View>
 
         </ScrollView>

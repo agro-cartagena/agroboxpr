@@ -13,13 +13,13 @@ import Logo from '../../components/Logo/Logo';
 import Button from '../../components/Button/Button'
 
 const LoginScreen = () => {
-    const [form, changeForm] = React.useState({
+    const [formData, changeFormData] = React.useState({
         email: '',
         password: ''
     })
 
     const sendCredentials = () => {
-        UserAuthenticationService.instance.sendLogin(form)
+        UserAuthenticationService.instance.sendLogin(formData)
     }
 
     // This method is for debugging only.
@@ -38,7 +38,7 @@ const LoginScreen = () => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = 'Correo Electrónico'
-                        onChangeText = {text => form.email = text} 
+                        onChangeText = {text => changeFormData({...formData, email: text})} 
                         keyboardType = "email-address"
                         autoCompleteType = "email"
                         autoCapitalize="none"
@@ -48,7 +48,7 @@ const LoginScreen = () => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = 'Contraseña'
-                        onChangeText = {text => form.password = text} 
+                        onChangeText = {text => changeFormData({...formData, password: text})} 
                         textContentType="password"
                         autoCompleteType="password"
                         secureTextEntry = {true}
@@ -67,7 +67,7 @@ const LoginScreen = () => {
                 />
             </View>
             
-            <Text style={global_styles.text}  onPress={goToRegister}>Crear cuenta nueva</Text>                
+            <Text style={global_styles.text} onPress={goToRegister}>Crear cuenta nueva</Text>                
         </KeyboardAwareScrollView>
     )
 }

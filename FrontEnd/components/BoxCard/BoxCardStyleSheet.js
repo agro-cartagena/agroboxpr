@@ -1,25 +1,42 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    card: {
-        padding: 0,
-        margin: 0,
-
-        width: '100%',
+    container: {
         height: '100%',
-        alignSelf: 'center',
+        width: '100%',
+    },
 
-        borderWidth: 1,
-        borderColor: 'black'
+    textContainer: {
+        height: '15%',
+        width: '65%',
+        margin: 5,
+
+        alignSelf: 'center',
+        alignItems: 'center',
+
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+
+    text: {
+        fontWeight: "bold",
+        fontSize: 18
+    },
+
+    cardContainer: {
+        height: '85%',
+
+        borderWidth: 2,
+        borderRadius: 15,
+        // borderColor: '#8C0634',
+
+        backgroundColor: 'white'
     },
 
     image: {
         height: '100%',
-        resizeMode: "stretch",
-    },
-
-    radius: {
-        borderRadius: 15
+        width: '100%',
+        borderRadius: 10
     }
 })
 

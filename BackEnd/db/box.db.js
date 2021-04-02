@@ -41,9 +41,8 @@ const findAllBoxesDb = async () => {
 /**
  * Searches the "box" colection of the database for a specidied box utilizing 
  * its object id and returns a array containing the search results 
- * @param  {[type]} arg1 [description]
- * @param  {[type]} arg2 [description]
- * @return {[type]}      [description]
+ * @param  {JSON} id Box id to use in search
+ * @return {Promise} Returns the box with given id
  */
 const getBoxByIdDb = async (id) => {
 	const db = mdb.get().db(process.env.DB_NAME)

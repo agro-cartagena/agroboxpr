@@ -18,8 +18,8 @@ const getById = async (req, res, next) => {
 	const id = req.params.id
 
 	try {
-		await getBoxById(id).then((products) => {
-			res.status(200).send(products)
+		await getBoxById(id).then((box) => {
+			res.status(200).send(box)
 		})
 	} catch (e) {
 		console.log(e.message)

@@ -1,27 +1,53 @@
 const { productService } = require('../services')
 
-const { insertProduct, readAllProducts } = productService
+const { insertProduct, readAllProducts, getProductById, updateProduct } = productService
 
 const postProduct = async (req, res, next) => {
-    const product = req.body
+	const product = req.body
 
-    try {
-        await insertProduct(product)
-        res.sendStatus(201)
-        next()
-    } catch (e) {
-        console.log(e.message)
-        res.sendStatus(500) && next(e)
-    }
+	try {
+		await insertProduct(product)
+		res.sendStatus(201)
+		next()
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
 }
 
 const getProducts = async (req, res, next) => {
+	try {
+		await readAllProducts().then((products) => {
+			res.status(200).send(products)
+		})
+		next()
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getById = async (req, res, next) => {
+	const id = req.params.id
+	try {
+		await getProductById(id).then((products) => {
+			res.status(200).send(products)
+		})
+		next()
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const update = async (req, res, next) => {
+    const params = req.body
 
     try {
-        await readAllProducts().then(products => {
-            res.status(200).send(products)
-        })
-        next()
+        await updateProduct(params)
+        res.sendStatus(200)
+		next()
+    
     } catch (e) {
         console.log(e.message)
         res.sendStatus(500) && next(e)
@@ -29,6 +55,8 @@ const getProducts = async (req, res, next) => {
 }
 
 module.exports = {
-    postProduct,
-    getProducts,
+	postProduct,
+	getProducts,
+	getById,
+    update
 }

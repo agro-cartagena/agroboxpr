@@ -2,9 +2,8 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     cardContainer: {
-        width: '48%',
-        marginTop: 7,
-        marginBottom: 7,
+        width: '100%',
+        height: '100%',
     }, 
 
     textContainer : {
@@ -13,18 +12,23 @@ const styles = StyleSheet.create({
         padding: 1,
     },
 
+    text: {
+        fontSize: 12,
+        fontWeight: "bold"
+    },
+
     productName: {
         color: "white",
-        fontWeight: "bold"
+        flex: 1,
+        flexWrap: 'wrap'
     },
 
     productQuantity: {
-        color: 'rgb(151, 184, 56)',
-        fontWeight: "bold"
+        color: 'rgb(151, 184, 56)'
     },
 
     card: {
-        height: 100,
+        height: '90%',
         padding: 0, 
         margin: 0,
 
@@ -33,6 +37,7 @@ const styles = StyleSheet.create({
     },
 
     image: {
+        width: '100%',
         height: '100%', 
         resizeMode: 'stretch'
     },

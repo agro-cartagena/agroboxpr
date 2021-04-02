@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './LoginScreenStylesheet';
@@ -8,15 +8,18 @@ import { goToRegister } from '../../Navigator';
 
 import FormInput from '../../components/FormInput/FormInput'
 import UserAuthenticationService from '../../services/UserAuthenticationService'
+import Logo from '../../components/Logo/Logo';
+
+import Button from '../../components/Button/Button'
 
 const LoginScreen = () => {
-    const [form, changeForm] = React.useState({
+    const [formData, changeFormData] = React.useState({
         email: '',
         password: ''
     })
 
     const sendCredentials = () => {
-        UserAuthenticationService.instance.sendLogin(form)
+        UserAuthenticationService.instance.sendLogin(formData)
     }
 
     // This method is for debugging only.
@@ -26,45 +29,45 @@ const LoginScreen = () => {
 
     return (
         <KeyboardAwareScrollView 
-            contentContainerStyle={[global_styles.container, global_styles.screen]}
+            contentContainerStyle={[global_styles.container, global_styles.screen, {height: '100%'}]}
             resetScrollToCoords={{x: 0, y: 0}}
         >
-            <View style={styles.logoContainer}>
-                <Image
-                    style={global_styles.logo}
-                    source={require('../../assets/agrobox_logo.png')}
+            <Logo/>
+            
+            <View style={[styles.form]}>
+                <View style={global_styles.formEntry}>
+                    <FormInput
+                        placeholder = 'Correo Electrónico'
+                        onChangeText = {text => changeFormData({...formData, email: text})} 
+                        keyboardType = "email-address"
+                        autoCompleteType = "email"
+                        autoCapitalize="none"
+                    />
+                </View>
+
+                <View style={global_styles.formEntry}>
+                    <FormInput
+                        placeholder = 'Contraseña'
+                        onChangeText = {text => changeFormData({...formData, password: text})} 
+                        textContentType="password"
+                        autoCompleteType="password"
+                        secureTextEntry = {true}
+                    />
+                </View>
+            </View>
+
+            <Text style={[global_styles.text, styles.problemText]}>Problemas para acceder?
+                <Text style={styles.clickText} onPress={displayToken}> Presione aquí.</Text>
+            </Text>
+
+            <View style={[global_styles.container, styles.buttonContainer]}>
+                <Button
+                    onTouch={sendCredentials}
+                    text="Acceder"
                 />
             </View>
             
-            <View style={[global_styles.container, styles.form]}>
-                <FormInput
-                    placeholder = 'Correo Electrónico'
-                    onChangeText = {text => form.email = text} 
-                    keyboardType = "email-address"
-                    autoCompleteType = "email"
-                    autoCapitalize="none"
-                />
-
-                <FormInput
-                    placeholder = 'Contraseña'
-                    onChangeText = {text => form.password = text} 
-                    textContentType="password"
-                    autoCompleteType="password"
-                    secureTextEntry = {true}
-                />
-                <Text style={global_styles.text}>Problemas para acceder?<Text style={styles.clickText} onPress={displayToken}> Presione aquí.</Text></Text>
-            </View>
-
-            <View style={global_styles.container}>
-
-                <TouchableOpacity style={[global_styles.button, global_styles.shadow]}>
-                    <Text 
-                        style={global_styles.text} 
-                        onPress={sendCredentials}>Acceder</Text>
-                </TouchableOpacity>
-
-                <Text style={global_styles.text}  onPress={goToRegister}>Crear cuenta nueva</Text>                
-            </View>
+            <Text style={global_styles.text} onPress={goToRegister}>Crear cuenta nueva</Text>                
         </KeyboardAwareScrollView>
     )
 }

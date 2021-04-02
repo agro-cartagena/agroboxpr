@@ -9,12 +9,12 @@ const ProductCard = (props) => {
     return (
         <View style={styles.cardContainer}>
             <View style={styles.textContainer}>
-                <Text style={styles.productName}>{props.name}</Text>
-                <Text style={styles.productQuantity}>{props.quantity} {props.units}</Text>
+                <Text style={[styles.text, styles.productName]}>{props.name}</Text>
+                <Text style={[styles.text, styles.productQuantity]}>{props.quantity} {props.units}</Text>
             </View>
             <Card containerStyle={[styles.card, styles.radius, global_styles.shadow]}>
                 <Card.Image 
-                    source={require('../../assets/products/Broccoli.jpeg')}
+                    source={props.uri}
                     style={[styles.image, styles.radius]}
                 />
             </Card>

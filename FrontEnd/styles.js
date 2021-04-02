@@ -13,15 +13,8 @@ const styles = StyleSheet.create({
     },
 
     screen: {
-        width: '100%',
-        height: '100%'
-    },
-
-    logo: {
-        width: '100%',
-        height: '100%',
-
-        resizeMode: 'contain',
+        padding: 10,
+        paddingBottom: '10%'
     },
 
     text: {
@@ -36,12 +29,10 @@ const styles = StyleSheet.create({
         shadowRadius: 3
     },
 
-    button: {
-        padding: '2.5%',
-        marginBottom: '2.5%',
-
-        backgroundColor: 'rgb(151, 184, 56)',
-        borderRadius: 10,
+    formEntry: {
+        width: '100%',
+        height: 45,
+        margin: 8
     }
 })
 

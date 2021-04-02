@@ -2,22 +2,24 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     card: {
-        borderWidth: 1,
-        borderColor: 'black',
-
         padding: 0,
         margin: 0,
-        
-        marginTop: 12,
-        marginBottom: 12
+
+        width: '100%',
+        height: '100%',
+        alignSelf: 'center',
+
+        borderWidth: 1,
+        borderColor: 'black'
     },
 
     image: {
+        height: '100%',
         resizeMode: "stretch",
     },
 
     radius: {
-        borderRadius: 20
+        borderRadius: 15
     }
 })
 

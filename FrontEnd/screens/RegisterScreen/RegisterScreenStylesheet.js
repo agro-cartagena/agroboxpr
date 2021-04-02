@@ -1,19 +1,16 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    logoContainer:{
-        width: '60%',
-        height: '25%',
-        alignSelf: 'center',
-        // backgroundColor: 'green'
-    },
-    
     form:{
         // backgroundColor:'red',
-        width: '100%',
-        height: '45%',
-        justifyContent: 'space-evenly',  
+        width: '85%',
+        alignItems: 'center',
         margin: '2%'
+    },
+
+    buttonContainer: {
+        height: 40,
+        margin: 15
     },
 
     clickText: {

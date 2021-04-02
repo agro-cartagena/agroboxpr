@@ -1,28 +1,35 @@
-export default class BoxService {
+import box_list from '../db_mockup/box.db'
+import box_content from '../db_mockup/box.content.db'
+import Service from './Service'
+
+export default class BoxService extends Service {
     // Declare Singleton instance for Service
     static instance = BoxService.instance || new BoxService()
-    _url = "http://localhost:5000/";
 
-    constructor() { }
+    constructor() { super() }
 
-    async getBoxList() {
-        // fetch API uses GET request as default.
-        return fetch(this._url, payload)
-            .then(async (response) => {
-                return await response.json()
+    // Used in HomeScreen and BoxManagementScreen
+    async getAllBoxes() {
+        return fetch(this._url + 'boxes')
+            .then(response => response.json())
+            .then((box_list) => {
+                return box_list
             })
             .catch((error) => {
-                console.error(error)
+                // Temporary. Should properly handle error.
+                // alert("Error caught")
+                return box_list
             })
     }
 
-    async getBoxContentWith(box_id) {
-        return fetch(this._url + `?bid=${box_id}`)
-            .then(async (response) => {
-                return await response.json()
+    async getBoxContent() {
+        return fetch(this.url + 'boxes/:box_id')
+            .then(response => response.json())
+            .then((box_content) => {
+                return box_content
             })
             .catch((error) => {
-                console.error(error)
+                return box_content
             })
     }
 }

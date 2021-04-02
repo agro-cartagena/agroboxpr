@@ -1,12 +1,13 @@
+import Service from './Service'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class UserAuthenticationService {
+export default class UserAuthenticationService extends Service {
     // Declare Singleton instance for Service
     static instance = UserAuthenticationService.instance || new UserAuthenticationService()
-    _url = "http://localhost:5000/api/auth";
     _webToken;
 
     constructor(){
+        super()
         this.loadWebToken();
     }
 
@@ -14,16 +15,20 @@ export default class UserAuthenticationService {
         return this._webToken
     }
 
+    set webToken(token) {
+        this._webToken = token
+    }
+
     // This method gets called only once on init to fetch the token from storage.
     async loadWebToken() {
         await AsyncStorage.getItem('jwt_key')
-            .then(token => this._webToken = token)
+            .then(token => this.webToken = token)
             .catch(error => alert("error loading token"))
     }
 
     async setWebToken(token) {
         await AsyncStorage.setItem('jwt_key', token)
-            .then(() => this._webToken = token)
+            .then(() => this.webToken = token)
             .catch(error => alert("error storing token"))
     }
 
@@ -42,12 +47,11 @@ export default class UserAuthenticationService {
         };
 
         // Send payload within request
-        fetch(this._url + '/login', payload)
+        fetch(this._url + 'auth/login', payload)
             .then(async (response) => {
                 switch(response.status){
                     case 200: 
-                        let webToken = await response.text()
-                        this.setWebToken(webToken)
+                        this.setWebToken(await response.text())
 
                         alert("logged in.")
                         // Redirect user to HomeScreen
@@ -92,7 +96,7 @@ export default class UserAuthenticationService {
             }
 
             // Send payload within request.
-            fetch(this._url + '/signup', payload)
+            fetch(this._url + 'auth/signup', payload)
                 .then(async response => {
                     switch(response.status){
                         case 201:

@@ -1,48 +1,46 @@
 import React from 'react'
-import { ScrollView, View, Image, Text } from 'react-native'
-import BoxService from '../../services/BoxService'
+import { ScrollView, TouchableOpacity } from 'react-native'
+import { goToViewBox } from '../../Navigator'
 
+import BoxService from '../../services/BoxService'
 import BoxCard from '../../components/BoxCard/BoxCard'
+
 import styles from './HomeScreenStyleSheet'
 import global_styles from '../../styles'
-
-import box_list from '../../db_mockup/box.db'
+import Logo from '../../components/Logo/Logo'
 
 const HomeScreen = () => {
-    let boxes = []
+    const [ boxList, setBoxList ] = React.useState([])
 
-    const loadBoxes = async () => {
-        // BoxService shall be used to fetch box_list over HTTP
-        // let box_list = await BoxService.instance.getBoxList()
-        // alert(JSON.stringify(box_list))
-        box_list.forEach((box) => {
-            boxes.push(
+    React.useEffect(() => {
+        async function fetchData() { 
+            setBoxList(await BoxService.instance.getAllBoxes()) 
+        }
+
+        fetchData()
+    }, []);
+
+    const displayBoxes = () => {
+        return boxList.map((box) => 
+            <TouchableOpacity
+                style={styles.cardContainer}
+                onPress={() => goToViewBox(box)}
+                key={box.box_id}
+            >
                 <BoxCard
-                    key={box.id}
-                    id={box.id}
-                    name={box.name}
-                    image={box.uri}
-                    price={box.price}
+                    id={box.box_id}
+                    name={box.box_name}
+                    image={box.box_image}
+                    price={box.box_price}
                 />
-            )
-        })
+            </TouchableOpacity>   
+        )
     }
 
-    // On screen init
-    loadBoxes()
-
     return (
-        <ScrollView style={styles.screen}>
-            <View style={styles.logoContainer}>
-                <Image
-                    style={global_styles.logo}
-                    source={require('../../assets/agrobox_logo.png')}
-                />
-            </View>
-
-            <View>
-                {boxes}
-            </View>
+        <ScrollView style={global_styles.screen}>
+            <Logo/>
+            { displayBoxes() }
         </ScrollView>
     )
 }

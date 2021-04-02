@@ -36,3 +36,30 @@ export const goToUserInfo = (id, name, email, phone, address, city, zipcode) => 
         }
     })
 }
+export const goToViewBox = (box) => {
+    Actions.view_box({ params: box })
+}
+
+export const goToCart = () => {
+    Actions.cart()
+}
+
+export const goToInventoryManagement = () => {
+    Actions.inventory_management()
+}
+
+export const goToProductManagement = () => {
+    Actions.product_management()
+}
+
+export const goToEditProduct = (product) => {
+    Actions.edit_product({ params: product })
+}
+
+export const goToBoxManagement = () => {
+    Actions.box_management()
+}
+
+export const goToEditBox = (box) => {
+    Actions.edit_box({ params: box })
+}

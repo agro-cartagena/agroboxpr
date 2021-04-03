@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     },
 
     productCardContainer: {
-        width: '45%',
-        height: 120,
+        width: '44%',
+        height: 110,
 
         marginTop: 10,
         marginBottom: 10

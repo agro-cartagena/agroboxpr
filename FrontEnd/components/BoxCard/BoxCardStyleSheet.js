@@ -7,36 +7,32 @@ const styles = StyleSheet.create({
     },
 
     textContainer: {
-        height: '15%',
-        width: '65%',
-        margin: 5,
+        width: '90%',
+        margin: 8,
 
         alignSelf: 'center',
-        alignItems: 'center',
-
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+
+        zIndex: 2, 
+        position: 'absolute', 
     },
 
     text: {
         fontWeight: "bold",
-        fontSize: 18
+        fontSize: 20
     },
 
     cardContainer: {
-        height: '85%',
-
-        borderWidth: 2,
+        borderWidth: 1,
         borderRadius: 15,
-        // borderColor: '#8C0634',
-
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
 
     image: {
         height: '100%',
         width: '100%',
-        borderRadius: 10
+        borderRadius: 12
     }
 })
 

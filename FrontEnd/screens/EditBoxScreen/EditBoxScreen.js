@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Image, Text } from 'react-native'
+import { ScrollView, View, Text } from 'react-native'
 
 import BackArrow from '../../components/BackArrow/BackArrow'
 import FormInput from '../../components/FormInput/FormInput'
@@ -7,6 +7,7 @@ import Button from '../../components/Button/Button'
 
 import DropDown from '../../components/DropDown/DropDown'
 import InteractiveProductCard from '../../components/InteractiveProductCard/InteractiveProductCard'
+import MediaUploader from '../../components/MediaUploader/MediaUploader'
 
 import styles from './EditBoxScreenStyleSheet'
 import global_styles from '../../styles'
@@ -14,25 +15,31 @@ import { goToBoxManagement } from '../../Navigator'
 
 import ProductService from '../../services/ProductService'
 import BoxService from '../../services/BoxService'
+// import CloudinaryService from '../../services/CloudinaryService'
 
 const EditBoxScreen = (props) => {
     let _isNewBox = props.params == "new"
 
     const [boxData, setBoxData] = React.useState({})
     const [productCatalog, setProductCatalog] = React.useState({})
+    const [boxImage, setBoxImage] = React.useState({})
 
     React.useEffect(() => {
         async function fetchData() {            
             let _box = _isNewBox ? {
-                box_name: "",
-                box_price: "",
+                box_name: '',
+                box_price: '',
+                box_image: {
+                    id: '',
+                    url: ''
+                },
                 box_content: { }
             } : {
                 ...props.params, 
                 box_content: await BoxService.instance.getBoxContent()
             }
-            
             setBoxData(_box)
+            setBoxImage(_box.box_image)
             setProductCatalog(await ProductService.instance.getProductCatalog())
         }
 
@@ -111,15 +118,34 @@ const EditBoxScreen = (props) => {
     }
 
     const displayDeleteButton = () => {
-        if(_isNewBox == false)
+        if(_isNewBox == false){
+            // Define function handler that uses service to DELETE here.
+            
             return (
                 <View style={styles.button}>
                     <Button
                         text="Eliminar"
                         style={ _isNewBox ? {display: 'none'} : {backgroundColor: 'red'} }
+                        // onPress={deleteHandler}
                     />
                 </View>
             )
+        }
+    }
+
+    const submitHandler = async () => {
+        // Image was changed, hence needs to be uploaded.
+        if(boxImage.url != boxData.box_image.url){
+            // Previous image existed, hence delete it from cloud
+            // if(boxImage.id)
+                // await CloudinaryService.instance.deleteImage(boxImage.id)
+            
+
+            try {
+                // let result = await CloudinaryService.instance.uploadImage(boxImage)
+                setBoxImage(result)
+            } catch (error) { alert(error.message) }
+        }
     }
 
     return(
@@ -128,12 +154,10 @@ const EditBoxScreen = (props) => {
                 <BackArrow onTouch={goToBoxManagement}/>
             </View>
 
-            <View style={[styles.imageContainer, styles.radius]}>
-                <Image
-                    source={require('../../assets/products/Broccoli.jpeg')}
-                    style={[styles.productImage, styles.radius]}
-                />
-            </View>
+            <MediaUploader
+                media = {boxImage}
+                setMedia = {setBoxImage}
+            />
 
             <View style={styles.formContainer}>
                 <Text style={[global_styles.text, styles.formText]}>Nombre de la Caja</Text>
@@ -163,7 +187,7 @@ const EditBoxScreen = (props) => {
                 <View style={styles.button}>
                     <Button
                         text="Guardar"
-                        onTouch={() => alert(JSON.stringify(boxData))}
+                        // onTouch={submitHandler}
                     />
                 </View>
             </View>

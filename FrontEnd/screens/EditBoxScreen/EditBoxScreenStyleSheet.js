@@ -5,24 +5,14 @@ const styles = StyleSheet.create({
         padding: 10
     },
 
-    imageContainer: {
-        width: '70%',
-        height: 200,
+    uploaderContainer: {
+        // width: '70%',
+        // height: 200,
 
-        alignSelf: 'center',
-        backgroundColor: 'lightgray',
+        // alignSelf: 'center',
+        // backgroundColor: 'lightgray',
 
-        margin: 50
-    },
-
-    productImage: {
-        height: '100%',
-        width: '100%',
-        resizeMode: 'stretch'
-    },
-
-    radius: {
-        borderRadius: 10
+        // margin: 50
     },
 
     formContainer: {

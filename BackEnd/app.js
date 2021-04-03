@@ -9,27 +9,14 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-//Connect to MongoDB cluster
-db.connect(process.env.CONNECTION_STRING, function(err) {
-    if (err) {
-      console.log('Unable to connect to Mongo.')
-      process.exit(1)
-    } else {
-      console.log('Connected to Mongo')
-    }
-})
 
 //Use Express Routers
 app.use('/api/product', productRouter);
 app.use('/api/box', boxRouter);
 app.use('/api/auth', authRouter);
 
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
-});
+module.exports = app;

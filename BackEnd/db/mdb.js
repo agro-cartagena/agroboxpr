@@ -6,13 +6,14 @@ var state = {
   db: null,
 }
 
-exports.connect = function(url, done) {
+exports.connect = async function(url, done) {
   if (state.db) return done()
 
-  MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
-    if (err) return done(err)
+  await MongoClient.connect(url, { useUnifiedTopology: true }).then((db) => {
     state.db = db
-    done()
+    return done()
+  }).catch((err) => {
+    return done(err)
   })
 }
 

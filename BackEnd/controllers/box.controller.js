@@ -1,16 +1,16 @@
 const { boxService } = require('../services')
-const { insertBox, readAllBoxes, getBoxById } = boxService
+const { createBox, readAllBoxes, getBoxById } = boxService
 const { updateEntry, addProductList } = boxService
 
 const postBox = async (req, res, next) => {
 	const box = req.body
 
 	try {
-		await insertBox(box)
-		res.sendStatus(201) && next()
-	} catch (e) {
-		console.log(e.message)
-		res.sendStatus(500) && next(e)
+		const newBox = await boxService.createBox(box)
+		res.status(201).json(newBox) && next()
+	} catch (err) {
+		// console.log(err.message)
+		res.sendStatus(500) && next(err)
 	}
 }
 
@@ -38,7 +38,7 @@ const getAllBoxes = async (req, res, next) => {
 	}
 }
 
-const update = async (req, res, next) => {
+const updateBox = async (req, res, next) => {
 	const params = req.body
 
 	try {
@@ -66,6 +66,6 @@ module.exports = {
 	postBox,
 	getAllBoxes,
 	getById,
-	update,
+	updateBox,
 	addProducts,
 }

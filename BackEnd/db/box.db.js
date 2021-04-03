@@ -11,8 +11,8 @@ dotenv.config()
  * whether or not the box has been properly inserted
  * @param  {JSON} box JSON Object containing all the data of the box
  */
-const createBoxDb = async (box) => {
-	console.log('Inserting to box db', box)
+const insertBoxDb = async (box) => {
+	// console.log('Inserting to box db', box)
 
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
@@ -21,7 +21,7 @@ const createBoxDb = async (box) => {
 		.insertOne(box)
 		.then((results) => {
 			console.log('Insertion succesfull')
-			return results['ops'][0]['_id']
+			return results['ops'][0]
 		})
 		.catch((error) => console.error(error))
 }
@@ -85,7 +85,7 @@ const addProductListDb = async (paramList) => {
 }
 
 module.exports = {
-	createBoxDb,
+	insertBoxDb,
 	findAllBoxesDb,
 	getBoxByIdDb,
 	updateEntryDb,

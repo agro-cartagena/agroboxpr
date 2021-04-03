@@ -1,12 +1,11 @@
 const { boxDb } = require('../db')
-const { createBoxDb, findAllBoxesDb, getBoxByIdDb } = boxDb
+const { insertBoxDb, findAllBoxesDb, getBoxByIdDb } = boxDb
 const { updateEntryDb, addProductListDb } = boxDb
 
-const insertBox = async (box) => {
-	console.log('\nInside box service\n', box)
+const createBox = async (box) => {
 
 	try {
-		return await createBoxDb(box)
+		return await insertBoxDb(box)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -57,7 +56,7 @@ const addProductList = async (paramList) => {
 }
 
 module.exports = {
-	insertBox,
+	createBox,
 	readAllBoxes,
 	getBoxById,
 	updateEntry,

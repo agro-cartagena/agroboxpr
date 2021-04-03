@@ -22,7 +22,8 @@ const findAllProductsDb = async () => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')
 
-	return collection.find({}).toArray()
+	let product_catalog =  collection.find({}).toArray()
+  return product_catalog
 }
 
 const getProductByIdDb = async (id) => {
@@ -74,14 +75,18 @@ const validateGetDb = async (query) => {
     return
 }
 
-const updateProductDb = async (paramList) => {
+const updateProductDb = async (id, changes) => {
   const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')
 
-  const query = paramList[0]
-  const changes = paramList[1]
+  return collection.updateOne({ _id: ObjectId(id) }, {$set: changes})
+}
 
-  return collection.updateOne(query, {$set: changes})
+const deleteProductDb = async (id) => {
+  const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('product')
+
+  return collection.deleteOne({ _id: ObjectId(id) })
 }
 
 module.exports = {
@@ -89,6 +94,7 @@ module.exports = {
 	findAllProductsDb,
 	getProductByIdDb,
   updateProductDb,
+  deleteProductDb,
 	validateInsertDb,
   validateGetDb
 }

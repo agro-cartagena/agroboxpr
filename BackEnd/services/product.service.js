@@ -1,6 +1,6 @@
 const { productDb } = require('../db')
 
-const { createProductDb, findAllProductsDb, getProductByIdDb, updateProductDb } = productDb
+const { createProductDb, findAllProductsDb, getProductByIdDb, updateProductDb, deleteProductDb } = productDb
 const { validateInsertDb, validateGetDb } = productDb
 
 const insertProduct = async (product) => {
@@ -34,10 +34,19 @@ const getProductById = async (id) => {
 	}
 }
 
-const updateProduct = async (paramList) => {
+const updateProduct = async (id, changes) => {
     try {
-        await validateGetDb(paramList[0])
-        return await updateProductDb(paramList)
+        await validateGetDb(id)
+        return await updateProductDb(id, changes)
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
+const deleteProduct = async (id) => {
+    try {
+        await validateGetDb(id)
+        return await deleteProductDb(id)
     } catch (e) {
         throw new Error(e.message)
     }
@@ -47,5 +56,6 @@ module.exports = {
 	insertProduct,
 	readAllProducts,
 	getProductById,
-    updateProduct
+    updateProduct,
+    deleteProduct
 }

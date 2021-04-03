@@ -7,7 +7,7 @@ const insertProduct = async (product) => {
 	console.log('Inside product service!', product)
 
 	try {
-        await validateInsertDb(product)
+       await validateInsertDb(product)
 		return await createProductDb(product)
 	} catch (e) {
 		throw new Error(e.message)
@@ -15,10 +15,23 @@ const insertProduct = async (product) => {
 }
 
 const readAllProducts = async () => {
-	console.log('Inside product service.')
 
 	try {
-		return await findAllProductsDb()
+		const product_catalog = await findAllProductsDb()
+
+		const response = product_catalog.map(product => {
+			return {
+				product_id : product._id,
+				product_name : product.product_name,
+				product_category : product.product_category,
+				product_price : product.product_price,
+				product_quantity_stock : product.product_quantity_stock,
+				product_units : product.units,
+				product_image : product.product_image
+			}
+		})
+		console.log(cat);
+		return response
 	} catch (e) {
 		throw new Error(e.message)
 	}

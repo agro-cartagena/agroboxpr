@@ -43,13 +43,13 @@ const validateInsertDb = async (product) => {
 
 	// * Searches the database using the name of the product to be inserted
 	await collection
-		.findOne({ name: product.name })
+		.findOne({ product_name: product.product_name })
 		.then((result) => { searchResult = result	})
 		.catch((error) => { console.log(error) })
 
 	// * if a product is found within the database we will throw a new Error
 	if (searchResult != null)
-		throw new Error(`'${product.name}' is already within the database.`)
+		throw new Error(`Product already within the database.`)
 	
   // * otherwise we can continue with the insertion process
 	else 

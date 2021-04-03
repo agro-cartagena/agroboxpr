@@ -5,6 +5,7 @@ import styles from './styles'
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 import LoginScreen from './screens/LoginScreen/LoginScreen'
 import HomeScreen from './screens/HomeScreen/HomeScreen'
+import CustomerAccountScreen from './screens/CustomerAccountScreen/CustomerAccountScreen'
 
 import ViewBoxScreen from './screens/ViewBoxScreen/ViewBoxScreen'
 import CartScreen from './screens/CartScreen/CartScreen'
@@ -21,6 +22,7 @@ const Routes = () => {
             <Scene key="root">
                 <Scene key="login" component={LoginScreen} title="Login" hideNavBar={true}/>
                 <Scene key="register" component={RegisterScreen} title="Register" hideNavBar={true} />
+                <Scene key="customerAccount" component={CustomerAccountScreen} title="CustomerAccount" hideNavBar={true} />
                 <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true} initial={true}/>
                 <Scene key="view_box" component={ViewBoxScreen} title="View Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>

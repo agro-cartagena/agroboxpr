@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image, Text, TouchableOpacity, Alert} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Button from '../../components/Button/Button'
+import Logo from '../../components/Logo/Logo'
 
 import styles from './CustomerAccountScreenStylesheet';
 import global_styles from '../../styles';
@@ -67,12 +68,7 @@ const CustomerAccountScreen = () => {
             contentContainerStyle={[global_styles.container, global_styles.screen]}
             resetScrollToCoords={{x: 0, y: 0}}
         >
-            <View style = {styles.logoContainer}>
-                <Image
-                    style={styles.logo}
-                    source={require('../../assets/agrobox_logo.png')}
-                />
-            </View>
+            <Logo style = {styles.logo}/>
 
             <View style = {[global_styles.container, styles.formContainer]}>
                <View style= {styles.fContainer}>
@@ -116,17 +112,18 @@ const CustomerAccountScreen = () => {
             </View>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style = {[global_styles.button, global_styles.shadow]}>
-                    <Text style = {global_styles.text} onPress= {showAlert}> Cancelar</Text>
-                </TouchableOpacity>
-
-                {/* <Button
-                        text="Guardar"
+                <Button
+                        text="Cancelar"
+                        onTouch= {showAlert}
+                        style = {[styles.buttonContainer,styles.cancelButton]}
                         // onTouch={() => alert(JSON.stringify(boxData))}
-                    /> */}
-                <TouchableOpacity style = {[global_styles.button, global_styles.shadow]} >
-                    <Text style = {global_styles.text} onPress={sendCredentials}> Guardar</Text>
-                </TouchableOpacity>
+                    />
+                <Button
+                        text="Guardar"
+                        // onTouch= {showAlert}
+                        style = {[styles.buttonContainer, styles.saveButton]}
+                        // onTouch={() => alert(JSON.stringify(boxData))}
+                    />
 
             </View>
         </KeyboardAwareScrollView>

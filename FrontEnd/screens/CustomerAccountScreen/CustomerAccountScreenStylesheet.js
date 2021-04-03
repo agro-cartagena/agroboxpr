@@ -1,21 +1,6 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    logoContainer:{
-        width: '30%',
-        height: '17%',
-        alignSelf: 'center',
-        backgroundColor: 'white',
-        borderRadius: 100,
-        justifyContent: 'center',
-        marginBottom: '10%'
-    },
-    logo:{
-        width:'90%',
-        height: '90%',
-        alignSelf: 'center',
-        resizeMode: 'contain'
-    },
     formContainer:{
         width: '100%',
         height: '60%',
@@ -43,16 +28,26 @@ const styles = StyleSheet.create({
         // alignSelf: 'center',
         color: 'white',
         width: '18%',
-        fontSize: 15
+        fontSize: 14
     },
     textinput:{
         fontSize: 15,
         color: 'white'
     },
     buttonContainer:{
+        width: '50%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly', //?
+        height: 40,
+        margin: 15,
+        // backgroundColor: 'blue'
+    },
+    cancelButton:{
+        backgroundColor: '#B6B6B6',
+    },
+    saveButton:{
+        backgroundColor: '#EAC71D',
     }
 })
 

@@ -17,7 +17,8 @@ const registerUser = async (name, email, password, phone) => {
                         name: name,
                         email: email,
                         password: hash,
-                        phone: phone
+                        phone: phone,
+                        role: "user"
                     }
 
                     const tok = await registerNewUserDb(newUser).then(res => {
@@ -26,7 +27,8 @@ const registerUser = async (name, email, password, phone) => {
 
                         let access_token = createJWT(
                             user.email,
-                            user._id
+                            user._id,
+                            user.role
                         );
 
                         return access_token
@@ -64,7 +66,8 @@ const loginUser = async (email, password) => {
             let access_token = createJWT(
                 user[0].email,
                 user[0]._id,
-                3600
+                user[0].role
+                // 3600
             );
             console.log("Access Token", access_token)
             return access_token
@@ -76,14 +79,15 @@ const loginUser = async (email, password) => {
     return token
 }
 
-const createJWT = (email, userId, duration) => {
+const createJWT = (email, userId, role) => {
     const payload = {
         email,
         userId,
-        duration
+        role
+        // duration
     };
     return jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: duration,
+        // expiresIn: duration,
     });
 };
 

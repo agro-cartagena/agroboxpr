@@ -31,6 +31,7 @@ const auth = async (req, res, next) => {
         console.log("Verified object: ", verified)
 
         req.userId = verified.userId;
+        req.userRole = verified.role;
         next();
     } catch (err) {
         res.status(500).json({ error: err.message })

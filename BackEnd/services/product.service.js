@@ -6,16 +6,27 @@ const {
 	getProductByIdDb,
 	updateProductDb,
 	deleteProductDb,
+	validateDb,
+	validateIdDb,
 } = productDb
-
-const { validateInsertDb, validateGetDb } = productDb
 
 const insertProduct = async (product) => {
 	console.log('Inside product service!', product)
 
 	try {
-		await validateInsertDb(product)
-		return await createProductDb(product)
+		let validate
+		await validateDb(product).then((result) => {
+			validate = result
+		})
+		//No duplicate date
+		if (validate == null) {
+			return await createProductDb(product)
+		}
+		//Will duplicate data
+		else {
+			console.log('Cannot do insert')
+			return null
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -62,8 +73,15 @@ const getProductById = async (id) => {
 
 const updateProduct = async (id, changes) => {
 	try {
-		await validateGetDb(id)
-		return await updateProductDb(id, changes)
+		let validate
+		await validateIdDb(id).then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await updateProductDb(id, changes)
+		} else {
+			return null
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -71,8 +89,16 @@ const updateProduct = async (id, changes) => {
 
 const deleteProduct = async (id) => {
 	try {
-		await validateGetDb(id)
-		return await deleteProductDb(id)
+		let validate
+		await validateIdDb(id).then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await deleteProductDb(id)
+		}
+		else{
+			return null
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}

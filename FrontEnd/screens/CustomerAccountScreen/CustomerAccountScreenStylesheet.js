@@ -40,8 +40,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly', //?
         height: 40,
-        margin: 15,
-        // backgroundColor: 'blue'
+        margin: 15
     },
     cancelButton:{
         backgroundColor: '#B6B6B6',

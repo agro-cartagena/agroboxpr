@@ -2,6 +2,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native';
 
 import CustomerAccountScreen from './screens/CustomerAccountScreen/CustomerAccountScreen'
+import CartScreen from './screens/CartScreen/CartScreen'
 
 import TabBar from './components/TabBar/TabBar'
 import styles from './styles';
@@ -12,7 +13,8 @@ class App extends React.Component {
     return (
       <SafeAreaView style={styles.app}>        
         {/* <Routes/> */}
-        <CustomerAccountScreen/>
+        <CartScreen/>
+        {/* <CustomerAccountScreen/> */}
         <TabBar/>
       </SafeAreaView>
     )

@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         margin: 15,
 
-        borderColor: 'black',
-        borderWidth: 1,
+        // borderColor: 'black',
+        // borderWidth: 1,
         borderRadius: 10,
 
         backgroundColor: 'white'
@@ -20,10 +20,17 @@ const styles = StyleSheet.create({
     },
 
     cardContainer: {
-        width: '60%',
+        width: '50%',
         height: 100,
-        margin: 10
+        margin: 10,
+        width: '40%'
     }, 
+
+    plusminus:{
+        width: '40%',
+        height: 35,
+        // backgroundColor: 'white'
+    },
 
     text: {
         alignSelf: 'center',
@@ -32,6 +39,7 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
+        width: '25%',
         height: 40,
         alignSelf: 'center',
         margin: 10,

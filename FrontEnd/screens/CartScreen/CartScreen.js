@@ -1,6 +1,7 @@
 import React from 'react'
 import { ScrollView, View, Image, Text } from 'react-native'
 import BoxCard from '../../components/BoxCard/BoxCard'
+import PlusMinus from '../../components/PlusMinus/PlusMinus'
 
 import CartService from '../../services/CartService'
 import styles from './CartScreenStyleSheet'
@@ -12,6 +13,8 @@ import cart_list from '../../db_mockup/cart.db'
 
 const CartScreen = () => {
     let cart = []
+
+    const [boxData, setBoxData] = React.useState({})
 
     const loadCart = async () => {
         cart_list.forEach((item) => {
@@ -25,10 +28,18 @@ const CartScreen = () => {
                             image={item.box_image}
                         />
                     </View>
-
-                    <Text>${item.box_price} </Text>
-                    <Text>x{item.quantity} </Text>
-                    <Text>= ${item.box_price*item.quantity}</Text>
+                    
+                    <View style={styles.plusminus}>
+                        <PlusMinus 
+                             onMinus={() => { if(boxData.box_quantity > 1) setBoxData({ ...boxData, box_quantity: boxData.box_quantity -= 1})}}
+                             onPlus={()=>{ if(boxData.box_quantity < 100) setBoxData({ ...boxData, box_quantity: boxData.box_quantity += 1})}}
+                             placeholder={ boxData.box_quantity }
+                        />
+                    </View>
+                    
+                    {/* <Text>${item.box_price} </Text> */}
+                    {/* <Text>x{item.quantity} </Text> */}
+                    <Text style={{fontWeight: 'bold', fontSize: 15}}> = ${item.box_price*item.quantity}</Text>
                 </View>
 
 
@@ -49,12 +60,12 @@ const CartScreen = () => {
             </View>
 
             <Text style={[global_styles.text, styles.text]}>Total de compra: 
-                <Text style={{fontWeight: 'bold'}}> ${80}</Text>
+                <Text style={{fontWeight: 'bold', color: '#EAC71D'}}> ${80}</Text>
             </Text>
 
             <View style={styles.buttonContainer}>
                 <Button
-                    text="Confirmar"
+                    text="Pagar"
                 />
             </View>
         </ScrollView>

@@ -14,7 +14,7 @@ router.get('/', boxController.getAllBoxes)
 router.get('/:id',boxController.getById)
 
 //Update box information
-router.put('/', boxController.updateBox)
+router.put('/:id', boxController.updateBox)
 
 // * Uses query and takes in a JSON list of products as second param
 router.put('/addProduct', boxController.addProducts)

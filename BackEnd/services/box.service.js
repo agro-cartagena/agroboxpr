@@ -1,11 +1,16 @@
+const { ObjectID } = require('mongodb')
 const { boxDb } = require('../db')
 const { insertBoxDb, findAllBoxesDb, getBoxByIdDb } = boxDb
 const { updateEntryDb, addProductListDb } = boxDb
 
 const createBox = async (box) => {
+	const newBox = {
+		...box,
+		available: true
+	}
 
 	try {
-		return await insertBoxDb(box)
+		return await insertBoxDb(newBox)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -39,9 +44,12 @@ const getBoxById = async (id) => {
 	}
 }
 
-const updateEntry = async (updateParams) => {
+const updateEntry = async (id, updateFields) => {
+	const updateDocument = {
+        "$set": updateFields
+    }
 	try {
-		return await updateEntryDb(updateParams)
+		return await updateEntryDb({ _id: ObjectID(id) }, updateDocument)
 	} catch (e) {
 		throw new Error(e.message)
 	}

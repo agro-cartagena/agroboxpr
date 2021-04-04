@@ -39,10 +39,11 @@ const getAllBoxes = async (req, res, next) => {
 }
 
 const updateBox = async (req, res, next) => {
-	const params = req.body
+	const id = req.params.id
+	const updateFields = req.body
 
 	try {
-		await updateEntry(params)
+		await updateEntry(id, updateFields)
 		res.sendStatus(200) && next()
 	} catch (e) {
 		console.log(e.message)

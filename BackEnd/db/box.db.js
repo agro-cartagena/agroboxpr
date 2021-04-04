@@ -56,17 +56,13 @@ const getBoxByIdDb = async (id) => {
  * @param JSON-List First index contains the query parameter for the database search.
  * Second parameter contains update informations.
  */
-const updateEntryDb = async (paramList) => {
+const updateEntryDb = async (query, updateDocument) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
 
-	//Separate query and undate parameters from the parameter JSON list recieved
-	const query = paramList[0]
-	const update = paramList[1]
-
 	// console.log(query, JSON.stringify(query));
 	console.log('Updating...\n')
-	return collection.updateOne(query, { $set: update })
+	return collection.findOneAndUpdate(query, updateDocument)
 }
 
 /**

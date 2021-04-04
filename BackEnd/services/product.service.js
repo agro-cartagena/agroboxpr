@@ -23,28 +23,27 @@ const insertProduct = async (product) => {
 
 const readAllProducts = async () => {
 	try {
-		let types = []
+		let categories = []
 		let product_catalog = []
+		let response = {}
+
 		await findAllProductsDb().then((products) => {
 			product_catalog = products
 			for (const prod in products) {
-				if (!types.includes(products[prod].product_category))
-					types.push(products[prod].product_category)
+				if (!categories.includes(products[prod].product_category))
+					categories.push(products[prod].product_category)
 			}
 		})
 
-		const response = product_catalog.map((product) => {
-			return {
-				product_id: product._id,
-				product_name: product.product_name,
-				product_category: product.product_category,
-				product_price: product.product_price,
-				product_quantity_stock: product.product_quantity_stock,
-				product_units: product.units,
-				product_image: product.product_image,
+		categories.forEach((category) => {
+			response = {
+				[category]: product_catalog.filter(
+					(product) => product.product_category == category
+				),
+				...response,
 			}
 		})
-		console.log(types)
+
 		return response
 	} catch (e) {
 		throw new Error(e.message)

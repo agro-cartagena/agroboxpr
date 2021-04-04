@@ -1,6 +1,6 @@
 const { authService } = require('../services')
 
-const { registerUser, loginUser } = authService
+const { registerUser, loginUser, promoteUserToAdmin } = authService
 
 const postSignup = async (req, res, next) => {
     const { name, email, password, phone } = req.body
@@ -47,7 +47,21 @@ const postLogin = async (req, res, next) => {
     }
 }
 
+const promoteUser = async (req, res, next) => {
+    const { email } = req.body
+
+    try {
+        await promoteUserToAdmin(email).then(result => {
+            console.log(result)
+            res.status(200).send()
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
 module.exports = {
     postSignup,
-    postLogin
+    postLogin,
+    promoteUser
 }

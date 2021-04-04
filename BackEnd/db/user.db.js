@@ -19,10 +19,20 @@ const findUserByFilterDb = async (filter) => {
   const db = mdb.get().db(process.env.DB_NAME)
   const collection = db.collection('user')
 
-  return collection.find(filter).toArray()
+  return await collection.find(filter).toArray()
+}
+
+const findUserByEmailAndUpdate = async (query, update) => {
+  const db = mdb.get().db(process.env.DB_NAME)
+  const collection = db.collection('user')
+
+  const options = { returnNewDocument: true };
+
+  return await collection.findOneAndUpdate(query, update, options)
 }
 
 module.exports = {
     registerNewUserDb,
-    findUserByFilterDb
+    findUserByFilterDb,
+    findUserByEmailAndUpdate
 }

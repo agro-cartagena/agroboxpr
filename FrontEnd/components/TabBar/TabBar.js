@@ -14,7 +14,6 @@ const TabBar = () => {
 
     const touchHandler = (tab) => {
         // alert("Hello World")
-
     }
 
     const [activeTab, setActiveTab] = React.useState("home-tab")
@@ -22,52 +21,41 @@ const TabBar = () => {
     return (
         <View style={[styles.bar, global_styles.container]}>
             <Tab
-                id="cart-tab"
                 defaultIcon={require('../../assets/icons/cart.png')}
                 activeIcon={require('../../assets/icons/cart-active.png')}
-                onTouch={() => { goToCart() }}
-                activeTab={activeTab}
-                activeTabHandler={setActiveTab}
+                isActive={activeTab == "cart-tab"}
+                onTouch={() => { if(activeTab != "cart-tab"){ setActiveTab("cart-tab"); goToCart() }}}
             />
     
             <Tab
-                id="user-tab"
                 defaultIcon={require('../../assets/icons/user-profile.png')}
                 activeIcon={require('../../assets/icons/user-profile-active.png')}
-                onTouch={() => { goToLogin() }}
-                activeTab={activeTab}
-                activeTabHandler={setActiveTab}
+                isActive={activeTab == "user-tab"}
+                onTouch={() => { if(activeTab != "user-tab"){ setActiveTab("user-tab"); goToLogin() }}}
             />
     
             <Tab
-                id="home-tab"
                 defaultIcon={require('../../assets/icons/home.png')}
                 activeIcon={require('../../assets/icons/home-active.png')}
-                onTouch={() => { goToHome() }}
-                activeTab={activeTab}
-                activeTabHandler={setActiveTab}
+                isActive={activeTab == "home-tab"}
+                onTouch={() => { if(activeTab != "home-tab"){ setActiveTab("home-tab"); goToHome() }}}
             />
     
             <Tab
-                id="orders-tab"
                 defaultIcon={require('../../assets/icons/orders.png')}
                 activeIcon={require('../../assets/icons/orders-active.png')}
-                onTouch={() => { touchHandler() }}
-                activeTab={activeTab}
-                activeTabHandler={setActiveTab}
+                isActive={activeTab == "orders-tab"}
+                onTouch={() => { if(activeTab != "orders-tab"){ setActiveTab("orders-tab"); touchHandler() }}}
             />
     
             <Tab
-                id="menu-tab"
                 defaultIcon={require('../../assets/icons/Menu.png')}
                 activeIcon={require('../../assets/icons/menu-active.png')}
-                onTouch={() => { goToInventoryManagement() }}
-                activeTab={activeTab}
-                activeTabHandler={setActiveTab}
+                isActive={activeTab == "menu-tab"}
+                onTouch={() => { if(activeTab != "menu-tab"){ setActiveTab("menu-tab"); goToInventoryManagement() }}}
             /> 
         </View>
-    )
-    
+    )  
 }
 
 export default TabBar;

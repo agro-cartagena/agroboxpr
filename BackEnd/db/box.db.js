@@ -38,6 +38,13 @@ const findAllBoxesDb = async () => {
 	return collection.find({}).toArray()
 }
 
+const findAvailableBoxesDb = async (updateDocument) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('box')
+
+	return collection.find(updateDocument).toArray()
+}
+
 /**
  * Searches the "box" colection of the database for a specidied box utilizing 
  * its object id and returns a array containing the search results 
@@ -83,6 +90,7 @@ const addProductListDb = async (paramList) => {
 module.exports = {
 	insertBoxDb,
 	findAllBoxesDb,
+	findAvailableBoxesDb,
 	getBoxByIdDb,
 	updateEntryDb,
 	addProductListDb,

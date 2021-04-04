@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 
     cardContainer: {
         height: 200,
-        width: '95%',
+        width: '100%',
 
         margin: 15,
         alignSelf: 'center'

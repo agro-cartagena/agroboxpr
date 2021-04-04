@@ -1,19 +1,19 @@
 import { StyleSheet } from 'react-native'
+import { RFPercentage } from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({
     arrowContainer: {
-        margin: 15
+        margin: 10
     },
 
     card: {
-        width: '70%',
+        width: '65%',
         padding: 0,
 
         backgroundColor: 'rgb(151, 184, 56)',
         borderColor: 'black',
 
         alignSelf: 'center',
-        justifyContent: 'center',
         borderRadius: 10
     },
 
@@ -31,28 +31,18 @@ const styles = StyleSheet.create({
     },
 
     productContainer: {
-        flex: 1,
         flexDirection: "row",
         flexWrap: 'wrap',
-
-        alignItems: 'flex-start',
         justifyContent: 'space-evenly'
     },
 
     productCardContainer: {
-        width: '44%',
-        height: 110,
-
-        marginTop: 10,
-        marginBottom: 10
-    },
-
-    productCard: {
         width: '45%',
-        height: 120,
+        // height: 120,
+        height: RFPercentage(16.5),
 
-        marginTop: 10, 
-        marginBottom: 10, 
+        marginTop: 20,
+        marginBottom: 20
     },
 
     text: {

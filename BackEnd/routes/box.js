@@ -7,6 +7,8 @@ const { boxController } = require('../controllers')
 //insert new box to box db
 router.post('/', boxController.postBox)
 
+router.get('/products/:id', boxController.getBoxProducts)
+
 router.get('/available', boxController.getAvailableBoxes)
 
 //retireve a spefic box using a given id

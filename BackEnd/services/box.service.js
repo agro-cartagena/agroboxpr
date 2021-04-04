@@ -1,6 +1,6 @@
 const { ObjectID } = require('mongodb')
 const { boxDb } = require('../db')
-const { insertBoxDb, findAllBoxesDb, findAvailableBoxesDb, getBoxByIdDb } = boxDb
+const { insertBoxDb, findAllBoxesDb, findAvailableBoxesDb, getBoxByIdDb, findProductsByIdList } = boxDb
 const { updateEntryDb, addProductListDb } = boxDb
 
 const createBox = async (box) => {
@@ -57,6 +57,44 @@ const readAvailableBoxes = async () => {
 	}
 }
 
+const readBoxProducts = async (id) => {
+	// console.log('\nRetrieving boxes \n')
+
+	try {
+		const box = await getBoxByIdDb(id);
+		let productsQuery = []
+		let result = {}
+		
+		if(box){
+			// console.log("Box: ", box)
+			const productIdList = box.boxContent;
+			productIdList.map((productId) => {
+				productsQuery.push({
+					_id: ObjectID(productId)
+				})
+			});
+
+			const products = await findProductsByIdList(productsQuery);
+			console.log(`Products for ${box.boxName}: `, products);
+			if(products) {
+				products.forEach(product => {
+					result = {
+						[product.product_name] : product,
+						...result
+					}
+				});
+
+				console.log("Result: ", result);
+				return result;
+			}
+		}
+
+		// return response
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
 const getBoxById = async (id) => {
 	try {
 		return await getBoxByIdDb(id)
@@ -88,6 +126,7 @@ module.exports = {
 	createBox,
 	readAllBoxes,
 	readAvailableBoxes,
+	readBoxProducts,
 	getBoxById,
 	updateEntry,
 	addProductList,

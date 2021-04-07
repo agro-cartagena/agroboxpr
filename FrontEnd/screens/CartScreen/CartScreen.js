@@ -11,10 +11,27 @@ import Logo from '../../components/Logo/Logo'
 import Button from '../../components/Button/Button'
 import cart_list from '../../db_mockup/cart.db'
 
-const CartScreen = () => {
+const CartScreen = (props) => {
     let cart = []
 
     const [boxData, setBoxData] = React.useState({})
+
+    React.useEffect(() => {
+        async function fetchData() {
+            let _box = {
+                ...props, 
+                box_quantity: 1,
+                box_accumulated_price: _isBuildYourBox ? 0 : props.params.box_price,
+                box_content: _isBuildYourBox ? {} : await BoxService.instance.getBoxContent()
+            }
+
+            setBoxData(_box)
+            if (_isBuildYourBox)
+                setProductCatalog(await ProductService.instance.getProductCatalog())
+        }
+
+        fetchData()
+    }, []);
 
     const loadCart = async () => {
         cart_list.forEach((item) => {

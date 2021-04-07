@@ -12,8 +12,8 @@ class App extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.app}>        
-        {/* <Routes/> */}
-        <CartScreen/>
+        <Routes/>
+        {/* <CartScreen/> */}
         {/* <CustomerAccountScreen/> */}
         <TabBar/>
       </SafeAreaView>

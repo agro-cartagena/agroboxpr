@@ -22,8 +22,8 @@ const Routes = () => {
             <Scene key="root">
                 <Scene key="login" component={LoginScreen} title="Login" hideNavBar={true}/>
                 <Scene key="register" component={RegisterScreen} title="Register" hideNavBar={true} />
-                <Scene key="customerAccount" component={CustomerAccountScreen} title="CustomerAccount" hideNavBar={true} />
-                <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true} initial={true}/>
+                <Scene key="customerAccount" component={CustomerAccountScreen} title="CustomerAccount" hideNavBar={true} initial={true}/>
+                <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true} />
                 <Scene key="view_box" component={ViewBoxScreen} title="View Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
                 <Scene key="inventory_management" component={InventoryManagementScreen} title="Inventory Management" hideNavBar={true}/>

@@ -2,8 +2,13 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     cardContainer: {
-        height: 175,
-        margin: 12
+        marginTop: 25,
+        marginBottom: 25
+    },
+
+    card: {
+        height: 200,
+        margin: 15
     }
 })
 

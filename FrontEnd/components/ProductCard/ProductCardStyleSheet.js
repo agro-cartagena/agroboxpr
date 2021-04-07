@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native'
+import { RFPercentage } from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({
     cardContainer: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     },
 
     text: {
-        fontSize: 12,
+        fontSize: RFPercentage(1.5),
         fontWeight: "bold"
     },
 

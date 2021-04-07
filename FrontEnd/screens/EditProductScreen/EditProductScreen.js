@@ -9,6 +9,7 @@ import FormInput from '../../components/FormInput/FormInput'
 import Button from '../../components/Button/Button'
 
 import { goToProductManagement } from '../../Navigator'
+import MediaUploader from '../../components/MediaUploader/MediaUploader'
 
 const ProductScreen = (props) => {
     let _isNewProduct = props.params == "new", 

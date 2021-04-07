@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, TouchableOpacity } from 'react-native'
+import { ScrollView, TouchableOpacity, View } from 'react-native'
 import { goToViewBox } from '../../Navigator'
 
 import BoxService from '../../services/BoxService'
@@ -23,7 +23,7 @@ const HomeScreen = () => {
     const displayBoxes = () => {
         return boxList.map((box) => 
             <TouchableOpacity
-                style={styles.cardContainer}
+                style={styles.card}
                 onPress={() => goToViewBox(box)}
                 key={box.box_id}
             >
@@ -38,9 +38,11 @@ const HomeScreen = () => {
     }
 
     return (
-        <ScrollView style={global_styles.screen}>
+        <ScrollView>
             <Logo/>
-            { displayBoxes() }
+            <View style={styles.cardContainer}>
+                { displayBoxes() }
+            </View>
         </ScrollView>
     )
 }

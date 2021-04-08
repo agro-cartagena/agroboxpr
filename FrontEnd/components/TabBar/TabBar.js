@@ -7,13 +7,14 @@ import Tab from '../Tab/Tab'
 
 import { 
     goToLogin, goToHome,
-    goToCart, goToInventoryManagement
+    goToCart, goToInventoryManagement, goToAccount
 } from '../../Navigator'
 
 const TabBar = () => {
 
     const touchHandler = (tab) => {
         // alert("Hello World")
+        goToAccount() //for testing purposes
     }
 
     const [activeTab, setActiveTab] = React.useState("home-tab")

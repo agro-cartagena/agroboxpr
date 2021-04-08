@@ -23,16 +23,16 @@ export const goToBox = (id, name, uri, price) => {
     })
 }
 
-export const goToUserInfo = (id, name, email, phone, address, city, zipcode) => {
-    Actions.user({
+export const goToAccount = (id, name, email, phone, address, city, zipcode) => {
+    Actions.customerAccount({
         params: {
             user_id: id,
             user_name: name,
             user_email: email,
             user_phone: phone,
             user_address: address,
-            user_city: city,
-            user_zipcode: zipcode
+            // user_city: city,
+            // user_zipcode: zipcode
         }
     })
 }

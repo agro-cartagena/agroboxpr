@@ -4,35 +4,43 @@ const styles = StyleSheet.create({
     formContainer:{
         width: '100%',
         height: '60%',
-        justifyContent: 'space-evenly', 
+        // justifyContent: 'space-evenly', 
     },
     fContainer:{
         flexDirection: 'row',
         alignItems: 'center',
-        // justifyContent: 'space-evenly',
-        // backgroundColor: 'red'
+        justifyContent: 'space-evenly',
+        // backgroundColor: 'red',
+        width: '78%',
+        height: 45,
+        margin: 8
     },
     form: {
-        flexDirection: 'row',
-        width: '78%',
+        // flexDirection: 'row',
+        width: '70%',
         height: 60,
-        borderBottomWidth: 2,
-        borderBottomColor: '#EAC71D',
+        // borderBottomWidth: 2,
+        // borderBottomColor: '#EAC71D',
+        // width: '100%',
+        // height: 45,
+        margin: 8,
         // backgroundColor: 'yellow'
     },
     text:{
-        // justifyContent: 'center',
+        // justifyContent: 'space-evenly',
         textAlign: 'center',
+        marginRight: '13%',
         fontWeight: 'bold',
         // backgroundColor: 'green',
         // alignSelf: 'center',
         color: 'white',
-        width: '18%',
-        fontSize: 14
+        width: '22%',
+        fontSize: 13
     },
     textinput:{
-        fontSize: 15,
-        color: 'white'
+        // fontSize: 15,
+        // color: 'white'
+        textAlign: 'left'
     },
     buttonContainer:{
         width: '50%',

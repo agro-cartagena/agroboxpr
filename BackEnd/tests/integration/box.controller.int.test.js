@@ -7,8 +7,6 @@ dotenv.config();
 
 const endpointUrl = "/api/box/";
 
-
-
 describe(endpointUrl, () => {
     beforeAll(async () => {
         //Connect to MongoDB cluster

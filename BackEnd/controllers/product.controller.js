@@ -1,14 +1,25 @@
 const { productService } = require('../services')
 
-const { insertProduct, readAllProducts, getProductById, updateProduct } = productService
+const {
+	insertProduct,
+	readAllProducts,
+	getProductById,
+	updateProduct,
+	deleteProduct,
+} = productService
 
 const postProduct = async (req, res, next) => {
 	const product = req.body
 
 	try {
-		await insertProduct(product)
-		res.sendStatus(201)
-		next()
+		const insert = await insertProduct(product)
+		if (insert != null) {
+			res.sendStatus(201)
+			next()
+		} else {
+			res.sendStatus(404)
+			next()
+		}
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(500) && next(e)
@@ -41,22 +52,48 @@ const getById = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
-    const params = req.body
+	const change = req.body
+	const id = req.params.id
 
-    try {
-        await updateProduct(params)
-        res.sendStatus(200)
-		next()
-    
-    } catch (e) {
-        console.log(e.message)
-        res.sendStatus(500) && next(e)
-    }
+	try {
+		const update = await updateProduct(id, change)
+		if (update != null) {
+			res.sendStatus(200)
+			next()
+		}
+		else{
+			res.sendStatus(404)
+			next()
+		}
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const deletion = async (req, res, next) => {
+	const id = req.params.id
+
+	try {
+		const deletion = await deleteProduct(id)
+		if(deletion != null){
+			res.sendStatus(200)
+			next()
+		}
+		else{
+			res.sendStatus(404)
+			next()
+		}
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
 }
 
 module.exports = {
 	postProduct,
 	getProducts,
 	getById,
-    update
+	update,
+	deletion,
 }

@@ -1,24 +1,61 @@
 const { productDb } = require('../db')
 
-const { createProductDb, findAllProductsDb, getProductByIdDb, updateProductDb } = productDb
-const { validateInsertDb, validateGetDb } = productDb
+const {
+	createProductDb,
+	findAllProductsDb,
+	getProductByIdDb,
+	updateProductDb,
+	deleteProductDb,
+	validateDb,
+	validateIdDb,
+} = productDb
 
 const insertProduct = async (product) => {
 	console.log('Inside product service!', product)
 
 	try {
-        await validateInsertDb(product)
-		return await createProductDb(product)
+		let validate
+		await validateDb(product).then((result) => {
+			validate = result
+		})
+		//No duplicate date
+		if (validate == null) {
+			return await createProductDb(product)
+		}
+		//Will duplicate data
+		else {
+			console.log('Cannot do insert')
+			return null
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}
 }
 
 const readAllProducts = async () => {
-	console.log('Inside product service.')
-
 	try {
-		return await findAllProductsDb()
+		let categories = []
+		let product_catalog = []
+		let response = {}
+
+		await findAllProductsDb().then((products) => {
+			product_catalog = products
+			for (const prod in products) {
+				if (!categories.includes(products[prod].product_category))
+					categories.push(products[prod].product_category)
+			}
+		})
+
+		categories.forEach((category) => {
+			response = {
+				[category]: product_catalog.filter(
+					(product) => product.product_category == category
+				),
+				...response,
+			}
+		})
+
+		return response
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -34,18 +71,43 @@ const getProductById = async (id) => {
 	}
 }
 
-const updateProduct = async (paramList) => {
-    try {
-        await validateGetDb(paramList[0])
-        return await updateProductDb(paramList)
-    } catch (e) {
-        throw new Error(e.message)
-    }
+const updateProduct = async (id, changes) => {
+	try {
+		let validate
+		await validateIdDb(id).then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await updateProductDb(id, changes)
+		} else {
+			return null
+		}
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
+const deleteProduct = async (id) => {
+	try {
+		let validate
+		await validateIdDb(id).then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await deleteProductDb(id)
+		}
+		else{
+			return null
+		}
+	} catch (e) {
+		throw new Error(e.message)
+	}
 }
 
 module.exports = {
 	insertProduct,
 	readAllProducts,
 	getProductById,
-    updateProduct
+	updateProduct,
+	deleteProduct,
 }

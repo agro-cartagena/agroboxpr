@@ -7,7 +7,7 @@ import global_styles from '../../styles';
 import { goToLogin } from '../../Navigator';
 
 import FormInput from '../../components/FormInput/FormInput'
-import UserAuthenticationService from '../../services/UserAuthenticationService'
+import UserService from '../../services/UserService'
 import Logo from '../../components/Logo/Logo'
 import Button from '../../components/Button/Button'
 
@@ -22,7 +22,7 @@ const RegisterScreen = () => {
     })
 
     const sendCredentials = () => {
-        UserAuthenticationService.instance.sendRegistration(formData)
+        UserService.instance.sendRegistration(formData)
     }
 
     return (

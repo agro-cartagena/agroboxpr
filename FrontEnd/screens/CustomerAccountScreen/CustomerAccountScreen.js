@@ -8,31 +8,46 @@ import styles from './CustomerAccountScreenStylesheet';
 import global_styles from '../../styles';
 import AccountInfo from '../../components/AccountInfo/AccountInfo'
 import FormInput from '../../components/FormInput/FormInput'
-import users_list from '../../db_mockup/user.db'
-import UserAuthenticationService from '../../services/UserAuthenticationService'
+import user from '../../db_mockup/user.db'
+import UserService from '../../services/UserService'
+import DropDown from '../../components/DropDown/DropDown'
 
 import { goToHome, goToUserInfo } from '../../Navigator';
 
 const CustomerAccountScreen = () => {
 
     const [formData, changeFormData] = React.useState({
-        full_name: 'Juan Del Pueblo',
-        email: 'juanito@gmail.com',
-        phone: '7875555555'
+        // full_name: 'Juan Del Pueblo',
+        // email: 'juanito@gmail.com',
+        // phone: '7875555555'
+    })
+
+    const [passwordData, changePasswordData] = React.useState({
+        current_password: '',
+        new_password: '',
+        confirm_new_password: ''
     })
 
     const [addressData, changeAddressData] = React.useState({
-        street: 'En el pueblo 1',
-        state: 'Puerto Rico',
-        city: 'San Juan',
-        zipcode: '00766'
+        // street: 'Pueblito',
+        // state: 'Puerto Rico',
+        // city: 'San Juan',
+        // zipcode: '00766'
     })
 
-    // const onPress = () => cancel;
-    const sendCredentials = () => {
-        // UserAuthenticationService.instance.sendRegistration(changeForm)
-        // Falta hacer el service
-    }
+    React.useEffect(() => {
+        async function fetchData() {
+            // get user data and address data from api
+            [userInfo, addressInfo] = await UserService.instance.getUserData()
+
+            // set formData and addressData with fetched data. (triggers a re-render)
+            // changeFormData(userInfo)
+            // changeAddressData(addressInfo)
+        }
+
+        fetchData()
+    }, [])
+
     const showAlert = () =>
         Alert.alert(
             "Alerta",
@@ -53,78 +68,161 @@ const CustomerAccountScreen = () => {
                     ),
             }
         );
+
+    const displayButton = () => {
+        alert(JSON.stringify(addressData))
+    }
+
+    const getUserData = () => {
+        return [
+            <View style={styles.fContainer} key={'full_name'}>
+                <Text style={styles.text}>Nombre: </Text>
+                <FormInput                        
+                    value = {formData.full_name}
+                    onChangeText={text => changeFormData({...formData, full_name: text })}
+                    textContentType="name"
+                /> 
+            </View>,
+        
+            <View style={styles.fContainer} key={'email'}>
+                <Text style={styles.text}>Email: </Text>
+                <FormInput
+                    keyboardType="email-address"
+                    value = {formData.email}
+                    onChangeText={text => changeFormData({...formData, email: text})}
+                />
+            </View>,
+            <View style={styles.fContainer} key={'phone'}>
+                <Text style={styles.text}>Teléfono: </Text>
+                <FormInput
+                    keyboardType="phone-pad"
+                    value = {formData.phone}
+                    onChangeText={text => changeFormData({...formData, phone:text})}
+                />
+            </View>,
+            <View style={styles.buttonContainer} key={'button'}>
+                <Button
+                    text="Guardar"
+                    onTouch= {displayButton}
+                    style={[styles.buttonContainer, styles.saveButton]}
+                    onTouch={() => UserService.instance.updateUserInformation(formData)}
+                />
+            </View>
+        ]
+    }
+
+    const getAddressData = () => {
+        return [
+            <View style={styles.fContainer} key={'street'}>
+                <Text style={styles.text}>Dirección: </Text>
+                <FormInput
+                    value={addressData.street}
+                    onChangeText={text => changeAddressData({...addressData, street: text })}
+                />
+               
+            </View>,
+
+            <View style={styles.fContainer} key={'city'}>
+                <Text style={styles.text}>Ciudad: </Text>
+                <FormInput
+                    value={addressData.city}
+                    onChangeText={text => changeAddressData({...addressData, city: text })}
+                />
+            </View>,
+
+            <View style={styles.fContainer} key={'state'}>
+                <Text style={styles.text}>Estado: </Text>
+                <FormInput
+                    value={addressData.state}
+                    onChangeText={text => changeAddressData({...addressData, state: text })}
+                />
+            </View>,
+
+            <View style={styles.fContainer} key={'zipcode'}>
+                <Text style={styles.text}>Código postal: </Text>
+                <FormInput
+                    value={addressData.zipcode}
+                    onChangeText={text => changeAddressData({...addressData, zipcode: text})}
+                />
+            </View>,
+            <View style={styles.buttonContainer} key={'button'}>
+                <Button
+                    text="Guardar"
+                    onTouch= {displayButton}
+                    style={[styles.buttonContainer, styles.saveButton]}
+                    onTouch={() => UserService.instance.updateAddress(addressData)}
+                />
+            </View>
+        ]
+    }
+
+    const getPasswordFields = () => {
+        return [
+            <View style={styles.fContainer} key={'current_password'}>
+                <Text style={styles.text}>Contraseña Actual: </Text>
+                <FormInput
+                    textContentType="password"
+                    secureTextEntry={true}
+                    onChangeText={text => changePasswordData({...passwordData, current_password: text })}
+                />
+            </View>,
+
+            <View style={styles.fContainer} key={'new_password'}>
+                <Text style={styles.text}>Contraseña Nueva: </Text>
+                <FormInput
+                    textContentType="password"
+                    secureTextEntry={true}
+                    onChangeText={text => changePasswordData({...passwordData, new_password: text })}
+                />
+            </View>,
+
+            <View style={styles.fContainer} key={'confirm_new_password'}>
+                <Text style={styles.text}>Confirmar Contraseña Nueva: </Text>
+                <FormInput
+                    textContentType="password"
+                    secureTextEntry = {true}
+                    onChangeText={text => changeAddressData({...passwordData, confirm_new_password: text})}
+                />
+            </View>,
+            <View style={styles.buttonContainer} key={'button'}>
+                <Button
+                    text="Guardar"
+                    onTouch= {displayButton}
+                    style={[styles.buttonContainer, styles.saveButton]}
+                    onTouch={() => UserService.instance.updatePassword(passwordData)}
+                />
+            </View>
+        ]
+    }
+
     return (
 
         <KeyboardAwareScrollView
-            contentContainerStyle={[global_styles.container, global_styles.screen]}
-            resetScrollToCoords={{ x: 0, y: 0 }}
+            contentContainerStyle={[global_styles.container]}
         >
-            <Logo style={styles.logo} />
-
-            <View style={[global_styles.container, styles.formContainer]}>
-                <View style={styles.fContainer}>
-                    <Text style={styles.text}>Nombre: </Text><FormInput
-                        // style = {[styles.textinput]} 
-                        
-                        placeholder = {formData.full_name}
-                        // onChangeText = {text => changeFormData.full_name({...formData, full_name: text})}
-                        onChangeText={text => changeFormData.full_name = text}
-                        textContentType="name"></FormInput>
-                </View>
-                <View style={styles.fContainer}>
-                    <Text style={styles.text}>Email: </Text><FormInput
-                        // style = {[styles.form]} 
-                        keyboardType="email-address"
-                        placeholder = {formData.email}
-                        onChangeText={text => changeFormData.phone = text}></FormInput>                
-                </View>
-                <View style={styles.fContainer}>
-                    <Text style={styles.text}>Teléfono: </Text><FormInput
-                        // style = {[styles.form]} 
-                        keyboardType="phone-pad"
-                        placeholder = {formData.phone}
-                        onChangeText={text => changeFormData.phone = text}></FormInput>
-                </View>
-                <View style={styles.fContainer}>
-                    <Text style={styles.text}>Dirección: </Text><FormInput
-                        // style = {[styles.form]}  
-                        placeholder = {addressData.street}
-                        onChangeText={text => changeAddressData.address = text}></FormInput>
-                </View>
-                <View style={styles.fContainer}>
-                    <Text style={styles.text}>Ciudad: </Text><FormInput
-                        // style = {[styles.form]}  
-                        placeholder = {addressData.city}
-                        onChangeText={text => changeAddressData.city = text}></FormInput>
-                </View>
-                <View style={styles.fContainer}>
-                    <Text style={styles.text}>Estado: </Text><FormInput
-                        // style = {[styles.form]}  
-                        placeholder = {addressData.state}
-                        onChangeText={text => changeAddressData.state = text}></FormInput>
-                </View>
-                <View style={styles.fContainer}>
-                    <Text style={styles.text}>Código postal: </Text><FormInput
-                        // style = {[styles.form]}  
-                        placeholder = {addressData.zipcode}
-                        onChangeText={text => changeAddressData.zipcode = text}></FormInput>
-                </View>
+            <View style={styles.logo}>
+                <Logo/>
             </View>
 
-            <View style={styles.buttonContainer}>
-                <Button
-                    text="Cancelar"
-                    onTouch={showAlert}
-                    style={[styles.buttonContainer, styles.cancelButton]}
-                // onTouch={() => alert(JSON.stringify(boxData))}
+            <View style={[global_styles.container, styles.formContainer]}>
+                <DropDown
+                    title="User Data"
+                    list={getUserData()}
                 />
-                <Button
-                    text="Guardar"
-                    // onTouch= {showAlert}
-                    style={[styles.buttonContainer, styles.saveButton]}
-                // onTouch={sendCredentials}
-                />
+            </View>
 
+            <View style={[global_styles.container, styles.formContainer]}>
+                <DropDown
+                    title="Password Data"
+                    list={getPasswordFields()}
+                />
+            </View>
+
+            <View style={[global_styles.container, styles.formContainer]}>
+                <DropDown
+                    title="Address Data"
+                    list={getAddressData()}
+                />
             </View>
         </KeyboardAwareScrollView>
     )
@@ -132,54 +230,9 @@ const CustomerAccountScreen = () => {
 
 export default CustomerAccountScreen
 
-
-
-
-
-{/* <View style = {[global_styles.container, styles.formContainer]}> */ }
-//                <View style= {styles.fContainer}>
-//                     {/* <Text style={styles.text}>Nombre: </Text> */}
-//                     <FormInput
-//                         // style = {[styles.textinput]} 
-//                         textContentType="name"
-//                         onChangeText = {text => changeForm.name = text}> {form.name}</FormInput>
-//                 </View>
-//                 <View style= {styles.fContainer}>
-//                     {/* <Text style={styles.text}>Email: </Text> */}
-//                     <FormInput
-//                         // style = {[styles.form]} 
-//                         keyboardType = "email-address" 
-//                         onChangeText = {text => changeForm.email = text}> {form.email}</FormInput>
-//                 </View>
-//                 <View style= {styles.fContainer}>
-//                     {/* <Text style={styles.text}>Teléfono: </Text> */}
-//                     <FormInput
-//                         // style = {[styles.form]} 
-//                         keyboardType = "phone-pad" 
-//                         onChangeText = {text => changeForm.phone = text}> {form.phone} </FormInput>
-//                 </View>
-//                 <View style= {styles.fContainer}>
-//                     {/* <Text style={styles.text}>Dirección: </Text> */}
-//                     <FormInput
-//                         // style = {[styles.form]}  
-//                         onChangeText = {text => changeForm.address = text}> {form.address}</FormInput>
-//                 </View>
-//                 <View style= {styles.fContainer}>
-//                     {/* <Text style={styles.text}>Ciudad: </Text> */}
-//                     <FormInput
-//                         // style = {[styles.form]}  
-//                         onChangeText = {text => changeForm.city = text}>{form.city} </FormInput>
-//                 </View>
-//                 <View style= {styles.fContainer}>
-//                     {/* <Text style={styles.text}>Estado: </Text> */}
-//                     <FormInput
-//                         // style = {[styles.form]}  
-//                         onChangeText = {text => changeForm.state = text}> {form.state} </FormInput>
-//                 </View>
-//                 <View style= {styles.fContainer}>
-//                     {/* <Text style={styles.text}>Código postal: </Text> */}
-//                     <FormInput
-//                         // style = {[styles.form]}  
-//                         onChangeText = {text => changeForm.zipcode = text}>  {form.zipcode}</FormInput>
-//                 </View> 
-//             </View>
+{/* <Button
+text="Cancelar"
+onTouch={showAlert}
+style={[styles.buttonContainer, styles.cancelButton]}
+// onTouch={() => alert(JSON.stringify(boxData))}
+/> */}

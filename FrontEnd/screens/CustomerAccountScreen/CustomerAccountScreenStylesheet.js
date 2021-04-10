@@ -15,16 +15,8 @@ const styles = StyleSheet.create({
         height: 45,
         margin: 15
     },
-    form: {
-        // flexDirection: 'row',
-        // width: '78%',
-        // height: 60,
-        // borderBottomWidth: 2,
-        // borderBottomColor: '#EAC71D',
-        // width: '100%',
-        // height: 45,
-        // margin: 10,
-        // backgroundColor: 'yellow'
+    logo: {
+        margin: 25
     },
     text:{
         // justifyContent: 'space-evenly',

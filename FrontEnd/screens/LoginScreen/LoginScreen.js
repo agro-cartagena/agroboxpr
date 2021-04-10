@@ -7,7 +7,7 @@ import global_styles from '../../styles';
 import { goToRegister } from '../../Navigator';
 
 import FormInput from '../../components/FormInput/FormInput'
-import UserAuthenticationService from '../../services/UserAuthenticationService'
+import UserService from '../../services/UserService'
 import Logo from '../../components/Logo/Logo';
 
 import Button from '../../components/Button/Button'
@@ -19,12 +19,12 @@ const LoginScreen = () => {
     })
 
     const sendCredentials = () => {
-        UserAuthenticationService.instance.sendLogin(formData)
+        UserService.instance.sendLogin(formData)
     }
 
     // This method is for debugging only.
     const displayToken = () => {
-        alert(UserAuthenticationService.instance.webToken)
+        alert(UserService.instance.webToken)
     }
 
     return (

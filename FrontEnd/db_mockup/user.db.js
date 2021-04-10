@@ -1,52 +1,12 @@
-const users = [
+const user = 
     {
-        name: "Juan Del Pueblo",
+        full_name: "Juan Del Pueblo",
         email: "juandelpueblo@gmail.com", 
         phone : "78755555555",
         address: "Urb. algun lugar del mundo",
         city: "San Juan",
+        state: "P FKN R",
         zipcode: "00666"
-    },
-    {
-        name: "Fulana del puelo",
-        email: "juanitapueblo@gmail.com", 
-        phone : "78755555555",
-        address: "Urb. algun lugar del mundo",
-        city: "San Juan",
-        zipcode: "00666"
-    },
-    {
-        name: "Pepe Del Pueblo",
-        email: "juandelpueblo@gmail.com", 
-        phone : "78755555555",
-        address: "Urb. algun lugar del mundo",
-        city: "San Juan",
-        zipcode: "00666"
-    },
-    {
-        name: "Gabriela Del Pueblo",
-        email: "juandelpueblo@gmail.com", 
-        phone : "78755555555",
-        address: "Urb. algun lugar del mundo",
-        city: "San Juan",
-        zipcode: "00666"
-    },
-    {
-        name: "Jose Del Pueblo",
-        email: "juandelpueblo@gmail.com", 
-        phone : "78755555555",
-        address: "Urb. algun lugar del mundo",
-        city: "San Juan",
-        zipcode: "00666"
-    },
-    {
-        name: "armando Del Pueblo",
-        email: "juandelpueblo@gmail.com", 
-        phone : "78755555555",
-        address: "Urb. algun lugar del mundo",
-        city: "San Juan",
-        zipcode: "00666"
-    },
-]
+    }
 
-export default users
+export default user

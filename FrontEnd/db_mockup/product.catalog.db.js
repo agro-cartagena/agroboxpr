@@ -35,6 +35,15 @@ const catalog = {
             product_quantity_stock: 2,
             product_units: 'dientes',
             product_price: 0.30
+        },
+        {
+            product_id: 20,
+            product_name: 'Ajo',
+            product_category: 'Vegetales',
+            product_image: require('../assets/products/Broccoli.jpeg'),
+            product_quantity_stock: 2,
+            product_units: 'dientes',
+            product_price: 0.30
         }
     ],
 

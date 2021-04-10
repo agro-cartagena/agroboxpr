@@ -1,41 +1,47 @@
-// const {cloudinary} = require('cloudinary-react')
+import { FileSystem } from "react-native-unimodules"
 
-// export default class CloudinaryService {
-//     static instance = CloudinaryService.instance || new CloudinaryService()
-//     _cloud 
+const CLOUD_NAME = 'dmgtwcsvf'
 
-//     constructor() { 
-//         this._cloud = cloudinary.v2;
-//         this._cloud.config({
-//             cloud_name: 'dmgtwcsvf',
-//             api_key: '681994657981227',
-//             api_secret: 'zTFQwzUmCi42EIm4OxfSKm2-eBo'
-//         })
-//     }
+export default class CloudinaryService {
+    static instance = CloudinaryService.instance || new CloudinaryService()
+    _url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`
 
-//     async uploadImage(image) {
-//         return this._cloud.uploader.upload(image.url)
-//             .then(data => {
-//                 alert('Upload succesful')
-//                 return {
-//                     id: data.public_id,
-//                     url: data.url 
-//                 }
-//             })
-//             .catch(() => {
-//                 throw new Error("Ha ocurrido un error subiendo la imagen a la nube.")
-//             })
-//     }
+    constructor() { }
 
-//     async deleteImage(image_id) {
-//         return this._cloud.uploader.destroy(image_id)
-//             .then(() => {
-//                 alert('Delete succesful')
-//                 return true
-//             })
-//             .catch(() => {
-//                 alert('Delete not succesful')
-//                 return false
-//             })
-//     }
-// }
+    async uploadImage(image) {
+        // alert(image.url)
+        let filePath = await FileSystem.readAsStringAsync(image.url, {encoding: 'base64'})
+
+        let payload = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                file: filePath,
+                upload_preset: 'to_boxes'
+            })
+        }
+
+        await fetch(this._url, payload)
+            .then(response => response.json())
+            .then(data => {
+                // alert(`Image upload success. Data is: ${JSON.stringify(data)}`)
+            })
+            .catch(error => {
+                // alert("Image upload failed. ", error)
+            })
+    }
+
+    async deleteImage(image_id) {
+        return this._cloud.uploader.destroy(image_id)
+            .then(() => {
+                alert('Delete succesful')
+                return true
+            })
+            .catch(() => {
+                alert('Delete not succesful')
+                return false
+            })
+    }
+}

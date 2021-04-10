@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import SquareGrid from 'react-native-square-grid'
 import styles from './DropDownStyleSheet'
 
 const DropDown = (props) => {

@@ -15,7 +15,7 @@ import { goToBoxManagement } from '../../Navigator'
 
 import ProductService from '../../services/ProductService'
 import BoxService from '../../services/BoxService'
-// import CloudinaryService from '../../services/CloudinaryService'
+import CloudinaryService from '../../services/CloudinaryService'
 
 const EditBoxScreen = (props) => {
     let _isNewBox = props.params == "new"
@@ -142,8 +142,8 @@ const EditBoxScreen = (props) => {
             
 
             try {
-                // let result = await CloudinaryService.instance.uploadImage(boxImage)
-                setBoxImage(result)
+                let result = await CloudinaryService.instance.uploadImage(boxImage)
+                // setBoxImage(result)
             } catch (error) { alert(error.message) }
         }
     }
@@ -187,7 +187,7 @@ const EditBoxScreen = (props) => {
                 <View style={styles.button}>
                     <Button
                         text="Guardar"
-                        // onTouch={submitHandler}
+                        onTouch={submitHandler}
                     />
                 </View>
             </View>

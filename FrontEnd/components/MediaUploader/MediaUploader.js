@@ -18,9 +18,10 @@ const MediaUploader = (props) => {
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                 allowsEditing: true,
                 aspect: [4, 3],
-                quality: 1
+                quality: 1,
+                base64: true
             });
-                
+
             if (!result.cancelled) {
                 let url = Platform.OS == 'ios' ? result.uri.replace('file://', '') : result.uri
                 props.setMedia({...props.media, url: url});

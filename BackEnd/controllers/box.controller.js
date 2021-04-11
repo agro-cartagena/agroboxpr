@@ -1,5 +1,5 @@
 const { boxService } = require('../services')
-const { createBox, readAllBoxes, getBoxById } = boxService
+const { createBox, readAllBoxes, readAvailableBoxes, readBoxProducts, getBoxById } = boxService
 const { updateEntry, addProductList } = boxService
 
 const postBox = async (req, res, next) => {
@@ -38,11 +38,36 @@ const getAllBoxes = async (req, res, next) => {
 	}
 }
 
-const updateBox = async (req, res, next) => {
-	const params = req.body
+const getAvailableBoxes = async (req, res, next) => {
+	try {
+		await readAvailableBoxes().then((boxes) => {
+			res.status(200).send(boxes)
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getBoxProducts = async (req, res, next) => {
+	const id = req.params.id
 
 	try {
-		await updateEntry(params)
+		await readBoxProducts(id).then(products => {
+			res.status(200).send(products)
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const updateBox = async (req, res, next) => {
+	const id = req.params.id
+	const updateFields = req.body
+
+	try {
+		await updateEntry(id, updateFields)
 		res.sendStatus(200) && next()
 	} catch (e) {
 		console.log(e.message)
@@ -65,6 +90,8 @@ const addProducts = async (req, res, next) => {
 module.exports = {
 	postBox,
 	getAllBoxes,
+	getAvailableBoxes,
+	getBoxProducts,
 	getById,
 	updateBox,
 	addProducts,

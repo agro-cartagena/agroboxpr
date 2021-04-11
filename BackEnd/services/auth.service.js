@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const { userDb } = require('../db')
 
-const { registerNewUserDb, findUserByFilterDb } = userDb
+const { registerNewUserDb, findUserByFilterDb, findUserByEmailAndUpdate } = userDb
 
 const registerUser = async (name, email, password, phone) => {
 
@@ -91,7 +91,27 @@ const createJWT = (email, userId, role) => {
     });
 };
 
+const promoteUserToAdmin = async (email) => {
+    const updateDocument = {
+        "$set": {
+            "role": "admin"
+        }
+    }
+
+    await findUserByEmailAndUpdate({ email: email }, updateDocument).then(async user => {
+
+        if (user) {
+            console.log("User has been promoted", user)
+        } else {
+            console.log("User not found")
+        }
+    }).catch(err => {
+        throw new Error(err.message)
+    });
+}
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    promoteUserToAdmin
 }

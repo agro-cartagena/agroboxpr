@@ -5,7 +5,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 const createProductDb = async (product) => {
-	console.log('Inside Buyer db layer!', product)
+	console.log('Inside product db layer!', product)
 
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')

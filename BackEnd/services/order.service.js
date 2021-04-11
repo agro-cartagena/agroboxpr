@@ -32,9 +32,9 @@ const getOrderById = async (id) => {
 	}
 }
 
-const updateOrder = async (id) => {
+const updateOrder = async (id, changes) => {
 	try {
-		await updateOrderDb()
+		await updateOrderDb(id, changes)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -42,7 +42,7 @@ const updateOrder = async (id) => {
 
 const deleteOrder = async (id) => {
 	try {
-		await deleteOrderDb()
+		await deleteOrderDb(id)
 	} catch (e) {
 		throw new Error(e.message)
 	}

@@ -2,10 +2,10 @@ const { orderDb } = require('../db')
 
 const {
 	createOrderDb,
-	readAllOrdersDb,
+	readUserOrdersDb,
 	getOrderByIdDb,
 	updateOrderDb,
-	deleteOrderDb,
+	getOrderByMunicipalityDb,
 } = orderDb
 
 const createOrder = async (order) => {
@@ -16,9 +16,9 @@ const createOrder = async (order) => {
 	}
 }
 
-const readAllOrders = async () => {
+const readUserOrders = async (userId) => {
 	try {
-		await readAllOrdersDb()
+		await readUserOrdersDb(userId)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -40,9 +40,9 @@ const updateOrder = async (id, changes) => {
 	}
 }
 
-const deleteOrder = async (id) => {
+const getOrderByMunicipality = async (municipality) => {
 	try {
-		await deleteOrderDb(id)
+		await getOrderByMunicipalityDb(municipality)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -50,8 +50,8 @@ const deleteOrder = async (id) => {
 
 module.exports = {
 	createOrder,
-	readAllOrders,
+	readUserOrders,
 	getOrderById,
+	getOrderByMunicipality,
 	updateOrder,
-	deleteOrder,
 }

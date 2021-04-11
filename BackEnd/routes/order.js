@@ -4,10 +4,10 @@ var auth = require('../middleware/auth.middleware')
 
 const { orderController } = require('../controllers')
 
-router.get('/', orderController.getOrder)
-router.get('/:id', orderController.getById)
-router.post('/', orderController.postOrder)
-router.put('/:id', orderController.update)
-router.delete('/:id', orderController.deletion)
+router.post('/', orderController.postOrder) //Submit order (auth)
+router.get('/:id', orderController.getById) //get order using orderID
+router.get('/user/:id', orderController.getUserOrders) //get all orders from a user
+router.get('/:municipality', orderController.getByMunicipality) //get order by municipality
+router.put('/:id', orderController.update) //update order
 
 module.exports = router

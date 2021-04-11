@@ -2,51 +2,16 @@ const { orderService } = require('../services')
 
 const {
 	createOrder,
-	readAllOrders,
+	readUserOrders,
 	getOrderById,
+	getOrderByMunicipality,
 	updateOrder,
-	deleteOrder,
-} = orderService    
+} = orderService
 
 const postOrder = async (req, res, next) => {
-    const order = req.body
-    try {
-        await createOrder(order)
-        res.sendStatus(200)
-        next()
-    } catch (e) {
-        console.log(e.message)
-        res.sendStatus(500) && next(e)
-    }
-}
-
-const getOrder = async (req, res, next) => {
+	const order = req.body
 	try {
-        await readAllOrders()
-		res.sendStatus(200)
-		next()
-	} catch (e) {
-		console.log(e.message)
-		res.sendStatus(500) && next(e)
-	}    
-}    
-
-const getById = async (req, res, next) => {
-    const id = req.params.id
-	try {
-        await getOrderById(id)
-		res.sendStatus(200)
-		next()
-	} catch (e) {
-		console.log(e.message)
-		res.sendStatus(500) && next(e)
-	}    
-}    
-
-const update = async (req, res, next) => {
-    const id = req.params.id
-	try {
-        await updateOrder(id)
+		await createOrder(order)
 		res.sendStatus(200)
 		next()
 	} catch (e) {
@@ -55,10 +20,46 @@ const update = async (req, res, next) => {
 	}
 }
 
-const deletion = async (req, res, next) => {
-    const id = req.params.id
+const getUserOrders = async (req, res, next) => {
+	const userId = req.params.id
 	try {
-        await deleteOrder(id)
+		await readUserOrders(userId)
+		res.sendStatus(200)
+		next()
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getById = async (req, res, next) => {
+	const id = req.params.id
+	try {
+		await getOrderById(id)
+		res.sendStatus(200)
+		next()
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getByMunicipality = async (req, res, next) => {
+	const municipality = req.params.getByMunicipality
+	try {
+		await getOrderByMunicipality(municipality)
+		res.sendStatus(200)
+		next()
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const update = async (req, res, next) => {
+	const id = req.params.id
+	try {
+		await updateOrder(id)
 		res.sendStatus(200)
 		next()
 	} catch (e) {
@@ -68,9 +69,9 @@ const deletion = async (req, res, next) => {
 }
 
 module.exports = {
-	getOrder,
-	getById,
 	postOrder,
+	getById,
+	getUserOrders,
+	getByMunicipality,
 	update,
-	deletion,
 }

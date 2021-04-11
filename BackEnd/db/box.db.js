@@ -38,6 +38,20 @@ const findAllBoxesDb = async () => {
 	return collection.find({}).toArray()
 }
 
+const findAvailableBoxesDb = async (updateDocument) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('box')
+
+	return collection.find(updateDocument).toArray()
+}
+
+const findProductsByIdList = async (query) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('product')
+
+	return collection.find({ $or: query }).toArray()
+}
+
 /**
  * Searches the "box" colection of the database for a specidied box utilizing 
  * its object id and returns a array containing the search results 
@@ -51,22 +65,19 @@ const getBoxByIdDb = async (id) => {
 	return collection.findOne({ _id: ObjectId(id) })
 }
 
+
 /**
  * Updates a single object entry in the "box" colecction within the databes
  * @param JSON-List First index contains the query parameter for the database search.
  * Second parameter contains update informations.
  */
-const updateEntryDb = async (paramList) => {
+const updateEntryDb = async (query, updateDocument) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
 
-	//Separate query and undate parameters from the parameter JSON list recieved
-	const query = paramList[0]
-	const update = paramList[1]
-
 	// console.log(query, JSON.stringify(query));
 	console.log('Updating...\n')
-	return collection.updateOne(query, { $set: update })
+	return collection.findOneAndUpdate(query, updateDocument)
 }
 
 /**
@@ -87,6 +98,8 @@ const addProductListDb = async (paramList) => {
 module.exports = {
 	insertBoxDb,
 	findAllBoxesDb,
+	findAvailableBoxesDb,
+	findProductsByIdList,
 	getBoxByIdDb,
 	updateEntryDb,
 	addProductListDb,

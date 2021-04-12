@@ -6,12 +6,12 @@ import styles from './MenuScreenStyleSheet'
 import Logo from '../../components/Logo/Logo'
 import Button from '../../components/Button/Button'
 
-import UserAuthenticationService from '../../services/UserAuthenticationService'
+import UserService from '../../services/UserService'
 
 const MenuScreen = () => {
 
-    const [isAuthenticated, setAuth] = React.useState(UserAuthenticationService.instance.isAuthenticated())
-    const [isAdmin, setAdmin] = React.useState(UserAuthenticationService.instance.isAdmin())
+    const [isAuthenticated, setAuth] = React.useState(UserService.instance.isAuthenticated())
+    const [isAdmin, setAdmin] = React.useState(UserService.instance.isAdmin())
 
     const logout = () => {
         Alert.alert(
@@ -24,7 +24,7 @@ const MenuScreen = () => {
                 {
                     text: "Confirmar",
                     onPress: () => {
-                        UserAuthenticationService.instance.logout()
+                        UserService.instance.logout()
                         setAuth(false)
                     }
                 }
@@ -88,7 +88,6 @@ const MenuScreen = () => {
                     </View>
                 </View>
             </View>
-
         </View>
     )
 }

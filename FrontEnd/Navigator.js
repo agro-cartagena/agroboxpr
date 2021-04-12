@@ -43,3 +43,7 @@ export const goToEditBox = (box) => {
 export const goToMenu = () => {
     Actions.menu()
 }
+
+export const goToEditAccount = () => {
+    Actions.edit_account()
+}

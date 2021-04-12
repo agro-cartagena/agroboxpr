@@ -16,6 +16,8 @@ import InventoryManagementScreen from './screens/InventoryManagementScreen/Inven
 import ProductManagementScreen from './screens/ProductManagementScreen/ProductManagementScreen'
 import BoxManagementScreen from './screens/BoxManagementScreen/BoxManagementScreen'
 
+import EditAccountScreen from './screens/EditAccountScreen/EditAccountScreen'
+
 const Routes = () => {
     return(
         <Router sceneStyle={styles.app}>
@@ -31,6 +33,7 @@ const Routes = () => {
                 <Scene key="product_management" component={ProductManagementScreen} title="Product Management" hideNavBar={true}/>
                 <Scene key="edit_product" component={EditProductScreen} title="Edit Product" hideNavBar={true}/>
                 <Scene key="menu" component={MenuScreen} title="Menu" hideNavBar={true}/>
+                <Scene key="edit_account" component={EditAccountScreen} title="Edit Account" hideNavBar={true}/>
             </Scene>
         </Router>
     )

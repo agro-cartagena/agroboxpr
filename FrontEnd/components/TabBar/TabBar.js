@@ -6,9 +6,11 @@ import global_styles from '../../styles'
 import Tab from '../Tab/Tab'
 
 import { 
-    goToLogin, goToHome,
-    goToCart, goToInventoryManagement, goToMenu
+    goToLogin, goToEditAccount,
+    goToCart, goToHome, goToMenu
 } from '../../Navigator'
+
+import UserService from '../../services/UserService'
 
 const TabBar = () => {
 
@@ -31,7 +33,12 @@ const TabBar = () => {
                 defaultIcon={require('../../assets/icons/user-profile.png')}
                 activeIcon={require('../../assets/icons/user-profile-active.png')}
                 isActive={activeTab == "user-tab"}
-                onTouch={() => { if(activeTab != "user-tab"){ setActiveTab("user-tab"); goToLogin() }}}
+                onTouch={() => { 
+                    if(activeTab != "user-tab") { 
+                        setActiveTab("user-tab"); 
+                        UserService.instance.isAuthenticated() ? goToEditAccount() : goToLogin()
+                    }
+                }}
             />
     
             <Tab

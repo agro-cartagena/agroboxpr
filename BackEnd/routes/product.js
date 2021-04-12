@@ -4,10 +4,10 @@ var auth = require('../middleware/auth.middleware')
 
 const { productController } = require('../controllers')
 
-router.post('/', productController.postProduct)
-router.put('/:id', productController.update)
+router.post('/', auth, productController.postProduct)
+router.put('/:id', auth, productController.update)
 router.get('/:id', productController.getById)
 router.get('/', productController.getProducts)
-router.delete('/:id', productController.deletion)
+router.delete('/:id', auth, productController.deletion)
 
 module.exports = router

@@ -1,11 +1,12 @@
 var express = require('express')
 var router = express.Router()
+var auth = require('../middleware/auth.middleware')
 
 const { boxController } = require('../controllers')
 
 
 //insert new box to box db
-router.post('/', boxController.postBox)
+router.post('/', auth, boxController.postBox)
 
 router.get('/products/:id', boxController.getBoxProducts)
 
@@ -15,13 +16,13 @@ router.get('/available', boxController.getAvailableBoxes)
 router.get('/:id',boxController.getById)
 
 //retrieve a list of boxes in the db
-router.get('/', boxController.getAllBoxes)
+router.get('/', auth,  boxController.getAllBoxes)
 
 //Update box information
-router.put('/:id', boxController.updateBox)
+router.put('/:id', auth, boxController.updateBox)
 
 // * Uses query and takes in a JSON list of products as second param
-router.put('/addProduct', boxController.addProducts)
+router.put('/addProduct', auth, boxController.addProducts)
 
 
 

@@ -32,6 +32,19 @@ export default class UserAuthenticationService extends Service {
             .catch(error => alert("error storing token"))
     }
 
+    isAuthenticated() { 
+        return this.webToken != "undefined"
+    }
+
+    isAdmin() {
+        // decrypt jwt, read role property, and verify it is 'admin'
+        return true
+    }
+
+    logout() {
+        this.setWebToken("undefined")
+    }
+
     sendLogin(data) {
         // Declare payload
         let payload = {

@@ -7,7 +7,7 @@ import Tab from '../Tab/Tab'
 
 import { 
     goToLogin, goToHome,
-    goToCart, goToInventoryManagement
+    goToCart, goToInventoryManagement, goToMenu
 } from '../../Navigator'
 
 const TabBar = () => {
@@ -52,7 +52,7 @@ const TabBar = () => {
                 defaultIcon={require('../../assets/icons/Menu.png')}
                 activeIcon={require('../../assets/icons/menu-active.png')}
                 isActive={activeTab == "menu-tab"}
-                onTouch={() => { if(activeTab != "menu-tab"){ setActiveTab("menu-tab"); goToInventoryManagement() }}}
+                onTouch={() => { if(activeTab != "menu-tab"){ setActiveTab("menu-tab"); goToMenu() }}}
             /> 
         </View>
     )  

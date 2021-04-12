@@ -11,6 +11,7 @@ import CartScreen from './screens/CartScreen/CartScreen'
 import EditProductScreen from './screens/EditProductScreen/EditProductScreen'
 import EditBoxScreen from './screens/EditBoxScreen/EditBoxScreen'
 
+import MenuScreen from './screens/MenuScreen/MenuScreen'
 import InventoryManagementScreen from './screens/InventoryManagementScreen/InventoryManagementScreen'
 import ProductManagementScreen from './screens/ProductManagementScreen/ProductManagementScreen'
 import BoxManagementScreen from './screens/BoxManagementScreen/BoxManagementScreen'
@@ -29,6 +30,7 @@ const Routes = () => {
                 <Scene key="edit_box" component={EditBoxScreen} title="Edit Box" hideNavBar={true}/>
                 <Scene key="product_management" component={ProductManagementScreen} title="Product Management" hideNavBar={true}/>
                 <Scene key="edit_product" component={EditProductScreen} title="Edit Product" hideNavBar={true}/>
+                <Scene key="menu" component={MenuScreen} title="Menu" hideNavBar={true}/>
             </Scene>
         </Router>
     )

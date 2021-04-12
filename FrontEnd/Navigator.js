@@ -39,3 +39,7 @@ export const goToBoxManagement = () => {
 export const goToEditBox = (box) => {
     Actions.edit_box({ params: box })
 }
+
+export const goToMenu = () => {
+    Actions.menu()
+}

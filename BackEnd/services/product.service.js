@@ -1,5 +1,5 @@
 const { productDb } = require('../db')
-const { validateMiddleware } = require('../middleware')
+const { validationMiddleware } = require('../middleware')
 
 const {
 	createProductDb,
@@ -9,14 +9,14 @@ const {
 	deleteProductDb,
 } = productDb
 
-const { validateProductForInsert, validateId } = validateMiddleware
+const { validateProduct, validateId } = validationMiddleware
 
 const insertProduct = async (product) => {
 	console.log('Inside product service!', product)
 
 	try {
 		let validate
-		await validateProductForInsert(product).then((result) => {
+		await validateProduct(product).then((result) => {
 			validate = result
 		})
 		//No duplicate date

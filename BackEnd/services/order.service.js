@@ -1,4 +1,5 @@
 const { orderDb } = require('../db')
+const { validationMiddleware } = require('../middleware')
 
 const {
 	createOrderDb,
@@ -7,6 +8,8 @@ const {
 	updateOrderDb,
 	getOrderByMunicipalityDb,
 } = orderDb
+
+const { validateId, validateUserId } = validationMiddleware
 
 const createOrder = async (order) => {
 	try {
@@ -18,7 +21,15 @@ const createOrder = async (order) => {
 
 const readUserOrders = async (userId) => {
 	try {
-		await readUserOrdersDb(userId)
+		let validate
+		await validateUserId(userId).then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await readUserOrdersDb(userId)
+		} else {
+			return null
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -26,7 +37,15 @@ const readUserOrders = async (userId) => {
 
 const getOrderById = async (id) => {
 	try {
-		await getOrderByIdDb(id)
+		let validate
+		await validateId(id).then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await getOrderByIdDb(id)
+		} else {
+			return null
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -34,7 +53,15 @@ const getOrderById = async (id) => {
 
 const updateOrder = async (id, changes) => {
 	try {
-		await updateOrderDb(id, changes)
+		let validate
+		await validateId(id).then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await updateOrderDb(id, changes)
+		} else {
+			return null
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}

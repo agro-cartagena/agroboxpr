@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb')
 const dotenv = require('dotenv')
 dotenv.config()
 
-const validateProductForInsert = async (product) => {
+const validateProduct = async (product) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')
 
@@ -21,7 +21,15 @@ const validateId = async (id, type) => {
 	return await collection.findOne({ _id: ObjectId(id) })
 }
 
+const validateUserId = async (userId) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('order')
+
+	return await collection.findOne({user_id: userId})
+}
+
 module.exports = {
-    validateProductForInsert,
-    validateId
+    validateProduct,
+    validateId,
+	validateUserId
 }

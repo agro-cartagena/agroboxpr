@@ -23,9 +23,14 @@ const postOrder = async (req, res, next) => {
 const getUserOrders = async (req, res, next) => {
 	const userId = req.params.id
 	try {
-		await readUserOrders(userId)
-		res.sendStatus(200)
-		next()
+		const get = await readUserOrders(userId)
+		if (get != null) {
+			res.sendStatus(200)
+			next()
+		} else {
+			res.sendStatus(404)
+			next()
+		}
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(500) && next(e)
@@ -35,9 +40,14 @@ const getUserOrders = async (req, res, next) => {
 const getById = async (req, res, next) => {
 	const id = req.params.id
 	try {
-		await getOrderById(id)
-		res.sendStatus(200)
-		next()
+		const get = await getOrderById(id)
+		if (get != null) {
+			res.sendStatus(200)
+			next()
+		} else {
+			res.sendStatus(404)
+			next()
+		}
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(500) && next(e)
@@ -59,9 +69,14 @@ const getByMunicipality = async (req, res, next) => {
 const update = async (req, res, next) => {
 	const id = req.params.id
 	try {
-		await updateOrder(id)
-		res.sendStatus(200)
-		next()
+		const update = await updateOrder(id)
+		if (update != null) {
+			res.sendStatus(200)
+			next()
+		} else {
+			res.sendStatus(404)
+			next()
+		}
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(500) && next(e)

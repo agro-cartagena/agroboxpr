@@ -6,6 +6,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
 
+    logoContainer: {
+        margin: 30
+    },
+
     header: {
         fontSize: 25,
         fontWeight: "bold",

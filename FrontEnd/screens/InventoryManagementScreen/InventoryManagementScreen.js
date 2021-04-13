@@ -4,14 +4,19 @@ import Button from '../../components/Button/Button'
 
 import global_styles from '../../styles'
 import styles from './InventoryManagementScreenStyleSheet'
+import BackArrow from '../../components/BackArrow/BackArrow'
 import Logo from '../../components/Logo/Logo'
 
-import { goToProductManagement, goToBoxManagement } from '../../Navigator'
+import { goToProductManagement, goToBoxManagement, goToMenu } from '../../Navigator'
 
 const InventoryManagementScreen = () => {
     return(
-        <View style={[global_styles.screen, styles.screen]}>
-            <Logo/>
+        <View style={[global_styles.screen]}>
+            <BackArrow onTouch={() => goToMenu()}/>
+
+            <View style={styles.logoContainer}>
+                <Logo/>  
+            </View>
 
             <Text style={[global_styles.text, styles.header]}>Manejar Inventario</Text>
 

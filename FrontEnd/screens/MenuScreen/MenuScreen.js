@@ -1,12 +1,14 @@
 import React from 'react'
-import { View, Text, Alert } from 'react-native'
+import { View, Alert } from 'react-native'
 
 import styles from './MenuScreenStyleSheet'
-
 import Logo from '../../components/Logo/Logo'
 import Button from '../../components/Button/Button'
 
 import UserService from '../../services/UserService'
+import {
+    goToInventoryManagement
+} from '../../Navigator'
 
 const MenuScreen = () => {
 
@@ -54,6 +56,7 @@ const MenuScreen = () => {
                             <Button
                                 text="Manejar Inventario"
                                 style={{backgroundColor: '#801A3500'}}
+                                onTouch={() => goToInventoryManagement()}
                             />
                         </View>
 

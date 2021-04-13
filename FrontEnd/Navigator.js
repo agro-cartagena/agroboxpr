@@ -47,3 +47,7 @@ export const goToMenu = () => {
 export const goToEditAccount = () => {
     Actions.edit_account()
 }
+
+export const goToAdminManagement = () => {
+    Actions.admin_management()
+}

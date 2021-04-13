@@ -7,7 +7,7 @@ import Button from '../../../components/Button/Button'
 
 import UserService from '../../../services/UserService'
 import {
-    goToInventoryManagement
+    goToInventoryManagement, goToAdminManagement
 } from '../../../Navigator'
 
 const MenuScreen = () => {
@@ -64,6 +64,7 @@ const MenuScreen = () => {
                             <Button
                                 text="Manejar Administradores"
                                 style={{backgroundColor: '#801A3500'}}
+                                onTouch={() => goToAdminManagement()}
                             />
                         </View>
 

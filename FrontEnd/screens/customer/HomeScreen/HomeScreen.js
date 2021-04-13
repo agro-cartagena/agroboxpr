@@ -1,13 +1,13 @@
 import React from 'react'
 import { ScrollView, TouchableOpacity, View } from 'react-native'
-import { goToViewBox } from '../../Navigator'
+import { goToViewBox } from '../../../Navigator'
 
-import BoxService from '../../services/BoxService'
-import BoxCard from '../../components/BoxCard/BoxCard'
+import BoxService from '../../../services/BoxService'
+import BoxCard from '../../../components/BoxCard/BoxCard'
 
 import styles from './HomeScreenStyleSheet'
-import global_styles from '../../styles'
-import Logo from '../../components/Logo/Logo'
+import global_styles from '../../../styles'
+import Logo from '../../../components/Logo/Logo'
 
 const HomeScreen = () => {
     const [ boxList, setBoxList ] = React.useState([])

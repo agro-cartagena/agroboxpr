@@ -1,21 +1,21 @@
 import React from 'react'
 import { ScrollView, View, Text } from 'react-native'
 
-import BackArrow from '../../components/BackArrow/BackArrow'
-import FormInput from '../../components/FormInput/FormInput'
-import Button from '../../components/Button/Button'
+import BackArrow from '../../../components/BackArrow/BackArrow'
+import FormInput from '../../../components/FormInput/FormInput'
+import Button from '../../../components/Button/Button'
 
-import DropDown from '../../components/DropDown/DropDown'
-import InteractiveProductCard from '../../components/InteractiveProductCard/InteractiveProductCard'
-import MediaUploader from '../../components/MediaUploader/MediaUploader'
+import DropDown from '../../../components/DropDown/DropDown'
+import InteractiveProductCard from '../../../components/InteractiveProductCard/InteractiveProductCard'
+import MediaUploader from '../../../components/MediaUploader/MediaUploader'
 
 import styles from './EditBoxScreenStyleSheet'
-import global_styles from '../../styles'
-import { goToBoxManagement } from '../../Navigator'
+import global_styles from '../../../styles'
+import { goToBoxManagement } from '../../../Navigator'
 
-import ProductService from '../../services/ProductService'
-import BoxService from '../../services/BoxService'
-import CloudinaryService from '../../services/CloudinaryService'
+import ProductService from '../../../services/ProductService'
+import BoxService from '../../../services/BoxService'
+import CloudinaryService from '../../../services/CloudinaryService'
 
 const EditBoxScreen = (props) => {
     let _isNewBox = props.params == "new"

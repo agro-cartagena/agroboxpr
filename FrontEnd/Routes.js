@@ -4,19 +4,19 @@ import styles from './styles'
 
 import RegisterScreen from './screens/RegisterScreen/RegisterScreen'
 import LoginScreen from './screens/LoginScreen/LoginScreen'
-import HomeScreen from './screens/HomeScreen/HomeScreen'
+import HomeScreen from './screens/customer/HomeScreen/HomeScreen'
 
 import ViewBoxScreen from './screens/ViewBoxScreen/ViewBoxScreen'
-import CartScreen from './screens/CartScreen/CartScreen'
-import EditProductScreen from './screens/EditProductScreen/EditProductScreen'
-import EditBoxScreen from './screens/EditBoxScreen/EditBoxScreen'
+import CartScreen from './screens/customer/CartScreen/CartScreen'
+import EditProductScreen from './screens/admin/EditProductScreen/EditProductScreen'
+import EditBoxScreen from './screens/admin/EditBoxScreen/EditBoxScreen'
 
 import MenuScreen from './screens/MenuScreen/MenuScreen'
-import InventoryManagementScreen from './screens/InventoryManagementScreen/InventoryManagementScreen'
-import ProductManagementScreen from './screens/ProductManagementScreen/ProductManagementScreen'
-import BoxManagementScreen from './screens/BoxManagementScreen/BoxManagementScreen'
+import ManageInventoryScreen from './screens/admin/ManageInventoryScreen/ManageInventoryScreen'
+import ManageProductsScreen from './screens/admin/ManageProductsScreen/ManageProductsScreen'
+import ManageBoxesScreen from './screens/admin/ManageBoxesScreen/ManageBoxesScreen'
 
-import EditAccountScreen from './screens/EditAccountScreen/EditAccountScreen'
+import EditAccountScreen from './screens/customer/EditAccountScreen/EditAccountScreen'
 
 const Routes = () => {
     return(
@@ -27,10 +27,10 @@ const Routes = () => {
                 <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true} initial={true}/>
                 <Scene key="view_box" component={ViewBoxScreen} title="View Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
-                <Scene key="inventory_management" component={InventoryManagementScreen} title="Inventory Management" hideNavBar={true}/>
-                <Scene key="box_management" component={BoxManagementScreen} title="Box Management" hideNavBar={true}/>
+                <Scene key="inventory_management" component={ManageInventoryScreen} title="Inventory Management" hideNavBar={true}/>
+                <Scene key="box_management" component={ManageBoxesScreen} title="Box Management" hideNavBar={true}/>
                 <Scene key="edit_box" component={EditBoxScreen} title="Edit Box" hideNavBar={true}/>
-                <Scene key="product_management" component={ProductManagementScreen} title="Product Management" hideNavBar={true}/>
+                <Scene key="product_management" component={ManageProductsScreen} title="Product Management" hideNavBar={true}/>
                 <Scene key="edit_product" component={EditProductScreen} title="Edit Product" hideNavBar={true}/>
                 <Scene key="menu" component={MenuScreen} title="Menu" hideNavBar={true}/>
                 <Scene key="edit_account" component={EditAccountScreen} title="Edit Account" hideNavBar={true}/>

@@ -2,14 +2,14 @@ import React from 'react'
 import { ScrollView, View, Image, Text, TextInput } from 'react-native'
 
 import styles from './EditProductScreenStyleSheet'
-import global_styles from '../../styles'
+import global_styles from '../../../styles'
 
-import BackArrow from '../../components/BackArrow/BackArrow'
-import FormInput from '../../components/FormInput/FormInput'
-import Button from '../../components/Button/Button'
+import BackArrow from '../../../components/BackArrow/BackArrow'
+import FormInput from '../../../components/FormInput/FormInput'
+import Button from '../../../components/Button/Button'
 
-import { goToProductManagement } from '../../Navigator'
-import MediaUploader from '../../components/MediaUploader/MediaUploader'
+import { goToProductManagement } from '../../../Navigator'
+import MediaUploader from '../../../components/MediaUploader/MediaUploader'
 
 const ProductScreen = (props) => {
     let _isNewProduct = props.params == "new", 
@@ -29,7 +29,7 @@ const ProductScreen = (props) => {
 
             <View style={[styles.imageContainer, styles.radius]}>
                 <Image
-                    source={require('../../assets/products/Broccoli.jpeg')}
+                    source={require('../../../assets/products/Broccoli.jpeg')}
                     style={[styles.productImage, styles.radius]}
                 />
             </View>

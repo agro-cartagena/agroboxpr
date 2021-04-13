@@ -1,15 +1,15 @@
 import React from 'react'
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 
-import global_styles from '../../styles'
-import styles from './BoxManagementScreenStyleSheet'
+import global_styles from '../../../styles'
+import styles from './ManageBoxesScreenStyleSheet'
 
-import BackArrow from '../../components/BackArrow/BackArrow'
-import Button from '../../components/Button/Button'
-import BoxCard from '../../components/BoxCard/BoxCard'
+import BackArrow from '../../../components/BackArrow/BackArrow'
+import Button from '../../../components/Button/Button'
+import BoxCard from '../../../components/BoxCard/BoxCard'
 
-import BoxService from '../../services/BoxService'
-import { goToInventoryManagement, goToEditBox } from '../../Navigator'
+import BoxService from '../../../services/BoxService'
+import { goToInventoryManagement, goToEditBox } from '../../../Navigator'
 
 const BoxManagementScreen = () => {
     const [boxList, setBoxList] = React.useState([])

@@ -1,13 +1,13 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import Button from '../../components/Button/Button'
+import Button from '../../../components/Button/Button'
 
-import global_styles from '../../styles'
-import styles from './InventoryManagementScreenStyleSheet'
-import BackArrow from '../../components/BackArrow/BackArrow'
-import Logo from '../../components/Logo/Logo'
+import global_styles from '../../../styles'
+import styles from './ManageInventoryScreenStyleSheet'
+import BackArrow from '../../../components/BackArrow/BackArrow'
+import Logo from '../../../components/Logo/Logo'
 
-import { goToProductManagement, goToBoxManagement, goToMenu } from '../../Navigator'
+import { goToProductManagement, goToBoxManagement, goToMenu } from '../../../Navigator'
 
 const InventoryManagementScreen = () => {
     return(

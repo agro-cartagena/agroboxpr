@@ -1,16 +1,16 @@
 import React from 'react'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
-import styles from './ProductManagementScreenStyleSheet'
-import global_styles from '../../styles'
+import styles from './ManageProductsScreenStyleSheet'
+import global_styles from '../../../styles'
 
-import DropDown from '../../components/DropDown/DropDown'
-import ProductCard from '../../components/ProductCard/ProductCard'
-import ProductService from '../../services/ProductService'
+import DropDown from '../../../components/DropDown/DropDown'
+import ProductCard from '../../../components/ProductCard/ProductCard'
+import ProductService from '../../../services/ProductService'
 
-import { goToEditProduct, goToInventoryManagement } from '../../Navigator'
-import Button from '../../components/Button/Button'
-import BackArrow from '../../components/BackArrow/BackArrow'
+import { goToEditProduct, goToInventoryManagement } from '../../../Navigator'
+import Button from '../../../components/Button/Button'
+import BackArrow from '../../../components/BackArrow/BackArrow'
 
 const InventoryManagementScreen = () => {
 

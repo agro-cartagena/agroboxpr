@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, Text, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import Button from '../../components/Button/Button'
-import Logo from '../../components/Logo/Logo'
+import Button from '../../../components/Button/Button'
+import Logo from '../../../components/Logo/Logo'
 
 import styles from './EditAccountScreenStyleSheet'
-import global_styles from '../../styles';
+import global_styles from '../../../styles';
 
-import FormInput from '../../components/FormInput/FormInput'
-import UserService from '../../services/UserService'
-import DropDown from '../../components/DropDown/DropDown'
+import FormInput from '../../../components/FormInput/FormInput'
+import UserService from '../../../services/UserService'
+import DropDown from '../../../components/DropDown/DropDown'
 
 const EditAccountScreen = () => {
 

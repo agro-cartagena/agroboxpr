@@ -24,10 +24,10 @@ const readAllBoxes = async () => {
 		//Only return to client: name, price, imageUrl & boxId
 		const response = boxes.map(box => {
 			return {
-				boxId : box._id,
-				boxName : box.boxName,
-				boxPrice : box.boxPrice,
-				boxImage : box.boxImage
+				_id : box._id,
+				box_name : box.box_name,
+				box_price : box.box_price,
+				box_image : box.box_image
 			}
 		})
 		return response
@@ -45,10 +45,10 @@ const readAvailableBoxes = async () => {
 		//Only return to client: name, price, imageUrl & boxId
 		const response = boxes.map(box => {
 			return {
-				boxId : box._id,
-				boxName : box.boxName,
-				boxPrice : box.boxPrice,
-				boxImage : box.boxImage
+				_id : box._id,
+				box_name : box.box_name,
+				box_price : box.box_price,
+				box_image : box.box_image
 			}
 		})
 		return response

@@ -2,13 +2,13 @@ import React from 'react'
 import { View, Alert } from 'react-native'
 
 import styles from './MenuScreenStyleSheet'
-import Logo from '../../components/Logo/Logo'
-import Button from '../../components/Button/Button'
+import Logo from '../../../components/Logo/Logo'
+import Button from '../../../components/Button/Button'
 
-import UserService from '../../services/UserService'
+import UserService from '../../../services/UserService'
 import {
     goToInventoryManagement
-} from '../../Navigator'
+} from '../../../Navigator'
 
 const MenuScreen = () => {
 

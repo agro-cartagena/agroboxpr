@@ -3,20 +3,20 @@ import { View, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { Card } from 'react-native-elements'
-import Button from '../../components/Button/Button'
+import Button from '../../../components/Button/Button'
 
 import styles from './ViewBoxScreenStyleSheet';
-import global_styles from '../../styles'
-import { goToHome } from '../../Navigator'
+import global_styles from '../../../styles'
+import { goToHome } from '../../../Navigator'
 
-import BoxService from '../../services/BoxService'
-import ProductService from '../../services/ProductService'
-import CartService from '../../services/CartService'
+import BoxService from '../../../services/BoxService'
+import ProductService from '../../../services/ProductService'
+import CartService from '../../../services/CartService'
 
-import InteractiveProductCard from '../../components/InteractiveProductCard/InteractiveProductCard'
-import PlusMinus from '../../components/PlusMinus/PlusMinus'
-import BackArrow from '../../components/BackArrow/BackArrow'
-import DropDown from '../../components/DropDown/DropDown'
+import InteractiveProductCard from '../../../components/InteractiveProductCard/InteractiveProductCard'
+import PlusMinus from '../../../components/PlusMinus/PlusMinus'
+import BackArrow from '../../../components/BackArrow/BackArrow'
+import DropDown from '../../../components/DropDown/DropDown'
 
 // Route parameters are stored in props.params object
 // i.e., alert(props.params.box_name)

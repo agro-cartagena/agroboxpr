@@ -3,13 +3,13 @@ import { View, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './RegisterScreenStylesheet';
-import global_styles from '../../styles';
-import { goToLogin } from '../../Navigator';
+import global_styles from '../../../styles';
+import { goToLogin } from '../../../Navigator';
 
-import FormInput from '../../components/FormInput/FormInput'
-import UserService from '../../services/UserService'
-import Logo from '../../components/Logo/Logo'
-import Button from '../../components/Button/Button'
+import FormInput from '../../../components/FormInput/FormInput'
+import UserService from '../../../services/UserService'
+import Logo from '../../../components/Logo/Logo'
+import Button from '../../../components/Button/Button'
 
 const RegisterScreen = () => {
 

@@ -3,14 +3,14 @@ import { View, Text } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './LoginScreenStylesheet';
-import global_styles from '../../styles';
-import { goToRegister } from '../../Navigator';
+import global_styles from '../../../styles';
+import { goToRegister } from '../../../Navigator';
 
-import FormInput from '../../components/FormInput/FormInput'
-import UserService from '../../services/UserService'
-import Logo from '../../components/Logo/Logo';
+import FormInput from '../../../components/FormInput/FormInput'
+import UserService from '../../../services/UserService'
+import Logo from '../../../components/Logo/Logo';
 
-import Button from '../../components/Button/Button'
+import Button from '../../../components/Button/Button'
 
 const LoginScreen = () => {
     const [formData, changeFormData] = React.useState({

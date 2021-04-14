@@ -9,64 +9,111 @@ import global_styles from '../../styles'
 
 import Logo from '../../components/Logo/Logo'
 import Button from '../../components/Button/Button'
-import cart_list from '../../db_mockup/cart.db'
 
-import ProductService from '../../services/ProductService'
-import BoxService from '../../services/BoxService'
+import goToCheckout from '../../Navigator'
 
 const CartScreen = (props) => {
     let cart = []
-    
-    const [boxData, setBoxData] = React.useState({})
+
+    const [cartData, setCartData] = React.useState([
+        // box_content,
+        // cart_total_price:"",
+    ])
    
-    // React.useEffect(() => {
-    //     async function fetchData() {
-    //         let _box = {
-    //             ...props, 
-    //             box_quantity: 1,
-    //             box_accumulated_price: _isBuildYourBox ? 0 : props.params.box_price,
-    //             box_content:  _isBuildYourBox ? {} : await BoxService.instance.getBoxContent()
-    //         }
+    React.useEffect(() => {
+        async function fetchData() {
+            // console.log( await CartService.instance.getCart())
+            setCartData(await CartService.instance.getCart())
+            // let total_price = {
+            //     ...props,
+            //     cart_total_price:  props.params.box_price
+            // }
+            // console.log("---------------------")
+            // console.log(await CartService.instance.getCart())
+            // setBoxData(box_content)
+        }
 
-    //         setBoxData(_box)
-    //         if (_isBuildYourBox)
-    //             setProductCatalog(await ProductService.instance.getProductCatalog())
-    //     }
+        fetchData()
+    }, []);
+// console.log(JSON.stringify(cartData))
+    // const changeBoxQuantity = (box_id, newQuantity) => {
+    //     if (newQuantity <= 0)
+    //         delete cartData
+            
+    //     else
+    //         boxData.box_content[product_id] = newQuantity
+    // }
 
-    //     fetchData()
-    // }, []);
+    const decreaseBoxQuantity = (box) => {
+        // let //box_content = [box.box_content],
+            // box_key = box.box_name,
+            // quantity = box.quantity
+        console.log(box.box_name + box.quantity);
+
+        if (typeof box.quantity != "undefined") {
+            if (box.quantity < 1)
+                delete box.box_name
+            else
+                box.quantity -= 1
+
+            setCartData({
+                ...cartData,
+                box_price: Number((cartData.box_price -= box.box_price).toFixed(2)),
+                // quantity: box.quantity
+            })
+        }
+    }
+    
+    const increaseBoxQuantity = (box) => {
+        console.log(box.box_name + box.quantity);
+
+        if (typeof box.quantity != "undefined") {
+            if (box.quantity < 100)
+                box.quantity += 1
+                
+            setCartData({
+                ...cartData,
+                box_price: Number((cartData.box_price -= box.box_price).toFixed(2)),
+                // quantity: box.quantity
+            })
+        }
+    }
 
     const loadCart = async () => {
-        cart_list.forEach((item) => {
-            // alert(JSON.stringify(item))
+         cartData.forEach(element => { 
+            // alert(JSON.stringify(item))            
             cart.push(
-                <View style={styles.itemContainer} key={item.box_id}>
-                    <View key={item.box_name} style={styles.cardContainer}>
+                <View style={styles.itemContainer} key={element.box_id}>
+                    <View key={element.box_name} style={styles.cardContainer}>
                         <BoxCard
-                            id={item.box_id}
-                            name={item.box_name}
-                            image={item.box_image}
+                            id={element.box_id}
+                            name={element.box_name}
+                            
+                        // image={item.box_image} //change
                         />
                     </View>
-                    
+
                     <View style={styles.plusminus}>
-                        <PlusMinus 
-                             onMinus={() => { if(boxData.box_quantity > 1) setBoxData({ ...boxData, box_quantity: boxData.box_quantity -= 1})}}
-                             onPlus={()=>{ if(boxData.box_quantity < 100) setBoxData({ ...boxData, box_quantity: boxData.box_quantity += 1})}}
-                             placeholder={ boxData.box_quantity }
+                        <PlusMinus
+                            onMinus={() => {decreaseBoxQuantity(element)}}
+                            //if (element.quantity > 1) setCartData({ ...element, quantity: element.quantity -= 1 }) 
+                            //if(cartData.quantity > 1) setCartData({...cartData, quantity: cartData.quantity -= 1})}
+                            onPlus={() => { increaseBoxQuantity(element) }}
+                            //if (element.quantity < 100) setCartData({ ...element, quantity: element.quantity += 1 })
+                            placeholder={element.quantity}
                         />
                     </View>
-                    
-                    {/* <Text>${item.box_price} </Text> */}
-                    {/* <Text>x{item.quantity} </Text> */}
-                    <Text style={{fontWeight: 'bold', fontSize: 15}}> = ${item.box_price*item.quantity}</Text>
+
+                    <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_price * element.quantity}</Text>
+                
                 </View>
 
 
                 // Need to wrap BoxCard in a View and
                 // add another View for price, quantity, and total
-            )
-        })
+            ) 
+         })
+        // });
     }
 
     loadCart()
@@ -85,6 +132,7 @@ const CartScreen = (props) => {
 
             <View style={styles.buttonContainer}>
                 <Button
+                    onPress={() => goToCheckout()}
                     text="Pagar"
                 />
             </View>

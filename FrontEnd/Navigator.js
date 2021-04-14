@@ -20,6 +20,10 @@ export const goToCart = () => {
     Actions.cart()
 }
 
+export const goToCheckout = () => {
+    Actions.checkout()
+}
+
 export const goToInventoryManagement = () => {
     Actions.inventory_management()
 }

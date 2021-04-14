@@ -16,18 +16,18 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-start'
     },
 
     cardContainer: {
         width: '50%',
         height: 100,
         margin: 10,
-        width: '40%'
+        width: '40%',
     }, 
 
     plusminus:{
-        width: '40%',
+        width: '35%',
         height: 35,
         // backgroundColor: 'white'
     },

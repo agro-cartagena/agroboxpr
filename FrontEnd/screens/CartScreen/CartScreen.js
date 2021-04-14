@@ -10,7 +10,7 @@ import global_styles from '../../styles'
 import Logo from '../../components/Logo/Logo'
 import Button from '../../components/Button/Button'
 
-import goToCheckout from '../../Navigator'
+import { goToCheckout } from '../../Navigator'
 
 const CartScreen = (props) => {
     let cart = []
@@ -50,7 +50,7 @@ const CartScreen = (props) => {
             // quantity = box.quantity
         console.log(box.box_name + box.quantity);
 
-        if (typeof box.quantity != "undefined") {
+        // if (typeof box.quantity != "undefined") {
             if (box.quantity < 1)
                 delete box.box_name
             else
@@ -61,13 +61,13 @@ const CartScreen = (props) => {
                 box_price: Number((cartData.box_price -= box.box_price).toFixed(2)),
                 // quantity: box.quantity
             })
-        }
+        // }
     }
     
     const increaseBoxQuantity = (box) => {
         console.log(box.box_name + box.quantity);
 
-        if (typeof box.quantity != "undefined") {
+        // if (typeof box.quantity != "undefined") {
             if (box.quantity < 100)
                 box.quantity += 1
                 
@@ -76,38 +76,40 @@ const CartScreen = (props) => {
                 box_price: Number((cartData.box_price -= box.box_price).toFixed(2)),
                 // quantity: box.quantity
             })
-        }
+        // }
     }
 
     const loadCart = async () => {
          cartData.forEach(element => { 
-            // alert(JSON.stringify(item))            
+            // alert(JSON.stringify(item))       
             cart.push(
-                <View style={styles.itemContainer} key={element.box_id}>
-                    <View key={element.box_name} style={styles.cardContainer}>
-                        <BoxCard
-                            id={element.box_id}
-                            name={element.box_name}
-                            
-                        // image={item.box_image} //change
-                        />
-                    </View>
+                <View>
+                    <View style={styles.itemContainer} key={element.box_id}>
+                        <View key={element.box_name} style={styles.cardContainer}>
+                            <BoxCard
+                                id={element.box_id}
+                                name={element.box_name}
 
-                    <View style={styles.plusminus}>
-                        <PlusMinus
-                            onMinus={() => {decreaseBoxQuantity(element)}}
-                            //if (element.quantity > 1) setCartData({ ...element, quantity: element.quantity -= 1 }) 
-                            //if(cartData.quantity > 1) setCartData({...cartData, quantity: cartData.quantity -= 1})}
-                            onPlus={() => { increaseBoxQuantity(element) }}
-                            //if (element.quantity < 100) setCartData({ ...element, quantity: element.quantity += 1 })
-                            placeholder={element.quantity}
-                        />
-                    </View>
+                            // image={item.box_image} //change
+                            />
+                        </View>
 
-                    <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_price * element.quantity}</Text>
-                
+                        <View style={styles.plusminus} >
+                            <PlusMinus
+                                onMinus={() => { decreaseBoxQuantity(element) }}
+                                //if (element.quantity > 1) setCartData({ ...element, quantity: element.quantity -= 1 }) 
+                                //if(cartData.quantity > 1) setCartData({...cartData, quantity: cartData.quantity -= 1})}
+                                onPlus={() => { increaseBoxQuantity(element) }}
+                                //if (element.quantity < 100) setCartData({ ...element, quantity: element.quantity += 1 })
+                                placeholder={element.quantity}
+                            />
+                        </View>
+
+                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_price * element.quantity}</Text>
+
+                    </View>
+                    
                 </View>
-
 
                 // Need to wrap BoxCard in a View and
                 // add another View for price, quantity, and total
@@ -132,7 +134,7 @@ const CartScreen = (props) => {
 
             <View style={styles.buttonContainer}>
                 <Button
-                    onPress={() => goToCheckout()}
+                    onTouch={goToCheckout}
                     text="Pagar"
                 />
             </View>

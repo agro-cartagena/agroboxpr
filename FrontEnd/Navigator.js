@@ -24,6 +24,10 @@ export const goToCheckout = () => {
     Actions.checkout()
 }
 
+export const goToPayment = () => {
+    Actions.payment()
+}
+
 export const goToInventoryManagement = () => {
     Actions.inventory_management()
 }

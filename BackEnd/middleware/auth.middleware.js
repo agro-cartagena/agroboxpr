@@ -61,7 +61,7 @@ const adminAuth = async (req, res, next) => {
         }
 
         if (verified.role != "admin") {
-            return res.status(401).json({ msg: "Not authrorized for request." });
+            return res.status(403).json({ msg: "Not authrorized for request." });
         }
 
         //Refresh token and send to client

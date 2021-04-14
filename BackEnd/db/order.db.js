@@ -19,11 +19,11 @@ const createOrderDb = async (order) => {
 		.catch((error) => console.error(error))
 }
 
-const readUserOrdersDb = async (userId) => {
+const readUserOrdersDb = async (user_Id) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('order')
 
-	return collection.find({}).toArray()
+	return collection.find({userId: user_Id}).toArray()
 }
 
 const getOrderByIdDb = async (id) => {
@@ -37,14 +37,14 @@ const updateOrderDb = async (id, changes) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('order')
 
-    return collection.updateOne({ _id: ObjectId(id) }, {$set: changes})
+	return collection.updateOne({ _id: ObjectId(id) }, { $set: changes })
 }
 
-const getOrderByMunicipalityDb= async (municipality) => {
+const getOrderByMunicipalityDb = async (mun) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('order')
 
-    return collection.findOne({})
+	return collection.find({municipality: mun}).toArray()
 }
 
 module.exports = {

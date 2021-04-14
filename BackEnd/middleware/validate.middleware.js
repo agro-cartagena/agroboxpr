@@ -21,11 +21,11 @@ const validateId = async (id, type) => {
 	return await collection.findOne({ _id: ObjectId(id) })
 }
 
-const validateUserId = async (userId) => {
+const validateUserId = async (user_Id) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('order')
 
-	return await collection.findOne({user_id: userId})
+	return await collection.findOne({userId: user_Id})
 }
 
 module.exports = {

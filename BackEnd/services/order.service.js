@@ -38,7 +38,7 @@ const readUserOrders = async (userId) => {
 const getOrderById = async (id) => {
 	try {
 		let validate
-		await validateId(id).then((result) => {
+		await validateId(id, 'order').then((result) => {
 			validate = result
 		})
 		if (validate != null) {
@@ -54,7 +54,7 @@ const getOrderById = async (id) => {
 const updateOrder = async (id, changes) => {
 	try {
 		let validate
-		await validateId(id).then((result) => {
+		await validateId(id, 'order').then((result) => {
 			validate = result
 		})
 		if (validate != null) {
@@ -69,7 +69,7 @@ const updateOrder = async (id, changes) => {
 
 const getOrderByMunicipality = async (municipality) => {
 	try {
-		await getOrderByMunicipalityDb(municipality)
+		return await getOrderByMunicipalityDb(municipality)
 	} catch (e) {
 		throw new Error(e.message)
 	}

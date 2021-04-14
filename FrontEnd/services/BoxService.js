@@ -1,6 +1,8 @@
 import box_list from '../db_mockup/box.db'
 import box_content from '../db_mockup/box.content.db'
+
 import Service from './Service'
+import UserService from './UserService'
 
 export default class BoxService extends Service {
     // Declare Singleton instance for Service
@@ -10,7 +12,28 @@ export default class BoxService extends Service {
 
     // Used in HomeScreen and BoxManagementScreen
     async getAllBoxes() {
-        return fetch(this._url + 'boxes')
+        let payload = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+
+        return fetch(this._url + 'box', payload)
+            .then(response => response.json())
+            .then((box_list) => {
+                return box_list
+            })
+            .catch((error) => {
+                // Temporary. Should properly handle error.
+                // alert("Error caught")
+                return box_list
+            })
+    }
+
+    async getAllAvailableBoxes() {
+        return fetch(this._url + 'box/available')
             .then(response => response.json())
             .then((box_list) => {
                 return box_list
@@ -23,13 +46,78 @@ export default class BoxService extends Service {
     }
 
     async getBoxContent() {
-        return fetch(this.url + 'boxes/:box_id')
+        return fetch(this.url + 'boxes/:_id')
             .then(response => response.json())
             .then((box_content) => {
                 return box_content
             })
             .catch((error) => {
                 return box_content
+            })
+    }
+
+    async addNewBox(box) {
+        // for(detail in box){
+        //     if(! box[detail] && detail != "box_content"){
+        //         alert("Entrada vacía.")
+        //         return false
+        //     }
+        // }
+
+        let payload = {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': UserService.instance.webToken
+            },
+            body: JSON.stringify(box)
+        }
+
+        return fetch(this._url + 'box', payload)
+            .then(response => {
+                if(response.status == 201)
+                    return true
+
+                else
+                    return false
+            })
+            .catch(() => {
+                alert("Error de conexión.")
+            })
+    }
+
+    async updateBox(box) {
+        // for(detail in box){
+        //     if(! box[detail] && detail != "box_content"){
+        //         alert("Entrada vacía.")
+        //         return false
+        //     }
+        // }
+
+        const boxId = box._id
+        delete box._id
+
+        let payload = {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': UserService.instance.webToken
+            },
+            body: JSON.stringify(box)
+        }
+
+        return fetch(this._url + `box/${boxId}`, payload)
+            .then(response => {
+                if(response.status == 200)
+                    return true
+
+                else
+                    return false
+            })
+            .catch(() => {
+                alert("Error de conexión.")
             })
     }
 }

@@ -1,7 +1,7 @@
 const catalog = {
     'Vegetales': [
         {
-            product_id: 1,
+            _id: 1,
             product_name: 'Brocoli',
             product_category: 'Vegetales',
             product_image: {uri: 'https://solidstarts.com/wp-content/uploads/Broccoli_edited-480x320@2x.jpg'},
@@ -10,7 +10,7 @@ const catalog = {
             product_price: 2.49
         },
         {
-            product_id: 2,
+            _id: 2,
             product_name: 'Cebolla',
             product_category: 'Vegetales',
             product_image: {uri: 'http://dakahliaproduce.com/wp-content/uploads/2015/01/fresh-yellow-onion.jpg'},
@@ -19,7 +19,7 @@ const catalog = {
             product_price: 1.10
         },
         {
-            product_id: 3,
+            _id: 3,
             product_name: 'Ajo',
             product_category: 'Vegetales',
             product_image: require('../assets/products/Broccoli.jpeg'),
@@ -28,7 +28,7 @@ const catalog = {
             product_price: 0.30
         },
         {
-            product_id: 9,
+            _id: 9,
             product_name: 'Ajo',
             product_category: 'Vegetales',
             product_image: require('../assets/products/Broccoli.jpeg'),
@@ -37,7 +37,7 @@ const catalog = {
             product_price: 0.30
         },
         {
-            product_id: 20,
+            _id: 20,
             product_name: 'Ajo',
             product_category: 'Vegetales',
             product_image: require('../assets/products/Broccoli.jpeg'),
@@ -49,7 +49,7 @@ const catalog = {
 
     'Frutas': [
         {
-            product_id: 4,
+            _id: 4,
             product_name: 'Piña',
             product_category: 'Frutas',
             product_image: require('../assets/products/Broccoli.jpeg'),
@@ -58,7 +58,7 @@ const catalog = {
             product_price: 2.49
         },
         {
-            product_id: 5,
+            _id: 5,
             product_name: 'Uvas',
             product_category: 'Frutas',
             product_image: require('../assets/products/Broccoli.jpeg'),
@@ -67,7 +67,7 @@ const catalog = {
             product_price: 1.10
         },
         {
-            product_id: 6,
+            _id: 6,
             product_name: 'Guineos',
             product_category: 'Frutas',
             product_image: require('../assets/products/Broccoli.jpeg'),
@@ -79,7 +79,7 @@ const catalog = {
 
     'Viandas': [
         {
-            product_id: 7,
+            _id: 7,
             product_name: 'Ñame',
             product_category: 'Viandas',
             product_image: require('../assets/products/Broccoli.jpeg'),
@@ -88,7 +88,7 @@ const catalog = {
             product_price: 2.49
         },
         {
-            product_id: 8,
+            _id: 8,
             product_name: 'Yuca',
             product_category: 'Viandas',
             product_image: require('../assets/products/Broccoli.jpeg'),
@@ -97,7 +97,7 @@ const catalog = {
             product_price: 1.10
         },
         {
-            product_id: 9,
+            _id: 9,
             product_name: 'Yautía',
             product_category: 'Viandas',
             product_image: require('../assets/products/Broccoli.jpeg'),

@@ -20,7 +20,7 @@ const CartScreen = () => {
                 <View style={styles.itemContainer}>
                     <View key={item.box_name} style={styles.cardContainer}>
                         <BoxCard
-                            id={item.box_id}
+                            id={item._id}
                             name={item.box_name}
                             image={item.box_image}
                         />

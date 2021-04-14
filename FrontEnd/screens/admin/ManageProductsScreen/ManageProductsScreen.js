@@ -27,7 +27,7 @@ const InventoryManagementScreen = () => {
     const generateCards = (products) => {
         return products.map((product) => 
                 <TouchableOpacity 
-                    key={product.product_id} 
+                    key={product._id} 
                     style={styles.productCardContainer} 
                     onPress={() => goToEditProduct(product)}
                 >

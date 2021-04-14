@@ -1,6 +1,6 @@
 const boxes = [
     {
-        box_id: 1,
+        _id: 1,
         box_name: "AgroBox",
         box_price: 40,
         box_image: {
@@ -9,7 +9,7 @@ const boxes = [
         }
     },
     {
-        box_id: 2,
+        _id: 2,
         box_name: "SofritoBox",
         box_price: 30,
         box_image: {
@@ -18,7 +18,7 @@ const boxes = [
         } 
     },
     {
-        box_id: 3,
+        _id: 3,
         box_name: "SancochoBox",
         box_price: 37,
         box_image: {
@@ -27,7 +27,7 @@ const boxes = [
         }
     },
     {
-        box_id: 4,
+        _id: 4,
         box_name: "AgroBox Plus",
         box_price: 60,
         box_image: {
@@ -36,7 +36,7 @@ const boxes = [
         },
     },
     {
-        box_id: 5,
+        _id: 5,
         box_name: "Crea tu propia caja",
         box_price: 37,
         box_image: {

@@ -25,12 +25,12 @@ const BoxManagementScreen = () => {
     const displayBoxes = () => {
         return boxList.map(box => 
             <TouchableOpacity 
-                key={box.box_id} 
+                key={box._id} 
                 style={styles.cardContainer}
                 onPress={() => { goToEditBox(box) }}
             >
                 <BoxCard
-                    id={box.box_id}
+                    id={box._id}
                     name={box.box_name}
                     image={box.box_image}
                     price={box.box_price}

@@ -53,7 +53,7 @@ const BoxScreen = (props) => {
 
         // else{
         //     let item = {
-        //         box_id: props.params.box_id,
+        //         _id: props.params._id,
         //         box_name: props.params.box_name,
         //         box_image: props.params.box_image,
         //         box_price: props.params.box_price,
@@ -111,20 +111,20 @@ const BoxScreen = (props) => {
         }
     }
 
-    const changeProductQuantity = (product_id, newQuantity) => {
+    const changeProductQuantity = (_id, newQuantity) => {
         if (newQuantity <= 0)
-            delete boxData.box_content[product_id]
+            delete boxData.box_content[_id]
             
         else
-            boxData.box_content[product_id] = newQuantity
+            boxData.box_content[_id] = newQuantity
     }
 
     const displayPremadeBox = () => {
 
-        const loadProducts = (box_id) => {
+        const loadProducts = (_id) => {
             let _products = []
     
-            // let products_list = await BoxService.instance.getBoxContentWith(box_id)
+            // let products_list = await BoxService.instance.getBoxContentWith(_id)
             for(product_key in boxData.box_content){
                 let product = boxData.box_content[product_key]
 
@@ -149,7 +149,7 @@ const BoxScreen = (props) => {
 
                 {/* PRODUCT LIST */}
                 <View style={styles.productContainer}>
-                    {loadProducts(props.params.box_id)}
+                    {loadProducts(props.params._id)}
                 </View>
             </View>
         )
@@ -160,7 +160,7 @@ const BoxScreen = (props) => {
         const loadProductCatalog = (products) => {
             return products.map (product => 
                     <View 
-                        key={product.product_id} 
+                        key={product._id} 
                         style={styles.productCardContainer} 
                     >
                         <InteractiveProductCard

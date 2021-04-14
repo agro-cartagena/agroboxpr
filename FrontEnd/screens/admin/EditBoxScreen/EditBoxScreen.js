@@ -29,10 +29,7 @@ const EditBoxScreen = (props) => {
             let _box = _isNewBox ? {
                 box_name: '',
                 box_price: '',
-                box_image: {
-                    id: '',
-                    url: ''
-                },
+                box_image: '',
                 box_content: { }
             } : {
                 ...props.params, 
@@ -49,7 +46,7 @@ const EditBoxScreen = (props) => {
     const generateCards = (products) => {
         return products.map (product => 
                 <View 
-                    key={product.product_id} 
+                    key={product._id} 
                     style={styles.productCardContainer} 
                 >
                     <InteractiveProductCard
@@ -87,7 +84,7 @@ const EditBoxScreen = (props) => {
         // Product does not yet exist in content list
         if (typeof product_data == "undefined")
             boxData.box_content[product_key] = {
-                ... product,
+                product_id: product._id,
                 product_quantity_box: 1
             }
     
@@ -109,12 +106,12 @@ const EditBoxScreen = (props) => {
         }        
     }
 
-    const changeProductQuantity = (product_id, newQuantity) => {
+    const changeProductQuantity = (_id, newQuantity) => {
         if (newQuantity == 0)
-            delete boxData.box_content[product_id]
+            delete boxData.box_content[_id]
             
         else
-            boxData.box_content[product_id] = newQuantity
+            boxData.box_content[_id] = newQuantity
     }
 
     const displayDeleteButton = () => {
@@ -134,17 +131,17 @@ const EditBoxScreen = (props) => {
     }
 
     const submitHandler = async () => {
-        // Image was changed, hence needs to be uploaded.
-        if(boxImage.url != boxData.box_image.url){
-            // Previous image existed, hence delete it from cloud
-            // if(boxImage.id)
-                // await CloudinaryService.instance.deleteImage(boxImage.id)
-            
+        let result = null
+        
+        if(_isNewBox)
+            result = await BoxService.instance.addNewBox(boxData)
 
-            try {
-                let result = await CloudinaryService.instance.uploadImage(boxImage)
-                // setBoxImage(result)
-            } catch (error) { alert(error.message) }
+        else 
+            result = await BoxService.instance.updateBox(boxData)
+
+        if(result){
+            alert("Caja ha sido guardada.")
+            goToBoxManagement()
         }
     }
 
@@ -164,6 +161,7 @@ const EditBoxScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewBox? 'ejemplo: AgroBox' : boxData.box_name}
+                        value = {boxData.box_name}
                         onChangeText = { (text) => setBoxData({...boxData, box_name: text}) }
                     />
                 </View>
@@ -172,6 +170,7 @@ const EditBoxScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewBox ? 'ejemplo: 45.00': String(boxData.box_price) }
+                        value = {boxData.box_price}
                         onChangeText = { (text) => setBoxData({...boxData, box_price: text}) }
                     />
                 </View>

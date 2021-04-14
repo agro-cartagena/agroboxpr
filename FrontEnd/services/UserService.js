@@ -1,13 +1,14 @@
 import Service from './Service'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { goToHome } from '../Navigator'
+import jwt_decode from 'jwt-decode'
 
+import { goToHome } from '../Navigator'
 import user from '../db_mockup/user.db'
 
 export default class UserAuthenticationService extends Service {
     // Declare Singleton instance for Service
     static instance = UserAuthenticationService.instance || new UserAuthenticationService()
-    _webToken;
+    _webToken = null;
 
     constructor(){
         super()
@@ -40,8 +41,12 @@ export default class UserAuthenticationService extends Service {
     }
 
     isAdmin() {
-        // decrypt jwt, read role property, and verify it is 'admin'
-        return true
+        if(this.webToken != "undefined"){
+            let decoded = jwt_decode(this.webToken)
+            return decoded.role == "admin"
+        }
+
+        return false
     }
 
     logout() {
@@ -69,7 +74,7 @@ export default class UserAuthenticationService extends Service {
                     case 200: 
                         this.setWebToken(await response.text())
                         alert("Sesión iniciada.")
-                        goToHome()
+                        // goToHome()
                         break;
                     
                     case 403:
@@ -115,7 +120,7 @@ export default class UserAuthenticationService extends Service {
                 .then(async response => {
                     switch(response.status){
                         case 201:
-                            // this.setWebToken(await response.text())
+                            this.setWebToken(await response.text())
                             alert("Gracias por registrarse!")
                             // goToHome()
                             break;

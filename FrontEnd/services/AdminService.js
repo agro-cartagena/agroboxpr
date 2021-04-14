@@ -20,7 +20,7 @@ export default class AdminService extends Service {
 
     async addAdmin(admin_email) {
         let payload = {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json' 
@@ -30,9 +30,9 @@ export default class AdminService extends Service {
             })
         }
 
-        return fetch(this._url + '', payload)
+        return fetch(this._url + 'auth/promote', payload)
             .then(response => {
-                if(response.status == 201)
+                if(response.status == 200)
                     return true
 
                 else
@@ -54,7 +54,7 @@ export default class AdminService extends Service {
             }
         }
 
-        return fetch(this._url + `admin/remove?admin_id=${admin_id}`, payload)
+        return fetch(this._url + `auth/demote/${admin_id}`, payload)
             .then(response => {
                 if(response.status == 200)
                     return true

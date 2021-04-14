@@ -14,7 +14,7 @@ const HomeScreen = () => {
 
     React.useEffect(() => {
         async function fetchData() { 
-            setBoxList(await BoxService.instance.getAllBoxes()) 
+            setBoxList(await BoxService.instance.getAllAvailableBoxes()) 
         }
 
         fetchData()
@@ -25,10 +25,10 @@ const HomeScreen = () => {
             <TouchableOpacity
                 style={styles.card}
                 onPress={() => goToViewBox(box)}
-                key={box.box_id}
+                key={box._id}
             >
                 <BoxCard
-                    id={box.box_id}
+                    id={box._id}
                     name={box.box_name}
                     image={box.box_image}
                     price={box.box_price}

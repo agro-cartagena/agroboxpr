@@ -4,6 +4,8 @@ const cors = require('cors');
 const db = require('./db/mdb')
 const { authRouter ,productRouter, boxRouter} = require('./routes');
 
+const imageRouter = require('./routes/images')
+
 //Get environment variables
 const dotenv = require('dotenv');
 dotenv.config();
@@ -18,5 +20,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/product', productRouter);
 app.use('/api/box', boxRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/image', imageRouter)
 
 module.exports = app;

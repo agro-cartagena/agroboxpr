@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView, View, Image, Text, TextInput } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './EditProductScreenStyleSheet'
 import global_styles from '../../../styles'
@@ -40,7 +41,7 @@ const ProductScreen = (props) => {
     }
 
     return (
-        <ScrollView style={global_styles.screen}>
+        <KeyboardAwareScrollView style={global_styles.screen}>
             <BackArrow onTouch={goToProductManagement}/>
 
             <View style={[styles.imageContainer, styles.radius]}>
@@ -104,7 +105,7 @@ const ProductScreen = (props) => {
                 <Button text="Guardar" onTouch={submitHandler}/>
             </View>
 
-        </ScrollView>
+        </KeyboardAwareScrollView>
     )    
 }
 

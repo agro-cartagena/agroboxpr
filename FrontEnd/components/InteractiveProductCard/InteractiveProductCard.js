@@ -19,16 +19,24 @@ const InteractiveProductCard = (props) => {
     }
 
     const decreaseQuantity = () => {
-        if(quantity > 0){
-            props.onMinus()
+        if(quantity >= 1)
             setQuantity(quantity - 1)
-        }
+        
+        else
+            setQuantity(0)
+
+        props.onMinus()
     }
 
     const changeQuantity = (text) => {
         let newQuantity = Number(text)
         if(newQuantity > props.product.product_quantity_stock){
             alert("Cantidad máxima excedida.")
+        }
+
+        else if(newQuantity <= 0){
+            props.onText(0)
+            setQuantity(0)
         }
 
         else{

@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView, View, Text } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import FormInput from '../../../components/FormInput/FormInput'
@@ -30,7 +31,7 @@ const EditBoxScreen = (props) => {
                 box_name: '',
                 box_price: '',
                 box_image: '',
-                box_content: { }
+                box_content: []
             } : {
                 ...props.params, 
                 box_content: await BoxService.instance.getBoxContent()
@@ -44,6 +45,65 @@ const EditBoxScreen = (props) => {
     }, [])
 
     const generateCards = (products) => {
+        const increaseProductQuantity = (target_product) => {
+            let product = boxData.box_content.find((item) => item._id == target_product._id)
+    
+            // Product does not yet exist in content list.
+            if(! product){
+                boxData.box_content.push({
+                    ...target_product, 
+                    product_quantity_box: 1
+                })
+            }
+    
+            // Product already exists in content list.
+            else 
+                product.product_quantity_box += 1
+        }
+    
+        const decreaseProductQuantity = (target_product) => {
+            let product = boxData.box_content.find((item) => item._id == target_product._id)
+    
+            //Product already exists in content list.
+            if(product){
+                if(product.product_quantity_box <= 1)
+                    boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
+    
+                else
+                    product.product_quantity_box -= 1
+            }       
+        }
+    
+        const changeProductQuantity = (target_product, newQuantity) => {
+            let product = boxData.box_content.find((item) => item._id == target_product._id)
+
+            // Product already exists in content list.
+            if(product){
+                if(newQuantity == 0)
+                    boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
+                
+                else
+                    product.product_quantity_box = newQuantity
+            }
+
+            // Product does not yet exist in content list.
+            else if (newQuantity > 0){
+                boxData.box_content.push({
+                    ...target_product,
+                    product_quantity_box: newQuantity
+                })
+            }
+        }
+
+        const fetchPlaceholder = (target_product) => {
+            let product = boxData.box_content.find((item) => item._id == target_product._id)
+
+            if(product)
+                return product.product_quantity_box
+
+            return 0
+        }
+
         return products.map (product => 
                 <View 
                     key={product._id} 
@@ -54,7 +114,7 @@ const EditBoxScreen = (props) => {
                         onMinus={() => decreaseProductQuantity(product)}
                         onPlus={() => increaseProductQuantity(product)}
                         onText={(text) => changeProductQuantity(product, text)}
-                        placeholder={typeof boxData.box_content[product.product_name]=="undefined" ? 0 : boxData.box_content[product.product_name]['product_quantity_box']}
+                        placeholder = {fetchPlaceholder(product)}
                     />
                 </View> 
             )
@@ -75,43 +135,6 @@ const EditBoxScreen = (props) => {
         }
 
         return _dropMenus
-    }
-
-    const increaseProductQuantity = (product) => {
-        let product_key = product.product_name,
-            product_data = boxData.box_content[product_key]
-
-        // Product does not yet exist in content list
-        if (typeof product_data == "undefined")
-            boxData.box_content[product_key] = {
-                product_id: product._id,
-                product_quantity_box: 1
-            }
-    
-        // Product already exists in content list
-        else
-            product_data.product_quantity_box += 1
-    }
-
-    const decreaseProductQuantity = (product) => {
-        let product_key = product.product_name,
-            product_data = boxData.box_content[product_key]
-
-        if (typeof product_data != "undefined"){
-            if(product_data.product_quantity_box == 1)
-                delete boxData.box_content[product_key]
-
-            else
-                product_data.product_quantity_box -= 1
-        }        
-    }
-
-    const changeProductQuantity = (_id, newQuantity) => {
-        if (newQuantity == 0)
-            delete boxData.box_content[_id]
-            
-        else
-            boxData.box_content[_id] = newQuantity
     }
 
     const displayDeleteButton = () => {
@@ -146,7 +169,7 @@ const EditBoxScreen = (props) => {
     }
 
     return(
-        <ScrollView>
+        <KeyboardAwareScrollView>
             <View style={styles.arrowContainer}>
                 <BackArrow onTouch={goToBoxManagement}/>
             </View>
@@ -190,7 +213,7 @@ const EditBoxScreen = (props) => {
                     />
                 </View>
             </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
     )
 }
 

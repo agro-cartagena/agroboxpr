@@ -18,6 +18,7 @@ import ManageBoxesScreen from './screens/admin/ManageBoxesScreen/ManageBoxesScre
 
 import EditAccountScreen from './screens/customer/EditAccountScreen/EditAccountScreen'
 import ManageAdministratorsScreen from './screens/admin/ManageAdministratorsScreen/ManageAdministratorsScreen'
+import ViewOrdersScreen from './screens/customer/ViewOrdersScreen/ViewOrdersScreen'
 
 const Routes = () => {
     return(
@@ -25,7 +26,7 @@ const Routes = () => {
             <Scene key="root">
                 <Scene key="login" component={LoginScreen} title="Login" hideNavBar={true}/>
                 <Scene key="register" component={RegisterScreen} title="Register" hideNavBar={true} />
-                <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true}/>
+                <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true} initial={true}/>
                 <Scene key="view_box" component={ViewBoxScreen} title="View Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
                 <Scene key="inventory_management" component={ManageInventoryScreen} title="Inventory Management" hideNavBar={true}/>
@@ -35,7 +36,8 @@ const Routes = () => {
                 <Scene key="edit_product" component={EditProductScreen} title="Edit Product" hideNavBar={true}/>
                 <Scene key="menu" component={MenuScreen} title="Menu" hideNavBar={true}/>
                 <Scene key="edit_account" component={EditAccountScreen} title="Edit Account" hideNavBar={true}/>
-                <Scene key="admin_management" component={ManageAdministratorsScreen} title="Admin Management" hideNavBar={true} initial={true}/>
+                <Scene key="admin_management" component={ManageAdministratorsScreen} title="Admin Management" hideNavBar={true}/>
+                <Scene key="view_orders" component={ViewOrdersScreen} title="View Orders" hideNavBar={true}/>
             </Scene>
         </Router>
     )

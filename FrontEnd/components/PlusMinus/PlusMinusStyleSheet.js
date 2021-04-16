@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
 
         borderRadius: 25,
         borderColor: 'black',
-        borderWidth: 1
+        borderWidth: 1,
+
     },
 
     icon: {
@@ -28,6 +29,8 @@ const styles = StyleSheet.create({
 
     inputField: {
         width: '33.33%',
+        height: '98%',
+
         backgroundColor: 'lightgray',
         textAlign: 'center',
     },

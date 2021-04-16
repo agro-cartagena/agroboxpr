@@ -3,7 +3,6 @@ import { View, TouchableOpacity, Image, Text, TextInput } from 'react-native'
 import styles from './PlusMinusStyleSheet'
 
 const PlusMinus = (props) => {
-    const [quantity, changeQuantity] = React.useState(props.placeholder)
 
     return(
         <View style={styles.inputContainer}>

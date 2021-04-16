@@ -46,7 +46,7 @@ export default class BoxService extends Service {
     }
 
     async getBoxContent() {
-        return fetch(this.url + 'boxes/:_id')
+        return fetch(this.url + 'route')
             .then(response => response.json())
             .then((box_content) => {
                 return box_content
@@ -63,6 +63,18 @@ export default class BoxService extends Service {
         //         return false
         //     }
         // }
+
+        // Filter box_content
+        let filtered_content = []
+
+        box.box_content.forEach((item) => {
+            filtered_content.push({
+                _id: item._id, 
+                product_quantity_box: item.product_quantity_box
+            })
+        })
+
+        box.box_content = filtered_content
 
         let payload = {
             method: 'POST',
@@ -95,6 +107,19 @@ export default class BoxService extends Service {
         //     }
         // }
 
+        // Filter box_content
+        let filtered_content = []
+
+        box.box_content.forEach((item) => {
+            filtered_content.push({
+                _id: item._id, 
+                product_quantity_box: item.product_quantity_box
+            })
+        })
+
+        box.box_content = filtered_content
+
+        // Must remove box id to avoid server-side error.
         const boxId = box._id
         delete box._id
 

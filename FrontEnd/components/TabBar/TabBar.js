@@ -7,7 +7,7 @@ import Tab from '../Tab/Tab'
 
 import { 
     goToLogin, goToEditAccount,
-    goToCart, goToHome, goToMenu
+    goToCart, goToHome, goToMenu, goToViewOrders
 } from '../../Navigator'
 
 import UserService from '../../services/UserService'
@@ -52,7 +52,7 @@ const TabBar = () => {
                 defaultIcon={require('../../assets/icons/orders.png')}
                 activeIcon={require('../../assets/icons/orders-active.png')}
                 isActive={activeTab == "orders-tab"}
-                onTouch={() => { if(activeTab != "orders-tab"){ setActiveTab("orders-tab"); touchHandler() }}}
+                onTouch={() => { if(activeTab != "orders-tab"){ setActiveTab("orders-tab"); goToViewOrders() }}}
             />
     
             <Tab

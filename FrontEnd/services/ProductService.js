@@ -11,7 +11,16 @@ export default class ProductService extends Service {
         return fetch(this._url + 'product')
             .then(response => response.json())
             .then((product_catalog) => { 
-                return product_catalog 
+                // Sort object by keys.
+                const ordered = Object.keys(product_catalog).sort().reduce(
+                    (obj, key) => { 
+                      obj[key] = product_catalog[key]; 
+                      return obj;
+                    }, 
+                    {}
+                  );
+
+                return ordered 
             })
             .catch((error) => {
                 // Temporary. Should properly handle error.

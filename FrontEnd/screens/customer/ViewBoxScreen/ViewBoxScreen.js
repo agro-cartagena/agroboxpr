@@ -24,19 +24,21 @@ const BoxScreen = (props) => {
     let _isBuildYourBox = props.params.box_name.includes("Crea")
 
     const [boxData, setBoxData] = React.useState({})
-
+    const [content, setContent] = React.useState([])
     const [productCatalog, setProductCatalog] = React.useState({})
 
     React.useEffect(() => {
         async function fetchData() {
             let _box = {
-                ...props, 
+                ...props.params, 
                 box_quantity: 1,
                 box_accumulated_price: _isBuildYourBox ? 0 : props.params.box_price,
-                box_content: _isBuildYourBox ? {} : await BoxService.instance.getBoxContent()
+                box_content: _isBuildYourBox ? [] : await BoxService.instance.getBoxContent(props.params._id)
             }
 
             setBoxData(_box)
+            setContent(_box.box_content)
+
             if (_isBuildYourBox)
                 setProductCatalog(await ProductService.instance.getProductCatalog())
         }
@@ -65,82 +67,94 @@ const BoxScreen = (props) => {
         // }
     }    
 
-    const increaseProductQuantity = (product) => {
-        let box_content = boxData.box_content,
-            product_key = product.product_name,
-            product_data = box_content[product_key]
+    const increaseProductQuantity = (target_product) => {
+        let product = boxData.box_content.find((item) => item._id == target_product._id)
+    
+        // Product does not yet exist in content list.
+        if(! product){
+            boxData.box_content.push({
+                ...target_product, 
+                product_quantity_box: 1
+            })
+        }
 
-        // Product does not yet exist in content list
-        if (typeof product_data == "undefined")
-            box_content[product_key] = { 
-                 ... product,
-                 product_quantity_box: 1
-            }
-
-        // Product already exists in content list
+        // Product already exists in content list.
         else 
-            product_data.product_quantity_box += 1
+            product.product_quantity_box += 1
 
         setBoxData({
-            ...boxData,
-            box_accumulated_price: Number((boxData.box_accumulated_price += product.product_price).toFixed(2)),
-            box_content: box_content
+            ...boxData, 
+            box_accumulated_price: (Number(boxData.box_accumulated_price) + Number(target_product.product_price)).toFixed(2)
         })
+
     }
 
-    const decreaseProductQuantity = (product) => {
-        let box_content = boxData.box_content,
-            product_key = product.product_name,
-            product_data = box_content[product_key]
+    const decreaseProductQuantity = (target_product) => {
+        let product = boxData.box_content.find((item) => item._id == target_product._id)
+    
+        //Product already exists in content list.
+        if(product){
+            if(product.product_quantity_box <= 1)
+                boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
 
-        //Product exists in content list.
-        if (typeof product_data != "undefined"){
-
-            if(product_data.product_quantity_box <= 1)
-                delete box_content[product_key]
-
-            else 
-                product_data.product_quantity_box -= 1
-            
+            else
+                product.product_quantity_box -= 1
 
             setBoxData({
                 ...boxData,
-                box_accumulated_price: Number((boxData.box_accumulated_price -= product.product_price).toFixed(2)),
-                box_content: box_content
+                box_accumulated_price: (Number(boxData.box_accumulated_price) - Number(target_product.product_price)).toFixed(2)
             })
         }
     }
 
-    const changeProductQuantity = (_id, newQuantity) => {
-        if (newQuantity <= 0)
-            delete boxData.box_content[_id]
+    const changeProductQuantity = (target_product, newQuantity) => {
+        let product = boxData.box_content.find((item) => item._id == target_product._id)
+
+        // Product already exists in content list.
+        if(product){
+            if(newQuantity == 0)
+                boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
             
-        else
-            boxData.box_content[_id] = newQuantity
+            else
+                product.product_quantity_box = newQuantity
+        }
+
+        // Product does not yet exist in content list.
+        else if (newQuantity > 0){
+            boxData.box_content.push({
+                ...target_product,
+                product_quantity_box: newQuantity
+            })
+        }
+
+        // setBoxData({
+        //     ...boxData,
+        //     box_accumulated_price: (Number(boxData.box_accumulated_price) - Number(target_product.product_price)).toFixed(2)
+        // })
+    }
+
+    const fetchPlaceholder = (target_product) => {
+        let product = boxData.box_content.find((item) => item._id == target_product._id)
+
+        if(product)
+            return product.product_quantity_box
+
+        return 0
     }
 
     const displayPremadeBox = () => {
-
-        const loadProducts = (_id) => {
-            let _products = []
-    
-            // let products_list = await BoxService.instance.getBoxContentWith(_id)
-            for(product_key in boxData.box_content){
-                let product = boxData.box_content[product_key]
-
-                _products.push(
-                    <View style={styles.productCardContainer} key={product_key}>
+        const loadProducts = () => {    
+            return content.map((product) => 
+                    <View style={styles.productCardContainer} key={product._id}>
                         <InteractiveProductCard
                             product={product}
                             onMinus={() => decreaseProductQuantity(product)}
                             onPlus={() => increaseProductQuantity(product)}
-                            placeholder={boxData.box_content[product_key].product_quantity_box}
+                            onText={(text) => changeProductQuantity(product, text)}
+                            placeholder={fetchPlaceholder(product)}
                         />
                     </View>
-                )               
-            }
-    
-            return _products
+                )
         }
 
         return (
@@ -149,16 +163,15 @@ const BoxScreen = (props) => {
 
                 {/* PRODUCT LIST */}
                 <View style={styles.productContainer}>
-                    {loadProducts(props.params._id)}
+                    {loadProducts()}
                 </View>
             </View>
         )
     }
 
     const displayBuildYourBox = () => {
-
         const loadProductCatalog = (products) => {
-            return products.map (product => 
+            return products.map ((product) => 
                     <View 
                         key={product._id} 
                         style={styles.productCardContainer} 
@@ -168,28 +181,21 @@ const BoxScreen = (props) => {
                             onMinus={() => decreaseProductQuantity(product)}
                             onPlus={() => increaseProductQuantity(product)}
                             onText={(text) => changeProductQuantity(product, text)}
-                            placeholder={typeof boxData.box_content[product.product_name]=="undefined" ? 0 : boxData.box_content[product.product_name]['product_quantity_box']}
+                            placeholder={fetchPlaceholder(product)}
                         />
                     </View> 
                 )
         }
 
         const displayDropMenus = () => {
-            let _dropMenus = []
-
-            // catalog gets fetched from API call
-            for (category in productCatalog){
-                _dropMenus.push(
-                    <View key={category} style={styles.dropDownContainer}>
-                        <DropDown
-                            title={category}
-                            list={loadProductCatalog(productCatalog[category])}
-                        />
-                    </View>
-                )           
-            }
-    
-            return _dropMenus
+            return Object.keys(productCatalog).map((category) => 
+                <View key={category} style={styles.dropDownContainer}>
+                    <DropDown
+                        title={category}
+                        list={loadProductCatalog(productCatalog[category])}
+                    />
+                </View>
+            )
         }
 
         return (
@@ -250,7 +256,7 @@ const BoxScreen = (props) => {
                 {/* Add Button */}
                 <View style={styles.buttonContainer}>
                     <Button
-                        onTouch={verifyQuantity}
+                        onTouch={() => alert(JSON.stringify(boxData.box_content))}
                         text="Agregar"
                     />
                 </View>

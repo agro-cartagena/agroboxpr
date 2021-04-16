@@ -51,3 +51,7 @@ export const goToEditAccount = () => {
 export const goToAdminManagement = () => {
     Actions.admin_management()
 }
+
+export const goToViewOrders = () => {
+    Actions.view_orders()
+}

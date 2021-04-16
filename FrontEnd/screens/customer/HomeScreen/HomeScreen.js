@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native'
 import { goToViewBox } from '../../../Navigator'
 
 import BoxService from '../../../services/BoxService'
@@ -38,12 +38,14 @@ const HomeScreen = () => {
     }
 
     return (
-        <ScrollView>
-            <Logo/>
-            <View style={styles.cardContainer}>
-                { displayBoxes() }
-            </View>
-        </ScrollView>
+        <SafeAreaView>
+            <ScrollView>
+                <Logo/>
+                <View style={styles.cardContainer}>
+                    { displayBoxes() }
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 

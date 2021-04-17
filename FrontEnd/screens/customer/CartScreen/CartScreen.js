@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Image, Text } from 'react-native'
+import { ScrollView, View, Image, Text, TouchableOpacity } from 'react-native'
 import BoxCard from '../../../components/BoxCard/BoxCard'
 import PlusMinus from '../../../components/PlusMinus/PlusMinus'
 
@@ -10,10 +10,9 @@ import global_styles from '../../../styles'
 import Logo from '../../../components/Logo/Logo'
 import Button from '../../../components/Button/Button'
 
-import { goToCheckout } from '../../../Navigator'
+import { goToCheckout, goToEditCart } from '../../../Navigator'
 
 const CartScreen = (props) => {
-    let cart = []
 
     const [cartData, setCartData] = React.useState([])
    
@@ -82,29 +81,27 @@ const CartScreen = (props) => {
         }
 
         return cartData.map((element) => 
-            <View>
-                <View style={styles.itemContainer} key={element._id}>
-                    <View key={element.box_name} style={styles.cardContainer}>
-                        <BoxCard
-                            id={element._id}
-                            name={element.box_name}
-                            price={element.box_accumulated_price}
-                        // image={item.box_image} //change
-                        />
-                    </View>
+            <View style={styles.itemContainer} key={element._id}>
+                <TouchableOpacity key={element.box_name} style={styles.cardContainer} onPress={() => goToEditCart({box_id: element._id, box_content: element.box_content})}>
+                    <BoxCard
+                        id={element._id}
+                        name={element.box_name}
+                        price={element.box_accumulated_price}
+                    // image={item.box_image} //change
+                    />
+                </TouchableOpacity>
 
-                    <View style={styles.plusminus} >
-                        <PlusMinus
-                            onMinus={() => {decreaseBoxQuantity(element)}}
-                            onPlus={() => {increaseBoxQuantity(element)}}
-                            onText={(text) => changeBoxQuantity(element, text)}
-                            placeholder={fetchPlaceholder(element)}
-                        />
-                    </View>
-
-                    <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_accumulated_price * element.box_quantity}</Text>
-
+                <View style={styles.plusminus} >
+                    <PlusMinus
+                        onMinus={() => {decreaseBoxQuantity(element)}}
+                        onPlus={() => {increaseBoxQuantity(element)}}
+                        onText={(text) => changeBoxQuantity(element, text)}
+                        placeholder={fetchPlaceholder(element)}
+                    />
                 </View>
+
+                <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_accumulated_price * element.box_quantity}</Text>
+
             </View>
         )
     }

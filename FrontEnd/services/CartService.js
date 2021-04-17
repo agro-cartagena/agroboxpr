@@ -13,4 +13,8 @@ export default class CartService {
     getCart() {
         return this._cart
     }
+
+    updateCart(box_id, content) {
+        this._cart.find((item) => item._id == box_id).box_content = content
+    }
 }

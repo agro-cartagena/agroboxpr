@@ -64,6 +64,6 @@ export const goToPayment = () => {
     Actions.payment()
 }
 
-export const goToEditCart = () => {
-    Actions.edit_cart()
+export const goToEditCart = (params) => {
+    Actions.edit_cart({ params: params })
 }

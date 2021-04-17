@@ -55,3 +55,11 @@ export const goToAdminManagement = () => {
 export const goToViewOrders = () => {
     Actions.view_orders()
 }
+
+export const goToCheckout = () => {
+    Actions.checkout()
+}
+
+export const goToPayment = () => {
+    Actions.payment()
+}

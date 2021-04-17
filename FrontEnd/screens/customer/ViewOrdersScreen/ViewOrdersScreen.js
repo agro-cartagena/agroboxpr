@@ -1,13 +1,28 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { ScrollView, View, Text } from 'react-native'
 
 import styles from './ViewOrdersScreenStyleSheet'
+import OrderService from '../../../services/OrderService'
+
+import Logo from '../../../components/Logo/Logo'
 
 const ViewOrdersScreen = () => {
+    const [orders, setOrders] = React.useState({})
+
+    React.useEffect(() => {
+        async function fetchData() {
+            setOrders(await OrderService.instance.getOrders())
+        }
+
+        fetchData()
+    }, [])
+
     return (
-        <View>
-            <Text>I am working.</Text>
-        </View>
+        <ScrollView>
+            <Logo/>
+
+            <Text>hello world</Text>
+        </ScrollView>
     )
 }
 

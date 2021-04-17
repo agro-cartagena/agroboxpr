@@ -30,7 +30,7 @@ const EditBoxScreen = (props) => {
             let _box = _isNewBox ? {
                 box_name: '',
                 box_price: '',
-                box_image: '',
+                box_image: {},
                 box_content: []
             } : {
                 ...props.params, 
@@ -121,20 +121,14 @@ const EditBoxScreen = (props) => {
     }
 
     const displayDropMenus = () => {
-        let _dropMenus = []
-
-        for (category in productCatalog){
-            _dropMenus.push(
-                <View key={category} style={styles.dropDownContainer}>
-                    <DropDown
-                        title={category}
-                        list={generateCards(productCatalog[category])}
-                    />
-                </View>
-            )           
-        }
-
-        return _dropMenus
+        return Object.keys(productCatalog).map((category) => 
+            <View key={category} style={styles.dropDownContainer}>
+                <DropDown
+                    title={category}
+                    list={generateCards(productCatalog[category])}
+                />
+            </View>
+        )
     }
 
     const displayDeleteButton = () => {
@@ -154,18 +148,42 @@ const EditBoxScreen = (props) => {
     }
 
     const submitHandler = async () => {
-        let result = null
-        
-        if(_isNewBox)
-            result = await BoxService.instance.addNewBox(boxData)
 
-        else 
-            result = await BoxService.instance.updateBox(boxData)
+        let form = new FormData()
+        form.append('file', boxImage)
+        form.append('caption', "First Image!")
 
-        if(result){
-            alert("Caja ha sido guardada.")
-            goToBoxManagement()
+        let payload = {
+            method: 'POST',
+            header: {
+                Accept: 'application/json',
+                'Content-Type': 'multipart/form-data'
+            },
+            body: form
         }
+
+        await fetch('http://10.0.0.6:5000/api/image/upload', payload)
+            .then(response => {
+                if(response.status == 201)
+                    alert("Image uploaded!")
+
+                else 
+                    alert(response.message)
+            })
+            .catch((error) => alert("Something happened."))
+
+        // let result = null
+        
+        // if(_isNewBox)
+        //     result = await BoxService.instance.addNewBox(boxData)
+
+        // else 
+        //     result = await BoxService.instance.updateBox(boxData)
+
+        // if(result){
+        //     alert("Caja ha sido guardada.")
+        //     goToBoxManagement()
+        // }
     }
 
     return(

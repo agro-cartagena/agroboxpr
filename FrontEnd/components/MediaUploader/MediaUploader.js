@@ -15,7 +15,6 @@ const MediaUploader = (props) => {
 
         else {
             let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
                 allowsEditing: true,
                 aspect: [4, 3],
                 quality: 1
@@ -23,7 +22,11 @@ const MediaUploader = (props) => {
 
             if (!result.cancelled) {
                 let url = Platform.OS == 'ios' ? result.uri.replace('file://', '') : result.uri
-                props.setMedia({...props.media, url: url});
+                alert(url)
+                props.setMedia({
+                    uri: result.uri,
+                    type: result.type, 
+                });
             }
         }
         
@@ -33,8 +36,9 @@ const MediaUploader = (props) => {
         <TouchableOpacity style={styles.container} onPress={handleUpload}>
             <View style={[styles.imageContainer, global_styles.shadow]}>
                 <Image
-                    source={props.media.url ? {uri: props.media.url} : require('../../assets/icons/Upload.png')}
-                    style={props.media.url ? {...styles.image, resizeMode: 'stretch'} : {...styles.image, resizeMode: 'center'}}
+                    // source={props.media.uri ? {uri: props.media.url} : require('../../assets/icons/Upload.png')}
+                    source = {'http://10.0.0.6:5000/image/file/5e5d13021a917d2198b9c3ef06094450'}
+                    style={props.media.uri ? {...styles.image, resizeMode: 'stretch'} : {...styles.image, resizeMode: 'center'}}
                 />
             </View>
 

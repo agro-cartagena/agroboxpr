@@ -29,15 +29,15 @@ const Routes = () => {
                 <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true}/>
                 <Scene key="view_box" component={ViewBoxScreen} title="View Box" hideNavBar={true}/>
                 <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
-                <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true} />
-                <Scene key="payment" component={PaymentScreen} title="Payment" hideNavBar={true} initial={true}/>
+                <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true} initial={true}/>
+                <Scene key="payment" component={PaymentScreen} title="Payment" hideNavBar={true} i/>
                 <Scene key="inventory_management" component={InventoryManagementScreen} title="Inventory Management" hideNavBar={true}/>
                 <Scene key="box_management" component={BoxManagementScreen} title="Box Management" hideNavBar={true}/>
                 <Scene key="edit_box" component={EditBoxScreen} title="Edit Box" hideNavBar={true}/>
                 <Scene key="product_management" component={ProductManagementScreen} title="Product Management" hideNavBar={true}/>
                 <Scene key="edit_product" component={EditProductScreen} title="Edit Product" hideNavBar={true}/>
                 <Scene key="menu" component={MenuScreen} title="Menu" hideNavBar={true}/>
-                <Scene key="edit_account" component={EditAccountScreen} title="Edit Account" hideNavBar={true}/>
+                <Scene key="edit_account" component={EditAccountScreen} title="Edit Account" hideNavBar={true} />
             </Scene>
         </Router>
     )

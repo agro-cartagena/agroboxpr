@@ -23,7 +23,8 @@ const CartScreen = (props) => {
     React.useEffect(() => {
         async function fetchData() {
             // console.log( await CartService.instance.getCart())
-            setCartData(await CartService.instance.getCart())
+            const cartInfo = await CartService.instance.getCart()
+            setCartData(cartInfo)
             // let total_price = {
             //     ...props,
             //     cart_total_price:  props.params.box_price
@@ -96,10 +97,12 @@ const CartScreen = (props) => {
 
                         <View style={styles.plusminus} >
                             <PlusMinus
-                                onMinus={() => { decreaseBoxQuantity(element) }}
+                                onMinus={() => {decreaseBoxQuantity(element)}}
+                                // 
                                 //if (element.quantity > 1) setCartData({ ...element, quantity: element.quantity -= 1 }) 
                                 //if(cartData.quantity > 1) setCartData({...cartData, quantity: cartData.quantity -= 1})}
-                                onPlus={() => { increaseBoxQuantity(element) }}
+                                onPlus={() => {increaseBoxQuantity(element)}}
+                                // 
                                 //if (element.quantity < 100) setCartData({ ...element, quantity: element.quantity += 1 })
                                 placeholder={element.quantity}
                             />

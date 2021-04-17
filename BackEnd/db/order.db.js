@@ -40,11 +40,11 @@ const updateOrderDb = async (id, changes) => {
 	return collection.updateOne({ _id: ObjectId(id) }, { $set: changes })
 }
 
-const getOrderByMunicipalityDb = async (mun) => {
+const getOrderByCityDb = async (city) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('order')
 
-	return collection.find({municipality: mun}).toArray()
+	return collection.find({deliveryCity: city}).toArray()
 }
 
 module.exports = {
@@ -52,5 +52,5 @@ module.exports = {
 	readUserOrdersDb,
 	getOrderByIdDb,
 	updateOrderDb,
-	getOrderByMunicipalityDb,
+	getOrderByCityDb,
 }

@@ -1,15 +1,12 @@
 const { orderDb } = require('../db')
-const { validationMiddleware } = require('../middleware')
 
 const {
 	createOrderDb,
 	readUserOrdersDb,
 	getOrderByIdDb,
 	updateOrderDb,
-	getOrderByMunicipalityDb,
+	getOrderByCityDb,
 } = orderDb
-
-const { validateId, validateUserId } = validationMiddleware
 
 const createOrder = async (order) => {
 	try {
@@ -21,15 +18,7 @@ const createOrder = async (order) => {
 
 const readUserOrders = async (userId) => {
 	try {
-		let validate
-		await validateUserId(userId).then((result) => {
-			validate = result
-		})
-		if (validate != null) {
-			return await readUserOrdersDb(userId)
-		} else {
-			return null
-		}
+		return await readUserOrdersDb(userId)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -37,15 +26,7 @@ const readUserOrders = async (userId) => {
 
 const getOrderById = async (id) => {
 	try {
-		let validate
-		await validateId(id, 'order').then((result) => {
-			validate = result
-		})
-		if (validate != null) {
-			return await getOrderByIdDb(id)
-		} else {
-			return null
-		}
+		return await getOrderByIdDb(id)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -53,23 +34,15 @@ const getOrderById = async (id) => {
 
 const updateOrder = async (id, changes) => {
 	try {
-		let validate
-		await validateId(id, 'order').then((result) => {
-			validate = result
-		})
-		if (validate != null) {
-			return await updateOrderDb(id, changes)
-		} else {
-			return null
-		}
+		return await updateOrderDb(id, changes)
 	} catch (e) {
 		throw new Error(e.message)
 	}
 }
 
-const getOrderByMunicipality = async (municipality) => {
+const getOrderByCity = async (municipality) => {
 	try {
-		return await getOrderByMunicipalityDb(municipality)
+		return await getOrderByCityDb(municipality)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -79,6 +52,6 @@ module.exports = {
 	createOrder,
 	readUserOrders,
 	getOrderById,
-	getOrderByMunicipality,
+	getOrderByCity,
 	updateOrder,
 }

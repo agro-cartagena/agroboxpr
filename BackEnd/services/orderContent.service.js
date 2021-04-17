@@ -1,9 +1,9 @@
 const { orderContentDb } = require('../db')
-const { validationMiddleware } = require('../middleware')
 const {
 	createOrderContentDb,
 	getOrderContentDb,
 	getOrderContentByIdDb,
+	updateOderContentDb,
 } = orderContentDb
 
 const createOrderContent = async (orderContent) => {
@@ -24,16 +24,15 @@ const getOrderContent = async () => {
 
 const getOrderContentById = async (id) => {
 	try {
-		let validate
-		await validationMiddleware.validateId(id, 'orderContent').then((result) => {
-			validate = result
-		})
-		if (validate != null) {
-			return await getOrderContentByIdDb(id)
-		}
-        else {
-            return null
-        }
+		return await getOrderContentByIdDb(id)
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
+const updateOderContent = async (id, changes) => {
+	try {
+		return await updateOderContentDb(id, changes)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -43,4 +42,5 @@ module.exports = {
 	createOrderContent,
 	getOrderContent,
 	getOrderContentById,
+	updateOderContent,
 }

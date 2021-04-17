@@ -63,3 +63,7 @@ export const goToCheckout = () => {
 export const goToPayment = () => {
     Actions.payment()
 }
+
+export const goToEditCart = () => {
+    Actions.edit_cart()
+}

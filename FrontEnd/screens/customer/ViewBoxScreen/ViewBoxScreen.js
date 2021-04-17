@@ -256,8 +256,11 @@ const BoxScreen = (props) => {
                 {/* Add Button */}
                 <View style={styles.buttonContainer}>
                     <Button
-                        onTouch={() => alert(JSON.stringify(boxData.box_content))}
                         text="Agregar"
+                        onTouch={() => {
+                            CartService.instance.addToCart(boxData)
+                            alert("Caja ha sido añadida al carrito.")
+                        }}
                     />
                 </View>
             </View>

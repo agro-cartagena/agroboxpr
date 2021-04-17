@@ -15,15 +15,12 @@ import { goToCheckout } from '../../../Navigator'
 const CartScreen = (props) => {
     let cart = []
 
-    const [cartData, setCartData] = React.useState([
-        // box_content,
-        // cart_total_price:"",
-    ])
+    const [cartData, setCartData] = React.useState([])
    
     React.useEffect(() => {
         async function fetchData() {
             // console.log( await CartService.instance.getCart())
-            const cartInfo = await CartService.instance.getCart()
+            const cartInfo = CartService.instance.getCart()
             setCartData(cartInfo)
             // let total_price = {
             //     ...props,
@@ -36,109 +33,106 @@ const CartScreen = (props) => {
 
         fetchData()
     }, []);
-// console.log(JSON.stringify(cartData))
-    // const changeBoxQuantity = (box_id, newQuantity) => {
-    //     if (newQuantity <= 0)
-    //         delete cartData
-            
-    //     else
-    //         boxData.box_content[product_id] = newQuantity
-    // }
 
-    const decreaseBoxQuantity = (box) => {
-        // let //box_content = [box.box_content],
-            // box_key = box.box_name,
-            // quantity = box.quantity
-        console.log(box.box_name + box.quantity);
-
-        // if (typeof box.quantity != "undefined") {
-            if (box.quantity < 1)
-                delete box.box_name
-            else
-                box.quantity -= 1
-
-            setCartData({
-                ...cartData,
-                box_price: Number((cartData.box_price -= box.box_price).toFixed(2)),
-                // quantity: box.quantity
-            })
-        // }
-    }
+    const loadCart = () => {
+        const increaseBoxQuantity = (target_box) => {
+            let box = cartData.find((item) => item._id == target_box._id)
     
-    const increaseBoxQuantity = (box) => {
-        console.log(box.box_name + box.quantity);
+            if(box.box_quantity <= 99)
+                box.box_quantity += 1
 
-        // if (typeof box.quantity != "undefined") {
-            if (box.quantity < 100)
-                box.quantity += 1
-                
-            setCartData({
-                ...cartData,
-                box_price: Number((cartData.box_price -= box.box_price).toFixed(2)),
-                // quantity: box.quantity
-            })
-        // }
-    }
+        }
+    
+        const decreaseBoxQuantity = (target_box) => {
+            let box = cartData.find((item) => item._id == target_box._id)
+    
+            //Product already exists in content list.
+            if(box.box_quantity > 1)
+                box.box_quantity -= 1
 
-    const loadCart = async () => {
-         cartData.forEach(element => { 
-            // alert(JSON.stringify(item))       
-            cart.push(
-                <View>
-                    <View style={styles.itemContainer} key={element.box_id}>
-                        <View key={element.box_name} style={styles.cardContainer}>
-                            <BoxCard
-                                id={element.box_id}
-                                name={element.box_name}
+            // else{
+                // setCartData(cartData.filter((item) => item._id != target_box._id))
+            // }  
+        }
+    
+        const changeBoxQuantity = (target_box, newQuantity) => {
+            let box = cartData.find((item) => item._id == target_box._id)
 
-                            // image={item.box_image} //change
-                            />
-                        </View>
+            if(newQuantity < 1){
+                box.box_quantity = 1
+                alert("Mínima cantidad de cajas es 1.")
+            }
 
-                        <View style={styles.plusminus} >
-                            <PlusMinus
-                                onMinus={() => {decreaseBoxQuantity(element)}}
-                                // 
-                                //if (element.quantity > 1) setCartData({ ...element, quantity: element.quantity -= 1 }) 
-                                //if(cartData.quantity > 1) setCartData({...cartData, quantity: cartData.quantity -= 1})}
-                                onPlus={() => {increaseBoxQuantity(element)}}
-                                // 
-                                //if (element.quantity < 100) setCartData({ ...element, quantity: element.quantity += 1 })
-                                placeholder={element.quantity}
-                            />
-                        </View>
+            else if (newQuantity > 99) {
+                box.box_quantity = 99
+                alert("Máxima cantidad de cajas es 99.")
+            }
 
-                        <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_price * element.quantity}</Text>
+            else 
+                box.box_quantity = newQuantity
+        }
 
+        const fetchPlaceholder = (target_box) => {
+            let box = cartData.find((item) => item._id == target_box._id)
+
+            if(box)
+                return box.box_quantity
+
+            return 0
+        }
+
+        return cartData.map((element) => 
+            <View>
+                <View style={styles.itemContainer} key={element._id}>
+                    <View key={element.box_name} style={styles.cardContainer}>
+                        <BoxCard
+                            id={element._id}
+                            name={element.box_name}
+                            price={element.box_accumulated_price}
+                        // image={item.box_image} //change
+                        />
                     </View>
-                    
-                </View>
 
-                // Need to wrap BoxCard in a View and
-                // add another View for price, quantity, and total
-            ) 
-         })
-        // });
+                    <View style={styles.plusminus} >
+                        <PlusMinus
+                            onMinus={() => {decreaseBoxQuantity(element)}}
+                            onPlus={() => {increaseBoxQuantity(element)}}
+                            onText={(text) => changeBoxQuantity(element, text)}
+                            placeholder={fetchPlaceholder(element)}
+                        />
+                    </View>
+
+                    <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_accumulated_price * element.box_quantity}</Text>
+
+                </View>
+            </View>
+        )
     }
 
-    loadCart()
+    const getTotalPrice = () => {
+        let total_price = 0
+
+        cartData.forEach((item) => {total_price += Number(item.box_accumulated_price) * Number(item.box_quantity)})
+
+        return total_price
+    }
 
     return(
         <ScrollView>
             <Logo/>
 
             <View style={styles.cartContainer}>
-                {cart}
+                {loadCart()}
             </View>
 
             <Text style={[global_styles.text, styles.text]}>Total de compra: 
-                <Text style={{fontWeight: 'bold', color: '#EAC71D'}}> ${80}</Text>
+                <Text style={{fontWeight: 'bold', color: '#EAC71D'}}> ${getTotalPrice()}</Text>
             </Text>
 
             <View style={styles.buttonContainer}>
                 <Button
                     onTouch={goToCheckout}
-                    text="Pagar"
+                    text="Continuar"
                 />
             </View>
         </ScrollView>

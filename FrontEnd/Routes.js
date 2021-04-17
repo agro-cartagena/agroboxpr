@@ -22,6 +22,7 @@ import ViewOrdersScreen from './screens/customer/ViewOrdersScreen/ViewOrdersScre
 
 import CheckoutScreen from './screens/customer/CheckoutScreen/CheckoutScreen'
 import PaymentScreen from './screens/customer/PaymentScreen/PaymentScreen'
+import EditCartScreen from './screens/customer/EditCartScreen/EditCartScreen'
 
 const Routes = () => {
     return(
@@ -29,9 +30,9 @@ const Routes = () => {
             <Scene key="root">
                 <Scene key="login" component={LoginScreen} title="Login" hideNavBar={true}/>
                 <Scene key="register" component={RegisterScreen} title="Register" hideNavBar={true} />
-                <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true}/>
+                <Scene key="home" component={HomeScreen} title="Home" hideNavBar={true} />
                 <Scene key="view_box" component={ViewBoxScreen} title="View Box" hideNavBar={true}/>
-                <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true}/>
+                <Scene key="cart" component={CartScreen} title="Cart" hideNavBar={true} />
                 <Scene key="inventory_management" component={ManageInventoryScreen} title="Inventory Management" hideNavBar={true}/>
                 <Scene key="box_management" component={ManageBoxesScreen} title="Box Management" hideNavBar={true}/>
                 <Scene key="edit_box" component={EditBoxScreen} title="Edit Box" hideNavBar={true}/>
@@ -43,6 +44,7 @@ const Routes = () => {
                 <Scene key="view_orders" component={ViewOrdersScreen} title="View Orders" hideNavBar={true}/>
                 <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true}/>
                 <Scene key="payment" component={PaymentScreen} title="Payment" hideNavBar={true}/>
+                <Scene key="edit_cart" component={EditCartScreen} title="Edit Cart" hideNavBar={true} initial = {true}/>
             </Scene>
         </Router>
     )

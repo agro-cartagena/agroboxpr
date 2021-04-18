@@ -30,7 +30,7 @@ const EditBoxScreen = (props) => {
             let _box = _isNewBox ? {
                 box_name: '',
                 box_price: '',
-                box_image: {},
+                box_image: '',
                 box_content: []
             } : {
                 ...props.params, 
@@ -149,41 +149,45 @@ const EditBoxScreen = (props) => {
 
     const submitHandler = async () => {
 
-        let form = new FormData()
-        form.append('file', boxImage)
-        form.append('caption', "First Image!")
+        // let form = new FormData()
+        // form.append('file', boxImage)
+        // form.append('caption', "Image upload test")
 
-        let payload = {
-            method: 'POST',
-            header: {
-                Accept: 'application/json',
-                'Content-Type': 'multipart/form-data'
-            },
-            body: form
-        }
-
-        await fetch('http://10.0.0.6:5000/api/image/upload', payload)
-            .then(response => {
-                if(response.status == 201)
-                    alert("Image uploaded!")
-
-                else 
-                    alert(response.message)
-            })
-            .catch((error) => alert("Something happened."))
-
-        // let result = null
-        
-        // if(_isNewBox)
-        //     result = await BoxService.instance.addNewBox(boxData)
-
-        // else 
-        //     result = await BoxService.instance.updateBox(boxData)
-
-        // if(result){
-        //     alert("Caja ha sido guardada.")
-        //     goToBoxManagement()
+        // let payload = {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/multipart-formdata'
+        //     },
+        //     body: JSON.stringify(form)
         // }
+
+        // fetch('http:/10.0.0.6:5000/api/image/upload', payload)
+        //     .then((response) => {
+        //         alert("Resolved")
+        //     })
+        //     .catch((error) => {
+        //         alert("Rejected")
+        //     })
+
+        let result = null
+        
+        if(_isNewBox)
+            result = await BoxService.instance.addNewBox({
+                ...boxData, 
+                box_image: boxImage
+            })
+
+        else 
+            result = await BoxService.instance.updateBox({
+                ...boxData, 
+                box_image: boxImage
+            })
+
+        if(result){
+            alert("Caja ha sido guardada.")
+            goToBoxManagement()
+        }
     }
 
     return(

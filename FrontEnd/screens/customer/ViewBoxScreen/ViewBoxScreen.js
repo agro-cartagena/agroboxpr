@@ -230,7 +230,7 @@ const BoxScreen = (props) => {
                 {/* <Card.Image source={props.params.box_image}> */}
                 <Card.Image 
                     style={styles.imageRadius}
-                    source={props.params.box_image}
+                    source={{uri: `data:image/png;base64,${props.params.box_image}`}}
                     resizeMode="stretch"
                 />
                 <Text style={[styles.text, styles.cardText]}>Precio Mínimo: <Text style={{color: 'rgb(252,0,29)'}}>${props.params.box_price}</Text></Text>

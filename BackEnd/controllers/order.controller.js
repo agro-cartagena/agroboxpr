@@ -8,7 +8,7 @@ const {
 	getOrderByCity,
 	updateOrder,
 	getAllOrders,
-	confirmOrder,
+	manageInventory,
 } = orderService
 const { validateId, validateUserId, validateCity } = validationMiddleware
 
@@ -118,7 +118,7 @@ const update = async (req, res, next) => {
 	}
 }
 
-const confirm = async (req, res, next) => {
+const manage = async (req, res, next) => {
 	const id = req.params.id
 	try {
 		let validate
@@ -126,7 +126,7 @@ const confirm = async (req, res, next) => {
 			validate = result
 		})
 		if (validate != null) {
-			await confirmOrder(id).then((order) => {
+			await manageInventory(id).then((order) => {
 				res.status(200).send(order)
 				next()
 			})
@@ -146,5 +146,5 @@ module.exports = {
 	getByCity,
 	update,
 	getAll,
-	confirm,
+	manage,
 }

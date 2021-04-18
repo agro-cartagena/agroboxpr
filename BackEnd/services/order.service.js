@@ -63,7 +63,7 @@ const getOrderByCity = async (city) => {
 	}
 }
 
-const confirmOrder = async (orderId) => {
+const manageInventory = async (orderId) => {
 	try {
 		let order
 		let productList = []
@@ -101,5 +101,5 @@ module.exports = {
 	getOrderByCity,
 	updateOrder,
 	getAllOrders,
-	confirmOrder,
+	manageInventory,
 }

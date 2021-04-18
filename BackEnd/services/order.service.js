@@ -2,15 +2,16 @@ const { orderDb } = require('../db')
 
 const {
 	createOrderDb,
-	readUserOrdersDb,
+	getAllUserOrdersDb,
 	getOrderByIdDb,
 	updateOrderDb,
 	getOrderByCityDb,
+	readAllOrdersDb,
 } = orderDb
 
 const createOrder = async (order) => {
 	try {
-		await createOrderDb(order)
+		return await createOrderDb(order)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -18,7 +19,7 @@ const createOrder = async (order) => {
 
 const readUserOrders = async (userId) => {
 	try {
-		return await readUserOrdersDb(userId)
+		return await getAllUserOrdersDb(userId)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -27,6 +28,14 @@ const readUserOrders = async (userId) => {
 const getOrderById = async (id) => {
 	try {
 		return await getOrderByIdDb(id)
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
+const getAllOrders = async () => {
+	try {
+		return await readAllOrdersDb()
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -54,4 +63,5 @@ module.exports = {
 	getOrderById,
 	getOrderByCity,
 	updateOrder,
+	getAllOrders,
 }

@@ -7,6 +7,7 @@ const {
 	getOrderById,
 	getOrderByCity,
 	updateOrder,
+	 getAllOrders
 } = orderService
 const { validateId, validateUserId, validateCity } = validationMiddleware
 
@@ -47,7 +48,7 @@ const getById = async (req, res, next) => {
 	const id = req.params.id
 	try {
 		let validate
-		await validateId(id).then((result) => {
+		await validateId(id,'order').then((result) => {
 			validate = result
 		})
 		if (validate != null) {
@@ -85,6 +86,18 @@ const getByCity = async (req, res, next) => {
 	}
 }
 
+const getAll = async (req, res, next) => {
+	try {
+		await getAllOrders().then((orders) => {
+			res.status(200).send(orders)
+			next()
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500)&&next(e)
+	}
+} 
+
 const update = async (req, res, next) => {
 	const id = req.params.id
 	const change = req.body
@@ -109,4 +122,5 @@ module.exports = {
 	getUserOrders,
 	getByCity,
 	update,
+	getAll
 }

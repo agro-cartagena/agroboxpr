@@ -10,7 +10,7 @@ const {
 } = orderDb
 
 const { createOrderContentDb, getOrderContentByOrder } = orderContentDb
-const { updateProductDb } = productDb
+const { decreaseProductDb } = productDb
 
 const createOrder = async (order, orderContent) => {
 	try {
@@ -76,24 +76,23 @@ const confirmOrder = async (orderId) => {
 		//make a list of product id / amount objexts
 		order.forEach((box) => {
 			box.boxContent.forEach((content) => {
-				productList.push({"product_id":content.productId, "amount":content.amount })
+				productList.push({
+					"product_id": content.productId,
+					"amount": content.amount,
+				})
 			})
 		})
 
+		//decrease product ammounts in the inventory
+		productList.forEach((product) => {
+			decreaseProductDb(product.product_id, product.amount)
+		})
+		return true
 
-
-		return productList
 	} catch (e) {
 		throw new Error(e.message)
 	}
 }
-
-// let update = {
-// 				"_id": "60776cf54f15dc23034c0a7d",
-// 				"update": {
-// 					"product_quantity_stock": "5"
-// 				}
-// 			}
 
 module.exports = {
 	createOrder,

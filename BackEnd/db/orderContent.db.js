@@ -11,9 +11,9 @@ const createOrderContentDb = async (orderContent) => {
 
     return await collection
 		.insertOne(orderContent)
-		.then(() => {
+		.then((results) => {
 			console.log('Insertion succesfull')
-			return orderContent._id
+            return results['ops'][0]
 		})
 		.catch((error) => console.error(error))
 }

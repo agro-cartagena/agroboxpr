@@ -8,19 +8,15 @@ const {
 	getOrderByCityDb,
 	readAllOrdersDb,
 } = orderDb
-const {createOrderContentDb, updateOderContentDb} = orderContentDb
 
-const createOrder = async (order) => {
+const { createOrderContentDb } = orderContentDb
+
+const createOrder = async (order, orderContent) => {
 	try {
-		let order_id, content_id
-		await createOrderDb(order).then((orderId) => {
-			order_id = orderId
-		})
-		await createOrderContentDb(order).then((contentId) => {
-			content_id = contentId
-		})
-		await updateOrderDb(order_id, {"order_Content":content_id})
-		await updateOderContentDb(content_id, {"order_id": order_id})
+		let order_id
+		order_id = await createOrderDb(order)
+		await createOrderContentDb({ "order_id": order_id, ...orderContent})
+		return true
 	} catch (e) {
 		throw new Error(e.message)
 	}

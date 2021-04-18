@@ -1,17 +1,22 @@
 const { orderService } = require('../services')
+const { validationMiddleware } = require('../middleware')
 
 const {
 	createOrder,
 	readUserOrders,
 	getOrderById,
-	getOrderByMunicipality,
+	getOrderByCity,
 	updateOrder,
+	getAllOrders,
+	manageInventory,
 } = orderService
+const { validateId, validateUserId, validateCity } = validationMiddleware
 
 const postOrder = async (req, res, next) => {
-	const order = req.body
+	const order = req.body.order
+	const content = req.body.orderContent
 	try {
-		await createOrder(order)
+		await createOrder(order, content)
 		res.sendStatus(200)
 		next()
 	} catch (e) {
@@ -23,10 +28,18 @@ const postOrder = async (req, res, next) => {
 const getUserOrders = async (req, res, next) => {
 	const userId = req.params.id
 	try {
-		await readUserOrders(userId).then((orders)=> {
-			res.status(200).send(orders)
-			next()
+		let validate
+		await validateUserId(userId).then((result) => {
+			validate = result
 		})
+		if (validate != null) {
+			await readUserOrders(userId).then((orders) => {
+				res.status(200).send(orders)
+				next()
+			})
+		} else {
+			res.sendStatus(404) && next()
+		}
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(500) && next(e)
@@ -36,21 +49,49 @@ const getUserOrders = async (req, res, next) => {
 const getById = async (req, res, next) => {
 	const id = req.params.id
 	try {
-		await getOrderById(id).then((order) => {
-			res.status(200).send(order)
-			next()
+		let validate
+		await validateId(id, 'order').then((result) => {
+			validate = result
 		})
+		if (validate != null) {
+			await getOrderById(id).then((order) => {
+				res.status(200).send(order)
+				next()
+			})
+		} else {
+			res.sendStatus(404) && next()
+		}
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }
 
-const getByMunicipality = async (req, res, next) => {
-	const municipality = req.params.municipality
+const getByCity = async (req, res, next) => {
+	const city = req.params.city
 	try {
-		await getOrderByMunicipality(municipality).then((order) => {
-			res.status(200).send(order)
+		let validate
+		await validateCity(city).then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			await getOrderByCity(city).then((order) => {
+				res.status(200).send(order)
+				next()
+			})
+		} else {
+			res.sendStatus(404) && next()
+		}
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getAll = async (req, res, next) => {
+	try {
+		await getAllOrders().then((orders) => {
+			res.status(200).send(orders)
 			next()
 		})
 	} catch (e) {
@@ -77,10 +118,33 @@ const update = async (req, res, next) => {
 	}
 }
 
+const manage = async (req, res, next) => {
+	const id = req.params.id
+	try {
+		let validate
+		await validateId(id, 'order').then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			await manageInventory(id).then((order) => {
+				res.status(200).send(order)
+				next()
+			})
+		} else {
+			res.sendStatus(404) && next()
+		}
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(404) && next(e)
+	}
+}
+
 module.exports = {
 	postOrder,
 	getById,
 	getUserOrders,
-	getByMunicipality,
+	getByCity,
 	update,
+	getAll,
+	manage,
 }

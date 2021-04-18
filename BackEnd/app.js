@@ -7,6 +7,7 @@ const {
 	productRouter,
 	boxRouter,
 	orderRouter,
+	orderContentRouter
 } = require('./routes')
 
 //Get environment variables
@@ -24,5 +25,7 @@ app.use('/api/product', productRouter)
 app.use('/api/box', boxRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/order', orderRouter)
+app.use('/api/content', orderContentRouter) // only to be used for testing build
+
 
 module.exports = app

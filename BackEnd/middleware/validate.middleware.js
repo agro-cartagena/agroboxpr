@@ -28,8 +28,16 @@ const validateUserId = async (user_Id) => {
 	return await collection.findOne({userId: user_Id})
 }
 
+const validateCity = async (city) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('order')
+
+	return await collection.findOne({deliveryCity: city})
+}
+
 module.exports = {
     validateProduct,
     validateId,
-	validateUserId
+	validateUserId,
+	validateCity
 }

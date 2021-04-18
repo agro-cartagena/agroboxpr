@@ -41,6 +41,18 @@ const updateProductDb = async (id, changes) => {
 	return collection.updateOne({ _id: ObjectId(id) }, { $set: changes })
 }
 
+const decreaseProductDb = async (id, changes) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('product')
+
+	return collection.updateOne(
+		{ _id: ObjectId(id) },
+		{ $inc: { product_quantity_stock: -changes } }
+	)
+}
+
+
+
 const deleteProductDb = async (id) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')
@@ -54,5 +66,6 @@ module.exports = {
 	getProductByIdDb,
 	updateProductDb,
 	deleteProductDb,
+	decreaseProductDb
 
 }

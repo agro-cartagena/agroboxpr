@@ -8,7 +8,7 @@ const {
 
 const createOrderContent = async (orderContent) => {
 	try {
-		await createOrderContentDb(orderContent)
+		return await createOrderContentDb(orderContent)
 	} catch (e) {
 		throw new Error(e.message)
 	}

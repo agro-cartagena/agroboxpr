@@ -6,11 +6,11 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 const createOrderDb = async (order) => {
-	console.log('Inside order db layer!', order)
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('order')
+	
 	return await collection
-		.insert(order)
+		.insertOne(order)
 		.then(() => {
 			console.log('Insertion succesfull')
 			return order._id

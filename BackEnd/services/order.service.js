@@ -1,4 +1,4 @@
-const { orderDb } = require('../db')
+const { orderDb, orderContentDb } = require('../db')
 
 const {
 	createOrderDb,
@@ -8,10 +8,19 @@ const {
 	getOrderByCityDb,
 	readAllOrdersDb,
 } = orderDb
+const {createOrderContentDb, updateOderContentDb} = orderContentDb
 
 const createOrder = async (order) => {
 	try {
-		return await createOrderDb(order)
+		let order_id, content_id
+		await createOrderDb(order).then((orderId) => {
+			order_id = orderId
+		})
+		await createOrderContentDb(order).then((contentId) => {
+			content_id = contentId
+		})
+		await updateOrderDb(order_id, {"order_Content":content_id})
+		await updateOderContentDb(content_id, {"order_id": order_id})
 	} catch (e) {
 		throw new Error(e.message)
 	}

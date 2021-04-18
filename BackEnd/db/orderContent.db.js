@@ -9,12 +9,13 @@ const createOrderContentDb = async (orderContent) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('orderContent')
 
-    return collection.insertOne(orderContent)
-    .then((results) => {
-        console.log('Insertion succesfull')
-        return results['ops'][0]
-    })
-    .catch((error) => console.error(error))
+    return await collection
+		.insertOne(orderContent)
+		.then(() => {
+			console.log('Insertion succesfull')
+			return orderContent._id
+		})
+		.catch((error) => console.error(error))
 }
 
 const getOrderContentDb = async () => {

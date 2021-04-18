@@ -10,6 +10,5 @@ router.get('/city/:city', orderController.getByCity) //get order by municipality
 router.put('/:id', orderController.update) //update order
 router.get('/', orderController.getAll) //get all orders in system
 
-router.put('/confirm/:id', orderController.confirm)
 
 module.exports = router

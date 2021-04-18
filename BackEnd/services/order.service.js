@@ -1,4 +1,4 @@
-const { orderDb, orderContentDb } = require('../db')
+const { orderDb, orderContentDb, productDb } = require('../db')
 
 const {
 	createOrderDb,
@@ -9,13 +9,14 @@ const {
 	readAllOrdersDb,
 } = orderDb
 
-const { createOrderContentDb } = orderContentDb
+const { createOrderContentDb, getOrderContentByOrder } = orderContentDb
+const { updateProductDb } = productDb
 
 const createOrder = async (order, orderContent) => {
 	try {
 		let order_id
 		order_id = await createOrderDb(order)
-		await createOrderContentDb({ "order_id": order_id, ...orderContent})
+		await createOrderContentDb({ order_id: order_id, ...orderContent })
 		return true
 	} catch (e) {
 		throw new Error(e.message)
@@ -54,13 +55,45 @@ const updateOrder = async (id, changes) => {
 	}
 }
 
-const getOrderByCity = async (municipality) => {
+const getOrderByCity = async (city) => {
 	try {
-		return await getOrderByCityDb(municipality)
+		return await getOrderByCityDb(city)
 	} catch (e) {
 		throw new Error(e.message)
 	}
 }
+
+const confirmOrder = async (orderId) => {
+	try {
+		let order
+		let productList = []
+
+		//get boxes
+		await getOrderContentByOrder(orderId).then((boxes) => {
+			order = boxes.boxes
+		})
+
+		//make a list of product id / amount objexts
+		order.forEach((box) => {
+			box.boxContent.forEach((content) => {
+				productList.push({"product_id":content.productId, "amount":content.amount })
+			})
+		})
+
+
+
+		return productList
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
+// let update = {
+// 				"_id": "60776cf54f15dc23034c0a7d",
+// 				"update": {
+// 					"product_quantity_stock": "5"
+// 				}
+// 			}
 
 module.exports = {
 	createOrder,
@@ -69,4 +102,5 @@ module.exports = {
 	getOrderByCity,
 	updateOrder,
 	getAllOrders,
+	confirmOrder,
 }

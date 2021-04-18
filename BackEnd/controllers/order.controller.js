@@ -1,7 +1,15 @@
 const { orderService } = require('../services')
 const { validationMiddleware } = require('../middleware')
 
-const { createOrder, readUserOrders, getOrderById, getOrderByCity, updateOrder, getAllOrders} = orderService
+const {
+	createOrder,
+	readUserOrders,
+	getOrderById,
+	getOrderByCity,
+	updateOrder,
+	getAllOrders,
+	confirmOrder,
+} = orderService
 const { validateId, validateUserId, validateCity } = validationMiddleware
 
 const postOrder = async (req, res, next) => {
@@ -110,6 +118,27 @@ const update = async (req, res, next) => {
 	}
 }
 
+const confirm = async (req, res, next) => {
+	const id = req.params.id
+	try {
+		let validate
+		await validateId(id, 'order').then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			await confirmOrder(id).then((order) => {
+				res.status(200).send(order)
+				next()
+			})
+		} else {
+			res.sendStatus(404) && next()
+		}
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(404) && next(e)
+	}
+}
+
 module.exports = {
 	postOrder,
 	getById,
@@ -117,4 +146,5 @@ module.exports = {
 	getByCity,
 	update,
 	getAll,
+	confirm,
 }

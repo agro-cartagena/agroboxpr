@@ -33,6 +33,13 @@ const getOrderContentByIdDb = async (id) => {
 
 }
 
+const getOrderContentByOrder = async(orderId) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('orderContent')
+
+    return collection.findOne({ order_id: ObjectId(orderId)})
+}
+
 const updateOderContentDb = async (id, changes) => {
     const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('orderContent')
@@ -45,5 +52,6 @@ module.exports = {
     createOrderContentDb,
     getOrderContentDb,
     getOrderContentByIdDb,
-    updateOderContentDb
+    updateOderContentDb,
+	getOrderContentByOrder
 }

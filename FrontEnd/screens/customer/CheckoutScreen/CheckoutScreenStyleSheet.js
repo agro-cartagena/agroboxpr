@@ -1,8 +1,11 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
+    arrowContainer:{
+        margin:10
+    },
     formContainer:{
-        width: "100%"
+        width: "100%",
     },
     formInputContainer:{
         // flexDirection: 'row',
@@ -24,6 +27,13 @@ const styles = StyleSheet.create({
         width: '100%',
         fontSize: 14
     },
+    button:{
+        width: '25%',
+        height: 40,
+        alignSelf: 'center',
+        marginTop: 30,
+        marginBottom: 30
+    }
 
 })
 

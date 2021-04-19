@@ -25,23 +25,46 @@ export default class UserAuthenticationService extends Service {
 
     // This method gets called only once on init to fetch the token from storage.
     async loadWebToken() {
-        await AsyncStorage.getItem('jwt_key')
-            .then(token => this.webToken = token)
-            .catch(error => alert("error loading token"))
+        AsyncStorage.getItem('jwt_key')
+            .then((token) => {
+                // Resolves to token if it exists; 
+                // otherwise, resolves to null.
+                this.webToken = token
+            })
+            .catch((error) => {
+                alert("error loading token.")
+                console.error(error)
+            })
     }
 
     async setWebToken(token) {
-        await AsyncStorage.setItem('jwt_key', token)
-            .then(() => this.webToken = token)
-            .catch(error => alert("error storing token"))
+        AsyncStorage.setItem('jwt_key', token)
+            .then(() => {
+                this.webToken = token
+            })
+            .catch((error) => {
+                alert("error storing token")
+                console.error(error)
+            })
+    }
+
+    async removeWebToken() {
+        AsyncStorage.removeItem('jwt_key')
+            .then(() => {
+                this.webToken = null
+            })
+            .catch((error) => {
+                alert("error deleting token")
+                console.error(error)
+            })
     }
 
     isAuthenticated() { 
-        return this.webToken != "undefined"
+        return this.webToken != null
     }
 
     isAdmin() {
-        if(this.webToken != "undefined"){
+        if(this.isAuthenticated()){
             let decoded = jwt_decode(this.webToken)
             return decoded.role == "admin"
         }
@@ -50,7 +73,7 @@ export default class UserAuthenticationService extends Service {
     }
 
     logout() {
-        this.setWebToken("undefined")
+        this.removeWebToken()
     }
 
     sendLogin(data) {

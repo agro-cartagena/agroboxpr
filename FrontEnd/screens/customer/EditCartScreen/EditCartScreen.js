@@ -1,5 +1,5 @@
 import React from 'react'
-import {Text,View, ScrollView} from 'react-native'
+import {Text, View, ScrollView, Alert} from 'react-native'
 import Button from '../../../components/Button/Button'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import FormInput from '../../../components/FormInput/FormInput'
@@ -13,9 +13,30 @@ import CartService from '../../../services/CartService'
 
 // box content is passed through props.params.content LIST OF OBJECTS 
 const EditCartScreen = (props) => {
-    const [content, setContent] = React.useState(props.params.box_content)
+    // const [content, setContent] = React.useState(props.params.box_content)
+    const content = props.params.box_content
+    const [subTotal, setSubTotal] = React.useState(props.params.box_accumulated_price)
     
     const displayContent = () => {
+
+        const removeProduct = (target_product) => {
+            Alert.alert(
+                `¿Seguro que desea eliminar ${target_product.product_name} de la orden?`, "",
+                [
+                    {
+                        text: 'Cancelar',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Eliminar',
+                        onPress: () => {
+                            props.params.box_content = content.filter((product) => product._id != target_product._id)
+                            // setContent(props.params.box_content)
+                        }
+                    }
+                ]
+            )
+        }
 
         const increaseProductQuantity = (target_product) => {
             let product = content.find((item) => item._id == target_product._id)
@@ -32,8 +53,7 @@ const EditCartScreen = (props) => {
             else 
                 product.product_quantity_box += 1
 
-            CartService.instance.updateCart(props.params.box_id, content)
-            setContent(CartService.instance.getCart())
+            setSubTotal(Number((Number(props.params.box_accumulated_price) + Number(target_product.product_price)).toFixed(2)))
         }
     
         const decreaseProductQuantity = (target_product) => {
@@ -42,13 +62,12 @@ const EditCartScreen = (props) => {
             //Product already exists in content list.
             if(product){
                 if(product.product_quantity_box <= 1)
-                    setContent(content.filter((product) => product._id != target_product._id))
+                    removeProduct(product)
     
                 else
                     product.product_quantity_box -= 1
 
-                CartService.instance.updateCart(props.params.box_id, content)
-                setContent(CartService.instance.getCart())
+                setSubTotal(Number((Number(props.params.box_accumulated_price) - Number(target_product.product_price)).toFixed(2)))
             }       
         }
     
@@ -57,12 +76,14 @@ const EditCartScreen = (props) => {
 
             // Product already exists in content list.
             if(product){
-                if(newQuantity == 0)
-                    setContent(content.filter((product) => product._id != target_product._id))
+                if(newQuantity == 0){
+                    props.params.box_content = content.filter((product) => product._id != target_product._id)
+                    // setContent(content.filter((product) => product._id != target_product._id))
+                }
                 
                 else
                     product.product_quantity_box = newQuantity
-                setContent(CartService.instance.getCart())  
+                // setContent(CartService.instance.getCart())  
             }
 
             // Product does not yet exist in content list.
@@ -72,9 +93,8 @@ const EditCartScreen = (props) => {
                     product_quantity_box: newQuantity
                 })
             }
-
-            CartService.instance.updateCart(props.params.box_id, content)
-            setContent(CartService.instance.getCart())
+            
+            setSubTotal(Number(Number(subTotal) + (Number(target_product.product_price) * Number(newQuantity)).toFixed(2)))
         }
 
         const fetchPlaceholder = (target_product) => {
@@ -104,13 +124,25 @@ const EditCartScreen = (props) => {
         <ScrollView>
             <View>
                 <View style={styles.arrowContainer}>
-                    <BackArrow onTouch={goToCart} />
+                    <BackArrow onTouch={() => { 
+                        goToCart()
+                        // setContent([])
+                    }} />
                 </View>
 
-                <Text>Contenido actual de la caja:</Text>
+                <Text style={[styles.text, styles.header]}>Contenido actual de la caja:</Text>
 
                 <View style={styles.cardContainer}>
                     {displayContent()}
+                </View>
+
+                <Text style={[styles.text, styles.priceText]}>Total acumulado hasta el momento: ${subTotal}</Text>
+
+                <View style = {styles.buttonContainer}>
+                    <Button
+                        text="Guardar"
+                        onTouch={() => alert(JSON.stringify(props.params.box_content))}
+                    />
                 </View>
             </View>
         </ScrollView>

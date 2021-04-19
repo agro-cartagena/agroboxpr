@@ -14,31 +14,15 @@ import { goToCheckout, goToEditCart } from '../../../Navigator'
 
 const CartScreen = (props) => {
 
-    const [cartData, setCartData] = React.useState([])
-   
-    React.useEffect(() => {
-        async function fetchData() {
-            // console.log( await CartService.instance.getCart())
-            const cartInfo = CartService.instance.getCart()
-            setCartData(cartInfo)
-            // let total_price = {
-            //     ...props,
-            //     cart_total_price:  props.params.box_price
-            // }
-            // console.log("---------------------")
-            // console.log(await CartService.instance.getCart())
-            // setBoxData(box_content)
-        }
-
-        fetchData()
-    }, []);
+    const [cartData, setCartData] = React.useState(CartService.instance.getCart())
 
     const loadCart = () => {
         const increaseBoxQuantity = (target_box) => {
             let box = cartData.find((item) => item._id == target_box._id)
     
-            if(box.box_quantity <= 99)
+            if(box.box_quantity <= 99){
                 box.box_quantity += 1
+            }
 
         }
     
@@ -50,16 +34,20 @@ const CartScreen = (props) => {
                 box.box_quantity -= 1
 
             // else{
-                // setCartData(cartData.filter((item) => item._id != target_box._id))
+            //     setCartData(cartData.filter((item) => item._id != target_box._id))
             // }  
         }
     
         const changeBoxQuantity = (target_box, newQuantity) => {
             let box = cartData.find((item) => item._id == target_box._id)
 
-            if(newQuantity < 1){
+            if(newQuantity < 0){
                 box.box_quantity = 1
                 alert("Mínima cantidad de cajas es 1.")
+            }
+
+            else if(newQuantity == 0){
+                box.box_quantity = 1
             }
 
             else if (newQuantity > 99) {
@@ -68,7 +56,9 @@ const CartScreen = (props) => {
             }
 
             else 
-                box.box_quantity = newQuantity
+                box.box_quantity = Number(newQuantity)
+
+            setCartData(cartData)
         }
 
         const fetchPlaceholder = (target_box) => {
@@ -82,12 +72,11 @@ const CartScreen = (props) => {
 
         return cartData.map((element) => 
             <View style={styles.itemContainer} key={element._id}>
-                <TouchableOpacity key={element.box_name} style={styles.cardContainer} onPress={() => goToEditCart({box_id: element._id, box_content: element.box_content})}>
+                <TouchableOpacity key={element.box_name} style={styles.cardContainer} onPress={() => goToEditCart(element)}>
                     <BoxCard
                         id={element._id}
                         name={element.box_name}
                         price={element.box_accumulated_price}
-                    // image={item.box_image} //change
                     />
                 </TouchableOpacity>
 

@@ -66,26 +66,18 @@ const readBoxProducts = async (id) => {
 		let result = {}
 		
 		if(box){
-			// console.log("Box: ", box)
-			const productIdList = box.boxContent;
-			productIdList.map((productId) => {
+			console.log("Box: ", box)
+			const productList = box.box_content;
+			productList.map((product) => {
 				productsQuery.push({
-					_id: ObjectID(productId)
+					_id: ObjectID(product._id)
 				})
 			});
 
 			const products = await findProductsByIdList(productsQuery);
 			console.log(`Products for ${box.boxName}: `, products);
 			if(products) {
-				products.forEach(product => {
-					result = {
-						[product.product_name] : product,
-						...result
-					}
-				});
-
-				console.log("Result: ", result);
-				return result;
+				return products
 			}
 		}
 

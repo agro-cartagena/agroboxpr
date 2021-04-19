@@ -14,7 +14,7 @@ router.put('/', auth, authController.updateUserInfo)
 router.put('/password', auth, authController.putUserPassword)
 
 router.get('/adminEmails', adminAuth, authController.getAdminEmails)
-// router.get('/user', adminAuth, authController.)
+router.get('/user', auth, authController.getUserById)
 
 
 // router.get()

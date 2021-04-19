@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const { userDb } = require('../db');
 const { ObjectID } = require("mongodb");
 
-const { registerNewUserDb, findUserByFilterDb, findUserByEmailAndUpdate, findAdminAccountsDb } = userDb
+const { registerNewUserDb, findUserByFilterDb, findUserByEmailAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
 
 const registerUser = async (name, email, password, phone) => {
 
@@ -220,6 +220,14 @@ const readAdminEmails = async () => {
 	}
 }
 
+const readUserById = async (userId) => {
+	try {
+		return await findUserByIdDb(userId)
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
 module.exports = {
     registerUser,
     loginUser,
@@ -227,5 +235,6 @@ module.exports = {
     demoteAdmin,
     updateUser,
     readAdminEmails,
-    updateUserPassword
+    updateUserPassword,
+    readUserById
 }

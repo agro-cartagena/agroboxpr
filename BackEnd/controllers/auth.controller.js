@@ -1,6 +1,6 @@
 const { authService } = require('../services')
 
-const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, updateUser, readAdminEmails, updateUserPassword } = authService
+const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, updateUser, readAdminEmails, updateUserPassword, readUserById } = authService
 
 const postSignup = async (req, res, next) => {
     const { name, email, password, phone } = req.body
@@ -113,6 +113,19 @@ const getAdminEmails = async (req, res, next) => {
 	}
 }
 
+const getUserById = async (req, res, next) => {
+    const userId = req.userId;
+
+	try {
+		await readUserById(userId).then((user) => {
+			res.status(200).send(user)
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
 module.exports = {
     postSignup,
     postLogin,
@@ -120,5 +133,6 @@ module.exports = {
     demoteUser,
     updateUserInfo,
     getAdminEmails,
-    putUserPassword
+    putUserPassword,
+    getUserById
 }

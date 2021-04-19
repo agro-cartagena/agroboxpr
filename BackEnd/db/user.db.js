@@ -1,4 +1,5 @@
 var mdb = require('./mdb')
+const { ObjectID } = require("mongodb");
 
 const dotenv = require('dotenv');
 dotenv.config();
@@ -38,9 +39,23 @@ const findAdminAccountsDb = async (query) => {
 	return collection.find(query).toArray()
 }
 
+/**
+ * Searches the "box" colection of the database for a specidied box utilizing 
+ * its object id and returns a array containing the search results 
+ * @param  {JSON} id Box id to use in search
+ * @return {Promise} Returns the box with given id
+ */
+const findUserByIdDb = async (id) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('user')
+
+	return collection.findOne({ _id: ObjectID(id) })
+}
+
 module.exports = {
     registerNewUserDb,
     findUserByFilterDb,
     findUserByEmailAndUpdate,
-    findAdminAccountsDb
+    findAdminAccountsDb,
+    findUserByIdDb
 }

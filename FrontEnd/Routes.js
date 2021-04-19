@@ -42,8 +42,8 @@ const Routes = () => {
                 <Scene key="edit_account" component={EditAccountScreen} title="Edit Account" hideNavBar={true}/>
                 <Scene key="admin_management" component={ManageAdministratorsScreen} title="Admin Management" hideNavBar={true}/>
                 <Scene key="view_orders" component={ViewOrdersScreen} title="View Orders" hideNavBar={true}/>
-                <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true} initial = {true}/>
-                <Scene key="payment" component={PaymentScreen} title="Payment" hideNavBar={true}/>
+                <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true} />
+                <Scene key="payment" component={PaymentScreen} title="Payment" hideNavBar={true} initial = {true}/>
                 <Scene key="edit_cart" component={EditCartScreen} title="Edit Cart" hideNavBar={true} />
             </Scene>
         </Router>

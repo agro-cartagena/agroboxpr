@@ -1,11 +1,19 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
+    screen: {
+        width: '100%',
+        height: '90%',
+
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
     form: {
         // backgroundColor: 'red',
         width: '85%',
         alignItems: 'center',
-        margin: '2%',
+        margin: 10,
     },
 
     buttonContainer: {

@@ -7,15 +7,15 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        fontSize: 22, 
-        fontWeight: "bold",
-
-        textAlign: 'center',
+        fontSize: 22,
         color: 'white',
-        marginTop: 20
+        fontWeight: "bold",
+        textAlign: 'center',
+        margin: 20
     },
 
     subheader: {
+        marginTop: 20,
         marginBottom: 8,
         // width: '75%',
         alignSelf: 'center',
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     sectionContainer: {
         width: '90%',
         height: Dimensions.get('window').height * 0.5,
-        margin: 30,
 
         alignSelf: 'center',
         backgroundColor: 'lightgray',

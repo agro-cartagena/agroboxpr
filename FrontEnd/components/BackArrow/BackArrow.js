@@ -4,7 +4,7 @@ import styles from './BackArrowStyleSheet'
 
 const BackArrow = (props) => {
     return(
-        <TouchableOpacity onPress={props.onTouch}>
+        <TouchableOpacity onPress={props.onTouch} style={styles.arrowContainer}>
             <Image 
                 source={require('../../assets/icons/ArrowBackward.png')} 
                 style={styles.arrow}

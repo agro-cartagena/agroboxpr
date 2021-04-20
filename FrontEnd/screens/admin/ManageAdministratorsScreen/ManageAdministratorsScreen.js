@@ -57,7 +57,7 @@ const ManageAdministratorsScreen = () => {
                     {
                         text: 'Remover',
                         onPress: async () => {
-                            if(await AdminService.instance.removeAdmin(item.id))
+                            if(await AdminService.instance.removeAdmin(item._id))
                                 setAdmins(await AdminService.instance.getAdmins())
                             
                             else 
@@ -109,9 +109,7 @@ const ManageAdministratorsScreen = () => {
 
     return (
         <KeyboardAwareScrollView>
-            <View style={styles.arrowContainer}>
-                <BackArrow onTouch={goToMenu}/>
-            </View>
+            <BackArrow onTouch={goToMenu}/>
             
             <Text style={styles.header}>Administradores de AgroBox</Text>
 

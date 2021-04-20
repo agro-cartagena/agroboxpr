@@ -38,14 +38,12 @@ const HomeScreen = () => {
     }
 
     return (
-        <SafeAreaView>
-            <ScrollView>
-                <Logo/>
-                <View style={styles.cardContainer}>
-                    { displayBoxes() }
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+        <ScrollView>
+            <Logo/>
+            <View style={styles.cardContainer}>
+                { displayBoxes() }
+            </View>
+        </ScrollView>
     )
 }
 

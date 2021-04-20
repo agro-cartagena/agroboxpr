@@ -27,7 +27,7 @@ const RegisterScreen = () => {
 
     return (
         <KeyboardAwareScrollView 
-            contentContainerStyle={[global_styles.container, global_styles.screen, {height: '100%'}]}
+            contentContainerStyle={styles.screen}
             resetScrollToCoords={{x: 0, y: 0}}
         > 
             <Logo/>

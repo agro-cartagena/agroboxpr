@@ -67,3 +67,7 @@ export const goToPayment = () => {
 export const goToEditCart = (box) => {
     Actions.edit_cart({ params: box })
 }
+
+export const goToOrderManagement = () => {
+    Actions.order_management()
+}

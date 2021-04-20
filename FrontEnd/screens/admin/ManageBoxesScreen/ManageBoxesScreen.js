@@ -40,10 +40,11 @@ const BoxManagementScreen = () => {
     }
 
     return (
-        <ScrollView style={global_styles.screen}>
+        <ScrollView>
             <BackArrow
                 onTouch={goToInventoryManagement}
             />
+
             <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Cajas)</Text>
 
             <View style={styles.boxCardContainer}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { Card } from 'react-native-elements'
@@ -65,7 +65,25 @@ const BoxScreen = (props) => {
             // CartService.instance.addToCart(item)
             // alert(JSON.stringify(item))
         // }
-    }    
+    }  
+    const askToRemoveProduct = (target_product) => {
+        Alert.alert(
+            `¿Seguro que desea eliminar ${target_product.product_name} de la orden?`, "",
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Eliminar',
+                    onPress: () => {
+                        setContent(content.filter((product) => product._id != target_product._id))
+                        setSubTotal(Number((Number(subTotal) - Number(target_product.product_price)).toFixed(2)))
+                    }
+                }
+            ]
+        )
+    }
 
     const increaseProductQuantity = (target_product) => {
         let product = boxData.box_content.find((item) => item._id == target_product._id)
@@ -79,8 +97,14 @@ const BoxScreen = (props) => {
         }
 
         // Product already exists in content list.
-        else 
+        else {
+            if(target_product.product_quantity_box == target_product.product_quantity_stock){
+                alert('Máxima cantidad de productos alcanzada.')
+                return
+            }
+
             product.product_quantity_box += 1
+        }
 
         setBoxData({
             ...boxData, 
@@ -220,9 +244,7 @@ const BoxScreen = (props) => {
         <KeyboardAwareScrollView>
 
             {/* GO BACK ARROW */}
-            <View style={styles.arrowContainer}> 
-                <BackArrow onTouch={goToHome}/>
-            </View>
+            <BackArrow onTouch={goToHome}/>
 
             {/* BOX CARD */}
             <Text style={[styles.text, styles.cardText, styles.cardTitle]}>{props.params.box_name}</Text>

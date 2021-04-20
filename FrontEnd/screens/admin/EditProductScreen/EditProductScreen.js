@@ -24,6 +24,7 @@ const ProductScreen = (props) => {
         } : props.params
 
     const [productData, changeProductData] = React.useState(_product)
+    const [productImage, changeProductImage] = React.useState('')
     
     const submitHandler = async () => {
         let result = null
@@ -41,15 +42,13 @@ const ProductScreen = (props) => {
     }
 
     return (
-        <KeyboardAwareScrollView style={global_styles.screen}>
+        <KeyboardAwareScrollView>
             <BackArrow onTouch={goToProductManagement}/>
 
-            <View style={[styles.imageContainer, styles.radius]}>
-                <Image
-                    source={require('../../../assets/products/Broccoli.jpeg')}
-                    style={[styles.productImage, styles.radius]}
-                />
-            </View>
+            <MediaUploader
+                media = {productImage}
+                setMedia = {changeProductImage}
+            />
 
             <View style={[styles.formContainer]}>
                 <Text style={[global_styles.text, styles.formText]}>Nombre del Producto</Text>

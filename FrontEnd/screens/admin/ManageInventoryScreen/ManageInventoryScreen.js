@@ -11,8 +11,10 @@ import { goToProductManagement, goToBoxManagement, goToMenu } from '../../../Nav
 
 const InventoryManagementScreen = () => {
     return(
-        <View style={[global_styles.screen]}>
-            <BackArrow onTouch={() => goToMenu()}/>
+        <View>
+            <BackArrow 
+                onTouch={() => goToMenu()}
+            />
 
             <View style={styles.logoContainer}>
                 <Logo/>  

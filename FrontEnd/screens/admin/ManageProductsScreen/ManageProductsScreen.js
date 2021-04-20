@@ -60,11 +60,10 @@ const InventoryManagementScreen = () => {
 
     return(
         <ScrollView contentContainerStyle={styles.screen}>
-            <View style={styles.arrowContainer}>
-                <BackArrow
+            <BackArrow
                     onTouch={goToInventoryManagement}
-                />
-            </View>
+            />
+            
             <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Productos)</Text>
 
             <View style={styles.menuContainer}>

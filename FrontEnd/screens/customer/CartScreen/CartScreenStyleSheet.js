@@ -20,10 +20,9 @@ const styles = StyleSheet.create({
     },
 
     cardContainer: {
-        width: '50%',
+        width: '40%',
         height: 100,
         margin: 10,
-        width: '40%',
     }, 
 
     plusminus:{

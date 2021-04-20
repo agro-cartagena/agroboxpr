@@ -10,7 +10,7 @@ export default class BoxService extends Service {
 
     constructor() { super() }
 
-    // Used in HomeScreen and BoxManagementScreen
+    // Used BoxManagementScreen
     async getAllBoxes() {
         let payload = {
             method: 'GET',
@@ -45,11 +45,11 @@ export default class BoxService extends Service {
             })
     }
 
-    async getBoxContent() {
-        return fetch(this.url + 'route')
-            .then(response => response.json())
-            .then((box_content) => {
-                return box_content
+    async getBoxContent(box_id) {
+        return fetch(this._url + `box/products/${box_id}`)
+            .then((response) => response.json())
+            .then((content) => {
+                return content
             })
             .catch((error) => {
                 return box_content

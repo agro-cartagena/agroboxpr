@@ -107,8 +107,10 @@ const EditBoxScreen = (props) => {
         const fetchPlaceholder = (target_product) => {
             let product = boxData.box_content.find((item) => item._id == target_product._id)
 
-            if(product)
+            if(product){
+                // alert(product.product_quantity_box)
                 return product.product_quantity_box
+            }
 
             return 0
         }

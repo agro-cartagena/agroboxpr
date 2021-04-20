@@ -15,16 +15,6 @@ const PaymentScreen = () => {
     const [paymentData, setPaymentData] = React.useState(CartService.instance.getCart())
 
     const loadPaymentSummary = () => {
-
-        //     const fetchPlaceholder = (target_box) => {
-        //         let box = paymentData.find((item) => item._id == target_box._id)
-
-        //         if(box)
-        //             return box.box_quantity
-
-        //         return 0
-        //     }
-
         return paymentData.map((element) =>
             <View style={styles.itemContainer} key={element._id}>
                 <TouchableOpacity key={element.box_name} style={styles.cardContainer}>
@@ -71,8 +61,11 @@ const PaymentScreen = () => {
 
             <View style={[global_styles.container, styles.buttonContainer]}>
                 {/* Select payment method */}
+                {/* <script src="https://www.paypal.com/sdk/js?client-id=test"></script> */}
+                {/* <script>paypal.Buttons().render('body');</script>        */}
                 <Button
                     style={styles.button}
+                    
                     text="Paypal" //They have their own buttons
                 />
                 <Button

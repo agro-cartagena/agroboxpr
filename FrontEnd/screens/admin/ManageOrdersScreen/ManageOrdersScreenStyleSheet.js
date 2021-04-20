@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     header: {
+        color: 'white',
         fontSize: 22,
         fontWeight: "bold",
         textAlign: 'center',
@@ -9,21 +10,11 @@ const styles = StyleSheet.create({
     },
 
     cardContainer: {
-        height: 200,
-        width: '100%',
-
-        padding: 10,
-        alignSelf: 'center'
+        marginTop: 25
     },
 
-    buttonContainer: {
-        width: '75%',
-        height: 50,
-        
-        alignSelf: 'center',
-
-        margin: 30,
-        marginBottom: 50
+    card: {
+        width: '90%'
     }
 })
 

@@ -16,14 +16,13 @@ import { goToBoxManagement } from '../../../Navigator'
 
 import ProductService from '../../../services/ProductService'
 import BoxService from '../../../services/BoxService'
-import CloudinaryService from '../../../services/CloudinaryService'
 
 const EditBoxScreen = (props) => {
     let _isNewBox = props.params == "new"
 
     const [boxData, setBoxData] = React.useState({})
     const [productCatalog, setProductCatalog] = React.useState({})
-    const [boxImage, setBoxImage] = React.useState({})
+    const [boxImage, setBoxImage] = React.useState('')
 
     React.useEffect(() => {
         async function fetchData() {            
@@ -34,7 +33,7 @@ const EditBoxScreen = (props) => {
                 box_content: []
             } : {
                 ...props.params, 
-                box_content: await BoxService.instance.getBoxContent()
+                box_content: await BoxService.instance.getBoxContent(props.params._id)
             }
             setBoxData(_box)
             setBoxImage(_box.box_image)
@@ -57,8 +56,16 @@ const EditBoxScreen = (props) => {
             }
     
             // Product already exists in content list.
-            else 
+            else {
+                // if(product.product_quantity_box >= product.product_quantity_stock){
+                //     alert('Cantidad máxima de productos alcanzada.')
+                //     return
+                // }
+
                 product.product_quantity_box += 1
+            }
+
+            setBoxData({...boxData})
         }
     
         const decreaseProductQuantity = (target_product) => {
@@ -71,6 +78,8 @@ const EditBoxScreen = (props) => {
     
                 else
                     product.product_quantity_box -= 1
+
+                setBoxData({...boxData})
             }       
         }
     
@@ -192,9 +201,7 @@ const EditBoxScreen = (props) => {
 
     return(
         <KeyboardAwareScrollView>
-            <View style={styles.arrowContainer}>
-                <BackArrow onTouch={goToBoxManagement}/>
-            </View>
+            <BackArrow onTouch={goToBoxManagement}/>
 
             <MediaUploader
                 media = {boxImage}

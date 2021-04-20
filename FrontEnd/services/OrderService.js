@@ -1,5 +1,5 @@
 import Service from './Service'
-
+import UserService from './UserService'
 import orders from '../db_mockup/order.db'
 
 export default class OrderService extends Service {
@@ -7,14 +7,22 @@ export default class OrderService extends Service {
 
     constructor() { super() }
 
-    async getOrders() {
-        return fetch(this._url + 'route')
+    async getUserOrders() {
+        let payload = {
+            method: 'GET', 
+            headers: {
+                Accept: 'application/json',
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+
+        return fetch(this._url + 'route', payload)
             .then((response) => {
                 if (response.status == 200)
                     response.json()
                 else 
                     //handle error
-                    return false
+                    return orders
             })
             .then((orders) => {
                 return orders
@@ -25,7 +33,7 @@ export default class OrderService extends Service {
             })
     }
 
-    getOrdersByTownship() {
+    getAllOrders() {
         return "TO-DO"
     }
 }

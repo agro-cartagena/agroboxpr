@@ -1,13 +1,6 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    screen: {
-    },
-
-    arrowContainer: {
-        margin: 10
-    },
-
     header: {
         fontSize: 22,
         fontWeight: "bold",

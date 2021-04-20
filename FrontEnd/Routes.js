@@ -24,6 +24,8 @@ import CheckoutScreen from './screens/customer/CheckoutScreen/CheckoutScreen'
 import PaymentScreen from './screens/customer/PaymentScreen/PaymentScreen'
 import EditCartScreen from './screens/customer/EditCartScreen/EditCartScreen'
 
+import ManageOrdersScreen from './screens/admin/ManageOrdersScreen/ManageOrdersScreen'
+
 const Routes = () => {
     return(
         <Router sceneStyle={styles.app}>
@@ -45,6 +47,7 @@ const Routes = () => {
                 <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true} />
                 <Scene key="payment" component={PaymentScreen} title="Payment" hideNavBar={true} initial = {true}/>
                 <Scene key="edit_cart" component={EditCartScreen} title="Edit Cart" hideNavBar={true} />
+                <Scene key="order_management" component={ManageOrdersScreen} title="Order Management" hideNavBar={true} />
             </Scene>
         </Router>
     )

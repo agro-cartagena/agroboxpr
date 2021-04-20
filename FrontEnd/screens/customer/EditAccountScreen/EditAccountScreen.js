@@ -154,31 +154,23 @@ const EditAccountScreen = () => {
     }
 
     return (
-
         <KeyboardAwareScrollView
             contentContainerStyle={[global_styles.container]}
         >
-            <View style={styles.logo}>
-                <Logo/>
-            </View>
+            <Text style={styles.header}>Mi Información</Text>
 
             <View style={[global_styles.container, styles.formContainer]}>
                 <DropDown
-                    title="Actualizar Información Personal"
+                    title="Personal"
                     list={getUserFields()}
+                    active={true}
                 />
-            </View>
-
-            <View style={[global_styles.container, styles.formContainer]}>
                 <DropDown
-                    title="Actualizar Contraseña"
+                    title="Contraseña"
                     list={getPasswordFields()}
                 />
-            </View>
-
-            <View style={[global_styles.container, styles.formContainer]}>
                 <DropDown
-                    title="Actualizar Dirección Física"
+                    title="Dirección Física"
                     list={getAddressFields()}
                 />
             </View>

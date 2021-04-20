@@ -6,7 +6,7 @@ import styles from './DropDownStyleSheet'
 
 const DropDown = (props) => {
     // DropDown initially closed
-    const [isTriggered, setIsTriggered] = React.useState(false)
+    const [isTriggered, setIsTriggered] = React.useState(props.active)
 
     const trigger = () => {
         setIsTriggered(!isTriggered)

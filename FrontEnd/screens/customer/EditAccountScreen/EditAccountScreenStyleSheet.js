@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native'
 const styles = StyleSheet.create({
     formContainer:{
         width: '100%',
+        // marginTop: 25
         // height: '60%',
         // justifyContent: 'space-evenly', 
     },
@@ -13,10 +14,17 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red',
         width: '78%',
         height: 45,
-        margin: 15
+        margin: 20
     },
     logo: {
         margin: 25
+    },
+    header: {
+        color: 'white',
+        fontSize: 22,
+        fontWeight: 'bold', 
+        textAlign: 'center', 
+        margin: 40
     },
     text:{
         // justifyContent: 'space-evenly',

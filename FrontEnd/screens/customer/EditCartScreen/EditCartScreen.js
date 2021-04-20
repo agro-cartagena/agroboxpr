@@ -2,7 +2,6 @@ import React from 'react'
 import {Text, View, ScrollView, Alert} from 'react-native'
 import Button from '../../../components/Button/Button'
 import BackArrow from '../../../components/BackArrow/BackArrow'
-import FormInput from '../../../components/FormInput/FormInput'
 
 import { goToCart, goToPayment } from '../../../Navigator'
 import styles from './EditCartScreenStyleSheet'
@@ -13,13 +12,13 @@ import CartService from '../../../services/CartService'
 
 // box content is passed through props.params.content LIST OF OBJECTS 
 const EditCartScreen = (props) => {
-    // const [content, setContent] = React.useState(props.params.box_content)
-    const content = props.params.box_content
+    
+    const [content, setContent] = React.useState(props.params.box_content)
     const [subTotal, setSubTotal] = React.useState(props.params.box_accumulated_price)
     
     const displayContent = () => {
 
-        const removeProduct = (target_product) => {
+        const askToRemoveProduct = (target_product) => {
             Alert.alert(
                 `¿Seguro que desea eliminar ${target_product.product_name} de la orden?`, "",
                 [
@@ -30,8 +29,8 @@ const EditCartScreen = (props) => {
                     {
                         text: 'Eliminar',
                         onPress: () => {
-                            props.params.box_content = content.filter((product) => product._id != target_product._id)
-                            // setContent(props.params.box_content)
+                            setContent(content.filter((product) => product._id != target_product._id))
+                            setSubTotal(Number((Number(subTotal) - Number(target_product.product_price)).toFixed(2)))
                         }
                     }
                 ]
@@ -50,10 +49,16 @@ const EditCartScreen = (props) => {
             }
     
             // Product already exists in content list.
-            else 
+            else {
+                if(target_product.product_quantity_box == target_product.product_quantity_stock){
+                    alert('Cantidad máxima alcanzada')
+                    return
+                }
+                
                 product.product_quantity_box += 1
+            }
 
-            setSubTotal(Number((Number(props.params.box_accumulated_price) + Number(target_product.product_price)).toFixed(2)))
+            setSubTotal(Number((Number(subTotal) + Number(target_product.product_price)).toFixed(2)))
         }
     
         const decreaseProductQuantity = (target_product) => {
@@ -62,12 +67,12 @@ const EditCartScreen = (props) => {
             //Product already exists in content list.
             if(product){
                 if(product.product_quantity_box <= 1)
-                    removeProduct(product)
+                    askToRemoveProduct(product)
     
-                else
+                else {
                     product.product_quantity_box -= 1
-
-                setSubTotal(Number((Number(props.params.box_accumulated_price) - Number(target_product.product_price)).toFixed(2)))
+                    setSubTotal(Number((Number(subTotal) - Number(target_product.product_price)).toFixed(2)))
+                }
             }       
         }
     
@@ -120,15 +125,34 @@ const EditCartScreen = (props) => {
         )
     }
 
+    const askToSaveChanges = () => {
+        Alert.alert(
+            '¿Desea guardar sus cambios?', '',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel'
+                }, 
+                {
+                    text: 'Guardar',
+                    onPress: () => {
+                        props.params.box_accumulated_price = subTotal
+                        props.params.box_content = [...content]
+                        goToCart()
+                    }
+                }
+            ]
+        )
+    }
+
     return(
         <ScrollView>
             <View>
-                <View style={styles.arrowContainer}>
-                    <BackArrow onTouch={() => { 
+                <BackArrow 
+                    onTouch={() => { 
                         goToCart()
-                        // setContent([])
-                    }} />
-                </View>
+                    }} 
+                />
 
                 <Text style={[styles.text, styles.header]}>Contenido actual de la caja:</Text>
 
@@ -141,7 +165,7 @@ const EditCartScreen = (props) => {
                 <View style = {styles.buttonContainer}>
                     <Button
                         text="Guardar"
-                        onTouch={() => alert(JSON.stringify(props.params.box_content))}
+                        onTouch={askToSaveChanges}
                     />
                 </View>
             </View>

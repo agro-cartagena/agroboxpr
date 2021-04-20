@@ -1,12 +1,9 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    logoContainer: {
-        margin: 25
-    },
-
     buttonContainer: {
-        // margin: 10
+        height: '70%',
+        justifyContent: 'center'
     },
 
     button: {

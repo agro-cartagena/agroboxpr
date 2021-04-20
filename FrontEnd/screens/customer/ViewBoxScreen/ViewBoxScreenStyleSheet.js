@@ -2,10 +2,6 @@ import { StyleSheet } from 'react-native'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({
-    arrowContainer: {
-        margin: 10
-    },
-
     card: {
         width: '65%',
         padding: 0,

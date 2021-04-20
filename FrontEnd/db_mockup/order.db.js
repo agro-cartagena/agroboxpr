@@ -1,6 +1,6 @@
 
 // list of orders containing only one order.
-const orders = [
+const order = [
     {
         _id: '',
         order_addressee: 'Jr',
@@ -93,5 +93,71 @@ const orders = [
         ]
     }
 ]
+
+const orders = {
+    'En Camino': [
+        
+    ], 
+    'Pendiente': [
+        {
+            _id: '1',
+            order_name: 'Hector Jimenez',
+            order_number: '732-930-8189',
+            delivery_address: 'Carr 119 km 8.0',
+            delivery_city: 'Camuy',
+            delivery_state: 'PR',
+            delivery_zipcode: '00627',
+            order_total: '74.99',
+            payment_method: 'Cash',
+            transaction_id: 'N/A',
+            order_date: '10/12/20',
+            order_status: 'Pendiente'
+        },
+        {
+            _id: '2',
+            order_name: 'Bob Padilla',
+            order_number: '939-543-0829',
+            delivery_address: 'Calle Villa Meau',
+            delivery_city: 'Aguadilla',
+            delivery_state: 'PR',
+            delivery_zipcode: '00690',
+            order_total: '40',
+            payment_method: 'PayPal',
+            transaction_id: '1234124124',
+            order_date: '10/12/20',
+            order_status: 'Pendiente'
+        }
+    ], 
+    'Completadas':[
+        {
+            _id: '1',
+            order_name: 'Hector Jimenez',
+            order_number: '732-930-8189',
+            delivery_address: 'Carr 119 km 8.0',
+            delivery_city: 'Camuy',
+            delivery_state: 'PR',
+            delivery_zipcode: '00627',
+            order_total: '74.99',
+            payment_method: 'Cash',
+            transaction_id: 'N/A',
+            order_date: '10/12/20',
+            order_status: 'Completada'
+        },
+        {
+            _id: '2',
+            order_name: 'Bob Padilla',
+            order_number: '939-543-0829',
+            delivery_address: 'Calle Villa Meau',
+            delivery_city: 'Aguadilla',
+            delivery_state: 'PR',
+            delivery_zipcode: '00690',
+            order_total: '40',
+            payment_method: 'PayPal',
+            transaction_id: '1234124124',
+            order_date: '10/12/20',
+            order_status: 'Completada'
+        }
+    ]
+}
 
 export default orders

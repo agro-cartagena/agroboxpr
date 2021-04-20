@@ -7,7 +7,8 @@ import Button from '../../../components/Button/Button'
 
 import UserService from '../../../services/UserService'
 import {
-    goToInventoryManagement, goToAdminManagement
+    goToInventoryManagement, goToAdminManagement,
+    goToOrderManagement
 } from '../../../Navigator'
 
 const MenuScreen = () => {
@@ -35,66 +36,62 @@ const MenuScreen = () => {
     }
 
     return(
-        <SafeAreaView>
-            <ScrollView style={{height: '100%'}}>
-                <View style={styles.logoContainer}>
-                    <Logo/>
+        <ScrollView>
+            <Logo/> 
+
+            <View style={styles.buttonContainer}>
+                <View style={styles.button}>
+                    <Button
+                        text="Comunícate con Nosotros"
+                        style={{backgroundColor: '#801A35500'}}
+                    />
                 </View>
 
-                <View style={styles.buttonContainer}>
-
-                    <View style={styles.button}>
-                        <Button
-                            text="Comunícate con Nosotros"
-                            style={{backgroundColor: '#801A35500'}}
-                        />
-                    </View>
-
-                    <View style={isAuthenticated ? {} : {display: 'none'}}>
-                        {/* Admin options */}
-                        <View style={isAdmin ? {} : {display: 'none'}}>
-                            <View style={styles.button}>
-                                <Button
-                                    text="Manejar Inventario"
-                                    style={{backgroundColor: '#801A3500'}}
-                                    onTouch={() => goToInventoryManagement()}
-                                />
-                            </View>
-
-                            <View style={styles.button}>
-                                <Button
-                                    text="Manejar Administradores"
-                                    style={{backgroundColor: '#801A3500'}}
-                                    onTouch={() => goToAdminManagement()}
-                                />
-                            </View>
-
-                            <View style={styles.button}>
-                                <Button
-                                    text="Revisar Órdenes Pendientes"
-                                    style={{backgroundColor: '#801A3500'}}
-                                />
-                            </View>
-
-                            <View style={styles.button}>
-                                <Button
-                                    text="Revisar Comentarios Pendientes"
-                                    style={{backgroundColor: '#801A3500'}}
-                                />
-                            </View>
-                        </View>
-        
+                <View style={isAuthenticated ? {} : {display: 'none'}}>
+                    {/* Admin options */}
+                    <View style={isAdmin ? {} : {display: 'none'}}>
                         <View style={styles.button}>
                             <Button
-                                text="Cerrar Sesión"
+                                text="Manejar Inventario"
                                 style={{backgroundColor: '#801A3500'}}
-                                onTouch={() => logout()}
+                                onTouch={() => goToInventoryManagement()}
                             />
                         </View>
+
+                        <View style={styles.button}>
+                            <Button
+                                text="Manejar Administradores"
+                                style={{backgroundColor: '#801A3500'}}
+                                onTouch={() => goToAdminManagement()}
+                            />
+                        </View>
+
+                        <View style={styles.button}>
+                            <Button
+                                text="Manejar Órdenes"
+                                style={{backgroundColor: '#801A3500'}}
+                                onTouch={() => goToOrderManagement()}
+                            />
+                        </View>
+
+                        {/* <View style={styles.button}>
+                            <Button
+                                text="Revisar Comentarios Pendientes"
+                                style={{backgroundColor: '#801A3500'}}
+                            />
+                        </View> */}
+                    </View>
+    
+                    <View style={styles.button}>
+                        <Button
+                            text="Cerrar Sesión"
+                            style={{backgroundColor: '#801A3500'}}
+                            onTouch={() => logout()}
+                        />
                     </View>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+            </View>
+        </ScrollView>
     )
 }
 

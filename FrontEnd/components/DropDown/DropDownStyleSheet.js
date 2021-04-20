@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
     },
 
     listContainer: {
-        paddingTop: 8,
-        paddingBottom: 8,
+        width: '100%',
         
         flexDirection: "row",
         flexWrap: 'wrap',

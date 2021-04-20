@@ -63,11 +63,11 @@ const readBoxProducts = async (id) => {
 	try {
 		const box = await getBoxByIdDb(id);
 		let productsQuery = []
-		let result = {}
+		let result = []
+		let productList = []
 		
 		if(box){
-			console.log("Box: ", box)
-			const productList = box.box_content;
+			productList = box.box_content;
 			productList.map((product) => {
 				productsQuery.push({
 					_id: ObjectID(product._id)
@@ -75,9 +75,17 @@ const readBoxProducts = async (id) => {
 			});
 
 			const products = await findProductsByIdList(productsQuery);
-			console.log(`Products for ${box.boxName}: `, products);
+			
 			if(products) {
-				return products
+				result = products.map(product => {
+					const product_quantity_box = productList.find(boxProduct => boxProduct._id === product._id.toString()).product_quantity_box
+					return {
+						...product,
+						product_quantity_box
+					}
+				})
+
+				return result
 			}
 		}
 

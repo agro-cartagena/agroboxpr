@@ -24,10 +24,10 @@ const readAllBoxes = async () => {
 		//Only return to client: name, price, imageUrl & boxId
 		const response = boxes.map(box => {
 			return {
-				boxId : box._id,
-				boxName : box.boxName,
-				boxPrice : box.boxPrice,
-				boxImage : box.boxImage
+				_id : box._id,
+				box_name : box.box_name,
+				box_price : box.box_price,
+				box_image : box.box_image
 			}
 		})
 		return response
@@ -45,10 +45,10 @@ const readAvailableBoxes = async () => {
 		//Only return to client: name, price, imageUrl & boxId
 		const response = boxes.map(box => {
 			return {
-				boxId : box._id,
-				boxName : box.boxName,
-				boxPrice : box.boxPrice,
-				boxImage : box.boxImage
+				_id : box._id,
+				box_name : box.box_name,
+				box_price : box.box_price,
+				box_image : box.box_image
 			}
 		})
 		return response
@@ -66,26 +66,18 @@ const readBoxProducts = async (id) => {
 		let result = {}
 		
 		if(box){
-			// console.log("Box: ", box)
-			const productIdList = box.boxContent;
-			productIdList.map((productId) => {
+			console.log("Box: ", box)
+			const productList = box.box_content;
+			productList.map((product) => {
 				productsQuery.push({
-					_id: ObjectID(productId)
+					_id: ObjectID(product._id)
 				})
 			});
 
 			const products = await findProductsByIdList(productsQuery);
 			console.log(`Products for ${box.boxName}: `, products);
 			if(products) {
-				products.forEach(product => {
-					result = {
-						[product.product_name] : product,
-						...result
-					}
-				});
-
-				console.log("Result: ", result);
-				return result;
+				return products
 			}
 		}
 

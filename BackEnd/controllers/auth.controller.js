@@ -1,6 +1,6 @@
 const { authService } = require('../services')
 
-const { registerUser, loginUser, promoteUserToAdmin } = authService
+const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, updateUser, readAdminEmails, updateUserPassword, readUserById } = authService
 
 const postSignup = async (req, res, next) => {
     const { name, email, password, phone } = req.body
@@ -60,8 +60,79 @@ const promoteUser = async (req, res, next) => {
     }
 }
 
+const demoteUser = async (req, res, next) => {
+    const { email } = req.body
+
+    try {
+        await demoteAdmin(email).then(result => {
+            console.log(result)
+            res.status(200).send()
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+const updateUserInfo = async (req, res, next) => {
+    const newUserInfo = req.body;
+    const userId = req.userId
+
+    try {
+        await updateUser(userId, newUserInfo).then(result => {
+            console.log(result)
+            res.status(200).send()
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+const putUserPassword = async (req, res, next) => {
+    const newPasswordInfo = req.body;
+    const userId = req.userId
+
+    try {
+        await updateUserPassword(userId, newPasswordInfo).then(result => {
+            console.log(result)
+            res.status(200).send()
+        })
+    } catch(err) {
+        next(err)
+    }
+}
+
+
+const getAdminEmails = async (req, res, next) => {
+	try {
+		await readAdminEmails().then((adminList) => {
+			res.status(200).send(adminList)
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const getUserById = async (req, res, next) => {
+    const userId = req.userId;
+
+	try {
+		await readUserById(userId).then((user) => {
+			res.status(200).send(user)
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
 module.exports = {
     postSignup,
     postLogin,
-    promoteUser
+    promoteUser,
+    demoteUser,
+    updateUserInfo,
+    getAdminEmails,
+    putUserPassword,
+    getUserById
 }

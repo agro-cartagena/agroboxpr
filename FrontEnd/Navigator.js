@@ -60,7 +60,7 @@ export const goToCheckout = () => {
     Actions.checkout()
 }
 
-export const goToPayment = () => {
+export const goToConfirm = () => {
     Actions.payment()
 }
 

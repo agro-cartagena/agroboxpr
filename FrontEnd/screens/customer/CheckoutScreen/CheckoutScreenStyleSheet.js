@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
     arrowContainer:{
-        margin:10
+        marginLeft:10
     },
     formContainer:{
         width: "100%",
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         height: 45,
         margin: 15
     },
-    text:{
+    form_text:{
         // justifyContent: 'space-evenly',
         textAlign: 'left',
         marginBottom: '5%',
@@ -33,7 +33,54 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 30,
         marginBottom: 30
-    }
+    },
+    text:{
+        fontSize: 20,
+        color: "white",
+        textAlign: "center",
+        fontWeight: 'bold',
+        marginBottom: 13,
+        color: '#EAC71D'
+    },
+    cartContainer: {
+        width: '90%',
+        alignSelf: 'center',
+        margin: 15,
+        borderRadius: 10,
+        backgroundColor: 'white',
+    },
+    itemContainer: {
+        width:"100%",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent:'flex-start',
+    },
+    cardContainer: {
+        width: '55%',
+        height: 100,
+        margin: 10
+    }, 
+    total_text:{
+        fontSize:18,
+        textAlign: "right",
+        marginEnd: 55,
+        marginBottom: 20
+
+        // borderTopWidth: 2,
+        // borderTopColor: "white",
+        // borderRadius: 15,
+    },
+
+    // buttonContainer:{
+    //     flexDirection: "row",
+    //     width: '25%',
+    //     height: 40,
+    //     alignSelf: 'center',
+    //     marginTop:30
+    // },
+    // button:{
+    //     margin: 10, 
+    // }
 
 })
 

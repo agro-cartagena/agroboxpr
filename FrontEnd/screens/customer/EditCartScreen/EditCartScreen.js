@@ -3,7 +3,7 @@ import {Text, View, ScrollView, Alert} from 'react-native'
 import Button from '../../../components/Button/Button'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 
-import { goToCart, goToPayment } from '../../../Navigator'
+import { goToCart, goToConfirm } from '../../../Navigator'
 import styles from './EditCartScreenStyleSheet'
 import global_styles from '../../../styles'
 

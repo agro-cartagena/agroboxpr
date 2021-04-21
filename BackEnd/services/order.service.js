@@ -1,4 +1,6 @@
+const { Logger } = require('mongodb')
 const { orderDb, orderContentDb, productDb } = require('../db')
+const { getProductById } = require('./product.service')
 
 const {
 	createOrderDb,
@@ -10,12 +12,12 @@ const {
 } = orderDb
 
 const { createOrderContentDb, getOrderContentByOrder } = orderContentDb
-const { decreaseProductDb } = productDb
+const { decreaseProductDb, getProductByIdDb } = productDb
 
-const createOrder = async (order, orderContent) => {
+const createOrder = async (order, orderContent, userId) => {
 	try {
 		let order_id
-		order_id = await createOrderDb(order)
+		order_id = await createOrderDb({ user_id: userId, ...order })
 		await createOrderContentDb({ order_id: order_id, ...orderContent })
 		return true
 	} catch (e) {
@@ -63,11 +65,10 @@ const getOrderByCity = async (city) => {
 	}
 }
 
-const manageInventory = async (orderId) => {
+const retrieveProductList = async (orderId) => {
 	try {
 		let order
 		let productList = []
-		let box_amounts = []
 
 		//get boxes
 		await getOrderContentByOrder(orderId).then((boxes) => {
@@ -76,22 +77,48 @@ const manageInventory = async (orderId) => {
 
 		//make a list of product id / amount objexts
 		order.forEach((box) => {
-			box_amounts.push(box.boxQuantity)
 			box.boxContent.forEach((content) => {
-				productList.push({
-					"product_id": content.productId,
-					"amount": content.amount,
-				})
+					productList.push({
+						product_id: content.productId,
+						amount: content.amount,
+						boxes: box.boxQuantity,
+					})
 			})
 		})
+		return { productList }
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
 
-		// decrease product ammounts in the inventory
+const manageInventory = async (orderId) => {
+	try {
+		//retrieve each unique product within the boxes in the order
+		let productList
+		await retrieveProductList(orderId).then((result) => {
+			productList = result.productList
+		})
+
+		// Verify product amounts in the inventory
+		for (const product of productList) {
+			const item = await getProductByIdDb(product.product_id)
+			const orderAmount = product.amount * product.boxes
+			const stockAmount = item.product_quantity_stock
+
+			//Not enough items in inventory to carry out order
+			if (stockAmount < orderAmount) {
+				return {
+					msg: 'inventory management failed',
+					product: product.product_id,
+					stock: stockAmount,
+					order: orderAmount,
+				}
+			}
+		}
+
 		productList.forEach((product) => {
-			box_amounts.forEach((amount) => {
-				// console.log(`original amounts: ${product.amount} box amounts: ${amount}`);
-				// console.log(`\nnew ammounts: ${product.amount * amount}\n`);
-				decreaseProductDb(product.product_id, product.amount * amount)
-			})
+			const orderAmount = product.amount * product.boxes
+			decreaseProductDb(product.product_id, orderAmount)
 		})
 		return true
 	} catch (e) {

@@ -15,6 +15,25 @@ const styles = StyleSheet.create({
 
     card: {
         width: '90%'
+    },
+
+    iconHeading: {
+        width: '95%'
+    },
+
+    iconContainer: {
+        width: '10%',
+        height: 40,
+
+        margin: 10,
+        marginTop: 20,
+        alignSelf: 'flex-start',
+    },
+
+    icon: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain'
     }
 })
 

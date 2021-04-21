@@ -33,7 +33,34 @@ export default class OrderService extends Service {
             })
     }
 
-    getAllOrders() {
+    async getAllOrders() {
         return "TO-DO"
+    }
+
+    async updateOrderStatus(order_id, status) {
+        let payload = {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': UserService.instance.webToken
+            },
+            body: JSON.stringify({ status : status })
+        }
+
+        return true
+        return fetch(this._url + `order/update/${order_id}`, payload)
+            .then((response) => {
+                switch(response.status){
+                    case 200: 
+                        return true
+                    
+                    default: 
+                        return false
+                }
+            })
+            .catch((error) => {
+                alert("Error de conexión.")
+                return false
+            })
     }
 }

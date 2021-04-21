@@ -17,7 +17,7 @@ const postOrder = async (req, res, next) => {
 	const content = req.body.orderContent
 	const userId = req.userId
 	try {
-		await createOrder(order, content,userId)
+		await createOrder(order, content, userId)
 		res.sendStatus(200)
 		next()
 	} catch (e) {
@@ -127,10 +127,14 @@ const manage = async (req, res, next) => {
 			validate = result
 		})
 		if (validate != null) {
-			await manageInventory(id).then((order) => {
-				res.status(200).send(order)
+			let manage = await manageInventory(id)
+			if(manage == true){
+				res.sendStatus(200)
 				next()
-			})
+			} else {
+				res.sendStatus(404)
+				next()
+			}
 		} else {
 			res.sendStatus(404) && next()
 		}

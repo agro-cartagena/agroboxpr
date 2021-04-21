@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Text } from 'react-native'
+import { TouchableOpacity, View, Text, Image, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import BackArrow from '../../../components/BackArrow/BackArrow'
@@ -23,6 +23,8 @@ const EditBoxScreen = (props) => {
     const [boxData, setBoxData] = React.useState({})
     const [productCatalog, setProductCatalog] = React.useState({})
     const [boxImage, setBoxImage] = React.useState('')
+    // const [isAvailable, setAvailable] = React.useState(props.params.available)
+    const [isAvailable, setAvailable] = React.useState(true)
 
     React.useEffect(() => {
         async function fetchData() {            
@@ -57,10 +59,10 @@ const EditBoxScreen = (props) => {
     
             // Product already exists in content list.
             else {
-                // if(product.product_quantity_box >= product.product_quantity_stock){
-                //     alert('Cantidad máxima de productos alcanzada.')
-                //     return
-                // }
+                if(product.product_quantity_box >= product.product_quantity_stock){
+                    alert('Cantidad máxima de productos alcanzada.')
+                    return
+                }
 
                 product.product_quantity_box += 1
             }
@@ -142,20 +144,61 @@ const EditBoxScreen = (props) => {
         )
     }
 
-    const displayDeleteButton = () => {
+    const displayButtons = () => {
         if(_isNewBox == false){
-            // Define function handler that uses service to DELETE here.
+            if(isAvailable) {
+                return (
+                    <View style={styles.button}>
+                        <Button
+                            text="Desactivar"
+                            style={{backgroundColor: 'gray'}}
+                            onTouch={async() => {
+                                if(await BoxService.instance.disableBox(boxData._id)){
+                                    setAvailable(!isAvailable)
+                                    alert("Caja ha sido desactivada.")
+                                }
+                            }}
+                        />
+                    </View>
+                )
+            }
             
-            return (
-                <View style={styles.button}>
-                    <Button
-                        text="Eliminar"
-                        style={ _isNewBox ? {display: 'none'} : {backgroundColor: 'red'} }
-                        // onPress={deleteHandler}
-                    />
-                </View>
-            )
+            else {
+                return (
+                    <View style={styles.button}>
+                        <Button
+                            text="Activar"
+                            style={{backgroundColor: 'gray'}}
+                            onTouch={async() => {
+                                if(await BoxService.instance.enableBox(boxData._id)){ 
+                                    setAvailable(!isAvailable)
+                                    alert("Caja ha sido activada.")
+                                }
+                            }}
+                        />
+                    </View>
+                )
+            }
         }
+    }
+
+    const askToRemoveBox = () => {
+        Alert.alert(
+            `¿Desea remover la ${boxData.box_name} del sistema?`, '',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Remover',
+                    onPress: async () => {
+                        if (await BoxService.instance.removeBox(boxData._id))   
+                            goToBoxManagement()
+                    }
+                }
+            ]
+        )
     }
 
     const submitHandler = async () => {
@@ -236,7 +279,15 @@ const EditBoxScreen = (props) => {
             </View>
 
             <View style={styles.buttonContainer}>
-                {displayDeleteButton()}
+                {displayButtons()}
+
+                <TouchableOpacity style={styles.iconContainer} onPress={askToRemoveBox}>
+                    <Image
+                        style={styles.icon}
+                        source={require('../../../assets/icons/Trash(Line).png')}
+                    />
+                </TouchableOpacity>
+
                 <View style={styles.button}>
                     <Button
                         text="Guardar"

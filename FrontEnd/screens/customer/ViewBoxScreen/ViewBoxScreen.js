@@ -46,29 +46,36 @@ const BoxScreen = (props) => {
         fetchData()
     }, []);
 
-    const verifyQuantity = () => {
-        alert(JSON.stringify(boxData.box_content))
-        // let quantity = boxData.box_quantity
-        // alert(quantity)
-        // if(quantity < 1 || quantity > 99)
-        //     alert("Cantidad de cajas debe ser entre 1 a 99 cajas.")
+    const askToAddToCart = () => {
+        let quantity = boxData.box_quantity
+        if(quantity < 1 || quantity > 99)
+            alert("Cantidad de cajas debe ser entre 1 a 99 cajas.")
 
-        // else{
-        //     let item = {
-        //         _id: props.params._id,
-        //         box_name: props.params.box_name,
-        //         box_image: props.params.box_image,
-        //         box_price: props.params.box_price,
-        //         box_quantity: quantity
-        //     }
-
-            // CartService.instance.addToCart(item)
-            // alert(JSON.stringify(item))
-        // }
+        else if(boxData.box_accumulated_price < boxData.box_price)
+            alert('Precio mínimo de caja no alcanzado.')
+        
+        else
+            Alert.alert(
+                '¿Desea añadir caja al carrito?', '',
+                [
+                    {
+                        text: 'Cancelar',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Añadir',
+                        onPress: () => {
+                            CartService.instance.addToCart(boxData)
+                            alert("Caja ha sido añadida al carrito.")
+                        }
+                    }
+                ]
+            )
     }  
+
     const askToRemoveProduct = (target_product) => {
         Alert.alert(
-            `¿Seguro que desea eliminar ${target_product.product_name} de la orden?`, "",
+            `¿Seguro que desea eliminar ${target_product.product_name} de la lista?`, "",
             [
                 {
                     text: 'Cancelar',
@@ -77,8 +84,8 @@ const BoxScreen = (props) => {
                 {
                     text: 'Eliminar',
                     onPress: () => {
+                        boxData.box_accumulated_price = Number((Number(boxData.box_accumulated_price) - Number(target_product.product_price)).toFixed(2))
                         setContent(content.filter((product) => product._id != target_product._id))
-                        setSubTotal(Number((Number(subTotal) - Number(target_product.product_price)).toFixed(2)))
                     }
                 }
             ]
@@ -118,7 +125,7 @@ const BoxScreen = (props) => {
     
         //Product already exists in content list.
         if(product){
-            if(product.product_quantity_box <= 1)
+            if(product.product_quantity_box == 1)
                 boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
 
             else
@@ -128,6 +135,14 @@ const BoxScreen = (props) => {
                 ...boxData,
                 box_accumulated_price: (Number(boxData.box_accumulated_price) - Number(target_product.product_price)).toFixed(2)
             })
+        }
+
+        else {
+            product = content.find((item) => item._id == target_product._id)
+            if(product) {
+                askToRemoveProduct(product)
+                // setContent(content.filter((product) => product._id != target_product._id))
+            }
         }
     }
 
@@ -279,10 +294,7 @@ const BoxScreen = (props) => {
                 <View style={styles.buttonContainer}>
                     <Button
                         text="Agregar"
-                        onTouch={() => {
-                            CartService.instance.addToCart(boxData)
-                            alert("Caja ha sido añadida al carrito.")
-                        }}
+                        onTouch={askToAddToCart}
                     />
                 </View>
             </View>

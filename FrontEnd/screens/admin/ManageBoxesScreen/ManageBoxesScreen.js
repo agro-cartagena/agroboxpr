@@ -35,6 +35,7 @@ const BoxManagementScreen = () => {
                     image={box.box_image}
                     price={box.box_price}
                 />
+                {/* <View style={box.available ? {} : styles.overlay}/> */}
             </TouchableOpacity>
         )
     }

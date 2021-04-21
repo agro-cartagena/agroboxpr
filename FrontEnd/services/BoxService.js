@@ -145,4 +145,80 @@ export default class BoxService extends Service {
                 alert("Error de conexión.")
             })
     }
+
+    async disableBox(box_id) {
+        let payload = {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+
+        return true
+        return fetch(this._url + `box/disable/${box_id}`, payload)
+            .then(response => {
+                switch(response.status){
+                    case 200:
+                        return true
+
+                    default:
+                        return false
+                }
+            })
+            .catch((error) => {
+                alert("Error de conexión.")
+                return false
+            })
+    }
+
+    async enableBox(box_id) {
+        let payload = {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+        return true
+        return fetch(this._url + `box/enable/${box_id}`, payload)
+            .then(response => {
+                switch(response.status){
+                    case 200:
+                        return true
+
+                    default:
+                        return false
+                }
+            })
+            .catch((error) => {
+                alert("Error de conexión.")
+                return false
+            })
+    }
+
+    async removeBox(box_id) {
+        let payload = {
+            method: 'DELETE',
+            headers: {
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+
+        return true
+        return fetch(this._url + `box/remove/${box_id}`, payload)
+            .then((response) => {
+                switch(response.status){
+                    case 200:
+                        return true
+
+                    default:
+                        return false
+                }
+            })
+            .catch((error) => {
+                alert("Error de conexión.")
+                return false
+            })
+    }
 }

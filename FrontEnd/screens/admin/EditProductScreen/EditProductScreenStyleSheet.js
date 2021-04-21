@@ -26,8 +26,6 @@ const styles = StyleSheet.create({
     
         alignItems: 'center',
         alignSelf: 'center',
-
-        // backgroundColor: 'black'
     },
 
     formText: {
@@ -36,11 +34,19 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        width: '25%',
+        width: '60%',
         height: 40,
+
         alignSelf: 'center',
-        marginTop: 30,
-        marginBottom: 50,
+        margin: 50,
+
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    },
+
+    button: {
+        width: '35%',
+        height: '100%'
     }
 })
 

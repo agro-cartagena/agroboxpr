@@ -24,6 +24,7 @@ export default class ProductService extends Service {
             })
             .catch((error) => {
                 // Temporary. Should properly handle error.
+                alert("Error de conexión.")
                 return catalog
             })
     }
@@ -98,6 +99,32 @@ export default class ProductService extends Service {
             .catch(() => {
                 alert("Error de conexión.")
                 return false;
+            })
+    }
+
+    async removeProduct(product_id) {
+        let payload = {
+            method: 'DELETE',
+            headers: {
+                Accept: 'application/json',
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+
+        return true
+        return fetch(this._url + `product/remove/${product_id}`, payload)
+            .then(response => {
+                switch(response.status){
+                    case 200:
+                        return true
+
+                    default: 
+                        return false
+                }
+            })  
+            .catch(() => {
+                alert("Error de conexión.")
+                return false
             })
     }
 }

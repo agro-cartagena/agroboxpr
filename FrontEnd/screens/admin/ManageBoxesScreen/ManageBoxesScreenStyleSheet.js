@@ -13,7 +13,21 @@ const styles = StyleSheet.create({
         width: '100%',
 
         padding: 10,
-        alignSelf: 'center'
+        alignSelf: 'center',
+    },
+
+    overlay: {
+        position: 'absolute',
+        backgroundColor: 'black',
+        opacity: 0.60,
+
+        width: '100%',
+        height: '100%',
+
+        alignSelf: 'center',
+        margin: 10,
+
+        borderRadius: 15
     },
 
     buttonContainer: {

@@ -1,20 +1,6 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    arrowContainer: {
-        margin: 10
-    },
-
-    uploaderContainer: {
-        // width: '70%',
-        // height: 200,
-
-        // alignSelf: 'center',
-        // backgroundColor: 'lightgray',
-
-        // margin: 50
-    },
-
     formContainer: {
         width: '85%',
         padding: 10,
@@ -22,7 +8,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
 
-        // backgroundColor: 'black'
     },
 
     formText: {
@@ -31,20 +16,34 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        marginTop: 30,
-        marginBottom: 50,
-        width: '90%',
+        width: '60%',
+        height: 40, 
+
+        margin: 50,
+        alignSelf: 'center',
 
         flexDirection: 'row',
-        alignSelf: 'center',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-between'
     },
 
     button: {
-        width: '25%',
-        height: 40
+        width: '35%',
+        height: '100%'
     },
 
+    iconContainer: {
+        width: '20%',
+        height: '100%',
+
+        padding: 2.5 
+    },
+
+    icon: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'contain'
+    },
+    
     header: {
         fontSize: 22,
         alignSelf: 'center',

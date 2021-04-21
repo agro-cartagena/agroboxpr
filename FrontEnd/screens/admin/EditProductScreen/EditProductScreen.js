@@ -12,6 +12,7 @@ import Button from '../../../components/Button/Button'
 import { goToProductManagement } from '../../../Navigator'
 import MediaUploader from '../../../components/MediaUploader/MediaUploader'
 import ProductService from '../../../services/ProductService'
+import { Alert } from 'react-native'
 
 const ProductScreen = (props) => {
     let _isNewProduct = props.params == "new", 
@@ -39,6 +40,50 @@ const ProductScreen = (props) => {
             alert("Producto ha sido guardado.")
             goToProductManagement()
         }
+    }
+
+    const displayButtons = () => {
+        const askToRemoveProduct = () => {
+            Alert.alert(
+                `¿Desea remover ${productData.product_name} del sistema?`, '',
+                [
+                    {
+                        text: 'Cancelar',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Remover',
+                        onPress: async () => {
+                            if(await ProductService.instance.removeProduct(productData._id))
+                                goToProductManagement()
+                        }
+                    }
+                ]
+            )
+        }
+
+        const getDeleteButton = () => {
+            if(!_isNewProduct)
+                return (
+                    <View style={styles.button}>
+                        <Button
+                            text="Eliminar"
+                            style={{backgroundColor: 'gray'}}
+                            onTouch={askToRemoveProduct}
+                        />
+                    </View>)
+        }
+
+        return ( 
+            <View style={styles.buttonContainer}>
+                {getDeleteButton()}
+
+                <View style={styles.button}>
+                    <Button
+                        text="Guardar"
+                    />
+                </View>
+            </View>)
     }
 
     return (
@@ -100,9 +145,10 @@ const ProductScreen = (props) => {
                 </View>
             </View>
 
-            <View style={[global_styles.container, styles.buttonContainer]}>
+            {/* <View style={[global_styles.container, styles.buttonContainer]}>
                 <Button text="Guardar" onTouch={submitHandler}/>
-            </View>
+            </View> */}
+            {displayButtons()}
 
         </KeyboardAwareScrollView>
     )    

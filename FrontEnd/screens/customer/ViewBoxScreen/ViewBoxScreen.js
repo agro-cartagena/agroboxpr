@@ -65,7 +65,7 @@ const BoxScreen = (props) => {
                     {
                         text: 'Añadir',
                         onPress: () => {
-                            CartService.instance.addToCart(boxData)
+                            CartService.instance.addToCart({...boxData, box_content: content})
                             alert("Caja ha sido añadida al carrito.")
                         }
                     }
@@ -84,8 +84,14 @@ const BoxScreen = (props) => {
                 {
                     text: 'Eliminar',
                     onPress: () => {
-                        boxData.box_accumulated_price = Number((Number(boxData.box_accumulated_price) - Number(target_product.product_price)).toFixed(2))
-                        setContent(content.filter((product) => product._id != target_product._id))
+                        if(content.length == 1)
+                            alert("Debe de haber al menos 1 producto en la caja.")
+                        
+                        else {
+                            let total = (boxData.box_accumulated_price - target_product.product_price).toFixed(2)
+                            boxData.box_accumulated_price = Number(total)
+                            setContent(content.filter((product) => product._id != target_product._id))
+                        }   
                     }
                 }
             ]
@@ -93,11 +99,11 @@ const BoxScreen = (props) => {
     }
 
     const increaseProductQuantity = (target_product) => {
-        let product = boxData.box_content.find((item) => item._id == target_product._id)
+        let product = content.find((item) => item._id == target_product._id)
     
         // Product does not yet exist in content list.
         if(! product){
-            boxData.box_content.push({
+            content.push({
                 ...target_product, 
                 product_quantity_box: 1
             })
@@ -113,49 +119,63 @@ const BoxScreen = (props) => {
             product.product_quantity_box += 1
         }
 
+        let total = (boxData.box_accumulated_price + target_product.product_price).toFixed(2)
         setBoxData({
             ...boxData, 
-            box_accumulated_price: (Number(boxData.box_accumulated_price) + Number(target_product.product_price)).toFixed(2)
+            box_accumulated_price: Number(total)
         })
 
     }
 
     const decreaseProductQuantity = (target_product) => {
-        let product = boxData.box_content.find((item) => item._id == target_product._id)
+        let product = content.find((item) => item._id == target_product._id)
     
         //Product already exists in content list.
         if(product){
             if(product.product_quantity_box == 1)
-                boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
+                askToRemoveProduct(product)
 
-            else
+            else {
                 product.product_quantity_box -= 1
 
-            setBoxData({
-                ...boxData,
-                box_accumulated_price: (Number(boxData.box_accumulated_price) - Number(target_product.product_price)).toFixed(2)
-            })
-        }
-
-        else {
-            product = content.find((item) => item._id == target_product._id)
-            if(product) {
-                askToRemoveProduct(product)
-                // setContent(content.filter((product) => product._id != target_product._id))
-            }
+                let total = (boxData.box_accumulated_price - target_product.product_price).toFixed(2)
+                setBoxData({
+                    ...boxData,
+                    box_accumulated_price: Number(total)
+                })
+            }   
         }
     }
 
     const changeProductQuantity = (target_product, newQuantity) => {
-        let product = boxData.box_content.find((item) => item._id == target_product._id)
+        if(!newQuantity)
+            return 
 
+        else if(newQuantity < 0  || isNaN(newQuantity)){
+            alert("Cantidad especificada no es aceptada.")
+            return
+        }
+
+        else if (newQuantity > target_product.product_quantity_stock) {
+            alert("Máxima cantidad de producto excedida.")
+            return
+        }
+
+        let product = boxData.box_content.find((item) => item._id == target_product._id),
+            total = boxData.box_accumulated_price
+        
         // Product already exists in content list.
         if(product){
+            total -= target_product.product_price * target_product.product_quantity_box
+
             if(newQuantity == 0)
                 boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
             
-            else
+            else {
                 product.product_quantity_box = newQuantity
+                total += target_product.product_price * newQuantity
+            }
+            
         }
 
         // Product does not yet exist in content list.
@@ -164,16 +184,19 @@ const BoxScreen = (props) => {
                 ...target_product,
                 product_quantity_box: newQuantity
             })
+
+            total += target_product.product_price * newQuantity
         }
 
-        // setBoxData({
-        //     ...boxData,
-        //     box_accumulated_price: (Number(boxData.box_accumulated_price) - Number(target_product.product_price)).toFixed(2)
-        // })
+        total = total.toFixed(2)
+        setBoxData({
+            ...boxData,
+            box_accumulated_price: Number(total)
+        })
     }
 
     const fetchPlaceholder = (target_product) => {
-        let product = boxData.box_content.find((item) => item._id == target_product._id)
+        let product = content.find((item) => item._id == target_product._id)
 
         if(product)
             return product.product_quantity_box

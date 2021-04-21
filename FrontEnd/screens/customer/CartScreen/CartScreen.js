@@ -13,21 +13,22 @@ import Button from '../../../components/Button/Button'
 import { goToCheckout, goToEditCart } from '../../../Navigator'
 
 const CartScreen = () => {
-
     const [cartData, setCartData] = React.useState(CartService.instance.getCart())
 
     const loadCart = () => {
         const increaseBoxQuantity = (box) => {
             if(box.box_quantity < 99){
                 box.box_quantity += 1
-                setCartTotal((Number(cartTotal) + Number(box.box_accumulated_price)).toFixed(2))
+                let total = (cartTotal + box.box_accumulated_price).toFixed(2)
+                setCartTotal(Number(total))
             }
         }
     
         const decreaseBoxQuantity = (box) => {
             if(box.box_quantity > 1) {
                 box.box_quantity -= 1
-                setCartTotal((Number(cartTotal) - Number(box.box_accumulated_price)).toFixed(2))
+                let total = (cartTotal - box.box_accumulated_price).toFixed(2)
+                setCartTotal(Number(total))
             }
         }
     
@@ -35,23 +36,22 @@ const CartScreen = () => {
             if(!newQuantity)
                 return
 
-            let total = Number(cartTotal) - (Number(box.box_accumulated_price) * Number(box.box_quantity))
-
-            if(newQuantity <= 0  || isNaN(newQuantity)){
-                box.box_quantity = 1
-                setCartTotal((total + Number(box.box_accumulated_price)).toFixed(2))
-                alert("Mínima cantidad de cajas es 1.")
-            }
-
+            else if(newQuantity <= 0  || isNaN(newQuantity)){
+                alert("Cantidad especificada no es aceptada.")
+                return
+            } 
+            
             else if (newQuantity > 99) {
-                box.box_quantity = 99
-                setCartTotal((total + Number(box.box_accumulated_price) * 99).toFixed(2))
                 alert("Máxima cantidad de cajas es 99.")
+                return
             }
 
             else {
-                box.box_quantity = Number(newQuantity)
-                setCartTotal((total + Number(box.box_accumulated_price) * Number(newQuantity)).toFixed(2))
+                let total = cartTotal - (box.box_accumulated_price * box.box_quantity)
+
+                box.box_quantity = newQuantity
+                total = (total + box.box_accumulated_price * newQuantity).toFixed(2)
+                setCartTotal(Number(total))
             }
         }
 
@@ -82,10 +82,9 @@ const CartScreen = () => {
 
     const getTotalPrice = () => {
         let total_price = 0
+        cartData.forEach((item) => {total_price += item.box_accumulated_price * item.box_quantity})
 
-        cartData.forEach((item) => {total_price += Number(item.box_accumulated_price) * Number(item.box_quantity)})
-
-        return total_price.toFixed(2)
+        return Number(total_price.toFixed(2))
     }
 
     const [cartTotal, setCartTotal] = React.useState(getTotalPrice())

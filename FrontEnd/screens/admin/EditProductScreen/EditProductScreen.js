@@ -81,6 +81,7 @@ const ProductScreen = (props) => {
                 <View style={styles.button}>
                     <Button
                         text="Guardar"
+                        onTouch = {submitHandler}
                     />
                 </View>
             </View>)
@@ -120,7 +121,7 @@ const ProductScreen = (props) => {
                         keyboardType = "numeric"
                         placeholder = { _isNewProduct ? 'ejemplo: 3': String(productData.product_quantity_stock)}
                         value = {productData.product_quantity_stock}
-                        onChangeText = { (text) => changeProductData({...productData, product_quantity_stock: text}) }
+                        onChangeText = { (text) => changeProductData({...productData, product_quantity_stock: Number(text)}) }
                     />
                 </View>
 
@@ -139,8 +140,7 @@ const ProductScreen = (props) => {
                     <FormInput
                         keyboardType = "numeric"
                         placeholder = { _isNewProduct ? 'ejemplo: 2.49' : String(productData.product_price)}
-                        value = {productData.product_price}
-                        onChangeText = { (text) => changeProductData({...productData, product_price: text}) }
+                        onChangeText = { (text) => changeProductData({...productData, product_price: Number(text)}) }
                     />
                 </View>
             </View>

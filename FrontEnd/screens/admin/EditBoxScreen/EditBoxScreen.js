@@ -59,7 +59,7 @@ const EditBoxScreen = (props) => {
     
             // Product already exists in content list.
             else {
-                if(product.product_quantity_box >= product.product_quantity_stock){
+                if(product.product_quantity_box == product.product_quantity_stock){
                     alert('Cantidad máxima de productos alcanzada.')
                     return
                 }
@@ -86,6 +86,19 @@ const EditBoxScreen = (props) => {
         }
     
         const changeProductQuantity = (target_product, newQuantity) => {
+            if(!newQuantity)
+                return 
+
+            else if(newQuantity < 0  || isNaN(newQuantity)){
+                alert("Cantidad especificada no es aceptada.")
+                return
+            }
+
+            else if (newQuantity > target_product.product_quantity_stock) {
+                alert("Máxima cantidad de producto excedida.")
+                return
+            }
+            
             let product = boxData.box_content.find((item) => item._id == target_product._id)
 
             // Product already exists in content list.
@@ -104,16 +117,16 @@ const EditBoxScreen = (props) => {
                     product_quantity_box: newQuantity
                 })
             }
+
+            setBoxData({...boxData})
         }
 
         const fetchPlaceholder = (target_product) => {
             let product = boxData.box_content.find((item) => item._id == target_product._id)
 
-            if(product){
-                // alert(product.product_quantity_box)
+            if(product)
                 return product.product_quantity_box
-            }
-
+            
             return 0
         }
 
@@ -203,9 +216,10 @@ const EditBoxScreen = (props) => {
 
     const submitHandler = async () => {
 
-        // let form = new FormData()
-        // form.append('file', boxImage)
-        // form.append('caption', "Image upload test")
+        // let body = new FormData()
+        // body.append('file', boxImage)
+        // body.append('box_name', boxData.box_name)
+        // body.append('box_quantity', boxData.box_quantity)
 
         // let payload = {
         //     method: 'POST',
@@ -213,7 +227,7 @@ const EditBoxScreen = (props) => {
         //         Accept: 'application/json',
         //         'Content-Type': 'application/multipart-formdata'
         //     },
-        //     body: JSON.stringify(form)
+        //     body: JSON.stringify(body)
         // }
 
         // fetch('http:/10.0.0.6:5000/api/image/upload', payload)
@@ -267,8 +281,7 @@ const EditBoxScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewBox ? 'ejemplo: 45.00': String(boxData.box_price) }
-                        value = {boxData.box_price}
-                        onChangeText = { (text) => setBoxData({...boxData, box_price: text}) }
+                        onChangeText = { (text) => setBoxData({...boxData, box_price: Number(text)}) }
                     />
                 </View>
             </View>

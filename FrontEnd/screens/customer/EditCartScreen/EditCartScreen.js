@@ -13,7 +13,7 @@ import CartService from '../../../services/CartService'
 // box content is passed through props.params.content LIST OF OBJECTS 
 const EditCartScreen = (props) => {
 
-    const [content, setContent] = React.useState([...props.params])
+    const [content, setContent] = React.useState(props.params)
     const [subTotal, setSubTotal] = React.useState(40)
     
     const displayContent = () => {
@@ -30,7 +30,7 @@ const EditCartScreen = (props) => {
                         text: 'Eliminar',
                         onPress: () => {
                             setContent(content.filter((product) => product._id != target_product._id))
-                            setSubTotal(Number((Number(subTotal) - Number(target_product.product_price)).toFixed(2)))
+                            setSubTotal(Number((subTotal - target_product.product_price).toFixed(2)))
                         }
                     }
                 ]
@@ -38,81 +38,46 @@ const EditCartScreen = (props) => {
         }
 
         const increaseProductQuantity = (target_product) => {
-            let product = content.find((item) => item._id == target_product._id)
-    
-            // Product does not yet exist in content list.
-            if(! product){
-                content.push({
-                    ...target_product, 
-                    product_quantity_box: 1
-                })
+            if(target_product.product_quantity_box == target_product.product_quantity_stock){
+                alert('Cantidad máxima alcanzada')
+                return
+            } else {
+                target_product.product_quantity_box += 1
+                setSubTotal(Number((subTotal + target_product.product_price).toFixed(2)))
             }
-    
-            // Product already exists in content list.
-            else {
-                if(target_product.product_quantity_box == target_product.product_quantity_stock){
-                    alert('Cantidad máxima alcanzada')
-                    return
-                }
-                
-                product.product_quantity_box += 1
-            }
-
-            alert(JSON.stringify(props.params))
-            alert(JSON.stringify(content))
-            setSubTotal(Number((Number(subTotal) + Number(target_product.product_price)).toFixed(2)))
         }
     
         const decreaseProductQuantity = (target_product) => {
-            let product = content.find((item) => item._id == target_product._id)
-    
-            //Product already exists in content list.
-            if(product){
-                if(product.product_quantity_box <= 1)
-                    askToRemoveProduct(product)
-    
-                else {
-                    product.product_quantity_box -= 1
-                    setSubTotal(Number((Number(subTotal) - Number(target_product.product_price)).toFixed(2)))
-                }
-            }       
+            if(target_product.product_quantity_box <= 1)
+                askToRemoveProduct(target_product)
+
+            else {
+                target_product.product_quantity_box -= 1
+                setSubTotal(Number((subTotal - target_product.product_price).toFixed(2)))
+            }    
         }
     
         const changeProductQuantity = (target_product, newQuantity) => {
-            let product = content.box_content.find((item) => item._id == target_product._id)
+            if (!newQuantity)
+                return 
 
-            // Product already exists in content list.
-            if(product){
-                if(newQuantity == 0){
-                    props.params.box_content = content.filter((product) => product._id != target_product._id)
-                    // setContent(content.filter((product) => product._id != target_product._id))
-                }
-                
-                else
-                    product.product_quantity_box = newQuantity
-                // setContent(CartService.instance.getCart())  
+            else if(newQuantity <= 0  || isNaN(newQuantity)){
+                alert("Cantidad especificada no es aceptada.")
+                return
             }
 
-            // Product does not yet exist in content list.
-            else if (newQuantity > 0){
-                content.push({
-                    ...target_product,
-                    product_quantity_box: newQuantity
-                })
+            else if (newQuantity > target_product.product_quantity_stock) {
+                alert("Máxima cantidad de producto excedida.")
+                return
             }
-            
-            setSubTotal(Number(Number(subTotal) + (Number(target_product.product_price) * Number(newQuantity)).toFixed(2)))
+
+            else {
+                let total = subTotal - (target_product.product_price * target_product.product_quantity_box)
+
+                target_product.product_quantity_box = newQuantity
+                setSubTotal((total + target_product.product_price * newQuantity).toFixed(2))
+            }
         }
-
-        const fetchPlaceholder = (target_product) => {
-            let product = content.find((item) => item._id == target_product._id)
-
-            if(product)
-                return product.product_quantity_box
-
-            return 0
-        }
-
 
         return content.map((product) => 
             <View style={styles.card} key={product._id}>
@@ -121,7 +86,7 @@ const EditCartScreen = (props) => {
                     onPlus = {() => increaseProductQuantity(product)}
                     onMinus = {() => decreaseProductQuantity(product)}
                     onText = {(text) => changeProductQuantity(product, text)}
-                    placeholder = {fetchPlaceholder(product)}
+                    placeholder = {product.product_quantity_box}
                 />
             </View>
         )

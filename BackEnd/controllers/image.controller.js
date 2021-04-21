@@ -1,5 +1,9 @@
 const imageService = require('../services/image.service')
 
+//Get environment variables
+const dotenv = require('dotenv');
+dotenv.config();
+
 const mongoose = require('mongoose')
 const url = process.env.CONNECTION_STRING
 
@@ -16,7 +20,10 @@ connect.once('open', () => {
 })
 
 const uploadImage = async (req, res, next) => {
-    let result = imageService.uploadImage(req.body.caption, req.file)
+    // console.log("Body: ", req.body)
+    console.log("File: ", req.file)
+
+    let result = imageService.uploadImage(req.file)
 
     if(result)
         res.status(201).send("Success")

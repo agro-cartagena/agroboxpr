@@ -1,9 +1,9 @@
 const { ObjectID } = require('mongodb')
 const { insertImageDb } = require('../db/images.db')
 
-const uploadImage = async (image_caption, image_file) => {
+const uploadImage = async (image_file) => {
     let new_image = {
-        caption: image_caption,
+        // caption: image_caption,
         filename: image_file.filename, 
         fileId: image_file.id
     }

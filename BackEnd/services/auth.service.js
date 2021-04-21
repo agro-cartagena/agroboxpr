@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const { userDb } = require('../db')
+const { userDb } = require('../db');
+const { ObjectID } = require("mongodb");
 
-const { registerNewUserDb, findUserByFilterDb, findUserByEmailAndUpdate } = userDb
+const { registerNewUserDb, findUserByFilterDb, findUserByEmailAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
 
 const registerUser = async (name, email, password, phone) => {
 
@@ -110,8 +111,130 @@ const promoteUserToAdmin = async (email) => {
     });
 }
 
+const demoteAdmin = async (email) => {
+    const updateDocument = {
+        "$set": {
+            "role": "user"
+        }
+    }
+
+    await findUserByEmailAndUpdate({ email: email }, updateDocument).then(async user => {
+
+        if (user) {
+            console.log("User has been promoted", user)
+        } else {
+            console.log("User not found")
+        }
+    }).catch(err => {
+        throw new Error(err.message)
+    });
+}
+
+const updateUser = async (userId, newUserInfo) => {
+    const updateDocument = {
+        "$set": newUserInfo
+    }
+
+    await findUserByEmailAndUpdate({ _id: ObjectID(userId) }, updateDocument).then(async user => {
+
+        if (user) {
+            console.log("User info has been succesfully updated.", user)
+        } else {
+            console.log("User not found")
+        }
+    }).catch(err => {
+        throw new Error(err.message)
+    });
+}
+
+const updateUserPassword = async (userId, newPasswordInfo) => {
+    const old_Password = newPasswordInfo.old_Password;
+    const new_Password = newPasswordInfo.new_Password
+
+    const user = await findUserByFilterDb({ _id: ObjectID(userId) }).then(async user => {
+        console.log("HERE")
+        if (user.length < 1) {
+            return false
+        } else {
+            // console.log("THERE", user)
+            // console.log(password)
+            const isMatch = await bcrypt.compare(old_Password, user[0].password)
+
+            if (!isMatch) {
+                console.log("Wrong password!")
+                return false
+            } else {
+                return user
+            }
+        }
+    }).catch(err => {
+        throw new Error(err.message)
+    });
+
+    if(user){
+        const saltRounds = 10;
+        await bcrypt.hash(new_Password, saltRounds).then(async (hash) => {
+            
+            const updateDocument = {
+                "$set": {
+                    "password": hash
+                }
+            }
+            await findUserByEmailAndUpdate({ _id: ObjectID(userId) }, updateDocument).then(async user => {
+    
+                if (user) {
+                    console.log("User info has been succesfully updated.", user)
+                } else {
+                    console.log("User not found")
+                }
+            }).catch(err => {
+                throw new Error(err.message)
+            });
+            
+        }).catch(err => {
+            throw new Error(err.message)
+        });
+    } else {
+        return false;
+    }
+}
+
+const readAdminEmails = async () => {
+	// console.log('\nRetrieving boxes \n')
+	const query = { role: "admin" }
+
+	try {
+		const adminAccounts = await findAdminAccountsDb(query)
+		//Only return to client: name, price, imageUrl & boxId
+		const response = adminAccounts.map(admin => {
+			return {
+                _id:admin._id,
+                email: admin.email,
+                role: admin.role,
+                phone: admin.phone
+			}
+		})
+		return response
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
+const readUserById = async (userId) => {
+	try {
+		return await findUserByIdDb(userId)
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
 module.exports = {
     registerUser,
     loginUser,
-    promoteUserToAdmin
+    promoteUserToAdmin,
+    demoteAdmin,
+    updateUser,
+    readAdminEmails,
+    updateUserPassword,
+    readUserById
 }

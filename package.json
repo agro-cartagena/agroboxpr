@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd BackEnd && yarn install && node server.js",
+    "start": "cd BackEnd && npm install && node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon app"
   },
@@ -12,6 +12,6 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "14.15.0"
+    "node": "14.16.1"
   }
 }

@@ -78,13 +78,11 @@ const retrieveProductList = async (orderId) => {
 		//make a list of product id / amount objexts
 		order.forEach((box) => {
 			box.boxContent.forEach((content) => {
-				if (!productList.includes(content)) {
 					productList.push({
 						product_id: content.productId,
 						amount: content.amount,
 						boxes: box.boxQuantity,
 					})
-				}
 			})
 		})
 		return { productList }

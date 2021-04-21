@@ -12,11 +12,11 @@ const {
 const { createOrderContentDb, getOrderContentByOrder } = orderContentDb
 const { decreaseProductDb } = productDb
 
-const createOrder = async (order, orderContent) => {
+const createOrder = async (order, orderContent, userId) => {
 	try {
 		let order_id
-		order_id = await createOrderDb(order)
-		await createOrderContentDb({ order_id: order_id, ...orderContent })
+		order_id = await createOrderDb({"user_id": userId, ...order})
+		await createOrderContentDb({ "order_id": order_id, ...orderContent })
 		return true
 	} catch (e) {
 		throw new Error(e.message)

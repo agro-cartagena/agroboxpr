@@ -1,10 +1,11 @@
 var express = require('express')
 var router = express.Router()
-var decode = require('../middleware/auth.middleware')
+const authentication = require('../middleware/auth.middleware')
 const { orderController } = require('../controllers')
 
 
-router.post('/', decode.decodeUserData, orderController.postOrder) //Submit order (auth)
+
+router.post('/', authentication.auth, orderController.postOrder) //Submit order (auth)
 router.get('/:id', orderController.getById) //get order using orderID
 router.get('/user/:id', orderController.getUserOrders) //get all orders from a user
 router.get('/city/:city', orderController.getByCity) //get order by municipality

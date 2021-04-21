@@ -89,23 +89,7 @@ const adminAuth = async (req, res, next) => {
 	}
 }
 
-const decodeUserData = async (req, res, next) => {
-	try {
-		const token = req.header('x-access-token')
-		if (!token) {
-			return res.status(403).json({ msg: 'No user logged in' })
-		}
-        const userData = jwt.decode(token)
-        console.log(userData);
-        req.userId = userData.userId
-        next()
-	} catch (err) {
-		res.status(500).json({ error: err.message })
-	}
-}
-
 module.exports = {
 	auth,
 	adminAuth,
-    decodeUserData
 }

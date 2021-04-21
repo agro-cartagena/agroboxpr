@@ -15,8 +15,9 @@ const { validateId, validateUserId, validateCity } = validationMiddleware
 const postOrder = async (req, res, next) => {
 	const order = req.body.order
 	const content = req.body.orderContent
+	const userId = req.userId
 	try {
-		await createOrder(order, content)
+		await createOrder(order, content,userId)
 		res.sendStatus(200)
 		next()
 	} catch (e) {

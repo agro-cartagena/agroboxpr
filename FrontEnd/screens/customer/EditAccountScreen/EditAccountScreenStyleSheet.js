@@ -16,9 +16,7 @@ const styles = StyleSheet.create({
         height: 45,
         margin: 20
     },
-    logo: {
-        margin: 25
-    },
+
     header: {
         color: 'white',
         fontSize: 22,
@@ -42,19 +40,23 @@ const styles = StyleSheet.create({
         // color: 'white'
         textAlign: 'left'
     },
-    buttonContainer:{
+    buttonContainer: {
         width: '50%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly', //?
         height: 40,
-        margin: 15
+
+        margin: 25,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+
+        flexDirection: 'row'
     },
-    cancelButton:{
-        backgroundColor: '#B6B6B6',
+
+    button:{
+        width: '50%',
     },
-    saveButton:{
-        backgroundColor: '#EAC71D',
+
+    localizerContainer:{
+        width: '30%'
     }
 })
 

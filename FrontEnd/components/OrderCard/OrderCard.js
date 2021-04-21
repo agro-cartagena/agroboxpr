@@ -21,23 +21,8 @@ const OrderCard = (props) => {
         if(!UserService.instance.isAdmin())
             return
 
-        const address = fetchAddress()
-
-        // const API = 'AIzaSyBfC6e_GixAOvOkAH6O02XV4dyPis3GRas'
-        // let coordinates = {}
-
-        // await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${API}`)
-        //     .then((response) => response.json())
-        //     .then((data) => {
-        //         coordinates = data.results[0].geometry.location
-        //     })
-        //     .catch((error) => {
-        //         alert("Error")
-        //     })
-
-        // const gps_address = scheme + `${coordinates.lat},${coordinates.lng}`
-         
-        const scheme = Platform.OS == 'ios' ? 'maps:0,0?q=' : 'geo:0,0?q=',
+        const address = fetchAddress(),         
+              scheme = Platform.OS == 'ios' ? 'maps:0,0?q=' : 'geo:0,0?q=',
               physical_address = scheme + address
 
 

@@ -12,7 +12,7 @@ export const goToHome = () => {
     Actions.home()
 }
 
-export const goToViewBox = (box) => {
+export const goToViewBox= (box) => {
     Actions.view_box({ params: box })
 }
 
@@ -64,8 +64,8 @@ export const goToPayment = () => {
     Actions.payment()
 }
 
-export const goToEditCart = (box) => {
-    Actions.edit_cart({ params: box })
+export const goToEditCart = (box_content) => {
+    Actions.edit_cart({ params: box_content })
 }
 
 export const goToOrderManagement = () => {

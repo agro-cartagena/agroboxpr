@@ -3,7 +3,7 @@ import { View } from 'react-native'
 
 import styles from './InteractiveProductCardStyleSheet'
 import ProductCard from '../../components/ProductCard/ProductCard'
-import PlusMinus from '../../components/PlusMinus/PlusMinus'
+import QuantitySpecifier from '../../components/QuantitySpecifier/QuantitySpecifier'
 
 const InteractiveProductCard = (props) => {
     return (
@@ -16,7 +16,7 @@ const InteractiveProductCard = (props) => {
             />
 
             <View style={styles.inputContainer}>
-                <PlusMinus
+                <QuantitySpecifier
                     onMinus={props.onMinus}
                     onText={props.onText}
                     onPlus={props.onPlus}

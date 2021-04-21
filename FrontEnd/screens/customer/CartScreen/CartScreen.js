@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
 import BoxCard from '../../../components/BoxCard/BoxCard'
-import PlusMinus from '../../../components/PlusMinus/PlusMinus'
+import QuantitySpecifier from '../../../components/QuantitySpecifier/QuantitySpecifier'
 
 import CartService from '../../../services/CartService'
 import styles from './CartScreenStyleSheet'
@@ -17,33 +17,25 @@ const CartScreen = () => {
     const [cartData, setCartData] = React.useState(CartService.instance.getCart())
 
     const loadCart = () => {
-        const increaseBoxQuantity = (target_box) => {
-            let box = cartData.find((item) => item._id == target_box._id)
-    
+        const increaseBoxQuantity = (box) => {
             if(box.box_quantity < 99){
                 box.box_quantity += 1
                 setCartTotal((Number(cartTotal) + Number(box.box_accumulated_price)).toFixed(2))
             }
-
         }
     
-        const decreaseBoxQuantity = (target_box) => {
-            let box = cartData.find((item) => item._id == target_box._id)
-    
-            //Product already exists in content list.
+        const decreaseBoxQuantity = (box) => {
             if(box.box_quantity > 1) {
                 box.box_quantity -= 1
                 setCartTotal((Number(cartTotal) - Number(box.box_accumulated_price)).toFixed(2))
             }
-
         }
     
-        const changeBoxQuantity = (target_box, newQuantity) => {
+        const changeBoxQuantity = (box, newQuantity) => {
             if(!newQuantity)
                 return
 
-            let box = cartData.find((item) => item._id == target_box._id),
-                total = Number(cartTotal) - (Number(box.box_accumulated_price) * Number(box.box_quantity))
+            let total = Number(cartTotal) - (Number(box.box_accumulated_price) * Number(box.box_quantity))
 
             if(newQuantity <= 0  || isNaN(newQuantity)){
                 box.box_quantity = 1
@@ -63,35 +55,26 @@ const CartScreen = () => {
             }
         }
 
-        const fetchPlaceholder = (target_box) => {
-            let box = cartData.find((item) => item._id == target_box._id)
-
-            if(box)
-                return box.box_quantity
-
-            return 0
-        }
-
-        return cartData.map((element) => 
-            <View style={styles.itemContainer} key={element._id}>
-                <TouchableOpacity key={element.box_name} style={styles.cardContainer} onPress={() => goToEditCart(element)}>
+        return cartData.map((box) => 
+            <View style={styles.itemContainer} key={box._id}>
+                <TouchableOpacity style={styles.cardContainer} onPress={() => goToEditCart(box.box_content)}>
                     <BoxCard
-                        id={element._id}
-                        name={element.box_name}
-                        price={element.box_accumulated_price}
+                        id={box._id}
+                        name={box.box_name}
+                        price={box.box_accumulated_price}
                     />
                 </TouchableOpacity>
 
-                <View style={styles.plusminus} >
-                    <PlusMinus
-                        onMinus={() => {decreaseBoxQuantity(element)}}
-                        onPlus={() => {increaseBoxQuantity(element)}}
-                        onText={(text) => changeBoxQuantity(element, text)}
-                        placeholder={fetchPlaceholder(element)}
+                <View style={styles.QuantitySpecifier} >
+                    <QuantitySpecifier
+                        onMinus={() => {decreaseBoxQuantity(box)}}
+                        onPlus={() => {increaseBoxQuantity(box)}}
+                        onText={(text) => changeBoxQuantity(box, text)}
+                        placeholder={box.box_quantity}
                     />
                 </View>
 
-                <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${(element.box_accumulated_price * element.box_quantity).toFixed(2)}</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${(box.box_accumulated_price * box.box_quantity).toFixed(2)}</Text>
 
             </View>
         )

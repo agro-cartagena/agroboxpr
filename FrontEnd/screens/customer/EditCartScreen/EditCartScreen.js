@@ -12,9 +12,9 @@ import CartService from '../../../services/CartService'
 
 // box content is passed through props.params.content LIST OF OBJECTS 
 const EditCartScreen = (props) => {
-    
-    const [content, setContent] = React.useState(props.params.box_content)
-    const [subTotal, setSubTotal] = React.useState(props.params.box_accumulated_price)
+
+    const [content, setContent] = React.useState([...props.params])
+    const [subTotal, setSubTotal] = React.useState(40)
     
     const displayContent = () => {
 
@@ -58,6 +58,8 @@ const EditCartScreen = (props) => {
                 product.product_quantity_box += 1
             }
 
+            alert(JSON.stringify(props.params))
+            alert(JSON.stringify(content))
             setSubTotal(Number((Number(subTotal) + Number(target_product.product_price)).toFixed(2)))
         }
     

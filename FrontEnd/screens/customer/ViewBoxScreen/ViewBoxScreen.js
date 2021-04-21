@@ -14,7 +14,7 @@ import ProductService from '../../../services/ProductService'
 import CartService from '../../../services/CartService'
 
 import InteractiveProductCard from '../../../components/InteractiveProductCard/InteractiveProductCard'
-import PlusMinus from '../../../components/PlusMinus/PlusMinus'
+import QuantitySpecifier from '../../../components/QuantitySpecifier/QuantitySpecifier'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import DropDown from '../../../components/DropDown/DropDown'
 
@@ -281,8 +281,8 @@ const BoxScreen = (props) => {
             <View style={styles.addToCartContainer}>
 
                 {/* Input field */}
-                <View style={styles.plusMinusContainer}>
-                    <PlusMinus
+                <View style={styles.QuantitySpecifierContainer}>
+                    <QuantitySpecifier
                         onMinus={() => { if(boxData.box_quantity > 1) setBoxData({ ...boxData, box_quantity: boxData.box_quantity -= 1})}}
                         onPlus={()=>{ if(boxData.box_quantity < 100) setBoxData({ ...boxData, box_quantity: boxData.box_quantity += 1}) }}
                         // onText={(quantity) => { boxData.box_quantity = Number(quantity) }}

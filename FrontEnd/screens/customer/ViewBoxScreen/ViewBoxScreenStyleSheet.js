@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
-    plusMinusContainer: {
+    QuantitySpecifierContainer: {
         width: '50%',
     },    
     

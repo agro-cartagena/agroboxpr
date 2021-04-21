@@ -1,15 +1,16 @@
 import React from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Button from '../../../components/Button/Button'
-import Logo from '../../../components/Logo/Logo'
 
 import styles from './EditAccountScreenStyleSheet'
 import global_styles from '../../../styles';
 
 import FormInput from '../../../components/FormInput/FormInput'
 import UserService from '../../../services/UserService'
+
 import DropDown from '../../../components/DropDown/DropDown'
+import Localizer from '../../../components/Localizer/Localizer'
 
 const EditAccountScreen = () => {
 
@@ -61,13 +62,15 @@ const EditAccountScreen = () => {
                     onChangeText={text => changeUserData({...userData, phone:text})}
                 />
             </View>,
-            <View style={styles.buttonContainer} key={'button'}>
-                <Button
-                    text="Guardar"
-                    style={[styles.buttonContainer, styles.saveButton]}
-                    onTouch={() => UserService.instance.updateUserInformation(userData)}
-                />
-            </View>
+            <View style={styles.buttonContainer} key={'buttons'}>
+                <View style={styles.button}>
+                    <Button
+                        text="Guardar"
+                        style={{backgroundColor: '#EAC71D'}}
+                        onTouch={() => UserService.instance.updateUserInformation(userData)}
+                    />
+                </View>
+            </View>   
         ]
     }
 
@@ -105,13 +108,23 @@ const EditAccountScreen = () => {
                     onChangeText={text => changeAddressData({...addressData, zipcode: text})}
                 />
             </View>,
+
             <View style={styles.buttonContainer} key={'button'}>
-                <Button
-                    text="Guardar"
-                    style={[styles.buttonContainer, styles.saveButton]}
-                    onTouch={() => UserService.instance.updateAddress(addressData)}
-                />
+                <View style={styles.button}>
+                    <Button
+                        text="Guardar"
+                        style={{backgroundColor: '#EAC71D'}}
+                        onTouch={() => UserService.instance.updateUserInformation(userData)}
+                    />
+                </View>
+
+                <View style={styles.localizerContainer}>
+                    <Localizer
+                        addressHandler={changeAddressData}
+                    />
+                </View>
             </View>
+            
         ]
     }
 
@@ -143,12 +156,15 @@ const EditAccountScreen = () => {
                     onChangeText={text => changePasswordData({...passwordData, confirm_new_password: text})}
                 />
             </View>,
+
             <View style={styles.buttonContainer} key={'button'}>
-                <Button
-                    text="Guardar"
-                    style={[styles.buttonContainer, styles.saveButton]}
-                    onTouch={() => UserService.instance.updatePassword(passwordData)}
-                />
+                <View style={styles.button}>
+                    <Button
+                        text="Guardar"
+                        style={{backgroundColor: '#EAC71D'}}
+                        onTouch={() => UserService.instance.updateUserInformation(userData)}
+                    />
+                </View>
             </View>
         ]
     }

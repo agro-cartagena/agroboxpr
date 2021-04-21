@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         margin: 10,
     }, 
 
-    plusminus:{
+    QuantitySpecifier:{
         width: '35%',
         height: 35,
         // backgroundColor: 'white'

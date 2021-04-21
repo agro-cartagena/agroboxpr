@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, TouchableOpacity, Image, Text, TextInput } from 'react-native'
-import styles from './PlusMinusStyleSheet'
+import styles from './QuantitySpecifierStyleSheet'
 
-const PlusMinus = (props) => {
+const QuantitySpecifier = (props) => {
 
     return(
         <View style={styles.inputContainer}>
@@ -40,4 +40,4 @@ const PlusMinus = (props) => {
     )
 }
 
-export default PlusMinus
+export default QuantitySpecifier

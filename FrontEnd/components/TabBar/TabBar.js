@@ -5,20 +5,13 @@ import styles from './TabBarStyleSheet'
 import global_styles from '../../styles'
 import Tab from '../Tab/Tab'
 
-import { 
-    goToLogin, goToEditAccount,
-    goToCart, goToHome, goToMenu, goToViewOrders
-} from '../../Navigator'
-
+import Navigator from '../../Navigator'
 import UserService from '../../services/UserService'
 
 const TabBar = () => {
 
-    const touchHandler = (tab) => {
-        // alert("Hello World")
-    }
-
     const [activeTab, setActiveTab] = React.useState("home-tab")
+    Navigator.instance.setTabHandler(setActiveTab)
 
     return (
         <View style={[styles.bar, global_styles.container]}>
@@ -26,7 +19,7 @@ const TabBar = () => {
                 defaultIcon={require('../../assets/icons/cart.png')}
                 activeIcon={require('../../assets/icons/cart-active.png')}
                 isActive={activeTab == "cart-tab"}
-                onTouch={() => { if(activeTab != "cart-tab"){ setActiveTab("cart-tab"); goToCart() }}}
+                onTouch={() => { if(activeTab != "cart-tab"){ Navigator.instance.goToCart() }}}
             />
     
             <Tab
@@ -35,8 +28,11 @@ const TabBar = () => {
                 isActive={activeTab == "user-tab"}
                 onTouch={() => { 
                     if(activeTab != "user-tab") { 
-                        setActiveTab("user-tab"); 
-                        UserService.instance.isAuthenticated() ? goToEditAccount() : goToLogin()
+                        if(UserService.instance.isAuthenticated()) {
+                            Navigator.instance.goToEditAccount()
+                        } else {
+                            Navigator.instance.goToLogin()
+                        }
                     }
                 }}
             />
@@ -45,21 +41,21 @@ const TabBar = () => {
                 defaultIcon={require('../../assets/icons/home.png')}
                 activeIcon={require('../../assets/icons/home-active.png')}
                 isActive={activeTab == "home-tab"}
-                onTouch={() => { if(activeTab != "home-tab"){ setActiveTab("home-tab"); goToHome() }}}
+                onTouch={() => { if(activeTab != "home-tab"){ Navigator.instance.goToHome() }}}
             />
     
             <Tab
                 defaultIcon={require('../../assets/icons/orders.png')}
                 activeIcon={require('../../assets/icons/orders-active.png')}
                 isActive={activeTab == "orders-tab"}
-                onTouch={() => { if(activeTab != "orders-tab"){ setActiveTab("orders-tab"); goToViewOrders() }}}
+                onTouch={() => { if(activeTab != "orders-tab"){ Navigator.instance.goToViewOrders() }}}
             />
     
             <Tab
                 defaultIcon={require('../../assets/icons/Menu.png')}
                 activeIcon={require('../../assets/icons/menu-active.png')}
                 isActive={activeTab == "menu-tab"}
-                onTouch={() => { if(activeTab != "menu-tab"){ setActiveTab("menu-tab"); goToMenu() }}}
+                onTouch={() => { if(activeTab != "menu-tab"){ Navigator.instance.goToMenu() }}}
             /> 
         </View>
     )  

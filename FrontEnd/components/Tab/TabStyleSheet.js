@@ -5,7 +5,9 @@ const styles = StyleSheet.create({
         width: '20%',
         height: '100%',
 
-        padding: '2%'
+        padding: 5,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
 
     defaultBorder: {

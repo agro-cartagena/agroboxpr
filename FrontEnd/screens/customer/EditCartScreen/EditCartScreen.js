@@ -3,7 +3,7 @@ import {Text, View, ScrollView, Alert} from 'react-native'
 import Button from '../../../components/Button/Button'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 
-import { goToCart, goToPayment } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 import styles from './EditCartScreenStyleSheet'
 import global_styles from '../../../styles'
 
@@ -105,7 +105,7 @@ const EditCartScreen = (props) => {
                     onPress: () => {
                         props.params.box_accumulated_price = subTotal
                         props.params.box_content = [...content]
-                        goToCart()
+                        Navigator.instance.goToCart()
                     }
                 }
             ]
@@ -117,7 +117,7 @@ const EditCartScreen = (props) => {
             <View>
                 <BackArrow 
                     onTouch={() => { 
-                        goToCart()
+                        Navigator.instance.goToCart()
                     }} 
                 />
 

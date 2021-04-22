@@ -8,7 +8,7 @@ import styles from './ManageAdministratorsScreenStyleSheet'
 import global_styles from '../../../styles'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 
-import { goToMenu } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 import AdminService from '../../../services/AdminService'
 
 // Ignore harmless warning about redundant ScrollView.
@@ -109,7 +109,7 @@ const ManageAdministratorsScreen = () => {
 
     return (
         <KeyboardAwareScrollView>
-            <BackArrow onTouch={goToMenu}/>
+            <BackArrow onTouch={Navigator.instance.goToMenu}/>
             
             <Text style={styles.header}>Administradores de AgroBox</Text>
 

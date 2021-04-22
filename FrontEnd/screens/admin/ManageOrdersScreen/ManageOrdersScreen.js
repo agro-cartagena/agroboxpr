@@ -8,7 +8,7 @@ import OrderCard from '../../../components/OrderCard/OrderCard'
 import DropDown from '../../../components/DropDown/DropDown'
 
 import BackArrow from '../../../components/BackArrow/BackArrow'
-import { goToMenu } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 
 const ManageOrdersScreen = () => {
     const [orders, setOrders] = React.useState({})
@@ -151,7 +151,7 @@ const ManageOrdersScreen = () => {
     return (
         <ScrollView>
             <BackArrow
-                    onTouch={goToMenu}
+                    onTouch={Navigator.instance.goToMenu}
             />
 
             <Text style={styles.header}>Manejar Órdenes</Text>

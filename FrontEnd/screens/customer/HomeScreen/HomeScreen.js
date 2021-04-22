@@ -1,6 +1,6 @@
 import React from 'react'
-import { SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native'
-import { goToViewBox } from '../../../Navigator'
+import { ScrollView, TouchableOpacity, View } from 'react-native'
+import Navigator from '../../../Navigator'
 
 import BoxService from '../../../services/BoxService'
 import BoxCard from '../../../components/BoxCard/BoxCard'
@@ -24,7 +24,7 @@ const HomeScreen = () => {
         return boxList.map((box) => 
             <TouchableOpacity
                 style={styles.card}
-                onPress={() => goToViewBox(box)}
+                onPress={() => Navigator.instance.goToViewBox(box)}
                 key={box._id}
             >
                 <BoxCard

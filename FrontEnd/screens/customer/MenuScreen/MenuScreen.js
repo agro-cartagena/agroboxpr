@@ -6,10 +6,7 @@ import Logo from '../../../components/Logo/Logo'
 import Button from '../../../components/Button/Button'
 
 import UserService from '../../../services/UserService'
-import {
-    goToInventoryManagement, goToAdminManagement,
-    goToOrderManagement
-} from '../../../Navigator'
+import Navigator from '../../../Navigator'
 
 const MenuScreen = () => {
 
@@ -54,7 +51,7 @@ const MenuScreen = () => {
                             <Button
                                 text="Manejar Inventario"
                                 style={{backgroundColor: '#801A3500'}}
-                                onTouch={() => goToInventoryManagement()}
+                                onTouch={() => Navigator.instance.goToInventoryManagement()}
                             />
                         </View>
 
@@ -62,7 +59,7 @@ const MenuScreen = () => {
                             <Button
                                 text="Manejar Administradores"
                                 style={{backgroundColor: '#801A3500'}}
-                                onTouch={() => goToAdminManagement()}
+                                onTouch={() => Navigator.instance.goToAdminManagement()}
                             />
                         </View>
 
@@ -70,7 +67,7 @@ const MenuScreen = () => {
                             <Button
                                 text="Manejar Órdenes"
                                 style={{backgroundColor: '#801A3500'}}
-                                onTouch={() => goToOrderManagement()}
+                                onTouch={() => Navigator.instance.goToOrderManagement()}
                             />
                         </View>
 

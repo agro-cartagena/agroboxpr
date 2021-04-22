@@ -8,7 +8,7 @@ import DropDown from '../../../components/DropDown/DropDown'
 import ProductCard from '../../../components/ProductCard/ProductCard'
 import ProductService from '../../../services/ProductService'
 
-import { goToEditProduct, goToInventoryManagement } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 import Button from '../../../components/Button/Button'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 
@@ -29,7 +29,7 @@ const InventoryManagementScreen = () => {
                 <TouchableOpacity 
                     key={product._id} 
                     style={styles.productCardContainer} 
-                    onPress={() => goToEditProduct(product)}
+                    onPress={() => Navigator.instance.goToEditProduct(product)}
                 >
                     <ProductCard
                         name={product.product_name}
@@ -61,7 +61,7 @@ const InventoryManagementScreen = () => {
     return(
         <ScrollView contentContainerStyle={styles.screen}>
             <BackArrow
-                    onTouch={goToInventoryManagement}
+                    onTouch={Navigator.instance.goToInventoryManagement}
             />
             
             <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Productos)</Text>
@@ -73,7 +73,7 @@ const InventoryManagementScreen = () => {
             <View style={styles.buttonContainer}>
                 <Button
                     text="Añadir Producto Nuevo"
-                    onTouch={() => goToEditProduct("new")}
+                    onTouch={() => Navigator.instance.goToEditProduct("new")}
                 />
             </View>
         </ScrollView>

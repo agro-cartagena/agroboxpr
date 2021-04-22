@@ -12,7 +12,7 @@ import MediaUploader from '../../../components/MediaUploader/MediaUploader'
 
 import styles from './EditBoxScreenStyleSheet'
 import global_styles from '../../../styles'
-import { goToBoxManagement } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 
 import ProductService from '../../../services/ProductService'
 import BoxService from '../../../services/BoxService'
@@ -207,7 +207,7 @@ const EditBoxScreen = (props) => {
                     text: 'Remover',
                     onPress: async () => {
                         if (await BoxService.instance.removeBox(boxData._id))   
-                            goToBoxManagement()
+                            Navigator.instance.goToBoxManagement()
                     }
                 }
             ]
@@ -254,13 +254,13 @@ const EditBoxScreen = (props) => {
 
         if(result){
             alert("Caja ha sido guardada.")
-            goToBoxManagement()
+            Navigator.instance.goToBoxManagement()
         }
     }
 
     return(
         <KeyboardAwareScrollView>
-            <BackArrow onTouch={goToBoxManagement}/>
+            <BackArrow onTouch={Navigator.instance.goToBoxManagement}/>
 
             <MediaUploader
                 media = {boxImage}

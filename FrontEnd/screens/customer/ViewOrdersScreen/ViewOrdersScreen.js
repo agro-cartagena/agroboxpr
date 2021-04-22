@@ -7,7 +7,7 @@ import UserService from '../../../services/UserService'
 
 import OrderCard from '../../../components/OrderCard/OrderCard'
 import DropDown from '../../../components/DropDown/DropDown'
-import { goToLogin } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 
 const ViewOrdersScreen = () => {
     const [orders, setOrders] = React.useState({})
@@ -39,7 +39,7 @@ const ViewOrdersScreen = () => {
             return (
                 <View style={styles.unauthenticatedTextContainer}>
                     <Text style={styles.unauthenticatedText}>¡Inicie una sesión para ver sus órdenes!</Text>
-                    <Text style={styles.redirectionText} onPress={goToLogin}>Presione aquí.</Text>
+                    <Text style={styles.redirectionText} onPress={Navigator.instance.goToLogin}>Presione aquí.</Text>
                 </View>
             )
         

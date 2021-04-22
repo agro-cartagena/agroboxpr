@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Image, Text, TextInput } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './EditProductScreenStyleSheet'
@@ -9,10 +9,9 @@ import BackArrow from '../../../components/BackArrow/BackArrow'
 import FormInput from '../../../components/FormInput/FormInput'
 import Button from '../../../components/Button/Button'
 
-import { goToProductManagement } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 import MediaUploader from '../../../components/MediaUploader/MediaUploader'
 import ProductService from '../../../services/ProductService'
-import { Alert } from 'react-native'
 
 const ProductScreen = (props) => {
     let _isNewProduct = props.params == "new", 
@@ -38,7 +37,7 @@ const ProductScreen = (props) => {
 
         if(result){
             alert("Producto ha sido guardado.")
-            goToProductManagement()
+            Navigator.instance.goToProductManagement()
         }
     }
 
@@ -55,7 +54,7 @@ const ProductScreen = (props) => {
                         text: 'Remover',
                         onPress: async () => {
                             if(await ProductService.instance.removeProduct(productData._id))
-                                goToProductManagement()
+                                Navigator.instance.goToProductManagement()
                         }
                     }
                 ]
@@ -89,7 +88,7 @@ const ProductScreen = (props) => {
 
     return (
         <KeyboardAwareScrollView>
-            <BackArrow onTouch={goToProductManagement}/>
+            <BackArrow onTouch={Navigator.instance.goToProductManagement}/>
 
             <MediaUploader
                 media = {productImage}

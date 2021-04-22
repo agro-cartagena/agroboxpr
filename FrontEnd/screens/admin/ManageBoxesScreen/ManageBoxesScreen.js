@@ -9,7 +9,7 @@ import Button from '../../../components/Button/Button'
 import BoxCard from '../../../components/BoxCard/BoxCard'
 
 import BoxService from '../../../services/BoxService'
-import { goToInventoryManagement, goToEditBox } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 
 const BoxManagementScreen = () => {
     const [boxList, setBoxList] = React.useState([])
@@ -27,7 +27,7 @@ const BoxManagementScreen = () => {
             <TouchableOpacity 
                 key={box._id} 
                 style={styles.cardContainer}
-                onPress={() => { goToEditBox(box) }}
+                onPress={() => { Navigator.instance.goToEditBox(box) }}
             >
                 <BoxCard
                     id={box._id}
@@ -43,7 +43,7 @@ const BoxManagementScreen = () => {
     return (
         <ScrollView>
             <BackArrow
-                onTouch={goToInventoryManagement}
+                onTouch={Navigator.instance.goToInventoryManagement}
             />
 
             <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Cajas)</Text>
@@ -55,7 +55,7 @@ const BoxManagementScreen = () => {
             <View style={styles.buttonContainer}>
                 <Button
                     text="Crear Caja Nueva"
-                    onTouch={() => goToEditBox("new")}
+                    onTouch={() => Navigator.instance.goToEditBox("new")}
                 />
             </View>
         </ScrollView>

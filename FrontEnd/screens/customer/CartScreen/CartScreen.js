@@ -10,7 +10,7 @@ import global_styles from '../../../styles'
 import Logo from '../../../components/Logo/Logo'
 import Button from '../../../components/Button/Button'
 
-import { goToCheckout, goToEditCart } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 
 const CartScreen = () => {
     const [cartData, setCartData] = React.useState(CartService.instance.getCart())
@@ -57,7 +57,7 @@ const CartScreen = () => {
 
         return cartData.map((box) => 
             <View style={styles.itemContainer} key={box._id}>
-                <TouchableOpacity style={styles.cardContainer} onPress={() => goToEditCart(box.box_content)}>
+                <TouchableOpacity style={styles.cardContainer} onPress={() => Navigator.instance.goToEditCart(box.box_content)}>
                     <BoxCard
                         id={box._id}
                         name={box.box_name}
@@ -103,7 +103,7 @@ const CartScreen = () => {
 
             <View style={styles.buttonContainer}>
                 <Button
-                    onTouch={goToCheckout}
+                    onTouch={Navigator.instance.goToCheckout}
                     text="Continuar"
                 />
             </View>

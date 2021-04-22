@@ -7,7 +7,7 @@ import BackArrow from '../../../components/BackArrow/BackArrow'
 import FormInput from '../../../components/FormInput/FormInput'
 import UserService from '../../../services/UserService'
 
-import { goToCart, goToPayment } from '../../../Navigator'
+import Navigator from '../../../Navigator'
 import styles from './CheckoutScreenStyleSheet'
 import global_styles from '../../../styles'
 
@@ -31,7 +31,7 @@ const CheckoutScreen = () => {
         <KeyboardAwareScrollView>
             {/* Back Arrow */}
             <View style={styles.arrowContainer}>
-                <BackArrow onTouch={goToCart} />
+                <BackArrow onTouch={Navigator.instance.goToCart} />
             </View>
             {/* User information */}
             <View style={[global_styles.container, styles.formContainer]}>
@@ -92,7 +92,7 @@ const CheckoutScreen = () => {
             {/* Button to continue to next screen */}
             <View style={styles.button}>
                 <Button
-                    onTouch={goToPayment}
+                    onTouch={Navigator.instance.goToPayment}
                     // onTouch={() => [goToPayment, UserService.instance.updateAddress(addressData), UserService.instance.updateUserInformation(userData)] }
                     text="Continuar"
                 />

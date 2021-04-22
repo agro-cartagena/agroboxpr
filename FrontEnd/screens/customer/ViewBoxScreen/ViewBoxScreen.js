@@ -7,8 +7,7 @@ import Button from '../../../components/Button/Button'
 
 import styles from './ViewBoxScreenStyleSheet';
 import global_styles from '../../../styles'
-import { goToHome } from '../../../Navigator'
-
+import Navigator from '../../../Navigator'
 import BoxService from '../../../services/BoxService'
 import ProductService from '../../../services/ProductService'
 import CartService from '../../../services/CartService'
@@ -282,7 +281,7 @@ const BoxScreen = (props) => {
         <KeyboardAwareScrollView>
 
             {/* GO BACK ARROW */}
-            <BackArrow onTouch={goToHome}/>
+            <BackArrow onTouch={Navigator.instance.goToHome}/>
 
             {/* BOX CARD */}
             <Text style={[styles.text, styles.cardText, styles.cardTitle]}>{props.params.box_name}</Text>

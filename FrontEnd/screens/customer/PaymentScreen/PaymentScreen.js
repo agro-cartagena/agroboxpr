@@ -1,7 +1,8 @@
 import React from 'react'
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
 import Button from '../../../components/Button/Button'
-import { goToCheckout } from '../../../Navigator'
+
+import Navigator from '../../../Navigator'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import BoxCard from '../../../components/BoxCard/BoxCard'
 
@@ -44,7 +45,7 @@ const PaymentScreen = () => {
     return (
         <ScrollView>
             <View style={styles.arrowContainer}>
-                <BackArrow onTouch={goToCheckout} />
+                <BackArrow onTouch={Navigator.instance.goToCheckout} />
             </View>
 
             <Text style={styles.text}> Resumen de su orden: </Text>

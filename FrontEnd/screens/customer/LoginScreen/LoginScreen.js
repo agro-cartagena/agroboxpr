@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import styles from './LoginScreenStylesheet';
 import global_styles from '../../../styles';
-import { goToRegister } from '../../../Navigator';
+import Navigator from '../../../Navigator'
 
 import FormInput from '../../../components/FormInput/FormInput'
 import UserService from '../../../services/UserService'
@@ -67,7 +67,7 @@ const LoginScreen = () => {
                 />
             </View>
             
-            <Text style={global_styles.text} onPress={goToRegister}>Crear cuenta nueva</Text>                
+            <Text style={global_styles.text} onPress={Navigator.instance.goToRegister}>Crear cuenta nueva</Text>                
         </KeyboardAwareScrollView>
     )
 }

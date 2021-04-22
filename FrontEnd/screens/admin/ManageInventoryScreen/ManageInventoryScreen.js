@@ -7,13 +7,13 @@ import styles from './ManageInventoryScreenStyleSheet'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import Logo from '../../../components/Logo/Logo'
 
-import { goToProductManagement, goToBoxManagement, goToMenu } from '../../../Navigator'
+import  Navigator from '../../../Navigator'
 
 const InventoryManagementScreen = () => {
     return(
         <View>
             <BackArrow 
-                onTouch={() => goToMenu()}
+                onTouch={() => Navigator.instance.goToMenu()}
             />
 
             <View style={styles.logoContainer}>
@@ -26,14 +26,14 @@ const InventoryManagementScreen = () => {
                 <View style={styles.button}>
                     <Button
                         text="Manejar Productos"
-                        onTouch={goToProductManagement}
+                        onTouch={Navigator.instance.goToProductManagement}
                     />
                 </View>
 
                 <View style={styles.button}>
                     <Button
                         text="Manejar Cajas"
-                        onTouch={goToBoxManagement}
+                        onTouch={Navigator.instance.goToBoxManagement}
                     />
                 </View>
             </View>

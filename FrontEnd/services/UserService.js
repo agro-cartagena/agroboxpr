@@ -2,7 +2,7 @@ import Service from './Service'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode'
 
-import { goToHome } from '../Navigator'
+import Navigator from '../Navigator'
 import user from '../db_mockup/user.db'
 
 export default class UserAuthenticationService extends Service {
@@ -96,8 +96,7 @@ export default class UserAuthenticationService extends Service {
                 switch(response.status){
                     case 200: 
                         this.setWebToken(await response.text())
-                        alert("Sesión iniciada.")
-                        // goToHome()
+                        Navigator.instance.goToHome()
                         break;
                     
                     case 403:
@@ -145,7 +144,7 @@ export default class UserAuthenticationService extends Service {
                         case 201:
                             this.setWebToken(await response.text())
                             alert("Gracias por registrarse!")
-                            // goToHome()
+                            Navigator.instance.goToHome()
                             break;
 
                         case 409:

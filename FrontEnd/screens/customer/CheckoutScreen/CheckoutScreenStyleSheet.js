@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         color: '#EAC71D'
     },
     cartContainer: {
-        width: '90%',
+        width: '60%',
         alignSelf: 'center',
         margin: 15,
         borderRadius: 10,
@@ -54,20 +54,32 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent:'flex-start',
+        marginStart: 30,
+        marginTop: 8,
+        marginBottom:8
     },
-    cardContainer: {
-        width: '55%',
-        height: 100,
-        margin: 10
-    }, 
+    nameText:{
+        // justifyContent: 'center',
+        fontSize:20,
+        fontWeight: 'bold',
+    },
+
+    textContainer:{
+        borderTopWidth: 2,
+        borderTopColor: 'white',
+        width:"50%",
+        alignSelf:"center",
+
+    },
     total_text:{
         fontSize:18,
-        textAlign: "right",
-        marginEnd: 55,
-        marginBottom: 20
-
+        textAlign: "center",
+        alignSelf: 'center',
+        marginBottom: 20,
+        // backgroundColor:'white',
+        width: '100%',
         // borderTopWidth: 2,
-        // borderTopColor: "white",
+        // borderTopColor: "yellow",
         // borderRadius: 15,
     },
 

@@ -31,16 +31,26 @@ const CheckoutScreen = () => {
 
         fetchData()
     }, [])
+
+    const getTotalPrice = () => {
+        let total_price = 0
+
+        paymentData.forEach((item) => { total_price += Number(item.box_accumulated_price) * Number(item.box_quantity) })
+
+        return total_price
+    }
+    
     const loadPaymentSummary = () => {
         return paymentData.map((element) =>
             <View style={styles.itemContainer} key={element._id}>
-                <TouchableOpacity key={element.box_name} style={styles.cardContainer}>
+                <Text style={styles.nameText}>{element.box_name}</Text>
+                {/* <TouchableOpacity key={element.box_name} style={styles.cardContainer}>
                     <BoxCard
                         id={element._id}
                         name={element.box_name}
                         price={element.box_accumulated_price}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <View>
                     <Text style={{ fontSize: 15 }}>  {element.box_quantity} cajas</Text>
@@ -50,13 +60,7 @@ const CheckoutScreen = () => {
             </View>
         )
     }
-    const getTotalPrice = () => {
-        let total_price = 0
-
-        paymentData.forEach((item) => { total_price += Number(item.box_accumulated_price) * Number(item.box_quantity) })
-
-        return total_price
-    }
+    
     const cashSelected = ()=>{
         Alert.alert(
             `Si selecciona el método de pago "Efectivo", usted se compromete a pagar la cantidad al momento de recibir la orden, de lo contrario no podrá adquirir la misma.`, '',
@@ -79,7 +83,7 @@ const CheckoutScreen = () => {
 
             <Logo />
 
-            <Text style={styles.text}>Información de usuario:</Text>
+            <Text style={styles.text}>Información de comprador:</Text>
             {/* User information */}
             <View style={[global_styles.container, styles.formContainer]}>
                 <View style={styles.formInputContainer}>
@@ -146,10 +150,12 @@ const CheckoutScreen = () => {
 
             </View>
 
-            <Text style={[global_styles.text, styles.total_text]}>Total a pagar:
-                <Text style={{ fontWeight: 'bold', color: '#EAC71D', fontSize: 20 }}> ${getTotalPrice()}</Text>
-            </Text>
-
+            <View style={styles.textContainer}>
+                <Text style={[global_styles.text, styles.total_text]}>Total a pagar:
+                    <Text style={{ fontWeight: 'bold', color: 'rgb(151, 184, 56)', fontSize: 20 }}> ${getTotalPrice()}</Text>
+                </Text>
+            </View>
+            
             <View style={[global_styles.container, styles.buttonContainer]}>
                 {/* Select payment method */}
                 {/* <script src="https://www.paypal.com/sdk/js?client-id=test"></script> */}

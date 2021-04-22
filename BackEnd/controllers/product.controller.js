@@ -9,7 +9,17 @@ const {
 } = productService
 
 const postProduct = async (req, res, next) => {
-	const product = req.body
+	const body = req.body
+	const file = req.file
+
+	const product = {
+		product_name: body.product_name,
+		product_category: body.product_category,
+		product_quantity_stock: Number(body.product_quantity_stock),
+		product_units: body.product_units,
+		product_price: Number(body.product_price),
+		product_image: file.filename
+	}
 
 	try {
 		const insert = await insertProduct(product)

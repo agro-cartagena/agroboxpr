@@ -10,33 +10,34 @@ const postBox = async (req, res, next) => {
 
 	// Receives one array for box products and another for box product qty. Both arrays must match in length and be in correct order 
 	// for box to be created correctly.
-	// Comment out code IF and array of js objects can be sent through form-data
-	if(body.box_content.length === body.product_quantity_box.length){
-		for(let i = 0; i < body.box_content.length; i ++) {
-			box_content.push({
-				_id: body.box_content[i],
-				product_quantity_box: Number(body.product_quantity_box[i])
-			})
-		}
-	} else {
-		console.log("WTF Bro!")
-	}
+	// HERE: Comment out code IF and array of js objects can't be sent through form-data
+	// if(body.box_content.length === body.product_quantity_box.length){
+	// 	for(let i = 0; i < body.box_content.length; i ++) {
+	// 		box_content.push({
+	// 			_id: body.box_content[i],
+	// 			product_quantity_box: Number(body.product_quantity_box[i])
+	// 		})
+	// 	}
+	// } else {
+	// 	console.log("WTF Bro!")
+	// }
 
 	
-	// Comment out code IF an array of js objects can be sent through form-data
-	const box = {
-		box_name: body.box_name,
-		box_price: body.box_price,
-		box_image: file.filename,
-		box_content: box_content
-	}
-	// Uncomment IF an array of js objects can be sent through form-data
+	// HERE: Uncomment code IF an array of js objects can't be sent through form-data
 	// const box = {
 	// 	box_name: body.box_name,
 	// 	box_price: body.box_price,
 	// 	box_image: file.filename,
-	// 	box_content: body.box_content
+	// 	box_content: box_content
 	// }
+
+	// Comment out IF an array of js objects can't be sent through form-data
+	const box = {
+		box_name: body.box_name,
+		box_price: body.box_price,
+		box_image: file.filename,
+		box_content: body.box_content
+	}
 
 	try {
 		const newBox = await boxService.createBox(box)

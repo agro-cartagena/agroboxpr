@@ -1,12 +1,13 @@
 var express = require('express')
 var router = express.Router()
 var { auth, adminAuth } = require('../middleware/auth.middleware')
+var upload = require('../middleware/upload.middleware')
 
 const { boxController } = require('../controllers')
 
 
 //insert new box to box db
-router.post('/', adminAuth, boxController.postBox)
+router.post('/', adminAuth, upload.single('file'), boxController.postBox)
 
 router.get('/products/:id', boxController.getBoxProducts)
 

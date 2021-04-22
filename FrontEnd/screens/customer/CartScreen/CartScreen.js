@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity, Alert } from 'react-native'
 import BoxCard from '../../../components/BoxCard/BoxCard'
 import PlusMinus from '../../../components/PlusMinus/PlusMinus'
 
@@ -7,6 +7,7 @@ import CartService from '../../../services/CartService'
 import styles from './CartScreenStyleSheet'
 import global_styles from '../../../styles'
 
+import TrashCan from '../../../components/TrashCan/TrashCan'
 import Logo from '../../../components/Logo/Logo'
 import Button from '../../../components/Button/Button'
 
@@ -72,28 +73,60 @@ const CartScreen = () => {
             return 0
         }
 
-        return cartData.map((element) => 
-            <View style={styles.itemContainer} key={element._id}>
+        const removeBoxFromCart = (target_box) => {
+            // let box = cartData.find((item) => item._id == target_box._id)
+
+            Alert.alert(
+                `¿Seguro que desea eliminar la caja ${target_box.box_name} del carrito?`, "",
+                [
+                    {
+                        text: 'Cancelar',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Eliminar',
+                        onPress: () => {
+                            // Not working perfectly
+                            setCartData(cartData.filter((box) => box._id != target_box._id))
+                            setCartTotal(Number((Number(cartTotal) - Number(target_box.box_accumulated_price)).toFixed(2)))
+                        }
+                    }
+                ]
+            )
+           
+        }
+
+        return cartData.map((element) =>
+            <View key={element._id} style={styles.itemContainer}>
                 <TouchableOpacity key={element.box_name} style={styles.cardContainer} onPress={() => goToEditCart(element)}>
                     <BoxCard
                         id={element._id}
                         name={element.box_name}
                         price={element.box_accumulated_price}
                     />
+
                 </TouchableOpacity>
 
-                <View style={styles.plusminus} >
-                    <PlusMinus
-                        onMinus={() => {decreaseBoxQuantity(element)}}
-                        onPlus={() => {increaseBoxQuantity(element)}}
-                        onText={(text) => changeBoxQuantity(element, text)}
-                        placeholder={fetchPlaceholder(element)}
-                    />
+                {/* column container */}
+                <View style={styles.secondContainer}> 
+                {/* row container with the plusminus and price */}
+                    <View style={styles.thirdContainer}> 
+                        <View style={styles.plusminus} >
+                            <PlusMinus
+                                onMinus={() => { decreaseBoxQuantity(element) }}
+                                onPlus={() => { increaseBoxQuantity(element) }}
+                                onText={(text) => changeBoxQuantity(element, text)}
+                                placeholder={fetchPlaceholder(element)}
+                            />
+
+                        </View>
+                        <Text style={styles.total_text}> = ${(element.box_accumulated_price * element.box_quantity).toFixed(2)}</Text>
+                    </View>
+                    {/* TrashCan Image needs to be changed */}
+                    <TrashCan onTouch={() => removeBoxFromCart(element)} />
                 </View>
-
-                <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${(element.box_accumulated_price * element.box_quantity).toFixed(2)}</Text>
-
             </View>
+
         )
     }
 

@@ -61,7 +61,7 @@ export const goToCheckout = () => {
 }
 
 export const goToConfirm = () => {
-    Actions.payment()
+    Actions.confirm()
 }
 
 export const goToEditCart = (box) => {

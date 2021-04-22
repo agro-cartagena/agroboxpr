@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, ScrollView } from 'react-native'
+import { Text, View, ScrollView, Alert, TouchableOpacity } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Button from '../../../components/Button/Button'
@@ -8,6 +8,7 @@ import FormInput from '../../../components/FormInput/FormInput'
 import UserService from '../../../services/UserService'
 import CartService from '../../../services/CartService'
 import Logo from '../../../components/Logo/Logo'
+import BoxCard from '../../../components/BoxCard/BoxCard'
 
 import { goToCart, goToConfirm } from '../../../Navigator'
 import styles from './CheckoutScreenStyleSheet'
@@ -44,9 +45,8 @@ const CheckoutScreen = () => {
                 <View>
                     <Text style={{ fontSize: 15 }}>  {element.box_quantity} cajas</Text>
                 </View>
-                {/* <View> */}
+               
                 <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_accumulated_price * element.box_quantity}</Text>
-                {/* </View>  */}
             </View>
         )
     }
@@ -57,7 +57,18 @@ const CheckoutScreen = () => {
 
         return total_price
     }
-
+    const cashSelected = ()=>{
+        Alert.alert(
+            `Si selecciona el método de pago "Efectivo", usted se compromete a pagar la cantidad al momento de recibir la orden, de lo contrario no podrá adquirir la misma.`, '',
+            [
+                {
+                    text: 'Acepto',
+                    //not working!!!
+                    onPress: async() => {goToConfirm} //Se envia la informacion de la orden a backEnd y se envia al confirm screen
+                }
+            ]
+        )
+    }
 
     return (
         <KeyboardAwareScrollView>
@@ -122,7 +133,7 @@ const CheckoutScreen = () => {
             <View style={styles.button}>
                 <Button
                     // onTouch={} //send information to backend
-                    // onTouch={() => [goToConfirm, UserService.instance.updateAddress(addressData), UserService.instance.updateUserInformation(userData)] }
+                    // onTouch={() => [UserService.instance.updateAddress(addressData), UserService.instance.updateUserInformation(userData)] }
                     text="Guardar"
                 />
             </View>
@@ -160,7 +171,8 @@ const CheckoutScreen = () => {
                 <Button
                     style={styles.button}
                     text="Efectivo" //Send an alert or popup with conditions of selectiong this payment method and redirect to confirm screen and send info to backend
-                    onTouch={() => { alert('Si selecciona el método de pago "Efectivo", usted se compromete a pagar la cantidad al momento de recibir la orden, de lo contrario no podrá adquirir la misma.') }}
+                    onTouch={cashSelected}
+                    // onTouch={() => { alert('Si selecciona el método de pago "Efectivo", usted se compromete a pagar la cantidad al momento de recibir la orden, de lo contrario no podrá adquirir la misma.') }}
                 />
             </View>
         </KeyboardAwareScrollView>

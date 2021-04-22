@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, ScrollView } from 'react-native'
 import Button from '../../../components/Button/Button'
-import { goToCheckout } from '../../../Navigator'
+import { goToCheckout,goToViewOrders } from '../../../Navigator'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 
 import styles from './ConfirmScreenStyleSheet'
@@ -19,8 +19,10 @@ const ConfirmScreen = () => {
             <View style={[global_styles.container, styles.buttonContainer]}>
                 {/* Select payment method */}
                 <Button
+                
                     style={styles.button}
-                      text="Ver todas mis ordenes" //Send an alert or popup with conditions of selectiong this payment method 
+                    text="Ver todas mis ordenes" //Send an alert or popup with conditions of selectiong this payment method 
+                    onTouch={goToViewOrders}
                  /> 
             </View>
         </ScrollView>

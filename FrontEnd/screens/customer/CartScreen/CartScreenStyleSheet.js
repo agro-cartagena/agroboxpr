@@ -16,25 +16,49 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        // borderBottomWidth: 2,
+        // borderBottomColor: 'yellow'
+        // marginBottom:10
     },
 
     cardContainer: {
         width: '40%',
         height: 100,
-        margin: 10,
+        margin: 10
     }, 
 
+    boxCard:{
+        fontSize:10,
+    },
+
+    secondContainer:{
+        flexDirection:'column',
+        width: "54%",
+    },
+
+    thirdContainer:{
+        flexDirection:'row',
+        alignItems: 'center',
+        justifyContent:'flex-start',
+    },
+
     plusminus:{
-        width: '35%',
+        width: '55%',
         height: 35,
-        // backgroundColor: 'white'
+        backgroundColor: 'white'
     },
 
     text: {
         alignSelf: 'center',
         fontSize: 18,
         margin: 10
+    },
+
+    total_text:{
+        fontWeight: 'bold', 
+        fontSize: 15, 
+        backgroundColor: 'white'
     },
 
     buttonContainer: {

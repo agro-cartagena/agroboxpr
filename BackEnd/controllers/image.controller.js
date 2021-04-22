@@ -20,8 +20,8 @@ connect.once('open', () => {
 })
 
 const uploadImage = async (req, res, next) => {
-    // console.log("Body: ", req.body)
-    console.log("File: ", req.file)
+    console.log("Box Name: ", req.body)
+    // console.log("File: ", req.file)
 
     let result = imageService.uploadImage(req.file)
 

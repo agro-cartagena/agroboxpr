@@ -3,7 +3,6 @@ const { insertImageDb } = require('../db/images.db')
 
 const uploadImage = async (image_file) => {
     let new_image = {
-        // caption: image_caption,
         filename: image_file.filename, 
         fileId: image_file.id
     }

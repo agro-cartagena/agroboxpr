@@ -158,41 +158,53 @@ const EditBoxScreen = (props) => {
     }
 
     const displayButtons = () => {
-        if(_isNewBox == false){
-            if(isAvailable) {
-                return (
-                    <View style={styles.button}>
-                        <Button
-                            text="Desactivar"
-                            style={{backgroundColor: 'gray'}}
-                            onTouch={async() => {
+
+        let activation_button = (
+            <View style={_isNewBox ? {display: 'none'} : styles.button}>
+                    <Button
+                        text={isAvailable ? "Desactivar" : "Activar"}
+                        style={{backgroundColor: 'gray'}}
+                        onTouch={async() => {
+                            if(isAvailable) {
                                 if(await BoxService.instance.disableBox(boxData._id)){
                                     setAvailable(!isAvailable)
                                     alert("Caja ha sido desactivada.")
                                 }
-                            }}
-                        />
-                    </View>
-                )
-            }
-            
-            else {
-                return (
-                    <View style={styles.button}>
-                        <Button
-                            text="Activar"
-                            style={{backgroundColor: 'gray'}}
-                            onTouch={async() => {
+                            } else {
                                 if(await BoxService.instance.enableBox(boxData._id)){ 
                                     setAvailable(!isAvailable)
                                     alert("Caja ha sido activada.")
                                 }
-                            }}
-                        />
-                    </View>
-                )
-            }
-        }
+                            }
+                        }}
+                    />
+                </View>
+        )
+
+        let trash_icon = (
+            <TouchableOpacity style={_isNewBox ? {display: 'none'} : styles.iconContainer} onPress={askToRemoveBox}>
+                <Image
+                    style={styles.icon}
+                    source={require('../../../assets/icons/Trash(Line).png')}
+                />
+            </TouchableOpacity>
+        )
+
+        return (
+            <View style={styles.buttonWrapper}>
+                {activation_button}
+
+                {trash_icon}
+
+                <View style={styles.button}>
+                    <Button
+                        text="Guardar"
+                        onTouch={submitHandler}
+                    />
+                </View>
+            </View>
+            
+        )
     }
 
     const askToRemoveBox = () => {
@@ -293,20 +305,6 @@ const EditBoxScreen = (props) => {
 
             <View style={styles.buttonContainer}>
                 {displayButtons()}
-
-                <TouchableOpacity style={styles.iconContainer} onPress={askToRemoveBox}>
-                    <Image
-                        style={styles.icon}
-                        source={require('../../../assets/icons/Trash(Line).png')}
-                    />
-                </TouchableOpacity>
-
-                <View style={styles.button}>
-                    <Button
-                        text="Guardar"
-                        onTouch={submitHandler}
-                    />
-                </View>
             </View>
         </KeyboardAwareScrollView>
     )

@@ -15,6 +15,14 @@ const styles = StyleSheet.create({
         marginTop: 10
     },
 
+    buttonWrapper: {
+        width: '100%',
+        height: 40,
+        flexDirection: 'row',
+        
+        justifyContent: 'space-evenly'
+    },
+
     buttonContainer: {
         width: '60%',
         height: 40, 

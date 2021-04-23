@@ -1,12 +1,14 @@
 var express = require('express')
 var router = express.Router()
 var { auth, adminAuth } = require('../middleware/auth.middleware')
+var { validateEntity } = require('../middleware/dataValidation.middleware')
+var { boxSchema } = require('../middleware/validators.middleware')
 
 const { boxController } = require('../controllers')
 
 
 //insert new box to box db
-router.post('/', adminAuth, boxController.postBox)
+router.post('/', adminAuth, validateEntity(boxSchema), boxController.postBox)
 
 router.get('/products/:id', boxController.getBoxProducts)
 

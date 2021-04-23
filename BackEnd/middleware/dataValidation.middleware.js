@@ -2,6 +2,10 @@
 // Data validation middleware, resource schema must be a yup schema.
 const validateEntity = (entitySchema) => async (req, res, next) => {
     const entity = req.body;
+
+    console.log("Entity: ", entity)
+    console.log("Schema: ", entitySchema)
+
     try {
       // throws an error if not valid
       await entitySchema.validate(entity);

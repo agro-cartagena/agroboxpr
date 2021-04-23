@@ -1,5 +1,6 @@
 import React from 'react'
 import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
+import { RFPercentage } from 'react-native-responsive-fontsize'
 
 import global_styles from '../../../styles'
 import styles from './ManageBoxesScreenStyleSheet'
@@ -33,7 +34,8 @@ const BoxManagementScreen = () => {
                     id={box._id}
                     name={box.box_name}
                     image={box.box_image}
-                    price={box.box_price}
+                    price={`$${box.box_price}`}
+                    fontSize={{fontSize: RFPercentage(2.5)}}
                 />
                 {/* <View style={box.available ? {} : styles.overlay}/> */}
             </TouchableOpacity>

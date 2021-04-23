@@ -12,14 +12,22 @@ import Logo from '../../../components/Logo/Logo';
 
 import Button from '../../../components/Button/Button'
 
-const LoginScreen = () => {
+const LoginScreen = (props) => {
     const [formData, changeFormData] = React.useState({
         email: '',
         password: ''
     })
 
-    const sendCredentials = () => {
-        UserService.instance.sendLogin(formData)
+    const sendCredentials = async () => {
+        if(await UserService.instance.sendLogin(formData)){
+            // redirect == true
+            if(props.params)
+                Navigator.instance.goToCart()
+
+            else
+                Navigator.instance.goToHome()
+        }
+        
     }
 
     // This method is for debugging only.
@@ -67,7 +75,7 @@ const LoginScreen = () => {
                 />
             </View>
             
-            <Text style={global_styles.text} onPress={Navigator.instance.goToRegister}>Crear cuenta nueva</Text>                
+            <Text style={global_styles.text} onPress={() => Navigator.instance.goToRegister(props.params)}>Crear cuenta nueva</Text>                
         </KeyboardAwareScrollView>
     )
 }

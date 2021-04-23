@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
     unauthenticatedTextContainer: {
         width: '100%',
-        height: '100%',
+        height: Dimensions.get('window').height * 0.25,
 
         alignItems: 'center',
         justifyContent: 'center',

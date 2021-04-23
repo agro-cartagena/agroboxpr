@@ -1,9 +1,12 @@
 import React from 'react'
-import { ScrollView, View, Text, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity, Image, Alert } from 'react-native'
+import { RFPercentage } from 'react-native-responsive-fontsize'
+
 import BoxCard from '../../../components/BoxCard/BoxCard'
 import QuantitySpecifier from '../../../components/QuantitySpecifier/QuantitySpecifier'
 
 import CartService from '../../../services/CartService'
+import UserService from '../../../services/UserService'
 import styles from './CartScreenStyleSheet'
 import global_styles from '../../../styles'
 
@@ -55,27 +58,57 @@ const CartScreen = () => {
             }
         }
 
-        return cartData.map((box) => 
-            <View style={styles.itemContainer} key={box._id}>
-                <TouchableOpacity style={styles.cardContainer} onPress={() => Navigator.instance.goToEditCart(box.box_content)}>
+        const askToRemove = (target_box) => {
+            Alert.alert(
+                `¿Desea remover ${target_box.box_name} del carrito?`, '',
+                [
+                    {
+                        text: 'Cancelar',
+                        style: 'cancel'
+                    },
+                    {
+                        text: 'Remover',
+                        onPress: () => {
+                            CartService.instance.removeFromCart(target_box)
+                            setCartData(CartService.instance.getCart())
+                        }
+                    }
+                ]
+            )
+        }
+
+        return cartData.map((box, index) => 
+            <View style={[styles.itemContainer, cartData[index+1] ? styles.hr : {}]} key={box._id}>
+                <TouchableOpacity style={styles.cardContainer} 
+                    onPress={() => Navigator.instance.goToEditCart([...box.box_content])}>
                     <BoxCard
                         id={box._id}
                         name={box.box_name}
-                        price={box.box_accumulated_price}
+                        price={`$${box.box_accumulated_price}`}
+                        fontSize={{fontSize: RFPercentage(2)}}
+                        
                     />
                 </TouchableOpacity>
 
-                <View style={styles.QuantitySpecifier} >
-                    <QuantitySpecifier
-                        onMinus={() => {decreaseBoxQuantity(box)}}
-                        onPlus={() => {increaseBoxQuantity(box)}}
-                        onText={(text) => changeBoxQuantity(box, text)}
-                        placeholder={box.box_quantity}
-                    />
+                <View style={styles.boxPriceContainer}>
+                    <View style={styles.quantitySpecifier} >
+                        <QuantitySpecifier
+                            onMinus={() => {decreaseBoxQuantity(box)}}
+                            onPlus={() => {increaseBoxQuantity(box)}}
+                            onText={(text) => changeBoxQuantity(box, text)}
+                            placeholder={box.box_quantity}
+                        />
+                    </View>
+
+                    <Text style={styles.quantityText}> = ${(box.box_accumulated_price * box.box_quantity).toFixed(2)}</Text>
                 </View>
-
-                <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${(box.box_accumulated_price * box.box_quantity).toFixed(2)}</Text>
-
+                
+                <TouchableOpacity style={styles.iconContainer} onPress={() => askToRemove(box)}>
+                    <Image
+                        style={styles.icon}
+                        source={require('../../../assets/icons/Trash(Fill).png')}
+                    />
+                </TouchableOpacity>
             </View>
         )
     }
@@ -87,26 +120,51 @@ const CartScreen = () => {
         return Number(total_price.toFixed(2))
     }
 
+    const displayCart = () => {
+        if(cartData.length == 0) {
+            return (
+                <View style={styles.emptyCartTextContainer}>
+                    <Text style={[styles.emptyCartText, styles.text]}>Sus artículos a comprar aparecerán aquí.</Text>
+                    <Text style={[styles.redirectionText, styles.text]} onPress={Navigator.instance.goToHome}>¡Llenar carrito!</Text>
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <View style={styles.cartContainer}>
+                        {loadCart()}
+                    </View>
+
+                    <Text style={[global_styles.text, styles.text]}>Total de compra: 
+                        <Text style={{fontWeight: 'bold', color: '#EAC71D'}}> ${cartTotal}</Text>
+                    </Text>
+
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            onTouch={() => {
+                                if(!UserService.instance.isAuthenticated()) {
+                                    alert("Por favor inicie una sesión o cree una cuenta nueva para proceder con su orden.")
+                                    Navigator.instance.goToLogin(true)
+                                } else {
+                                    Navigator.instance.goToCheckout()
+                                }
+                                
+                            }}
+                            text="Continuar"
+                        />
+                    </View>
+                </View>
+            )
+        }
+    }
+
     const [cartTotal, setCartTotal] = React.useState(getTotalPrice())
 
     return(
         <ScrollView>
             <Logo/>
 
-            <View style={styles.cartContainer}>
-                {loadCart()}
-            </View>
-
-            <Text style={[global_styles.text, styles.text]}>Total de compra: 
-                <Text style={{fontWeight: 'bold', color: '#EAC71D'}}> ${cartTotal}</Text>
-            </Text>
-
-            <View style={styles.buttonContainer}>
-                <Button
-                    onTouch={Navigator.instance.goToCheckout}
-                    text="Continuar"
-                />
-            </View>
+            {displayCart()}
         </ScrollView>
     )
 }

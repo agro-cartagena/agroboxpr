@@ -56,7 +56,7 @@ export default class BoxService extends Service {
             })
     }
 
-    async addNewBox(box) {
+    async addNewBox(data, image) {
         // for(detail in box){
         //     if(! box[detail] && detail != "box_content"){
         //         alert("Entrada vacía.")
@@ -65,25 +65,35 @@ export default class BoxService extends Service {
         // }
 
         // Filter box_content
-        let filtered_content = []
+        // let filtered_content = []
+        // box.box_content.forEach((item) => {
+        //     filtered_content.push({
+        //         _id: item._id, 
+        //         product_quantity_box: item.product_quantity_box
+        //     })
+        // })
+        // box.box_content = filtered_content
 
-        box.box_content.forEach((item) => {
-            filtered_content.push({
-                _id: item._id, 
-                product_quantity_box: item.product_quantity_box
-            })
+        // Filter box_content to only include product id and quantity per box.
+        data.box_content = data.box_content.map((item) => {
+            const { _id, product_quantity_box} = item
+            return { _id, product_quantity_box }
         })
 
-        box.box_content = filtered_content
+        alert(JSON.stringify(image))
+
+        const body = new FormData()
+        body.append('file', image)
+        for (let atrr in data) 
+            body.append(atrr, data[atrr])
 
         let payload = {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
+                // 'Conten-Type': 'multipart/form-data',
                 'x-access-token': UserService.instance.webToken
             },
-            body: JSON.stringify(box)
+            body: body
         }
 
         return fetch(this._url + 'box', payload)

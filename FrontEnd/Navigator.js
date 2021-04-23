@@ -10,13 +10,14 @@ export default class Navigator {
         this._tabHandler = handler
     }
 
-    goToLogin = () => {
+    goToLogin = (redirect=false) => {
         this._tabHandler('user-tab')
-        Actions.login()
+        Actions.login({ params: redirect})
     }
     
-    goToRegister = () => {
-        Actions.register()
+    goToRegister = (redirect=false) => {
+        this._tabHandler('user-tab')
+        Actions.register({ params: redirect})
     }
     
     goToHome = () => {

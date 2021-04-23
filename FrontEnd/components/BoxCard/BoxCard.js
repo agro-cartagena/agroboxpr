@@ -23,8 +23,8 @@ const BoxCard = (props) => {
     return(
         <View style={styles.container} >
             <View style={styles.textContainer}>
-                <Text style={[styles.text]}>{props.name}</Text>
-                <Text style={[styles.text]}>${props.price}</Text>
+                <Text style={[styles.text, props.fontSize]}>{props.name}</Text>
+                <Text style={[styles.text, props.fontSize]}>{props.price}</Text>
             </View>
 
             <View 

@@ -76,7 +76,7 @@ export default class UserAuthenticationService extends Service {
         this.removeWebToken()
     }
 
-    sendLogin(data) {
+    async sendLogin(data) {
         // Declare payload
         let payload = {
             method: 'POST',
@@ -91,35 +91,40 @@ export default class UserAuthenticationService extends Service {
         };
 
         // Send payload within request
-        fetch(this._url + 'auth/login', payload)
+        return fetch(this._url + 'auth/login', payload)
             .then(async (response) => {
                 switch(response.status){
                     case 200: 
                         this.setWebToken(await response.text())
-                        Navigator.instance.goToHome()
-                        break;
+                        return true;
                     
                     case 403:
                         alert("Correo o contraseña incorrecta.")
-                        break;
+                        return false;
 
                     default:
                         alert("Ha ocurrido un error. Por favor intente mas tarde.")
+                        return false
                 }
 
             })
             .catch((error) => {
-                console.error(error)
+                alert("Error de conexión.")
+                return false
             })
     }
 
-    sendRegistration(data) {
+    async sendRegistration(data) {
         // Validate Passwords
-        if(data["password"] != data["password_confirmation"])
-            alert("Contraseñas no concuerdan.")
+        if(data["password"] != data["password_confirmation"]) {
+            alert("Contraseñas no concuerdan.") 
+            return false
+        }
 
-        else if(data["password"] == "password")
+        else if(data["password"] == "password"){
             alert("Contraseña no es válida.")
+            return false;
+        }
 
         else {
             // Declare payload.
@@ -138,26 +143,26 @@ export default class UserAuthenticationService extends Service {
             }
 
             // Send payload within request.
-            fetch(this._url + 'auth/signup', payload)
+            return fetch(this._url + 'auth/signup', payload)
                 .then(async response => {
                     switch(response.status){
                         case 201:
                             this.setWebToken(await response.text())
                             alert("Gracias por registrarse!")
-                            Navigator.instance.goToHome()
-                            break;
+                            return true;
 
                         case 409:
                             alert("Correo electrónico ya existe en la base de datos.")
-                            break;
+                            return false;
 
                         default:
                             alert("Ha ocurrido un error. Por favor intente mas tarde.")
-                            break;
+                            return false;
                     }
                 })
                 .catch(error => {
-                    console.error(error)
+                    alert("Error de conexión.")
+                    return false
                 })
         }
     }

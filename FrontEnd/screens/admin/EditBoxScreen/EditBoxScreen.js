@@ -230,8 +230,6 @@ const EditBoxScreen = (props) => {
 
         // let body = new FormData()
         // body.append('file', boxImage)
-        // body.append('box_name', boxData.box_name)
-        // body.append('box_quantity', boxData.box_quantity)
 
         // let payload = {
         //     method: 'POST',
@@ -251,12 +249,9 @@ const EditBoxScreen = (props) => {
         //     })
 
         let result = null
-        
+
         if(_isNewBox)
-            result = await BoxService.instance.addNewBox({
-                ...boxData, 
-                box_image: boxImage
-            })
+            result = await BoxService.instance.addNewBox(boxData, boxImage)
 
         else 
             result = await BoxService.instance.updateBox({

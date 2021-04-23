@@ -11,7 +11,7 @@ import UserService from '../../../services/UserService'
 import Logo from '../../../components/Logo/Logo'
 import Button from '../../../components/Button/Button'
 
-const RegisterScreen = () => {
+const RegisterScreen = (props) => {
 
     const [formData, changeFormData] = React.useState({
         full_name: '',
@@ -21,8 +21,15 @@ const RegisterScreen = () => {
         phone: ''
     })
 
-    const sendCredentials = () => {
-        UserService.instance.sendRegistration(formData)
+    const sendCredentials = async () => {
+        if(await UserService.instance.sendRegistration(formData)) {
+            // redirect == true
+            if (props.params)
+                Navigator.instance.goToCart()
+
+            else    
+                Navigator.instance.goToHome()
+        }
     }
 
     return (
@@ -86,7 +93,7 @@ const RegisterScreen = () => {
             </View>
 
             <Text style = {global_styles.text}> Ya tienes una cuenta? 
-                <Text style = {styles.clickText} onPress={Navigator.instance.goToLogin}> Presione aquí.</Text>
+                <Text style = {styles.clickText} onPress={() => Navigator.instance.goToLogin(props.params)}> Presione aquí.</Text>
             </Text>
         </KeyboardAwareScrollView>
     )

@@ -20,14 +20,20 @@ export default class CartService {
         }
 
         item._id = randomize(item._id)
-        this._cart.push(item)
+        this._cart.push({...item})
     }
 
     getCart() {
-        return this._cart
+        return [...this._cart]
     }
 
     updateCart(box_id, content) {
         this._cart.find((item) => item._id == box_id).box_content = content
+    }
+
+    removeFromCart(target_box) {
+        let index = this._cart.indexOf(target_box)
+        if(index != -1)
+            this._cart.splice(index, 1);
     }
 }

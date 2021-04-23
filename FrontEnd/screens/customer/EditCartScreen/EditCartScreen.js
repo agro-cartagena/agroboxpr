@@ -79,10 +79,22 @@ const EditCartScreen = (props) => {
             }
         }
 
+        const randomize = (string) => {
+            let arr = string.split(""),
+                size = arr.length;
+    
+            for(let currentIndex = (size-1); currentIndex>0; currentIndex--) {
+                let randomIndex = Math.floor(Math.random() * (currentIndex + 1));
+                [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]]
+            }
+
+            return arr.join("");
+        }
+
         return content.map((product) => 
-            <View style={styles.card} key={product._id}>
+            <View style={styles.card} key={randomize(product._id)}>
                 <InteractiveProductCard
-                    product = {product}
+                    product = {{...product}}
                     onPlus = {() => increaseProductQuantity(product)}
                     onMinus = {() => decreaseProductQuantity(product)}
                     onText = {(text) => changeProductQuantity(product, text)}

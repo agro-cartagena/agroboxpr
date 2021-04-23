@@ -1,5 +1,7 @@
 import React from 'react'
 import { ScrollView, TouchableOpacity, View } from 'react-native'
+import { RFPercentage } from 'react-native-responsive-fontsize'
+
 import Navigator from '../../../Navigator'
 
 import BoxService from '../../../services/BoxService'
@@ -31,7 +33,8 @@ const HomeScreen = () => {
                     id={box._id}
                     name={box.box_name}
                     image={box.box_image}
-                    price={box.box_price}
+                    price={`$${box.box_price}`}
+                    fontSize={{fontSize: RFPercentage(2.5)}}
                 />
             </TouchableOpacity>   
         )

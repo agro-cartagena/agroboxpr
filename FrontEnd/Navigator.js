@@ -71,3 +71,7 @@ export const goToEditCart = (box) => {
 export const goToOrderManagement = () => {
     Actions.order_management()
 }
+
+export const goToContactUs = () => {
+    Actions.contact_us()
+}

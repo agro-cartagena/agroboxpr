@@ -25,6 +25,7 @@ import ConfirmScreen from './screens/customer/ConfirmScreen/ConfirmScreen'
 import EditCartScreen from './screens/customer/EditCartScreen/EditCartScreen'
 
 import ManageOrdersScreen from './screens/admin/ManageOrdersScreen/ManageOrdersScreen'
+import ContactUsScreen from './screens/customer/ContactUsScreen/ContactUsScreen'
 
 const Routes = () => {
     return(
@@ -45,9 +46,11 @@ const Routes = () => {
                 <Scene key="admin_management" component={ManageAdministratorsScreen} title="Admin Management" hideNavBar={true}/>
                 <Scene key="view_orders" component={ViewOrdersScreen} title="View Orders" hideNavBar={true}/>
                 <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true} />
-                <Scene key="confirm" component={ConfirmScreen} title="Confirm" hideNavBar={true} initial = {true}/>
+                <Scene key="confirm" component={ConfirmScreen} title="Confirm" hideNavBar={true} />
                 <Scene key="edit_cart" component={EditCartScreen} title="Edit Cart" hideNavBar={true} />
                 <Scene key="order_management" component={ManageOrdersScreen} title="Order Management" hideNavBar={true} />
+                <Scene key="contact_us" component={ContactUsScreen} title="Contact Us" hideNavBar={true} initial = {true}/>
+
             </Scene>
         </Router>
     )

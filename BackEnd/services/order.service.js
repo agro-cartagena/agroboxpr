@@ -66,25 +66,36 @@ const getOrderByCity = async (city) => {
 
 const retrieveProductList = async (orderId) => {
 	try {
-		let order
-		let productList = []
+		let order, orderList
+		let boxList = []
+		let productInfo
+		let result = []
 
 		//get boxes
 		await getOrderContentByOrder(orderId).then((boxes) => {
-			order = boxes.boxes
+			order = Object.keys(boxes)
+			orderList = boxes
 		})
 
-		//make a list of product id / amount objexts
+		order.pop('_id')
+		order.pop('order_id')
+
 		order.forEach((box) => {
-			box.boxContent.forEach((content) => {
-					productList.push({
-						product_id: content.productId,
-						amount: content.amount,
-						boxes: box.boxQuantity,
-					})
+			boxList.push(orderList[box])
+			productInfo = orderList[box].box_content
+		})
+
+		boxList.forEach((box) => {
+			productInfo.forEach((prod) => {
+				result.push({
+					boxes: box.box_quantity,
+					product_id: prod.productId,
+					amount: prod.amount,
+				})
 			})
 		})
-		return { productList }
+
+		return {result}
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -133,4 +144,5 @@ module.exports = {
 	updateOrder,
 	getAllOrders,
 	manageInventory,
+	retrieveProductList,
 }

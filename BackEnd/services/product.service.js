@@ -12,20 +12,15 @@ const {
 const { validateProduct, validateId } = validationMiddleware
 
 const insertProduct = async (product) => {
-	console.log('Inside product service!', product)
 
 	try {
-		let validate
-		await validateProduct(product).then((result) => {
-			validate = result
-		})
-		//No duplicate date
+		let validate =  await validateProduct(product)
+		//No duplicate product
 		if (validate == null) {
 			return await createProductDb(product)
 		}
 		//Will duplicate data
 		else {
-			console.log('Cannot do insert')
 			return null
 		}
 	} catch (e) {

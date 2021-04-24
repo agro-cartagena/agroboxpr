@@ -1,27 +1,29 @@
 const { productService } = require('../services')
 
-const {
-	insertProduct,
-	readAllProducts,
-	getProductById,
-	updateProduct,
-	deleteProduct,
-} = productService
+const { insertProduct, readAllProducts, getProductById, updateProduct, deleteProduct } = productService
 
 const postProduct = async (req, res, next) => {
-	const product = req.body
+	const { product_name, product_category, product_quantity_stock, product_units, product_price } = req.body;
+
+	const product = {
+		product_name, 
+		product_category, 
+		product_quantity_stock, 
+		product_units, 
+		product_price
+	}
 
 	try {
-		const insert = await insertProduct(product)
-		if (insert != null) {
-			res.sendStatus(201)
-			next()
-		} else {
-			res.sendStatus(404)
-			next()
-		}
+		await insertProduct(product).then(result => {
+			if (insert != null) {
+				res.sendStatus(201)
+				next()
+			} else {
+				res.sendStatus(403)
+				next()
+			}
+		})
 	} catch (e) {
-		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }
@@ -85,7 +87,6 @@ const deletion = async (req, res, next) => {
 			next()
 		}
 	} catch (e) {
-		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }

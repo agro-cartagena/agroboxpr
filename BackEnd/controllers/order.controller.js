@@ -9,6 +9,7 @@ const {
 	updateOrder,
 	getAllOrders,
 	manageInventory,
+	getOrderByStatus,
 } = orderService
 const { validateId, validateUserId, validateCity } = validationMiddleware
 
@@ -89,6 +90,18 @@ const getByCity = async (req, res, next) => {
 	}
 }
 
+const getByStatus = async (req, res, next) => {
+	try {
+		await getOrderByStatus().then((orders) => {
+			res.status(200).send(orders)
+			next()
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
 const getAll = async (req, res, next) => {
 	try {
 		await getAllOrders().then((orders) => {
@@ -128,7 +141,7 @@ const manage = async (req, res, next) => {
 		})
 		if (validate != null) {
 			let manage = await manageInventory(id)
-			if(manage == true){
+			if (manage == true) {
 				res.sendStatus(200)
 				next()
 			} else {
@@ -152,4 +165,5 @@ module.exports = {
 	update,
 	getAll,
 	manage,
+	getByStatus
 }

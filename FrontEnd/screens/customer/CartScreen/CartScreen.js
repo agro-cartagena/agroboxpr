@@ -86,7 +86,7 @@ const CartScreen = () => {
                         name={box.box_name}
                         price={`$${box.box_accumulated_price}`}
                         fontSize={{fontSize: RFPercentage(2)}}
-                        
+                        still={true}
                     />
                 </TouchableOpacity>
 

@@ -1,6 +1,8 @@
 import Service from './Service'
 import UserService from './UserService'
+
 import orders from '../db_mockup/order.db'
+import content from '../db_mockup/order.content.db'
 
 export default class OrderService extends Service {
     static instance = OrderService.instance || new OrderService()
@@ -16,10 +18,10 @@ export default class OrderService extends Service {
             }
         }
 
-        return fetch(this._url + 'route', payload)
+        return fetch(this._url + 'order/status', payload)
             .then((response) => {
                 if (response.status == 200)
-                    response.json()
+                    return response.json()
                 else 
                     //handle error
                     return orders
@@ -61,6 +63,36 @@ export default class OrderService extends Service {
             .catch((error) => {
                 alert("Error de conexión.")
                 return false
+            })
+    }
+
+    getOrderContent(order_id) {
+        let payload = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+
+        return content
+        return fetch(this._url + `route/${order_id}`, payload)
+            .then((response) => {
+                switch(response.status){
+                    case 200:
+                        response.json()
+                        break;
+
+                    default:
+                        return false
+                }
+            })
+            .then((content) => {
+                return content
+            })
+            .catch((error) => {
+                alert("Error de conexión.")
+                return content
             })
     }
 }

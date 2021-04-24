@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 
 const styles = StyleSheet.create({
     header: {
@@ -9,8 +9,13 @@ const styles = StyleSheet.create({
         margin: 20
     },
 
-    cardContainer: {
+    dropDownContainer: {
         marginTop: 25
+    },
+
+    cardContainer: {
+        width: '100%',
+        alignItems: 'center',
     },
 
     card: {

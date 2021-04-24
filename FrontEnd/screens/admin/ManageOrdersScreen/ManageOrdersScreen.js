@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Text, TouchableOpacity, Image, Alert } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity, Image, Alert, Modal, TouchableWithoutFeedback } from 'react-native'
 
 import styles from './ManageOrdersScreenStyleSheet'
 import OrderService from '../../../services/OrderService'
@@ -72,11 +72,13 @@ const ManageOrdersScreen = () => {
             }
                 
             return items.map((item) => 
-                <View key={item._id} style={styles.card}>
-                    <OrderCard
-                        order={item}
-                        updateStatus={() => askToUpdateOrderStatus(item)}
-                    />
+                <View key={item._id} style={styles.cardContainer}>
+                    <View style={styles.card}>
+                        <OrderCard
+                            order={item}
+                            updateStatus={() => askToUpdateOrderStatus(item)}
+                        />
+                    </View>
                 </View>
             )
         }
@@ -136,27 +138,25 @@ const ManageOrdersScreen = () => {
             }
         }
 
-        return Object.keys(orders).map((catalog) => 
-                <View>                
+        return Object.keys(orders)
+            .map((catalog) => 
+                <View key={catalog}>                
                     <DropDown
                         key={catalog}
                         title={catalog}
                         list={[displaySortIcon(catalog), ...generateCards(orders[catalog])]}
                     />
                 </View>
-            
         )
     }
 
     return (
         <ScrollView>
-            <BackArrow
-                    onTouch={Navigator.instance.goToMenu}
-            />
+            <BackArrow onTouch={Navigator.instance.goToMenu}/>
 
             <Text style={styles.header}>Manejar Órdenes</Text>
 
-            <View style={styles.cardContainer}>
+            <View style={styles.dropDownContainer}>
                 {displayOrders()}
             </View>
         </ScrollView>

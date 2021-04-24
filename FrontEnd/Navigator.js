@@ -88,4 +88,8 @@ export default class Navigator {
     goToOrderManagement = () => {
         Actions.order_management()
     }
+
+    goToContactUs = () => {
+        Actions.contact_us()
+    }
 }

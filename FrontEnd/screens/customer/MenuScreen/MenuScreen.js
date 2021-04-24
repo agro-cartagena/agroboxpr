@@ -41,6 +41,7 @@ const MenuScreen = () => {
                     <Button
                         text="Comunícate con Nosotros"
                         style={{backgroundColor: '#801A35500'}}
+                        onTouch={() => Navigator.instance.goToContactUs()}
                     />
                 </View>
 

@@ -14,6 +14,9 @@ const BoxCard = (props) => {
     const [mediaSource, setMediaSource] = React.useState(media.thumbnail)
 
     const renderAnimation = (param) => {
+        if(props.still)
+            return
+            
         setMediaSource()
         setTimeout(() => {
             param == "start" ? setMediaSource(media.gif) : setMediaSource(media.thumbnail)

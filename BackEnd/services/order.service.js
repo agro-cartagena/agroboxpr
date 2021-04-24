@@ -16,8 +16,7 @@ const { decreaseProductDb, getProductByIdDb } = productDb
 
 const createOrder = async (order, orderContent, userId) => {
 	try {
-		let order_id
-		order_id = await createOrderDb({ user_id: userId, ...order })
+		let order_id = await createOrderDb({ user_id: userId, ...order })
 		await createOrderContentDb({ order_id: order_id, ...orderContent })
 		return true
 	} catch (e) {

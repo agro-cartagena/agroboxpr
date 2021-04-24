@@ -1,7 +1,8 @@
 import React from 'react'
-import { Text, View, ScrollView, Alert, TouchableOpacity } from 'react-native'
+import { Text, View, ScrollView, Alert, TouchableOpacity, Linking } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+import AppLink from 'react-native-app-link';
 import Button from '../../../components/Button/Button'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import FormInput from '../../../components/FormInput/FormInput'
@@ -74,6 +75,15 @@ const CheckoutScreen = () => {
         )
     }
 
+    const goToATHMovilApp = ()=>{
+        // Linking.canOpenURL("app://athmovil").catch(err => console.error('An error occurred', err))
+        AppLink.maybeOpenURL("app://athmovil", { appName: 'ATH Movil', appStoreId: '658539297', appStoreLocale:'us', playStoreId:'com.evertec.athmovil.android'}).then(() => {
+            // do stuff
+          })
+          .catch((err) => {
+            alert('Ha ocurrido un error')
+          });
+    }
     return (
         <KeyboardAwareScrollView>
             {/* Back Arrow */}
@@ -172,6 +182,7 @@ const CheckoutScreen = () => {
                 <Button
                     style={styles.button}
                     text="ATH Móvil" //They have their own buttons
+                    onTouch={goToATHMovilApp}
                 />
                 {/* <ATHMButton /> */}
                 <Button

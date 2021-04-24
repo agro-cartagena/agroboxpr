@@ -45,11 +45,11 @@ const Routes = () => {
                 <Scene key="edit_account" component={EditAccountScreen} title="Edit Account" hideNavBar={true}/>
                 <Scene key="admin_management" component={ManageAdministratorsScreen} title="Admin Management" hideNavBar={true}/>
                 <Scene key="view_orders" component={ViewOrdersScreen} title="View Orders" hideNavBar={true}/>
-                <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true} />
+                <Scene key="checkout" component={CheckoutScreen} title="Checkout" hideNavBar={true} initial = {true}/>
                 <Scene key="confirm" component={ConfirmScreen} title="Confirm" hideNavBar={true} />
                 <Scene key="edit_cart" component={EditCartScreen} title="Edit Cart" hideNavBar={true} />
                 <Scene key="order_management" component={ManageOrdersScreen} title="Order Management" hideNavBar={true} />
-                <Scene key="contact_us" component={ContactUsScreen} title="Contact Us" hideNavBar={true} initial = {true}/>
+                <Scene key="contact_us" component={ContactUsScreen} title="Contact Us" hideNavBar={true} />
 
             </Scene>
         </Router>

@@ -14,6 +14,6 @@ router.put('/:id', orderController.update) //update order
 router.get('/', orderController.getAll) //get all orders in system
 
 
-router.post('/manage/:id', orderController.manage)
+router.put('/manage/:id', orderController.manage)
 
 module.exports = router

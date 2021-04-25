@@ -82,7 +82,13 @@ const getBoxProducts = async (req, res, next) => {
 
 const updateBox = async (req, res, next) => {
 	const id = req.params.id
-	const updateFields = req.body
+	const { box_name, box_price, box_content } = req.body
+
+	const updateFields = {
+		box_name, 
+		box_price, 
+		box_content
+	}
 
 	try {
 		await updateEntry(id, updateFields).then(result => {

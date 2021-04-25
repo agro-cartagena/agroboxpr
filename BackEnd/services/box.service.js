@@ -2,15 +2,22 @@ const { ObjectID } = require('mongodb')
 const { boxDb } = require('../db')
 const { insertBoxDb, findAllBoxesDb, findAvailableBoxesDb, getBoxByIdDb, findProductsByIdList } = boxDb
 const { updateEntryDb, addProductListDb, deleteBoxDb } = boxDb
+const { validationMiddleware } = require('../middleware')
+const { validateBoxName } = validationMiddleware
 
 const createBox = async (box) => {
 	const newBox = {
 		...box,
-		box_available: true
+		available: true
 	}
 
 	try {
-		return await insertBoxDb(newBox)
+		const validateName = await validateBoxName(box.box_name)
+		if(validateName == null){
+			return await insertBoxDb(newBox)
+		} else{
+			return false
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -28,7 +35,7 @@ const readAllBoxes = async () => {
 				box_name : box.box_name,
 				box_price : box.box_price,
 				box_image : box.box_image,
-				box_available : box.box_available
+				available : box.available
 			}
 		})
 		return response

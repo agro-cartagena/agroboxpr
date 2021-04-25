@@ -74,7 +74,12 @@ const updateProduct = async (id, changes) => {
 			validate = result
 		})
 		if (validate != null) {
-			return await updateProductDb(id, changes)
+			let validateName =  await validateProduct(product)
+			if(validateName == null){
+				return await updateProductDb(id, changes)
+			} else {
+				return false
+			}
 		} else {
 			return null
 		}

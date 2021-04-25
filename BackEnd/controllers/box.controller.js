@@ -12,8 +12,13 @@ const postBox = async (req, res, next) => {
 	}
 
 	try {
-		const newBox = await boxService.createBox(box)
-		res.status(201).json(newBox) && next()
+		await boxService.createBox(box).then(result => {
+			if(result){
+				res.status(201).send() && next()
+			} else{
+				res.status(409).send()
+			}
+		})
 	} catch (err) {
 		// console.log(err.message)
 		res.sendStatus(500) && next(err)
@@ -26,7 +31,14 @@ const getById = async (req, res, next) => {
 	try {
 		await getBoxById(id).then((box) => {
 			if(box){
-				res.status(200).send(box)
+				const response = {
+					_id: box._id,
+					box_name: box.box_name,
+					box_price: box.box_price,
+					box_image: box.box_image,
+					box_content: box.box_content
+				}
+				res.status(200).send(response)
 			} else{
 				res.status(404).json({
                     errors: [{ box: "Box not found." }],
@@ -109,7 +121,7 @@ const updateBox = async (req, res, next) => {
 const enableBox = async (req, res, next) => {
 	const id = req.params.id
 	const updateFields = {
-		box_available : true
+		available : true
 	}
 
 	try {
@@ -131,7 +143,7 @@ const enableBox = async (req, res, next) => {
 const disableBox = async (req, res, next) => {
 	const id = req.params.id
 	const updateFields = {
-		box_available : false
+		available : false
 	}
 
 	try {

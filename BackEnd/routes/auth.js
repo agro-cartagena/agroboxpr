@@ -9,11 +9,11 @@ const { authController } = require('../controllers');
 router.post('/signup', validateEntity(userSchema), authController.postSignup);
 router.post('/login', authController.postLogin);
 
-router.put('/promote', adminAuth, authController.promoteUser);
-router.put('/demote/:id', ownerAuth, authController.demoteUser);
-router.put('/password', auth, authController.putUserPassword);
 router.put('/personalInfo', auth, authController.putUserPersonalInfo);
 router.put('/address', auth, authController.putUserAddress);
+router.put('/password', auth, authController.putUserPassword);
+router.put('/promote', adminAuth, authController.promoteUser);
+router.put('/demote/:id', ownerAuth, authController.demoteUser);
 
 router.get('/adminList', adminAuth, authController.getAllAdmin);
 router.get('/user', auth, authController.getUser);

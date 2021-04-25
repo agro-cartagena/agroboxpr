@@ -19,7 +19,7 @@ const postProduct = async (req, res, next) => {
 				res.sendStatus(201)
 				next()
 			} else {
-				res.sendStatus(403)
+				res.sendStatus(409)
 				next()
 			}
 		})
@@ -43,8 +43,12 @@ const getProducts = async (req, res, next) => {
 const getById = async (req, res, next) => {
 	const id = req.params.id
 	try {
-		await getProductById(id).then((products) => {
-			res.status(200).send(products)
+		await getProductById(id).then((product) => {
+			if(product){
+				res.status(200).send(product)
+			} else{
+				res.status(404).send()
+			}
 		})
 		next()
 	} catch (e) {

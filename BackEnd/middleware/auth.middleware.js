@@ -73,15 +73,15 @@ const adminAuth = async (req, res, next) => {
 		}
 
 		if (verified.role != 'admin' || verified.role != 'owner') {
+			req.userId = verified.userId
+			next()
+		} else{
 			return res.status(403).json({ msg: 'Not authrorized for request.' })
 		}
-
 		//Refresh token and send to client
 		// let newToken = await getAccessToken(verified.id)
 		// res.setHeader("x-auth-token", newToken);
-
-		req.userId = verified.userId
-		next()
+		
 	} catch (err) {
 		res.status(500).json({ error: err.message })
 	}

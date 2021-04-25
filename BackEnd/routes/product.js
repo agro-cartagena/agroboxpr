@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-var { auth, adminAuth } = require('../middleware/auth.middleware')
+var { auth, adminAuth, ownerAuth } = require('../middleware/auth.middleware')
 var { validateEntity } = require('../middleware/dataValidation.middleware')
 var { productSchema } = require('../middleware/validators.middleware')
 
@@ -13,6 +13,6 @@ router.put('/:id', adminAuth, productController.update)
 router.get('/:id', productController.getById)
 router.get('/', productController.getProducts)
 
-router.delete('/:id', adminAuth, productController.deletion)
+router.delete('/:id', ownerAuth, productController.deletion)
 
 module.exports = router

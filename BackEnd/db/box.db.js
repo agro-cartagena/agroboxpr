@@ -95,6 +95,14 @@ const addProductListDb = async (paramList) => {
 	return collection.update(query, { $push: { Content: { $each: update } } })
 }
 
+
+const deleteBoxDb = async (id) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('box')
+
+	return collection.deleteOne({ _id: ObjectId(id) })
+}
+
 module.exports = {
 	insertBoxDb,
 	findAllBoxesDb,
@@ -103,4 +111,5 @@ module.exports = {
 	getBoxByIdDb,
 	updateEntryDb,
 	addProductListDb,
+	deleteBoxDb
 }

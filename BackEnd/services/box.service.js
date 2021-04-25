@@ -1,7 +1,9 @@
 const { ObjectID } = require('mongodb')
 const { boxDb } = require('../db')
 const { insertBoxDb, findAllBoxesDb, findAvailableBoxesDb, getBoxByIdDb, findProductsByIdList } = boxDb
-const { updateEntryDb, addProductListDb } = boxDb
+const { updateEntryDb, addProductListDb, deleteBoxDb } = boxDb
+const { validationMiddleware } = require('../middleware')
+const { validateBoxName } = validationMiddleware
 
 const createBox = async (box) => {
 	const newBox = {
@@ -10,7 +12,12 @@ const createBox = async (box) => {
 	}
 
 	try {
-		return await insertBoxDb(newBox)
+		const validateName = await validateBoxName(box.box_name)
+		if(validateName == null){
+			return await insertBoxDb(newBox)
+		} else{
+			return false
+		}
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -27,7 +34,8 @@ const readAllBoxes = async () => {
 				_id : box._id,
 				box_name : box.box_name,
 				box_price : box.box_price,
-				box_image : box.box_image
+				box_image : box.box_image,
+				available : box.available
 			}
 		})
 		return response
@@ -108,7 +116,14 @@ const updateEntry = async (id, updateFields) => {
         "$set": updateFields
     }
 	try {
-		return await updateEntryDb({ _id: ObjectID(id) }, updateDocument)
+		return await updateEntryDb({ _id: ObjectID(id) }, updateDocument).then(async box => {
+
+			if (box.value) {
+				return true
+			} else {
+				return false
+			}
+		})
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -122,6 +137,22 @@ const addProductList = async (paramList) => {
 	}
 }
 
+const deleteBoxById = async (id) => {
+	try {
+		let validate
+		await validateId(id, 'box').then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await deleteBoxDb(id)
+		} else {
+			return null
+		}
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
 module.exports = {
 	createBox,
 	readAllBoxes,
@@ -130,4 +161,5 @@ module.exports = {
 	getBoxById,
 	updateEntry,
 	addProductList,
+	deleteBoxById
 }

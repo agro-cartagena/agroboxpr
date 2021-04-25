@@ -34,7 +34,6 @@ const auth = async (req, res, next) => {
 		//Refresh token and send to client
 		// let newToken = await getAccessToken(verified.id)
 		// res.setHeader("x-auth-token", newToken);
-		console.log('Verified object: ', verified)
 
 		req.userId = verified.userId
 		req.userRole = verified.role
@@ -72,7 +71,7 @@ const adminAuth = async (req, res, next) => {
 				.json({ msg: 'Token verification failed, authorization denied' })
 		}
 
-		if (verified.role != 'admin' || verified.role != 'owner') {
+		if (verified.role == 'admin' || verified.role == 'owner') {
 			req.userId = verified.userId
 			next()
 		} else{

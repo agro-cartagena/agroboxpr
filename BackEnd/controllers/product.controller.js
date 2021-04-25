@@ -15,7 +15,7 @@ const postProduct = async (req, res, next) => {
 
 	try {
 		await insertProduct(product).then(result => {
-			if (insert != null) {
+			if (result != null) {
 				res.sendStatus(201)
 				next()
 			} else {
@@ -63,12 +63,15 @@ const update = async (req, res, next) => {
 
 	try {
 		const update = await updateProduct(id, change)
-		if (update != null) {
-			res.sendStatus(200)
+		if (update == null) {
+			res.sendStatus(404)
 			next()
 		}
-		else{
-			res.sendStatus(404)
+		else if(!update){
+			res.sendStatus(409)
+			next()
+		} else{
+			res.sendStatus(200)
 			next()
 		}
 	} catch (e) {

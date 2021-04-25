@@ -144,6 +144,8 @@ const updateUserPassword = async (userId, newPasswordInfo) => {
         throw new Error(err.message)
     });
 
+    console.log()
+
     // If user found and password matches, change password. Else return false
     if(user){
         const saltRounds = 10;
@@ -154,7 +156,7 @@ const updateUserPassword = async (userId, newPasswordInfo) => {
                     "password": hash
                 }
             }
-            await findUserByQueryAndUpdate({ _id: ObjectID(userId) }, updateDocument).then(async user => {
+            return await findUserByQueryAndUpdate({ _id: ObjectID(userId) }, updateDocument).then(async user => {
     
                 if (user.value) {
                     return true

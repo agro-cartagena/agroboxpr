@@ -1,7 +1,7 @@
 const { ObjectID } = require('mongodb')
 const { boxDb } = require('../db')
 const { insertBoxDb, findAllBoxesDb, findAvailableBoxesDb, getBoxByIdDb, findProductsByIdList } = boxDb
-const { updateEntryDb, addProductListDb } = boxDb
+const { updateEntryDb, addProductListDb, deleteBoxDb } = boxDb
 
 const createBox = async (box) => {
 	const newBox = {
@@ -130,6 +130,22 @@ const addProductList = async (paramList) => {
 	}
 }
 
+const deleteBoxById = async (id) => {
+	try {
+		let validate
+		await validateId(id, 'box').then((result) => {
+			validate = result
+		})
+		if (validate != null) {
+			return await deleteBoxDb(id)
+		} else {
+			return null
+		}
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
 module.exports = {
 	createBox,
 	readAllBoxes,
@@ -138,4 +154,5 @@ module.exports = {
 	getBoxById,
 	updateEntry,
 	addProductList,
+	deleteBoxById
 }

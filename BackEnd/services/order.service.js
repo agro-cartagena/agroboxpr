@@ -16,8 +16,14 @@ const { decreaseProductDb, getProductByIdDb } = productDb
 
 const createOrder = async (order, orderContent, userId) => {
 	try {
+
 		let order_id
-		order_id = await createOrderDb({ user_id: userId, ...order })
+		order_id = await createOrderDb({
+			user_id: userId,
+			order_status: 'pendiente',
+			...order,
+		})
+
 		await createOrderContentDb({ order_id: order_id, ...orderContent })
 		return true
 	} catch (e) {
@@ -49,6 +55,35 @@ const getAllOrders = async () => {
 	}
 }
 
+const getOrderByStatus = async () => {
+	try {
+		let categories = []
+		let order_catalog = []
+		let response = {}
+
+		await readAllOrdersDb().then((element) => {
+			order_catalog = element
+			for (const order in element) {
+				if (!categories.includes(element[order].order_status))
+					categories.push(element[order].order_status)
+			}
+		})
+
+		categories.forEach((category) => {
+			response = {
+				[category]: order_catalog.filter(
+					(order) => order.order_status == category
+				),
+				...response,
+			}
+		})
+
+		return response
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
 const updateOrder = async (id, changes) => {
 	try {
 		return await updateOrderDb(id, changes)
@@ -67,25 +102,36 @@ const getOrderByCity = async (city) => {
 
 const retrieveProductList = async (orderId) => {
 	try {
-		let order
-		let productList = []
+		let order, orderList
+		let boxList = []
+		let result = []
 
 		//get boxes
 		await getOrderContentByOrder(orderId).then((boxes) => {
-			order = boxes.boxes
+			order = Object.keys(boxes)
+			orderList = boxes
 		})
 
-		//make a list of product id / amount objexts
+		order.pop('_id')
+		order.pop('order_id')
+
 		order.forEach((box) => {
-			box.boxContent.forEach((content) => {
-					productList.push({
-						product_id: content.productId,
-						amount: content.amount,
-						boxes: box.boxQuantity,
-					})
+
+			boxList.push(orderList[parseInt(box)])
+		})
+
+		boxList.forEach((box) => {
+			box.box_content.forEach((prod) => {
+				result.push({
+					boxes: box.box_quantity,
+					product_id: prod.productId,
+					amount: prod.amount,
+
+				})
 			})
 		})
-		return { productList }
+
+		return result
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -94,16 +140,17 @@ const retrieveProductList = async (orderId) => {
 const manageInventory = async (orderId) => {
 	try {
 		//retrieve each unique product within the boxes in the order
-		let productList
-		await retrieveProductList(orderId).then((result) => {
-			productList = result.productList
+		let productList = []
+
+		await retrieveProductList(orderId).then((list) => {
+			productList = list
 		})
 
 		// Verify product amounts in the inventory
 		for (const product of productList) {
 			const item = await getProductByIdDb(product.product_id)
 			const orderAmount = product.amount * product.boxes
-			const stockAmount = item.product_quantity_stock
+			const stockAmount = parseInt(item.product_quantity_stock)
 
 			//Not enough items in inventory to carry out order
 			if (stockAmount < orderAmount) {
@@ -116,10 +163,12 @@ const manageInventory = async (orderId) => {
 			}
 		}
 
+		// reduce stock in inventory accordingly
 		productList.forEach((product) => {
 			const orderAmount = product.amount * product.boxes
 			decreaseProductDb(product.product_id, orderAmount)
 		})
+
 		return true
 	} catch (e) {
 		throw new Error(e.message)
@@ -131,7 +180,9 @@ module.exports = {
 	readUserOrders,
 	getOrderById,
 	getOrderByCity,
+	getOrderByStatus,
 	updateOrder,
 	getAllOrders,
 	manageInventory,
+	retrieveProductList,
 }

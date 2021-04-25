@@ -68,7 +68,6 @@ const retrieveProductList = async (orderId) => {
 	try {
 		let order, orderList
 		let boxList = []
-		let productInfo
 		let result = []
 
 		//get boxes
@@ -81,12 +80,11 @@ const retrieveProductList = async (orderId) => {
 		order.pop('order_id')
 
 		order.forEach((box) => {
-			boxList.push(orderList[box])
-			productInfo = orderList[box].box_content
+			boxList.push(orderList[parseInt(box)])
 		})
 
 		boxList.forEach((box) => {
-			productInfo.forEach((prod) => {
+			box.box_content.forEach((prod) => {
 				result.push({
 					boxes: box.box_quantity,
 					product_id: prod.productId,
@@ -95,7 +93,7 @@ const retrieveProductList = async (orderId) => {
 			})
 		})
 
-		return {result}
+		return result
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -104,16 +102,17 @@ const retrieveProductList = async (orderId) => {
 const manageInventory = async (orderId) => {
 	try {
 		//retrieve each unique product within the boxes in the order
-		let productList
-		await retrieveProductList(orderId).then((result) => {
-			productList = result.productList
+		let productList = []
+
+		await retrieveProductList(orderId).then((list) => {
+			productList = list
 		})
 
 		// Verify product amounts in the inventory
 		for (const product of productList) {
 			const item = await getProductByIdDb(product.product_id)
 			const orderAmount = product.amount * product.boxes
-			const stockAmount = item.product_quantity_stock
+			const stockAmount = parseInt(item.product_quantity_stock)
 
 			//Not enough items in inventory to carry out order
 			if (stockAmount < orderAmount) {
@@ -126,10 +125,12 @@ const manageInventory = async (orderId) => {
 			}
 		}
 
+		// reduce stock in inventory accordingly
 		productList.forEach((product) => {
 			const orderAmount = product.amount * product.boxes
 			decreaseProductDb(product.product_id, orderAmount)
 		})
+
 		return true
 	} catch (e) {
 		throw new Error(e.message)

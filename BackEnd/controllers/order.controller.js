@@ -9,7 +9,6 @@ const {
 	updateOrder,
 	getAllOrders,
 	manageInventory,
-	retrieveProductList,
 } = orderService
 const { validateId, validateUserId, validateCity } = validationMiddleware
 
@@ -124,24 +123,21 @@ const manage = async (req, res, next) => {
 	const id = req.params.id
 	try {
 		let validate, response
-		// await validateId(id, 'order').then((result) => {
-		// 	validate = result
-		// })
-		// if (validate != null) {
-		// 	// let manage = await manageInventory(id)
-		await retrieveProductList(id).then((result) => {
-			response = result
+		await validateId(id, 'order').then((result) => {
+			validate = result
 		})
-		// if(manage == true){
-			res.status(200).send(response)
-			next()
-		// } else {
-		// 	res.sendStatus(404)
-		// 	next()
-		// }
-		// } else {
-		// 	res.sendStatus(404) && next()
-		// }
+
+		if (validate != null) {
+			await manageInventory(id).then((result) => {
+				response = result
+				if (response == true) {
+					res.sendStatus(200)
+					next()
+				} else {
+					res.sendStatus(404) && next()
+				}
+			})
+		}
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(404) && next(e)

@@ -17,7 +17,6 @@ const postSignup = async (req, res, next) => {
             }
         })
     } catch (err) {
-        console.log("Error: ", err.message)
         res.sendStatus(500)
         next(err)
     }
@@ -173,7 +172,6 @@ const getAllAdmin = async (req, res, next) => {
 			res.status(200).send(response)
 		})
 	} catch (e) {
-		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }
@@ -196,7 +194,6 @@ const getUser = async (req, res, next) => {
 			res.status(200).send(response)
 		})
 	} catch (e) {
-		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }

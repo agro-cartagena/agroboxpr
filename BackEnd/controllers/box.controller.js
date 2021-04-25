@@ -3,7 +3,13 @@ const { createBox, readAllBoxes, readAvailableBoxes, readBoxProducts, getBoxById
 const { updateEntry, addProductList } = boxService
 
 const postBox = async (req, res, next) => {
-	const box = req.body
+	const { box_name, box_price, box_content } = req.body
+
+	const box = {
+		box_name, 
+		box_price, 
+		box_content
+	}
 
 	try {
 		const newBox = await boxService.createBox(box)
@@ -19,7 +25,13 @@ const getById = async (req, res, next) => {
 
 	try {
 		await getBoxById(id).then((box) => {
-			res.status(200).send(box)
+			if(box){
+				res.status(200).send(box)
+			} else{
+				res.status(404).json({
+                    errors: [{ box: "Box not found." }],
+                });
+			}
 		})
 	} catch (e) {
 		console.log(e.message)
@@ -54,7 +66,13 @@ const getBoxProducts = async (req, res, next) => {
 
 	try {
 		await readBoxProducts(id).then(products => {
-			res.status(200).send(products)
+			if(products){
+				res.status(200).send(products)
+			} else{
+				res.status(404).json({
+                    errors: [{ box: "Box not found." }],
+                });
+			}
 		})
 	} catch (e) {
 		console.log(e.message)
@@ -67,8 +85,59 @@ const updateBox = async (req, res, next) => {
 	const updateFields = req.body
 
 	try {
-		await updateEntry(id, updateFields)
-		res.sendStatus(200) && next()
+		await updateEntry(id, updateFields).then(result => {
+            if(result){
+                res.status(200).send()
+            } else{
+                res.status(404).json({
+                    errors: [{ user: "Box not found." }],
+                });
+            }
+        })
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const enableBox = async (req, res, next) => {
+	const id = req.params.id
+	const updateFields = {
+		box_available : true
+	}
+
+	try {
+		await updateEntry(id, updateFields).then(result => {
+            if(result){
+                res.status(200).send()
+            } else{
+                res.status(404).json({
+                    errors: [{ user: "Box not found." }],
+                });
+            }
+        })
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
+const disableBox = async (req, res, next) => {
+	const id = req.params.id
+	const updateFields = {
+		box_available : false
+	}
+
+	try {
+		await updateEntry(id, updateFields).then(result => {
+            if(result){
+                res.status(200).send()
+            } else{
+                res.status(404).json({
+                    errors: [{ box: "Box not found." }],
+                });
+            }
+        })
 	} catch (e) {
 		console.log(e.message)
 		res.sendStatus(500) && next(e)
@@ -94,5 +163,7 @@ module.exports = {
 	getBoxProducts,
 	getById,
 	updateBox,
+	enableBox,
+	disableBox,
 	addProducts,
 }

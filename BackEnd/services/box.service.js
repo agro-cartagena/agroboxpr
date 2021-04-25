@@ -6,7 +6,7 @@ const { updateEntryDb, addProductListDb } = boxDb
 const createBox = async (box) => {
 	const newBox = {
 		...box,
-		available: true
+		box_available: true
 	}
 
 	try {
@@ -27,7 +27,8 @@ const readAllBoxes = async () => {
 				_id : box._id,
 				box_name : box.box_name,
 				box_price : box.box_price,
-				box_image : box.box_image
+				box_image : box.box_image,
+				box_available : box.box_available
 			}
 		})
 		return response
@@ -108,7 +109,14 @@ const updateEntry = async (id, updateFields) => {
         "$set": updateFields
     }
 	try {
-		return await updateEntryDb({ _id: ObjectID(id) }, updateDocument)
+		return await updateEntryDb({ _id: ObjectID(id) }, updateDocument).then(async box => {
+
+			if (box.value) {
+				return true
+			} else {
+				return false
+			}
+		})
 	} catch (e) {
 		throw new Error(e.message)
 	}

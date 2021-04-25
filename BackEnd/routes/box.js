@@ -15,9 +15,9 @@ router.get('/available', boxController.getAvailableBoxes)
 router.get('/:id',boxController.getById)
 router.get('/', adminAuth,  boxController.getAllBoxes)
 
+router.put('/enable/:id', adminAuth, boxController.enableBox)
+router.put('/disable/:id', adminAuth, boxController.disableBox)
 router.put('/:id', adminAuth, boxController.updateBox)
 router.put('/addProduct', adminAuth, boxController.addProducts)
-
-
 
 module.exports = router

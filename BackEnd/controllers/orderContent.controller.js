@@ -37,7 +37,7 @@ const getContentById = async (req, res, next) => {
 	const id = req.params.id
 	try {
 		let validate
-		await validateId(id).then((result) => {
+		await validateId(id, 'orderContent').then((result) => {
 			validate = result
 		})
 		if (validate != null) {
@@ -60,7 +60,7 @@ const putContent = async (req, res, next) => {
 
 	try {
 		let validate
-		await validateId(id).then((result) => {
+		await validateId(id, 'orderContent').then((result) => {
 			validate = result
 		})
 		if (validate != null) {

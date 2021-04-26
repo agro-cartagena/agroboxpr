@@ -29,7 +29,7 @@ const getOrderContentByIdDb = async (id) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('orderContent')
 
-    return collection.findOne({ _id: ObjectId(id) })
+    return collection.findOne({ order_id: ObjectId(id) })
 
 }
 

@@ -76,6 +76,11 @@ const readBoxProducts = async (id) => {
 		
 		if(box){
 			productList = box.box_content;
+
+			if(productList.length < 1){
+				return productList
+			}
+
 			productList.map((product) => {
 				productsQuery.push({
 					_id: ObjectID(product._id)

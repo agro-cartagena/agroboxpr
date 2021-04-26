@@ -1,48 +1,44 @@
 const { authService } = require('../services')
 
-const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, updateUser, readAdminEmails, updateUserPassword, readUserById } = authService
+const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, readAllAdmin, updateUserPassword, updateUserInfo, readUserById } = authService
 
 const postSignup = async (req, res, next) => {
     const { name, email, password, phone } = req.body
     
     try {
         await registerUser(name, email, password, phone).then(result => {
-            console.log("Result: ", result)
-            res.status(201).send(result)
-            next()
+            if(result){
+                res.status(201).send(result)
+                next()
+            } else{
+                res.status(409).json({
+                    errors: [{ email: "Email already exists!" }],
+                });
+            }
         })
     } catch (err) {
-        console.log("Error: ", err.message)
-
-        if(err.message === "Email already exists!"){
-            res.status(409).json({
-                errors: [{ email: "Email already exists!" }],
-            });
-        }else {
-            res.sendStatus(500)
-        }
+        res.sendStatus(500)
         next(err)
     }
 }
 
 const postLogin = async (req, res, next) => {
     const { email, password } = req.body
-    //TODO: Add validation for new user
+    
     try {
+        //
         await loginUser(email, password).then(result => {
-            console.log("Result: ", result)
-            res.status(200).send(result)
-            next()
+            if(result){
+                res.status(200).send(result)
+                next()
+            } else{
+                res.status(403).json({
+                    errors: [{ user: "Invalid Credentials!" }],
+                });
+            }
         })
-    } catch (err) {
-        console.log(err.message)
-        if(err.message === "Invalid Credentials!"){
-            res.status(403).json({
-                errors: [{ user: "Invalid Credentials!" }],
-            });
-        } else {
-            res.sendStatus(500)
-        }
+    } catch (err) { 
+        res.sendStatus(500)
         next(err)
     }
 }
@@ -52,37 +48,38 @@ const promoteUser = async (req, res, next) => {
 
     try {
         await promoteUserToAdmin(email).then(result => {
-            console.log(result)
-            res.status(200).send()
+            console.log("User: ", result)
+            if(result){
+                res.status(200).send()
+                next()
+            } else{
+                res.status(404).json({
+                    errors: [{ user: "User not found." }],
+                });
+            }
         })
     } catch(err) {
+        res.sendStatus(500)
         next(err)
     }
 }
 
 const demoteUser = async (req, res, next) => {
-    const { email } = req.body
+    const user_id = req.params.id
 
     try {
-        await demoteAdmin(email).then(result => {
-            console.log(result)
-            res.status(200).send()
+        await demoteAdmin(user_id).then(result => {
+            if(result){
+                res.status(200).send()
+                next()
+            } else{
+                res.status(404).json({
+                    errors: [{ user: "User not found." }],
+                });
+            }
         })
     } catch(err) {
-        next(err)
-    }
-}
-
-const updateUserInfo = async (req, res, next) => {
-    const newUserInfo = req.body;
-    const userId = req.userId
-
-    try {
-        await updateUser(userId, newUserInfo).then(result => {
-            console.log(result)
-            res.status(200).send()
-        })
-    } catch(err) {
+        res.sendStatus(500)
         next(err)
     }
 }
@@ -93,35 +90,110 @@ const putUserPassword = async (req, res, next) => {
 
     try {
         await updateUserPassword(userId, newPasswordInfo).then(result => {
-            console.log(result)
-            res.status(200).send()
+            if(result){
+                res.status(200).send()
+            } else{
+                res.status(403).json({
+                    errors: [{ user: "Invalid credentials." }],
+                });
+            }
         })
     } catch(err) {
+        res.sendStatus(500)
         next(err)
     }
 }
 
+const putUserPersonalInfo = async (req, res, next) => {
+    const { name, email, phone } = req.body;
+    const userId = req.userId
 
-const getAdminEmails = async (req, res, next) => {
+    const personalInfo = {
+        name,
+        email,
+        phone
+    }
+
+    try {
+        await updateUserInfo(userId, personalInfo).then(result => {
+            if(result){
+                res.status(200).send()
+            } else{
+                res.status(404).json({
+                    errors: [{ user: "User not found." }],
+                });
+            }
+        })
+    } catch(err) {
+        res.sendStatus(500)
+        next(err)
+    }
+}
+
+const putUserAddress = async (req, res, next) => {
+    const { address, city, state, zipcode } = req.body;
+    const userId = req.userId
+
+    const userAddress = {
+        address, 
+        city, 
+        state, 
+        zipcode
+    }
+
+    try {
+        await updateUserInfo(userId, userAddress).then(result => {
+            if(result){
+                res.status(200).send()
+            } else{
+                res.status(404).json({
+                    errors: [{ user: "User not found." }],
+                });
+            }
+        })
+    } catch(err) {
+        res.sendStatus(500)
+        next(err)
+    }
+}
+
+const getAllAdmin = async (req, res, next) => {
 	try {
-		await readAdminEmails().then((adminList) => {
-			res.status(200).send(adminList)
+		await readAllAdmin().then((adminList) => {
+            //Only return to client: name, price, imageUrl & boxId
+		    const response = adminList.map(admin => {
+			return {
+                _id:admin._id,
+                name: admin.name,
+                email: admin.email,
+                phone: admin.phone
+			}
+		})
+			res.status(200).send(response)
 		})
 	} catch (e) {
-		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }
 
-const getUserById = async (req, res, next) => {
+
+const getUser = async (req, res, next) => {
     const userId = req.userId;
 
 	try {
 		await readUserById(userId).then((user) => {
-			res.status(200).send(user)
+            const response = {
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                address: user.address,
+                city: user.city,
+                state: user.state,
+                zipcode: user.zipcode,
+            }
+			res.status(200).send(response)
 		})
 	} catch (e) {
-		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }
@@ -131,8 +203,9 @@ module.exports = {
     postLogin,
     promoteUser,
     demoteUser,
-    updateUserInfo,
-    getAdminEmails,
+    getAllAdmin,
     putUserPassword,
-    getUserById
+    putUserPersonalInfo,
+    putUserAddress,
+    getUser
 }

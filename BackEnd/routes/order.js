@@ -3,8 +3,6 @@ var router = express.Router()
 const authentication = require('../middleware/auth.middleware')
 const { orderController } = require('../controllers')
 
-
-
 router.post('/', authentication.auth, orderController.postOrder) //Submit order (auth)
 router.get('/id/:id', orderController.getById) //get order using orderID
 router.get('/user/:id', orderController.getUserOrders) //get all orders from a user

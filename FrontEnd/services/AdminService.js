@@ -16,14 +16,23 @@ export default class AdminService extends Service {
         }
 
         return fetch(this._url + 'auth/adminList', payload)
-            .then(response => response.json())
+            .then(response => {
+                switch(response.status){
+                    case 200:
+                        response.json()
+                        break;
+                    
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
+            })
             .then(admins => {
-                // alert(JSON.stringify(admins))
                 return admins
             })
             .catch((error) => {
-                // alert("Error de conexión.")
-                return admins
+                alert("Error de conexión.")
+                return false
             })
     }
 
@@ -41,11 +50,18 @@ export default class AdminService extends Service {
 
         return fetch(this._url + 'auth/promote', payload)
             .then(response => {
-                if(response.status == 200)
-                    return true
+                switch(response.status){
+                    case 200:
+                        return true;
 
-                else
-                    return false
+                    case 404:
+                        alert("Usuario no existe en el sistema.")
+                        return false;
+
+                    default: 
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false
+                }
             })
             .catch(() => {
                 alert("Error de conexión.")
@@ -64,11 +80,18 @@ export default class AdminService extends Service {
 
         return fetch(this._url + `auth/demote/${admin_id}`, payload)
             .then(response => {
-                if(response.status == 200)
-                    return true
+                switch(response.status){
+                    case 200:
+                        return true;
 
-                else
-                    return false
+                    case 404:
+                        alert("Usuario no existe en el sistema.")
+                        return false;
+
+                    default: 
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
             })
             .catch(() => {
                 alert("Error de conexión.")

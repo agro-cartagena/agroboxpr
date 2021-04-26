@@ -9,7 +9,17 @@ export default class ProductService extends Service {
 
     async getProductCatalog() {
         return fetch(this._url + 'product')
-            .then(response => response.json())
+            .then(response => {
+                switch(response.status){
+                    case 200:
+                        response.json()
+                        break;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
+            })
             .then((product_catalog) => { 
                 // Sort object by keys.
                 const ordered = Object.keys(product_catalog).sort().reduce(
@@ -23,9 +33,8 @@ export default class ProductService extends Service {
                 return ordered 
             })
             .catch((error) => {
-                // Temporary. Should properly handle error.
                 alert("Error de conexión.")
-                return catalog
+                return false
             })
     }
 
@@ -40,7 +49,6 @@ export default class ProductService extends Service {
         let payload = {
             method: 'POST',
             headers: {
-                Accept: 'application/json',
                 'Content-Type': 'application/json',
                 'x-access-token': UserService.instance.webToken
             },
@@ -49,12 +57,17 @@ export default class ProductService extends Service {
 
         return fetch(this._url + 'product', payload)
             .then(response => {
-                if(response.status == 201)
-                    return true
-                
-                else{
-                    alert("Ha ocurrido un error. Por favor intente de nuevo.")
-                    return false
+                switch(response.status){
+                    case 201: 
+                        return true;
+
+                    case 409:
+                        alert("Producto con el mismo nombre ya existe en el sistema.")
+                        return false;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
                 }
             })
             .catch(() => {
@@ -79,7 +92,6 @@ export default class ProductService extends Service {
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
                 'Content-Type': 'application/json',
                 'x-access-token': UserService.instance.webToken
             },
@@ -88,12 +100,21 @@ export default class ProductService extends Service {
 
         return fetch(this._url + `product/${productId}`, payload)
             .then(response => {
-                if(response.status == 200)
-                    return true
-                
-                else{
-                    alert("Ha ocurrido un error. Por favor intente de nuevo.")
-                    return false
+                switch(response.status){
+                    case 200:
+                        return true;
+
+                    case 404:
+                        alert("Producto no existe en el sistema.")
+                        return false;
+
+                    case 409:
+                        alert("Producto con el mismo nombre ya existe en el sistema.")
+                        return false;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
                 }
             })
             .catch(() => {
@@ -116,7 +137,12 @@ export default class ProductService extends Service {
                     case 200:
                         return true
 
+                    case 404:
+                        alert("Producto no existe en el sistema.")
+                        return false;
+
                     default: 
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false
                 }
             })  

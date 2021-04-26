@@ -23,38 +23,71 @@ export default class BoxService extends Service {
         }
 
         return fetch(this._url + 'box', payload)
-            .then(response => response.json())
+            .then(response => {
+                switch(response.status){
+                    case 200:
+                        response.json()
+                        break;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
+            })
             .then((box_list) => {
                 return box_list
             })
             .catch((error) => {
-                // Temporary. Should properly handle error.
-                // alert("Error caught")
-                return box_list
+                alert("Error de conexión.")
+                return false;
             })
     }
 
     async getAllAvailableBoxes() {
         return fetch(this._url + 'box/available')
-            .then(response => response.json())
+            .then(response => {
+                switch(response.status){
+                    case 200:
+                        response.json()
+                        break;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
+            })
             .then((box_list) => {
                 return box_list
             })
             .catch((error) => {
-                // Temporary. Should properly handle error.
-                // alert("Error caught")
-                return box_list
+                alert("Error de conexión.")
+                return false;
             })
     }
 
     async getBoxContent(box_id) {
         return fetch(this._url + `box/products/${box_id}`)
-            .then((response) => response.json())
+            .then((response) => {
+                switch(response.status){
+                    case 200:
+                        response.json()
+                        break;
+
+                    case 404:
+                        alert("Caja no existe en el sistema.")
+                        return false;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
+            })
             .then((content) => {
                 return content
             })
             .catch((error) => {
-                return box_content
+                alert("Error de conexión.")
+                return false;
             })
     }
 
@@ -108,14 +141,22 @@ export default class BoxService extends Service {
 
         return fetch(this._url + 'box', payload)
             .then(response => {
-                if(response.status == 201)
-                    return true
+                switch(response.status){
+                    case 201:
+                        return true;
 
-                else
-                    return false
+                    case 409:
+                        alert("Caja con el mismo nombre ya existe en el sistema.")
+                        return false;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
             })
             .catch(() => {
                 alert("Error de conexión.")
+                return false;
             })
     }
 
@@ -155,14 +196,22 @@ export default class BoxService extends Service {
 
         return fetch(this._url + `box/${boxId}`, payload)
             .then(response => {
-                if(response.status == 200)
-                    return true
+                switch(response.status){
+                    case 200:
+                        return true;
 
-                else
-                    return false
+                    case 404:
+                        alert("Caja no existe en el sistema.")
+                        return false;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
             })
             .catch(() => {
                 alert("Error de conexión.")
+                return false;
             })
     }
 
@@ -180,7 +229,12 @@ export default class BoxService extends Service {
                     case 200:
                         return true
 
+                    case 404:
+                        alert("Caja no existe en el sistema.")
+                        return false;
+
                     default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false
                 }
             })
@@ -203,7 +257,12 @@ export default class BoxService extends Service {
                     case 200:
                         return true
 
+                    case 404:
+                        alert("Caja no existe en el sistema.")
+                        return false;
+
                     default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false
                 }
             })
@@ -227,7 +286,12 @@ export default class BoxService extends Service {
                     case 200:
                         return true
 
+                    case 404:
+                        alert("Caja no existe en el sistema.")
+                        return false;
+
                     default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false
                 }
             })

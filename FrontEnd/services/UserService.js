@@ -25,7 +25,8 @@ export default class UserAuthenticationService extends Service {
 
     // This method gets called only once on init to fetch the token from storage.
     async loadWebToken() {
-        AsyncStorage.getItem('jwt_key')
+        try {
+            AsyncStorage.getItem('jwt_key')
             .then((token) => {
                 // Resolves to token if it exists; 
                 // otherwise, resolves to null.
@@ -35,6 +36,9 @@ export default class UserAuthenticationService extends Service {
                 alert("error loading token.")
                 console.error(error)
             })
+        } catch(error) {
+            this.webToken = null
+        }
     }
 
     async setWebToken(token) {
@@ -121,8 +125,13 @@ export default class UserAuthenticationService extends Service {
             return false
         }
 
-        else if(data["password"] == "password"){
+        else if(data["password"].includes("password")){
             alert("Contraseña no es válida.")
+            return false;
+        }
+
+        else if(data["password"].length < 8){
+            alert("Contraseña debe tener al menos 8 caracteres.")
             return false;
         }
 
@@ -193,6 +202,10 @@ export default class UserAuthenticationService extends Service {
                         alert("Información actualizada.")
                         return true;
 
+                    case 404: 
+                        alert("Usuario no existe en el sistema.")
+                        return false;
+
                     default:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false;
@@ -228,6 +241,10 @@ export default class UserAuthenticationService extends Service {
                     case 200:
                         alert("Informacion actualizada.")
                         return true;
+
+                    case 404: 
+                        alert("Usuario no existe en el sistema.")
+                        return false;
 
                     case 500:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
@@ -277,6 +294,10 @@ export default class UserAuthenticationService extends Service {
                         alert("Contraseña actual incorrecta.")
                         return false;
                     
+                    case 404:
+                        alert("Usuario no existe em el sistema.")
+                        return false;
+
                     case 500:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false;
@@ -298,7 +319,17 @@ export default class UserAuthenticationService extends Service {
         }
 
         return fetch(this._url + 'auth/user', payload)
-            .then(response => response.json())
+            .then(response => {
+                switch(response.status){
+                    case 200:
+                        response.json()
+                        break;
+                    
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false
+                }
+            })
             .then(userData => {
                 const {name, email, phone} = userData
                 const userInfo = {name, email, phone}

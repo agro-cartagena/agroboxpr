@@ -20,6 +20,6 @@ router.get('/available', boxController.getAvailableBoxes)
 router.get('/:id',boxController.getById)
 router.get('/', adminAuth,  boxController.getAllBoxes)
 
-router.delete('/:id', ownerAuth, boxController.deleteBox)
+router.delete('/:id', adminAuth, boxController.deleteBox)
 
 module.exports = router

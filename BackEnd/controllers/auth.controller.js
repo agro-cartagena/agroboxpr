@@ -161,13 +161,18 @@ const getAllAdmin = async (req, res, next) => {
 	try {
 		await readAllAdmin().then((adminList) => {
             //Only return to client: name, price, imageUrl & boxId
-		    const response = adminList.map(admin => {
-			return {
-                _id:admin._id,
-                name: admin.name,
-                email: admin.email,
-                phone: admin.phone
-			}
+            const response = {}
+
+		    adminList.forEach(admin => {
+                let initial = admin.name[0]
+                if(!response.hasOwnProperty(initial))
+                    response[initial] = []
+
+                response[initial].push({
+                    _id:admin._id,
+                    name: admin.name,
+                    phone: admin.phone
+                })
 		})
 			res.status(200).send(response)
 		})

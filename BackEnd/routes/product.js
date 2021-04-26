@@ -13,6 +13,6 @@ router.put('/:id', adminAuth, productController.update)
 router.get('/:id', productController.getById)
 router.get('/', productController.getProducts)
 
-router.delete('/:id', ownerAuth, productController.deletion)
+router.delete('/:id', adminAuth, productController.deletion)
 
 module.exports = router

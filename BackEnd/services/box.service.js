@@ -3,7 +3,7 @@ const { boxDb } = require('../db')
 const { insertBoxDb, findAllBoxesDb, findAvailableBoxesDb, getBoxByIdDb, findProductsByIdList } = boxDb
 const { updateEntryDb, addProductListDb, deleteBoxDb } = boxDb
 const { validationMiddleware } = require('../middleware')
-const { validateBoxName } = validationMiddleware
+const { validateBoxName, validateId } = validationMiddleware
 
 const createBox = async (box) => {
 	const newBox = {

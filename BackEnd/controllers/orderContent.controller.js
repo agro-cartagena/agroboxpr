@@ -8,7 +8,7 @@ const {
 	updateOderContent,
 } = orderContentService
 
-const { validateId } = validationMiddleware
+const { validateOrderContent } = validationMiddleware
 
 const postContent = async (req, res, next) => {
 	const orderContent = req.body
@@ -37,7 +37,7 @@ const getContentById = async (req, res, next) => {
 	const id = req.params.id
 	try {
 		let validate
-		await validateId(id, 'orderContent').then((result) => {
+		await validateOrderContent(id).then((result) => {
 			validate = result
 		})
 		if (validate != null) {
@@ -60,7 +60,7 @@ const putContent = async (req, res, next) => {
 
 	try {
 		let validate
-		await validateId(id, 'orderContent').then((result) => {
+		await validateOrderContent(id).then((result) => {
 			validate = result
 		})
 		if (validate != null) {

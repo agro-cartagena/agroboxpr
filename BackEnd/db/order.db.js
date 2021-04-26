@@ -22,7 +22,7 @@ const getAllUserOrdersDb = async (userID) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('order')
 
-	return collection.find({ user_Id: userID }).toArray()
+	return collection.find({ user_id: userID }).toArray()
 }
 
 const getOrderByIdDb = async (id) => {

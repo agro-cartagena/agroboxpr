@@ -16,7 +16,6 @@ const { decreaseProductDb, getProductByIdDb } = productDb
 
 const createOrder = async (order, orderContent, userId) => {
 	try {
-
 		let order_id
 		order_id = await createOrderDb({
 			user_id: userId,
@@ -33,7 +32,7 @@ const createOrder = async (order, orderContent, userId) => {
 
 const readUserOrders = async (userId) => {
 	try {
-		return await getAllUserOrdersDb(userId)
+		return await filterByStatusWithParameter(getAllUserOrdersDb,userId)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -49,7 +48,7 @@ const getOrderById = async (id) => {
 
 const getAllOrders = async () => {
 	try {
-		return await readAllOrdersDb()
+		return await filterByStatus(readAllOrdersDb)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -116,7 +115,6 @@ const retrieveProductList = async (orderId) => {
 		order.pop('order_id')
 
 		order.forEach((box) => {
-
 			boxList.push(orderList[parseInt(box)])
 		})
 
@@ -126,7 +124,6 @@ const retrieveProductList = async (orderId) => {
 					boxes: box.box_quantity,
 					product_id: prod.productId,
 					amount: prod.amount,
-
 				})
 			})
 		})
@@ -170,6 +167,64 @@ const manageInventory = async (orderId) => {
 		})
 
 		return true
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
+const filterByStatus = async (getFuncionDb) => {
+	try {
+		let categories = []
+		let order_catalog = []
+		let response = {}
+
+		await getFuncionDb().then((element) => {
+			order_catalog = element
+			for (const order in element) {
+				if (!categories.includes(element[order].order_status))
+					categories.push(element[order].order_status)
+			}
+		})
+
+		categories.forEach((category) => {
+			response = {
+				[category]: order_catalog.filter(
+					(order) => order.order_status == category
+				),
+				...response,
+			}
+		})
+
+		return response
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
+const filterByStatusWithParameter = async (getFuncionDb, parameter) => {
+	try {
+		let categories = []
+		let order_catalog = []
+		let response = {}
+
+		await getFuncionDb(parameter).then((element) => {
+			order_catalog = element
+			for (const order in element) {
+				if (!categories.includes(element[order].order_status))
+					categories.push(element[order].order_status)
+			}
+		})
+
+		categories.forEach((category) => {
+			response = {
+				[category]: order_catalog.filter(
+					(order) => order.order_status == category
+				),
+				...response,
+			}
+		})
+
+		return response
 	} catch (e) {
 		throw new Error(e.message)
 	}

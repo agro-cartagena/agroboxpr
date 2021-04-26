@@ -30,8 +30,8 @@ const postOrder = async (req, res, next) => {
 }
 
 const getUserOrders = async (req, res, next) => {
-	const userId = req.params.id
-	try {
+	const userId = req.userId
+		try {
 		let validate
 		await validateUserId(userId).then((result) => {
 			validate = result

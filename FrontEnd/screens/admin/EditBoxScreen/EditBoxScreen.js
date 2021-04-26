@@ -24,7 +24,7 @@ const EditBoxScreen = (props) => {
     const [productCatalog, setProductCatalog] = React.useState({})
     const [boxImage, setBoxImage] = React.useState('')
     // const [isAvailable, setAvailable] = React.useState(props.params.available)
-    const [isAvailable, setAvailable] = React.useState(true)
+    const [isAvailable, setAvailable] = React.useState(props.params.available)
 
     React.useEffect(() => {
         async function fetchData() {            
@@ -218,6 +218,7 @@ const EditBoxScreen = (props) => {
                 {
                     text: 'Remover',
                     onPress: async () => {
+                        // alert(boxData._id)
                         if (await BoxService.instance.removeBox(boxData._id))   
                             Navigator.instance.goToBoxManagement()
                     }
@@ -260,7 +261,6 @@ const EditBoxScreen = (props) => {
             })
 
         if(result){
-            alert("Caja ha sido guardada.")
             Navigator.instance.goToBoxManagement()
         }
     }
@@ -288,6 +288,7 @@ const EditBoxScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewBox ? 'ejemplo: 45.00': String(boxData.box_price) }
+                        value={Number(boxData.box_price)}
                         onChangeText = { (text) => setBoxData({...boxData, box_price: Number(text)}) }
                     />
                 </View>

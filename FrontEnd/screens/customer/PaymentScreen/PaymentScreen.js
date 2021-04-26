@@ -1,82 +1,108 @@
 import React from 'react'
-import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
-import Button from '../../../components/Button/Button'
+import { Text, View, ScrollView, TouchableOpacity, Linking, Image } from 'react-native'
+import { WebView } from 'react-native-webview'
 
 import Navigator from '../../../Navigator'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import BoxCard from '../../../components/BoxCard/BoxCard'
 
 import CartService from '../../../services/CartService'
-
+import Logo from '../../../components/Logo/Logo'
 import styles from './PaymentScreenStyleSheet'
-import global_styles from '../../../styles'
 
-const PaymentScreen = () => {
+import PopUp from '../../../components/PopUp/PopUp'
+
+const PaymentScreen = (props) => {
 
     const [paymentData, setPaymentData] = React.useState(CartService.instance.getCart())
+    const [showPayPal, togglePayPal] = React.useState(false)
 
-    const loadPaymentSummary = () => {
-        return paymentData.map((element) =>
-            <View style={styles.itemContainer} key={element._id}>
-                <TouchableOpacity key={element.box_name} style={styles.cardContainer}>
-                    <BoxCard
-                        id={element._id}
-                        name={element.box_name}
-                        price={element.box_accumulated_price}
+    const getTotalPrice = () => {
+        return CartService.instance.getCartTotal()
+    }
+
+    const displayPayPal = () => {
+        const handlePayPal = (data) => {
+            switch(data.title) {
+                case 'success':
+                    // Submit order.
+                    togglePayPal(!showPayPal)
+                    break;
+
+                case 'cancel':
+                    alert("Canceled")
+                    togglePayPal(!showPayPal)
+                    break;
+
+                default: 
+                    return
+            }
+        }
+
+        return (
+            <WebView
+                style={{width: '100%', height: '100%'}}
+                source={{uri: 'http://10.0.0.6:5000/api/payment/paypal'}}
+                onNavigationStateChange={handlePayPal}
+            />
+        )
+    }
+
+    return (
+        <ScrollView>
+            <BackArrow onTouch={Navigator.instance.goToCheckout} />
+
+            <Logo/>
+
+            <Text style={styles.header}>Total a pagar: <Text style={{color: '#EAC71D'}}>${getTotalPrice()}</Text></Text>
+
+            <View style={styles.buttonContainer}>
+                <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('http://10.0.0.6:5000/api/payment/athm')}>
+                    <View style={styles.buttonTextContainer}>
+                        <Text style={styles.buttonText}>ATH Móvil</Text>
+                    </View>
+
+                    <View style={styles.iconContainer}>
+                        <Image
+                            style={styles.icon}
+                            source={require('../../../assets/icons/ATHM.png')}
+                        />
+                    </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.button} onPress={() => togglePayPal(!showPayPal)}>
+                    <View style={styles.buttonTextContainer}>
+                        <Text style={styles.buttonText}>PayPal</Text>
+                    </View>
+
+                    <View style={styles.iconContainer}>
+                        <Image
+                            style={styles.icon}
+                            source={require('../../../assets/icons/PayPal.png')}
+                        />
+                    </View>
+
+                    <PopUp
+                        state={showPayPal}
+                        handler={togglePayPal}
+                        content={displayPayPal()}
                     />
                 </TouchableOpacity>
 
-                <View>
-                    <Text style={{ fontSize: 15 }}>  {element.box_quantity} cajas</Text>
-                </View>
-                {/* <View> */}
-                <Text style={{ fontWeight: 'bold', fontSize: 15 }}> = ${element.box_accumulated_price * element.box_quantity}</Text>
-                {/* </View>  */}
-            </View>
-        )
-    }
-    const getTotalPrice = () => {
-        let total_price = 0
+                <TouchableOpacity style={styles.button}>
+                    <View style={styles.buttonTextContainer}>
+                        <Text style={styles.buttonText}>Cash</Text>
+                    </View>
 
-        paymentData.forEach((item) => { total_price += Number(item.box_accumulated_price) * Number(item.box_quantity) })
-
-        return total_price
-    }
-    return (
-        <ScrollView>
-            <View style={styles.arrowContainer}>
-                <BackArrow onTouch={Navigator.instance.goToCheckout} />
-            </View>
-
-            <Text style={styles.text}> Resumen de su orden: </Text>
-
-            <View style={[global_styles.container, styles.cartContainer]}>
-
-                {loadPaymentSummary()}
-
-            </View>
-
-            <Text style={[global_styles.text, styles.total_text]}>Total a pagar:
-                <Text style={{ fontWeight: 'bold', color: '#EAC71D', fontSize:20 }}> ${getTotalPrice()}</Text>
-            </Text>
-
-            <View style={[global_styles.container, styles.buttonContainer]}>
-                {/* Select payment method */}
-                {/* <script src="https://www.paypal.com/sdk/js?client-id=test"></script> */}
-                {/* <script>paypal.Buttons().render('body');</script>        */}
-                <Button
-                    style={styles.button}
-                    
-                    text="Paypal" //They have their own buttons
-                />
-                <Button
-                    style={styles.button}
-                    text="ATH Móvil" //They have their own buttons
-                />
-                <Button
-                    style={styles.button}
-                    text="Efectivo" //Send an alert or popup with conditions of selectiong this payment method
-                />
+                    <View style={styles.iconContainer}>
+                        <View style={[styles.cash]}>
+                            <Image
+                                style={styles.icon}
+                                source={require('../../../assets/icons/Dollar.png')}
+                            />
+                        </View>
+                    </View>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     )

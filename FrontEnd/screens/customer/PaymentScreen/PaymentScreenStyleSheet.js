@@ -1,54 +1,73 @@
-
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
+import {RFPercentage} from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({
-    arrowContainer:{
-        margin:10
-    },
-    text:{
-        fontSize: 15,
+    header: {
+        fontSize: 20,
+        margin: 25,
+
         color: "white",
-        textAlign: "center"
-    },
-    cartContainer: {
-        width: '90%',
-        alignSelf: 'center',
-        margin: 15,
-        borderRadius: 10,
-        backgroundColor: 'white',
-    },
-    itemContainer: {
-        width:"100%",
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent:'flex-start',
-    },
-    cardContainer: {
-        width: '55%',
-        height: 100,
-        margin: 10
+        textAlign: "center",
+        fontWeight: 'bold'
     }, 
-    total_text:{
-        fontSize:18,
-        textAlign: "right",
-        marginEnd: 55,
 
-        // borderTopWidth: 2,
-        // borderTopColor: "white",
-        // borderRadius: 15,
+    buttonContainer: {
+        width: '100%',
+        height: Dimensions.get('window').height * 0.30,
+        flex: 1,
+
+        alignItems: 'center',
+        // backgroundColor: 'white',
     },
 
-    buttonContainer:{
-        flexDirection: "row",
+    button: {
+        width: '75%',
+        height: '25%',
+        margin: 10,
+
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: RFPercentage(1.5),
+
+        backgroundColor: 'white'
+    },
+
+    buttonTextContainer:{
+        width: '75%',
+        height: '100%',
+
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    buttonText: {
+        fontWeight: 'bold',
+        fontSize: RFPercentage(2.5)
+    },
+
+    iconContainer: {
         width: '25%',
-        height: 40,
-        alignSelf: 'center',
-        marginTop:30
-    },
-    button:{
-        margin: 10, 
-    }
+        height: '100%',
+        padding: 10,
 
+        alignItems: 'center'
+    },
+
+    icon: {
+        width: '100%',
+        height: '100%',
+
+        resizeMode: 'contain'
+    },
+
+    cash: {
+        width: '80%',        
+        padding: 5,
+
+        backgroundColor: 'rgb(151, 184, 56)',
+        borderRadius: 100,
+    }
 
 })
 

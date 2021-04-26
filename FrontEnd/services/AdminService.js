@@ -1,4 +1,5 @@
 import Service from './Service'
+import UserService from './UserService'
 import admins from '../db_mockup/admins.db'
 
 export default class AdminService extends Service {
@@ -7,10 +8,18 @@ export default class AdminService extends Service {
     constructor() { super() }
 
     async getAdmins() {
-        return fetch(this._url + '/admins')
+        let payload = {
+            method: 'GET',
+            headers: {
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+
+        return fetch(this._url + 'auth/adminList', payload)
             .then(response => response.json())
-            .then(admin_catalog => {
-                return admin_catalog
+            .then(admins => {
+                // alert(JSON.stringify(admins))
+                return admins
             })
             .catch((error) => {
                 // alert("Error de conexión.")
@@ -22,8 +31,8 @@ export default class AdminService extends Service {
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json' 
+                'x-access-token': UserService.instance.webToken,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 email: admin_email
@@ -49,8 +58,7 @@ export default class AdminService extends Service {
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'x-access-token': UserService.instance.webToken
             }
         }
 

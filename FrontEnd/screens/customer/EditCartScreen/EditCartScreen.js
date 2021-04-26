@@ -13,9 +13,13 @@ import CartService from '../../../services/CartService'
 // box content is passed through props.params.content LIST OF OBJECTS 
 const EditCartScreen = (props) => {
 
-    const [content, setContent] = React.useState(props.params)
+    const [content, setContent] = React.useState([])
     const [subTotal, setSubTotal] = React.useState(40)
     
+    React.useEffect(() => {
+        setContent(props.params.box_content)
+    }, [])
+
     const displayContent = () => {
 
         const askToRemoveProduct = (target_product) => {

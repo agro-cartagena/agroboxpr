@@ -27,6 +27,12 @@ export default class CartService {
         return [...this._cart]
     }
 
+    getCartTotal() {
+        let total = 0
+        this._cart.forEach((item) => total = total + (item.box_accumulated_price * item.box_quantity))
+        return total
+    }
+
     updateCart(box_id, content) {
         this._cart.find((item) => item._id == box_id).box_content = content
     }

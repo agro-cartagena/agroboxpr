@@ -8,6 +8,7 @@ import Button from '../../../components/Button/Button'
 import styles from './ViewBoxScreenStyleSheet';
 import global_styles from '../../../styles'
 import Navigator from '../../../Navigator'
+
 import BoxService from '../../../services/BoxService'
 import ProductService from '../../../services/ProductService'
 import CartService from '../../../services/CartService'

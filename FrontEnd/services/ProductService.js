@@ -106,13 +106,11 @@ export default class ProductService extends Service {
         let payload = {
             method: 'DELETE',
             headers: {
-                Accept: 'application/json',
                 'x-access-token': UserService.instance.webToken
             }
         }
 
-        return true
-        return fetch(this._url + `product/remove/${product_id}`, payload)
+        return fetch(this._url + `product/${product_id}`, payload)
             .then(response => {
                 switch(response.status){
                     case 200:

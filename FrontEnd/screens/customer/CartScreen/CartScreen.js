@@ -80,7 +80,7 @@ const CartScreen = () => {
         return cartData.map((box, index) => 
             <View style={[styles.itemContainer, cartData[index+1] ? styles.hr : {}]} key={box._id}>
                 <TouchableOpacity style={styles.cardContainer} 
-                    onPress={() => Navigator.instance.goToEditCart([...box.box_content])}>
+                    onPress={() => Navigator.instance.goToEditCart(box)}>
                     <BoxCard
                         id={box._id}
                         name={box.box_name}

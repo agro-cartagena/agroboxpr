@@ -1,6 +1,8 @@
 import box_list from '../db_mockup/box.db'
 import box_content from '../db_mockup/box.content.db'
 
+// import RNFS from 'react-native-fs'
+
 import Service from './Service'
 import UserService from './UserService'
 
@@ -56,7 +58,7 @@ export default class BoxService extends Service {
             })
     }
 
-    async addNewBox(data, image) {
+    async addNewBox(data, image_path) {
         // for(detail in box){
         //     if(! box[detail] && detail != "box_content"){
         //         alert("Entrada vacía.")
@@ -80,20 +82,28 @@ export default class BoxService extends Service {
             return { _id, product_quantity_box }
         })
 
-        alert(JSON.stringify(image))
-
         const body = new FormData()
-        body.append('file', image)
         for (let atrr in data) 
             body.append(atrr, data[atrr])
+
+        // const fs = new FileReader()
+        // fs.readAsDataURL(image)
+        //     .then(blob => {
+        //         const file = new Blob([blob], { type: 'image/jpeg' })
+        //         // const file = new File([blob], { type: 'image/*' })
+        //         body.append('file', file)
+        //     })
+        //     .catch((error) => {
+        //         alert(error)
+        //     })
 
         let payload = {
             method: 'POST',
             headers: {
-                // 'Conten-Type': 'multipart/form-data',
-                'x-access-token': UserService.instance.webToken
+                'x-access-token': UserService.instance.webToken,
+                'Content-Type': 'application/json'
             },
-            body: body
+            body: JSON.stringify(data)
         }
 
         return fetch(this._url + 'box', payload)
@@ -160,12 +170,10 @@ export default class BoxService extends Service {
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
                 'x-access-token': UserService.instance.webToken
             }
         }
 
-        return true
         return fetch(this._url + `box/disable/${box_id}`, payload)
             .then(response => {
                 switch(response.status){
@@ -186,11 +194,9 @@ export default class BoxService extends Service {
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
                 'x-access-token': UserService.instance.webToken
             }
         }
-        return true
         return fetch(this._url + `box/enable/${box_id}`, payload)
             .then(response => {
                 switch(response.status){
@@ -215,8 +221,7 @@ export default class BoxService extends Service {
             }
         }
 
-        return true
-        return fetch(this._url + `box/remove/${box_id}`, payload)
+        return fetch(this._url + `box/${box_id}`, payload)
             .then((response) => {
                 switch(response.status){
                     case 200:

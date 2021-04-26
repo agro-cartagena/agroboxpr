@@ -41,7 +41,7 @@ export default class GeoCodingService extends Service {
                 }
 
                 return {
-                    street: findProperty('street'),
+                    address: findProperty('street'),
                     city: findProperty('city'),
                     state: findProperty('state'),
                     zipcode:findProperty('zipcode')

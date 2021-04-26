@@ -66,7 +66,7 @@ export default class UserAuthenticationService extends Service {
     isAdmin() {
         if(this.isAuthenticated()){
             let decoded = jwt_decode(this.webToken)
-            return decoded.role == "admin"
+            return decoded.role == "admin" || decoded.role == "owner"
         }
 
         return false
@@ -167,7 +167,7 @@ export default class UserAuthenticationService extends Service {
         }
     }
 
-    updateUserInformation(userData) {
+    async updateUserInformation(userData) {
         for (field in userData){
             if(!userData[field]){
                 alert("Entrada vacía.")
@@ -179,35 +179,32 @@ export default class UserAuthenticationService extends Service {
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.webToken
             },
-            body: JSON.stringify({
-                name: userData["full_name"],
-                email: userData["email"],
-                phone: userData["phone"]
-            })
+
+            body: JSON.stringify(userData)
         }
 
-        fetch(this._url + '/update?uid=${}', payload)
-            .then(async response => {
+        return fetch(this._url + 'auth/personalInfo', payload)
+            .then(response => {
                 switch(response.status){
                     case 200:
-                        alert("Informacion actualizada.")
-                        break;
+                        alert("Información actualizada.")
+                        return true;
 
                     default:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
-                        break;
+                        return false;
                 }
             })
             .catch((error) => {
-                console.error(error)
                 alert("Error de conexión.")
+                return false
             })  
     }
 
-    updateAddress(addressData) {
+    async updateAddress(addressData) {
         for (field in addressData){
             if(!addressData[field]){
                 alert("Entrada vacía.")
@@ -219,36 +216,31 @@ export default class UserAuthenticationService extends Service {
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'x-access-token': this.webToken
             },
-            body: JSON.stringify({
-                street: addressData["street"],
-                city: addressData["city"],
-                state: addressData["state"],
-                zipcode: addressData["zipcode"]
-            })
+            body: JSON.stringify(addressData)
         }
 
-        fetch(this._url + '/update?uid=${}', payload)
-            .then(async response => {
+        return fetch(this._url + 'auth/address', payload)
+            .then(response => {
                 switch(response.status){
                     case 200:
                         alert("Informacion actualizada.")
-                        break;
+                        return true;
 
                     case 500:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
-                        break;
+                        return false;
                 }
             })
             .catch((error) => {
-                console.error(error)
                 alert("Error de conexión.")
+                return false
             })  
     }
 
-    updatePassword(passwordData) {
+    async updatePassword(passwordData) {
         for (field in passwordData){
             if(!passwordData[field]){
                 alert("Entrada vacía.")
@@ -265,60 +257,60 @@ export default class UserAuthenticationService extends Service {
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
+                'x-access-token': this.webToken,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                current_password: passwordData["current_password"],
-                new_password: passwordData["new_password"]
+                old_Password: passwordData.current_password,
+                new_Password: passwordData.new_password
             })
         }
 
-        fetch(this._url + '/update?uid=${}', payload)
-            .then(async response => {
+        return fetch(this._url + 'auth/password', payload)
+            .then(response => {
                 switch(response.status){
                     case 200:
                         alert("Informacion actualizada.")
-                        break;
+                        return true;
 
-                    case 409:
+                    case 403:
                         alert("Contraseña actual incorrecta.")
-                        break;
+                        return false;
                     
                     case 500:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
-                        break;
+                        return false;
                 }
             })
             .catch((error) => {
-                console.error(error)
                 alert("Error de conexión.")
+                return false;
             })  
     }
 
     async getUserData() {
-        return fetch(this._url + 'userdata')
+        let payload = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'x-access-token': this.webToken
+            }
+        }
+
+        return fetch(this._url + 'auth/user', payload)
             .then(response => response.json())
             .then(userData => {
-                const {full_name, email, phone} = userData
-                const userInfo = {full_name, email, phone}
+                const {name, email, phone} = userData
+                const userInfo = {name, email, phone}
 
-                const {street, city, state, zipcode} = userData
-                const addressInfo = {street, city, state, zipcode}
+                const {address, city, state, zipcode} = userData
+                const addressInfo = {address, city, state, zipcode}
 
                 return [userInfo, addressInfo]
             })
             .catch(error => {
-                // console.error(error)
-                // alert("Error de conexión.")
-
-                const {full_name, email, phone} = user
-                const userInfo = {full_name, email, phone}
-
-                const {street, city, state, zipcode} = user
-                const addressInfo = {street, city, state, zipcode}
-
-                return [userInfo, addressInfo]
+                alert("Error de conexión.")
+                return false
             })
     }
 }

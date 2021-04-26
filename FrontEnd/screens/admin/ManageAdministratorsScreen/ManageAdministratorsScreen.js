@@ -48,7 +48,7 @@ const ManageAdministratorsScreen = () => {
 
         const askToRemoveAdmin = () => {
             Alert.alert(
-                `¿Seguro que desea remover los privilegios administrativos de ${item.full_name}?`, '',
+                `¿Seguro que desea remover los privilegios administrativos de ${item.name}?`, '',
                 [
                     {
                         text: 'Cancelar',
@@ -73,7 +73,7 @@ const ManageAdministratorsScreen = () => {
                 onPress={askToCallAdmin}
                 onLongPress={askToRemoveAdmin}
             >
-                <Text style={styles.item}>{item.full_name}</Text>
+                <Text style={styles.item}>{item.name}</Text>
             </TouchableOpacity>
         )
     }
@@ -118,6 +118,7 @@ const ManageAdministratorsScreen = () => {
                         sections={getSections()}
                         renderItem={renderItem}
                         renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+                        keyExtractor={(item, index) => item + index}
                     />  
             </View>
 

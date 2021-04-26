@@ -11,6 +11,8 @@ import Navigator from '../../../Navigator'
 import styles from './CheckoutScreenStyleSheet'
 import global_styles from '../../../styles'
 
+import Localizer from '../../../components/Localizer/Localizer'
+
 const CheckoutScreen = () => {
     const [userData, changeUserData] = React.useState({})
 
@@ -30,31 +32,25 @@ const CheckoutScreen = () => {
     return (
         <KeyboardAwareScrollView>
             {/* Back Arrow */}
-            <View style={styles.arrowContainer}>
-                <BackArrow onTouch={Navigator.instance.goToCart} />
-            </View>
+            <BackArrow onTouch={Navigator.instance.goToCart} />
+
+            <Text style={styles.header}>Información de Entrega</Text>
+
             {/* User information */}
             <View style={[global_styles.container, styles.formContainer]}>
                 <View style={styles.formInputContainer}>
                     <Text style={styles.text}>Nombre: </Text>
                     <FormInput
-                        value={userData.full_name}
-                        onChangeText={text => changeUserData({ ...userData, full_name: text })}
+                        value={userData.name}
+                        onChangeText={text => changeUserData({ ...userData, name: text })}
                         textContentType="name"
                     />
                 </View>
-                <View style={styles.formInputContainer}>
-                    <Text style={styles.text}>Email: </Text>
-                    <FormInput
-                        value={userData.email}
-                        onChangeText={text => changeUserData({ ...userData, email: text })}
-                        keyboardType="email-address"
-                    />
-                </View>
+
                 <View style={styles.formInputContainer}>
                     <Text style={styles.text}>Teléfono: </Text>
                     <FormInput
-                        value={userData.phone}
+                        value={String(userData.phone)}
                         onChangeText={text => changeUserData({ ...userData, phone: text })}
                         keyboardType="phone-pad"
                     />
@@ -62,11 +58,15 @@ const CheckoutScreen = () => {
 
                 {/* User address information */}
 
-                <View style={styles.formInputContainer}>
-                    <Text style={styles.text}>Dirección: </Text>
+                <View style={styles.hrContainer}>
+                    <View style={styles.hr} />
+                </View>
+
+                <View style={[styles.formInputContainer]}>
+                    <Text style={styles.text}>Calle: </Text>
                     <FormInput
-                        value={addressData.street}
-                        onChangeText={text => changeAddressData({ ...addressData, street: text })}
+                        value={addressData.address}
+                        onChangeText={text => changeAddressData({ ...addressData, address: text })}
                     />
                 </View>
                 <View style={styles.formInputContainer}>
@@ -88,15 +88,39 @@ const CheckoutScreen = () => {
                         onChangeText={text => changeAddressData({ ...addressData, zipcode: text })} />
                 </View>
             </View>
-            
+
             {/* Button to continue to next screen */}
-            <View style={styles.button}>
-                <Button
-                    onTouch={Navigator.instance.goToPayment}
-                    // onTouch={() => [goToPayment, UserService.instance.updateAddress(addressData), UserService.instance.updateUserInformation(userData)] }
-                    text="Continuar"
-                />
+            <View style={styles.buttonContainer}>
+                <View style={styles.button}>
+                    <Button
+                        onTouch={() => {
+                            for(property in userData){
+                                if(!userData[property]) {
+                                    alert("Entrada vacía.")
+                                    return
+                                }
+                            }
+
+                            for(property in addressData) {
+                                if(!addressData[property]) {
+                                    alert("Entrada vacía.")
+                                    return
+                                }
+                            }
+
+                            Navigator.instance.goToPayment()
+                        }}
+                        text="Continuar"
+                    />
+                </View>
+
+                <View style={styles.localizerContainer}>
+                    <Localizer
+                        addressHandler={changeAddressData}
+                    />
+                </View>
             </View>
+            
         </KeyboardAwareScrollView>
     )
 }

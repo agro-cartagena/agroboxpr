@@ -40,8 +40,8 @@ const EditAccountScreen = () => {
             <View style={styles.fContainer} key={'full_name'}>
                 <Text style={styles.text}>Nombre: </Text>
                 <FormInput                        
-                    value = {userData.full_name}
-                    onChangeText={text => changeUserData({...userData, full_name: text })}
+                    value = {userData.name}
+                    onChangeText={text => changeUserData({...userData, name: text })}
                     textContentType="name"
                 /> 
             </View>,
@@ -54,20 +54,25 @@ const EditAccountScreen = () => {
                     onChangeText={text => changeUserData({...userData, email: text})}
                 />
             </View>,
+
             <View style={styles.fContainer} key={'phone'}>
                 <Text style={styles.text}>Teléfono: </Text>
                 <FormInput
                     keyboardType="phone-pad"
-                    value = {userData.phone}
+                    value = {String(userData.phone)}
                     onChangeText={text => changeUserData({...userData, phone:text})}
                 />
             </View>,
+
             <View style={styles.buttonContainer} key={'buttons'}>
                 <View style={styles.button}>
                     <Button
                         text="Guardar"
                         style={{backgroundColor: '#EAC71D'}}
-                        onTouch={() => UserService.instance.updateUserInformation(userData)}
+                        onTouch={async () => {
+                            if(await UserService.instance.updateUserInformation(userData))
+                                changeUserData({...userData})
+                        }}
                     />
                 </View>
             </View>   
@@ -76,11 +81,11 @@ const EditAccountScreen = () => {
 
     const getAddressFields = () => {
         return [
-            <View style={styles.fContainer} key={'street'}>
+            <View style={styles.fContainer} key={'address'}>
                 <Text style={styles.text}>Calle: </Text>
                 <FormInput
-                    value={addressData.street}
-                    onChangeText={text => changeAddressData({...addressData, street: text })}
+                    value={addressData.address}
+                    onChangeText={text => changeAddressData({...addressData, address: text })}
                 />
                
             </View>,
@@ -114,7 +119,10 @@ const EditAccountScreen = () => {
                     <Button
                         text="Guardar"
                         style={{backgroundColor: '#EAC71D'}}
-                        onTouch={() => UserService.instance.updateUserInformation(userData)}
+                        onTouch={async () => {
+                            if(await UserService.instance.updateAddress(addressData))
+                                changeAddressData({...addressData})
+                        }}
                     />
                 </View>
 
@@ -136,6 +144,7 @@ const EditAccountScreen = () => {
                     textContentType="password"
                     secureTextEntry={true}
                     onChangeText={text => changePasswordData({...passwordData, current_password: text })}
+                    placeholder={""}
                 />
             </View>,
 
@@ -145,6 +154,7 @@ const EditAccountScreen = () => {
                     textContentType="password"
                     secureTextEntry={true}
                     onChangeText={text => changePasswordData({...passwordData, new_password: text })}
+                    placeholder={""}
                 />
             </View>,
 
@@ -154,6 +164,7 @@ const EditAccountScreen = () => {
                     textContentType="password"
                     secureTextEntry = {true}
                     onChangeText={text => changePasswordData({...passwordData, confirm_new_password: text})}
+                    placeholder={""}
                 />
             </View>,
 
@@ -162,7 +173,11 @@ const EditAccountScreen = () => {
                     <Button
                         text="Guardar"
                         style={{backgroundColor: '#EAC71D'}}
-                        onTouch={() => UserService.instance.updateUserInformation(userData)}
+                        onTouch={async () => {
+                            if(await UserService.instance.updatePassword(passwordData)) 
+                                changePasswordData({})
+                            
+                        }}
                     />
                 </View>
             </View>

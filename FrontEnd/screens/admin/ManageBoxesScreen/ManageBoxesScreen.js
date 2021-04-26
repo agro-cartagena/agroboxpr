@@ -38,7 +38,7 @@ const BoxManagementScreen = () => {
                     fontSize={{fontSize: RFPercentage(2.5)}}
                     still={true}
                 />
-                {/* <View style={box.available ? {} : styles.overlay}/> */}
+                <View style={box.available ? {} : styles.overlay}/>
             </TouchableOpacity>
         )
     }

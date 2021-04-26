@@ -1,9 +1,41 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
-    arrowContainer:{
-        margin:10
+
+    header: {
+        fontSize: 22,
+        margin: 25,
+
+        fontWeight: 'bold',
+        color: 'white',
+        textAlign: 'center',
     },
+
+    hrContainer: {
+        width: '100%',
+        margin: 25
+    },
+
+    hr: {
+        width: '100%',
+        borderBottomWidth: 1,
+        borderColor: '#BA104970',
+    },
+
+    buttonContainer: {
+        width: '50%',
+        height: 45,
+        margin: 30,
+
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignSelf: 'center',
+    },
+
+    localizerContainer:{
+        width: '30%'
+    },
+
     formContainer:{
         width: "100%",
     },
@@ -14,7 +46,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red',
         width: '78%',
         height: 45,
-        margin: 15
+        margin: 20
     },
     text:{
         // justifyContent: 'space-evenly',
@@ -25,11 +57,11 @@ const styles = StyleSheet.create({
         // alignSelf: 'center',
         color: 'white',
         width: '100%',
-        fontSize: 14
+        fontSize: 16
     },
     button:{
-        width: '25%',
-        height: 40,
+        width: '50%',
+        height: '100%',
         alignSelf: 'center',
         marginTop: 30,
         marginBottom: 30

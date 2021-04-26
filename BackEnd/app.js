@@ -2,6 +2,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const db = require('./db/mdb')
+const engines = require('consolidate')
+
 const {
 	authRouter,
 	productRouter,
@@ -9,6 +11,8 @@ const {
 	orderRouter,
 	orderContentRouter
 } = require('./routes')
+
+const paymentRouter = require('./routes/payment')
 
 //Get environment variables
 const dotenv = require('dotenv')
@@ -20,12 +24,17 @@ app.use(cors())
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.engine('ejs', engines.ejs)
+app.set('views', './views')
+app.set('view engine', 'ejs')
+
 //Use Express Routers
 app.use('/api/product', productRouter)
 app.use('/api/box', boxRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/order', orderRouter)
 app.use('/api/content', orderContentRouter) // only to be used for testing build
+app.use('/api/payment', paymentRouter)
 
 
 module.exports = app

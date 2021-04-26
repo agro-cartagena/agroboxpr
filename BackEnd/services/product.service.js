@@ -1,5 +1,7 @@
+const { ObjectID } = require('mongodb')
 const { productDb } = require('../db')
 const { validationMiddleware } = require('../middleware')
+const { validateBoxName } = require('../middleware/validate.middleware')
 
 const {
 	createProductDb,
@@ -75,7 +77,7 @@ const updateProduct = async (id, changes) => {
 		})
 		if (validate != null) {
 			let validateName =  await validateProduct(changes)
-			if(validateName == null){
+			if(validateName == null || validateName._id.toString() == id){
 				return await updateProductDb(id, changes)
 			} else {
 				return false

@@ -1,14 +1,24 @@
-const { orderService } = require('../../services')
+const { orderService, orderContentService } = require('../../services')
 const { orderDb, orderContentDb, productDb } = require('../../db')
 
-const newProduct = require('../mock-data/newOrder.json')
+const newOrder = require('../mock-data/newOrder.json')
 const db = require('../../db/mdb')
 
 const dotenv = require('dotenv')
 dotenv.config()
 
 //test variables
-let testable, test_id, test_change
+let test_order, test_content
+let test_id, test_change
+let product_ids = {
+	ids: [
+		'60776cd54f15dc23034c0a7c',
+		'60776cf54f15dc23034c0a7d',
+		'60776d284f15dc23034c0a7e',
+		'60819070fb6a3f309e2db143',
+	],
+}
+const user_id = '60734b626b9eb2004099f2df'
 
 //db functions within service modified to be written as follow instead of calling using import
 orderDb.createOrderDb = jest.fn()
@@ -18,8 +28,7 @@ orderDb.getOrderByIdDb = jest.fn()
 orderDb.updateOrderDb = jest.fn()
 productDb.decreaseProductDb = jest.fn()
 
-
-describe('Product Service Suite', () => {
+describe('Order Service Suite', () => {
 	beforeAll(async () => {
 		//Connect to MongoDB cluster
 		await db.connect(process.env.CONNECTION_STRING, function (err) {
@@ -33,68 +42,74 @@ describe('Product Service Suite', () => {
 
 		//set up product already in db for modification testing
 		await orderService
-			.getProductById('608319210d68ab45e42baffa')
-			.then((prod) => {
-				testable = {
-					product_name: prod.product_name,
-					product_category: prod.product_category,
-					product_quantity_stock: prod.product_quantity_stock,
-					product_units: prod.product_units,
-					product_price: prod.product_price,
+			.getOrderById('60834e9f3149974a54f8c008')
+			.then((ord) => {
+				test_order = {
+					order_name: ord.order_name,
+					order_number: ord.order_number,
+					delivery_address: ord.delivery_address,
+					delivery_city: ord.delivery_city,
+					delivery_zipcode: ord.delivery_zipcode,
+					total_price: ord.price,
+					payment_method: ord.payment_method,
+					order_status: ord.order_status,
 				}
-				test_id = prod._id
-				test_change = { product_name: prod.product_name + 'updated' }
+				test_id = ord._id
+				test_change = { order_name: ord.order_name + ' updated' }
+			})
+		await orderContentService
+			.getOrderContent('60834e9f3149974a54f8c008')
+			.then((content) => {
+				test_content = content
 			})
 	})
 
-	describe('\n\nInsert Product', () => {
-		it('Should have an insertProduct function', () => {
-			expect(typeof orderService.insertProduct).toBe('function')
+	describe('\n\nInsert order\n', () => {
+		it('Should have an createOrder function', () => {
+			expect(typeof orderService.createOrder).toBe('function')
 		})
 
-		it('Should expect createProductDb to be called sucessfully', async () => {
-			await orderService.insertProduct(newProduct)
-			expect(orderDb.createProductDb).toBeCalledWith(newProduct)
-		})
-
-		it('Should expect createProductDb to fail with product validation', async () => {
-			expect(await orderService.insertProduct(testable)).toBeNull()
-		})
-	})
-
-	describe('\n\nDelete Product', () => {
-		it('Should have an productService.deleteProduct function', async () => {
-			expect(typeof orderService.deleteProduct).toBe('function')
-		})
-
-		it('Should expect deleteProductDb to be fail without id value', async () => {
-			await orderService.deleteProduct()
-			expect(orderDb.deleteProductDb).not.toBeCalled()
-		})
-
-		it('Should expect deleteProductDb to be called succesfully', async () => {
+		it('Should expect createOrderDb & createOrderContentDb to be called sucessfully', async () => {
 			expect.assertions(2)
-			await orderService.deleteProduct(test_id)
-			expect(orderDb.deleteProductDb).toBeCalled()
-			expect(orderDb.deleteProductDb).toBeCalledWith(test_id)
+			await orderService.createOrder(
+				newOrder.order,
+				newOrder.orderContent,
+				user_id
+			)
+			expect(orderDb.createOrderDb).toBeCalledWith({
+				order_status: 'pendiente',
+				user_id: '60734b626b9eb2004099f2df',
+				...newOrder.order,
+			})
+			expect(orderContentDb.createOrderContentDb).toBeCalledWith({
+				...newOrder.orderContent,
+			})
 		})
 	})
 
-	describe('\n\nUpdate Product', () => {
-		it('Should have an productService.updateProduct function', async () => {
-			expect(typeof orderService.updateProduct).toBe('function')
-		})
-
-		it('Should expect deleteProductDb to be fail without id value', async () => {
-			await orderService.updateProduct()
-			expect(orderDb.updateProductDb).not.toBeCalled()
+	describe('\n\nUpdate order', () => {
+		it('Should have an orderService.updateOrder function', async () => {
+			expect(typeof orderService.updateOrder).toBe('function')
 		})
 
 		it('Should expect updateProductDb to be called succesfully', async () => {
 			expect.assertions(2)
-			await orderService.updateProduct(test_id, test_change)
-			expect(orderDb.updateProductDb).toBeCalled()
-			expect(orderDb.updateProductDb).toBeCalledWith(test_id, test_change)
+			console.log(test_id, test_change)
+			await orderService.updateOrder(test_id, test_change)
+			expect(orderDb.updateOrderDb).toBeCalled()
+			expect(orderDb.updateOrderDb).toBeCalledWith(test_id, test_change)
+		})
+	})
+
+	describe('\n\n Manage Inventory', () => {
+		it('Should have an orderService.updateOrder function', async () => {
+			expect(typeof orderService.manageInventory).toBe('function')
+		})
+
+		it('Should expect updateProductDb to be called succesfully', async () => {
+			console.log(test_id, test_order)
+			await orderService.manageInventory(test_id)
+			expect(productDb.decreaseProductDb).toBeCalled()
 		})
 	})
 

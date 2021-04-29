@@ -1,4 +1,8 @@
-const { orderService, orderContentService } = require('../../services')
+const {
+	orderService,
+	orderContentService,
+	productService,
+} = require('../../services')
 const { orderDb, orderContentDb, productDb } = require('../../db')
 
 const newOrder = require('../mock-data/newOrder.json')
@@ -10,14 +14,15 @@ dotenv.config()
 //test variables
 let test_order, test_content
 let test_id, test_change
-let product_ids = {
-	ids: [
-		'60776cd54f15dc23034c0a7c',
-		'60776cf54f15dc23034c0a7d',
-		'60776d284f15dc23034c0a7e',
-		'60819070fb6a3f309e2db143',
-	],
-}
+let ids = [
+	// values taken directly from the dbs for product and orderContent
+	//using order with id = 60834e9f3149974a54f8c008
+	{ id: '60776c524f15dc23034c0a7b', left: 10 },
+	{ id: '60776cd54f15dc23034c0a7c', left: 10 },
+	{ id: '60776cf54f15dc23034c0a7d', left: 5 },
+	{ id: '60776d284f15dc23034c0a7e', left: 5 },
+]
+
 const user_id = '60734b626b9eb2004099f2df'
 
 //db functions within service modified to be written as follow instead of calling using import
@@ -25,7 +30,6 @@ orderDb.createOrderDb = jest.fn()
 orderContentDb.createOrderContentDb = jest.fn()
 orderDb.getOrderByCityDb = jest.fn()
 orderDb.getOrderByIdDb = jest.fn()
-orderDb.updateOrderDb = jest.fn()
 productDb.decreaseProductDb = jest.fn()
 
 describe('Order Service Suite', () => {
@@ -55,7 +59,6 @@ describe('Order Service Suite', () => {
 					order_status: ord.order_status,
 				}
 				test_id = ord._id
-				test_change = { order_name: ord.order_name + ' updated' }
 			})
 		await orderContentService
 			.getOrderContent('60834e9f3149974a54f8c008')
@@ -70,12 +73,6 @@ describe('Order Service Suite', () => {
 		})
 
 		it('Should expect createOrderDb & createOrderContentDb to be called sucessfully', async () => {
-			expect.assertions(2)
-			await orderService.createOrder(
-				newOrder.order,
-				newOrder.orderContent,
-				user_id
-			)
 			expect(orderDb.createOrderDb).toBeCalledWith({
 				order_status: 'pendiente',
 				user_id: '60734b626b9eb2004099f2df',
@@ -93,11 +90,19 @@ describe('Order Service Suite', () => {
 		})
 
 		it('Should expect updateProductDb to be called succesfully', async () => {
-			expect.assertions(2)
+			test_id = '608b06d688732135572a7b0b'
+			test_change = { order_name: 'Testing update method', total_price: 10 }
+			let order
 			console.log(test_id, test_change)
-			await orderService.updateOrder(test_id, test_change)
-			expect(orderDb.updateOrderDb).toBeCalled()
-			expect(orderDb.updateOrderDb).toBeCalledWith(test_id, test_change)
+			await orderService.updateOrder(test_id, {
+				order_name: 'Testing update method',
+				total_price: 10,
+			})
+			await orderService.getOrderById(test_id).then((result) => {
+				order = result
+			})
+			expect(order.order_name).toBe('Testing update method')
+			expect(order.total_price).toBe(10)
 		})
 	})
 
@@ -107,9 +112,26 @@ describe('Order Service Suite', () => {
 		})
 
 		it('Should expect updateProductDb to be called succesfully', async () => {
+			let test_id = '60834e9f3149974a54f8c008'
 			console.log(test_id, test_order)
+			let init = [
+				await productService.getProductById(ids[0].id),
+				await productService.getProductById(ids[1].id),
+				await productService.getProductById(ids[2].id),
+				await productService.getProductById(ids[3].id),
+			]
 			await orderService.manageInventory(test_id)
-			expect(productDb.decreaseProductDb).toBeCalled()
+			let totals = [
+				await productService.getProductById(ids[0].id),
+				await productService.getProductById(ids[1].id),
+				await productService.getProductById(ids[2].id),
+				await productService.getProductById(ids[3].id),
+			]
+			expect(totals[0].product_quantity_stock).toBe(init[0].product_quantity_stock - ids[0].left)
+			expect(totals[1].product_quantity_stock).toBe(init[1].product_quantity_stock - ids[1].left)
+			expect(totals[2].product_quantity_stock).toBe(init[2].product_quantity_stock - ids[2].left)
+			expect(totals[3].product_quantity_stock).toBe(init[3].product_quantity_stock - ids[3].left)
+
 		})
 	})
 

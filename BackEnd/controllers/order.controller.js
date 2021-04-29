@@ -18,7 +18,7 @@ const postOrder = async (req, res, next) => {
 	const content = req.body.order_content
 	const userId = req.userId
 
-	console.log("Content: ",content)
+	console.log('Content: ', content)
 	try {
 		await createOrder(order, content, userId)
 		res.sendStatus(200)
@@ -30,14 +30,17 @@ const postOrder = async (req, res, next) => {
 }
 
 const getUserOrders = async (req, res, next) => {
-	const userId = req.userId
-		try {
+	const userId = req.params.id
+	try {
 		let validate
 		await validateUserId(userId).then((result) => {
 			validate = result
 		})
 		if (validate != null) {
 			await readUserOrders(userId).then((orders) => {
+				if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+				if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+				if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 				res.status(200).send(orders)
 				next()
 			})
@@ -143,7 +146,6 @@ const manage = async (req, res, next) => {
 		})
 
 		if (validate != null) {
-
 			await manageInventory(id).then((result) => {
 				response = result
 				if (response == true) {
@@ -153,7 +155,6 @@ const manage = async (req, res, next) => {
 					res.sendStatus(404) && next()
 				}
 			})
-
 		}
 	} catch (e) {
 		console.log(e.message)
@@ -169,5 +170,5 @@ module.exports = {
 	update,
 	getAll,
 	manage,
-	getByStatus
+	getByStatus,
 }

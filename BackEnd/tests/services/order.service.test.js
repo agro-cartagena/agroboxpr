@@ -15,6 +15,8 @@ dotenv.config()
 let test_order, test_content
 let test_id, test_change
 let ids = [
+	// values taken directly from the dbs for product and orderContent
+	//using order with id = 60834e9f3149974a54f8c008
 	{ id: '60776c524f15dc23034c0a7b', left: 10 },
 	{ id: '60776cd54f15dc23034c0a7c', left: 10 },
 	{ id: '60776cf54f15dc23034c0a7d', left: 5 },

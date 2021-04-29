@@ -15,8 +15,10 @@ const { validateId, validateUserId, validateCity } = validationMiddleware
 
 const postOrder = async (req, res, next) => {
 	const order = req.body.order
-	const content = req.body.orderContent
+	const content = req.body.order_content
 	const userId = req.userId
+
+	console.log("Content: ",content)
 	try {
 		await createOrder(order, content, userId)
 		res.sendStatus(200)
@@ -28,8 +30,8 @@ const postOrder = async (req, res, next) => {
 }
 
 const getUserOrders = async (req, res, next) => {
-	const userId = req.params.id
-	try {
+	const userId = req.userId
+		try {
 		let validate
 		await validateUserId(userId).then((result) => {
 			validate = result

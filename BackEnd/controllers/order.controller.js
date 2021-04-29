@@ -30,7 +30,7 @@ const postOrder = async (req, res, next) => {
 }
 
 const getUserOrders = async (req, res, next) => {
-	const userId = req.params.id
+	const userId = req.userId
 	try {
 		let validate
 		await validateUserId(userId).then((result) => {
@@ -62,6 +62,9 @@ const getById = async (req, res, next) => {
 		})
 		if (validate != null) {
 			await getOrderById(id).then((order) => {
+				if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+				if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+				if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 				res.status(200).send(order)
 				next()
 			})
@@ -83,6 +86,9 @@ const getByCity = async (req, res, next) => {
 		})
 		if (validate != null) {
 			await getOrderByCity(city).then((order) => {
+				if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+				if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+				if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 				res.status(200).send(order)
 				next()
 			})
@@ -110,6 +116,9 @@ const getByStatus = async (req, res, next) => {
 const getAll = async (req, res, next) => {
 	try {
 		await getAllOrders().then((orders) => {
+			if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+			if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+			if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 			res.status(200).send(orders)
 			next()
 		})

@@ -7,7 +7,7 @@ router.get('/athm', PaymentController.viewATHM)
 // router.post('/athm', PaymentController.processATHM)
 
 router.get('/paypal', PaymentController.viewPayPal)
-router.get('/process/paypal', PaymentController.processPayPal)
+router.post('/process/paypal', PaymentController.processPayPal)
 
 router.get('/success', PaymentController.handleSuccess)
 router.get('/cancel', PaymentController.handleCancel)

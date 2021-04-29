@@ -114,10 +114,12 @@
         <h1 class="header">Loading...</h1>
         <div class="loader"></div>
         
-        <form name="f1" action="/api/payment/process/paypal"></form>
+        <form name="f1" action="/api/payment/process/paypal" method="POST">
+            <input type="text" id="price" key="price" style="display: none;">
+        </form>
 
-        <script>
+        <!-- <script>
             document.f1.submit()
-        </script>
+        </script> -->
     </body>
 </html>

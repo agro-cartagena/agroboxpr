@@ -19,6 +19,7 @@ class PaymentController {
     }
 
     processPayPal = async (req, res) => {
+        console.log(req.body)
         var create_payment_json = {
             "intent": "sale",
             "payer": {
@@ -29,20 +30,20 @@ class PaymentController {
                 "cancel_url": "http://localhost:5000/api/payment/cancel"
             },
             "transactions": [{
-                "item_list": {
-                    "items": [{
-                        "name": "item",
-                        "sku": "item",
-                        "price": "1.00",
-                        "currency": "USD",
-                        "quantity": 1
-                    }]
-                },
+                // "item_list": {
+                //     "items": [{
+                //         "name": "item",
+                //         "sku": "item",
+                //         "price": "1.00",
+                //         "currency": "USD",
+                //         "quantity": 1
+                //     }]
+                // },
                 "amount": {
                     "currency": "USD",
                     "total": "1.00"
                 },
-                "description": "This is the payment description."
+                "description": "Pagarés hecho hacia AgroBox PR."
             }]
         };
         
@@ -80,13 +81,16 @@ class PaymentController {
             } else {
                 console.log("Get Payment Response");
                 console.log(JSON.stringify(payment));
-                res.render('success')
+
+                const script = `<script>window.ReactNativeWebView.postMessage(${paymentId})</script>`
+
+                res.render('Success', { paymentId: script })
             }
         });
     }
 
     handleCancel = async (req, res) => {
-        res.render('cancel')
+        res.render('Cancel')
     }
 }
 

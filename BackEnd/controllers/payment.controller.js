@@ -6,7 +6,6 @@ paypal.configure({
     'client_secret': 'EI2fe9phC3ZSdlnJeDSHrL2F1bsy67EGUT-XBD6a7YQE7d4ajlmWqQCUGnoBHeP8vtnqJhJ04bNlE3zQ'
 })
 
-
 class PaymentController {
     constructor() {}
 
@@ -19,29 +18,21 @@ class PaymentController {
     }
 
     processPayPal = async (req, res) => {
-        console.log(req.body)
+        const price = req.body.price
+
         var create_payment_json = {
             "intent": "sale",
             "payer": {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": "http://localhost:5000/api/payment/success",
+                "return_url": `http://localhost:5000/api/payment/success?price=${price}`,
                 "cancel_url": "http://localhost:5000/api/payment/cancel"
             },
             "transactions": [{
-                // "item_list": {
-                //     "items": [{
-                //         "name": "item",
-                //         "sku": "item",
-                //         "price": "1.00",
-                //         "currency": "USD",
-                //         "quantity": 1
-                //     }]
-                // },
                 "amount": {
                     "currency": "USD",
-                    "total": "1.00"
+                    "total": price
                 },
                 "description": "Pagarés hecho hacia AgroBox PR."
             }]
@@ -60,16 +51,16 @@ class PaymentController {
     }
 
     handleSuccess = async (req, res) => {
-        // res.send("Success")
         const PayerID = req.query.PayerID,
-              paymentId = req.query.paymentId;
+              paymentId = req.query.paymentId,
+              price = req.query.price;
 
         var execute_payment_json = {
             "payer_id": PayerID,
             "transactions": [{
                 "amount": {
                     "currency": "USD",
-                    "total": "1.00"
+                    "total": price
                 }
             }]
         };
@@ -82,9 +73,7 @@ class PaymentController {
                 console.log("Get Payment Response");
                 console.log(JSON.stringify(payment));
 
-                const script = `<script>window.ReactNativeWebView.postMessage(${paymentId})</script>`
-
-                res.render('Success', { paymentId: script })
+                res.render('Success', { paymentId: paymentId })
             }
         });
     }

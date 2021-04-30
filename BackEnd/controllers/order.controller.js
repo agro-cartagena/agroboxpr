@@ -45,7 +45,13 @@ const getUserOrders = async (req, res, next) => {
 				next()
 			})
 		} else {
-			res.sendStatus(404) && next()
+			const orders = {
+				"Pendiente": [],
+				"En Camino": [],
+				"Completada": []
+			}
+
+			res.status(200).send(orders) && next()
 		}
 	} catch (e) {
 		console.log(e.message)

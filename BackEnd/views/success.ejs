@@ -3,13 +3,13 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
         <title>success</title>
+        <script> const paymentId = "<%= paymentId %>"; </script>
     </head>
     <body>
-        <!-- <h1>Transaction Successful</h1> -->
-        <%- paymentId -%>
         <script>
-            // window.ReactNativeWebView.postMessage({paymentId})
+            window.ReactNativeWebView.postMessage(paymentId)
         </script>
     </body>
 </html>

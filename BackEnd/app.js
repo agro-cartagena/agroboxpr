@@ -13,6 +13,7 @@ const {
 } = require('./routes')
 
 const paymentRouter = require('./routes/payment')
+const geocodingRouter = require('./routes/geocoding')
 
 //Get environment variables
 const dotenv = require('dotenv')
@@ -35,6 +36,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/order', orderRouter)
 app.use('/api/content', orderContentRouter) // only to be used for testing build
 app.use('/api/payment', paymentRouter)
+app.use('/api/geocoder', geocodingRouter)
 
 
 module.exports = app

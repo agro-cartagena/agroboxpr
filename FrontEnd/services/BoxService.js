@@ -27,8 +27,8 @@ export default class BoxService extends Service {
                         return response.json()
 
                     default:
-                        // alert("Ha ocurrido un error. Por favor intente más tarde.")
-                        return false;
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return box_list;
                 }
             })
             .then((box_list) => {
@@ -36,7 +36,7 @@ export default class BoxService extends Service {
             })
             .catch((error) => {
                 alert("Error de conexión.")
-                return false;
+                return box_list;
             })
     }
 
@@ -49,7 +49,7 @@ export default class BoxService extends Service {
                         
                     default:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
-                        return false;
+                        return box_list;
                 }
             })
             .then((box_list) => {

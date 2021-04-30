@@ -14,7 +14,8 @@ const ViewOrdersScreen = () => {
 
     React.useEffect(() => {
         async function fetchData() {
-            setOrders(await OrderService.instance.getUserOrders())
+            if(UserService.instance.isAuthenticated())
+                setOrders(await OrderService.instance.getUserOrders())
         }
 
         fetchData()

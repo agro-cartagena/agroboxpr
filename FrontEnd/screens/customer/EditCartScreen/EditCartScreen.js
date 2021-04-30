@@ -10,16 +10,11 @@ import global_styles from '../../../styles'
 import InteractiveProductCard from '../../../components/InteractiveProductCard/InteractiveProductCard'
 import CartService from '../../../services/CartService'
 
-// box content is passed through props.params.content LIST OF OBJECTS 
+// box is passed as parameter through
 const EditCartScreen = (props) => {
-
-    const [content, setContent] = React.useState([])
-    const [subTotal, setSubTotal] = React.useState(40)
+    const [box, setBox] = React.useState(props.params)
+    const [subTotal, setSubTotal] = React.useState(props.params.box_accumulated_price)
     
-    React.useEffect(() => {
-        setContent(props.params.box_content)
-    }, [])
-
     const displayContent = () => {
 
         const askToRemoveProduct = (target_product) => {
@@ -33,7 +28,7 @@ const EditCartScreen = (props) => {
                     {
                         text: 'Eliminar',
                         onPress: () => {
-                            setContent(content.filter((product) => product._id != target_product._id))
+                            box.box_content = box.box_content.filter((product) => product._id != target_product._id)
                             setSubTotal(Number((subTotal - target_product.product_price).toFixed(2)))
                         }
                     }
@@ -79,26 +74,15 @@ const EditCartScreen = (props) => {
                 let total = subTotal - (target_product.product_price * target_product.product_quantity_box)
 
                 target_product.product_quantity_box = newQuantity
-                setSubTotal((total + target_product.product_price * newQuantity).toFixed(2))
+                total = (total + target_product.product_price * newQuantity).toFixed(2) 
+                setSubTotal(Number(total))
             }
         }
 
-        const randomize = (string) => {
-            let arr = string.split(""),
-                size = arr.length;
-    
-            for(let currentIndex = (size-1); currentIndex>0; currentIndex--) {
-                let randomIndex = Math.floor(Math.random() * (currentIndex + 1));
-                [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]]
-            }
-
-            return arr.join("");
-        }
-
-        return content.map((product) => 
-            <View style={styles.card} key={randomize(product._id)}>
+        return box.box_content.map((product) => 
+            <View style={styles.card} key={product._id}>
                 <InteractiveProductCard
-                    product = {{...product}}
+                    product = {product}
                     onPlus = {() => increaseProductQuantity(product)}
                     onMinus = {() => decreaseProductQuantity(product)}
                     onText = {(text) => changeProductQuantity(product, text)}
@@ -118,10 +102,10 @@ const EditCartScreen = (props) => {
                 }, 
                 {
                     text: 'Guardar',
-                    onPress: () => {
-                        props.params.box_accumulated_price = subTotal
-                        props.params.box_content = [...content]
-                        Navigator.instance.goToCart()
+                    onPress: async () => { 
+                        box.box_accumulated_price = subTotal
+                        if(await CartService.instance.updateCart(box))
+                            Navigator.instance.goToCart()
                     }
                 }
             ]

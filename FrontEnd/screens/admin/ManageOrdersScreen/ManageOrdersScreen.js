@@ -15,7 +15,7 @@ const ManageOrdersScreen = () => {
 
     React.useEffect(() => {
         async function fetchData() {
-            setOrders(await OrderService.instance.getUserOrders())
+            setOrders(await OrderService.instance.getAllOrders())
         }
 
         fetchData()
@@ -35,10 +35,7 @@ const ManageOrdersScreen = () => {
                             text: 'En Camino',
                             onPress: async () => {
                                 if(await OrderService.instance.updateOrderStatus(item._id, 'En Camino')){
-                                    // setOrders(await OrderService.instance.getAllOrders())
-
-                                    item.order_status = 'En Camino'
-                                    setOrders({...orders})
+                                    setOrders(await OrderService.instance.getAllOrders())
                                 }
                             }
 
@@ -47,10 +44,7 @@ const ManageOrdersScreen = () => {
                             text: 'Pendiente',
                             onPress: async () => {
                                 if(await OrderService.instance.updateOrderStatus(item._id, 'Pendiente')){
-                                    // setOrders(await OrderService.instance.getAllOrders())
-
-                                    item.order_status = 'Pendiente'
-                                    setOrders({...orders})
+                                    setOrders(await OrderService.instance.getAllOrders())
                                 }
                             }
 
@@ -59,10 +53,7 @@ const ManageOrdersScreen = () => {
                             text: 'Completada',
                             onPress: async () => {
                                 if(await OrderService.instance.updateOrderStatus(item._id, 'Completada')){
-                                    // setOrders(await OrderService.instance.getAllOrders())
-
-                                    item.order_status = 'Completada'
-                                    setOrders({...orders})
+                                    setOrders(await OrderService.instance.getAllOrders())
                                 }
                             }
                             

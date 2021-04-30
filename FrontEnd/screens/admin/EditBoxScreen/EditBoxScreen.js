@@ -22,7 +22,7 @@ const EditBoxScreen = (props) => {
 
     const [boxData, setBoxData] = React.useState({})
     const [productCatalog, setProductCatalog] = React.useState({})
-    const [boxImage, setBoxImage] = React.useState('')
+    const [boxImage, setBoxImage] = React.useState({})
     // const [isAvailable, setAvailable] = React.useState(props.params.available)
     const [isAvailable, setAvailable] = React.useState(props.params.available)
 
@@ -31,7 +31,7 @@ const EditBoxScreen = (props) => {
             let _box = _isNewBox ? {
                 box_name: '',
                 box_price: '',
-                box_image: '',
+                box_image: {},
                 box_content: []
             } : {
                 ...props.params, 
@@ -199,6 +199,7 @@ const EditBoxScreen = (props) => {
                 <View style={styles.button}>
                     <Button
                         text="Guardar"
+                        style={{backgroundColor: '#EAC71D'}}
                         onTouch={submitHandler}
                     />
                 </View>
@@ -228,6 +229,10 @@ const EditBoxScreen = (props) => {
     }
 
     const submitHandler = async () => {
+        if(boxData.box_content.length == 0 && (!boxData.box_name.includes("Crea") || !boxData.box_name.includes("Build"))) {
+            alert("El contenido de la caja no puede estar vacío.")
+            return
+        }
 
         // let body = new FormData()
         // body.append('file', boxImage)
@@ -288,7 +293,6 @@ const EditBoxScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewBox ? 'ejemplo: 45.00': String(boxData.box_price) }
-                        value={Number(boxData.box_price)}
                         onChangeText = { (text) => setBoxData({...boxData, box_price: Number(text)}) }
                     />
                 </View>

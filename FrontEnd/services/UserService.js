@@ -25,17 +25,18 @@ export default class UserAuthenticationService extends Service {
 
     // This method gets called only once on init to fetch the token from storage.
     async loadWebToken() {
+        // Try-Catch to overkill solution as error is devastating. 
         try {
             AsyncStorage.getItem('jwt_key')
-            .then((token) => {
-                // Resolves to token if it exists; 
-                // otherwise, resolves to null.
-                this.webToken = token
-            })
-            .catch((error) => {
-                alert("error loading token.")
-                console.error(error)
-            })
+                .then((token) => {
+                    // Resolves to token if it exists; 
+                    // otherwise, resolves to null.
+                    this.webToken = token
+                })
+                .catch((error) => {
+                    alert("error loading token.")
+                    console.error(error)
+                })
         } catch(error) {
             this.webToken = null
         }
@@ -135,6 +136,11 @@ export default class UserAuthenticationService extends Service {
             return false;
         }
 
+        else if(!data.email.includes("@")){
+            alert("Correo electrónico no es válido.")
+            return false
+        }
+
         else {
             // Declare payload.
             let payload = {
@@ -182,6 +188,11 @@ export default class UserAuthenticationService extends Service {
                 alert("Entrada vacía.")
                 return 
             }     
+        }
+
+        if(!userData.email.includes("@")) {
+            alert("Correo electrónico no es válido.")
+            return false;
         }
 
         // Declare payload.
@@ -265,9 +276,19 @@ export default class UserAuthenticationService extends Service {
             }     
         }
 
-        if(passwordData["new_password"] != passwordData["confirm_new_password"]){
-            alert("Contraseñas nuevas no son iguales.")
-            return
+        if(passwordData["new_password"] != passwordData["confirm_new_password"]) {
+            alert("Contraseñas no concuerdan.") 
+            return false
+        }
+
+        else if(passwordData["new_password"].includes("password")){
+            alert("Contraseña no es válida.")
+            return false;
+        }
+
+        else if(passwordData["new_password"].length < 8){
+            alert("Contraseña debe tener al menos 8 caracteres.")
+            return false;
         }
 
         // Declare payload.
@@ -322,8 +343,7 @@ export default class UserAuthenticationService extends Service {
             .then(response => {
                 switch(response.status){
                     case 200:
-                        response.json()
-                        break;
+                        return response.json() 
                     
                     default:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")

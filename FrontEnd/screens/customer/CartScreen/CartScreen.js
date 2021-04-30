@@ -16,7 +16,17 @@ import Button from '../../../components/Button/Button'
 import Navigator from '../../../Navigator'
 
 const CartScreen = () => {
-    const [cartData, setCartData] = React.useState(CartService.instance.getCart())
+    const [cartData, setCartData] = React.useState([])
+    const [cartTotal, setCartTotal] = React.useState(0) // Compute cart total locally.
+
+    React.useEffect(() => {
+        async function fetchData() {
+            setCartData(await CartService.instance.getCart())
+            setCartTotal(await CartService.instance.getCartTotal())
+        }
+
+        fetchData()
+    }, [])
 
     const loadCart = () => {
         const increaseBoxQuantity = (box) => {
@@ -68,9 +78,11 @@ const CartScreen = () => {
                     },
                     {
                         text: 'Remover',
-                        onPress: () => {
-                            CartService.instance.removeFromCart(target_box)
-                            setCartData(CartService.instance.getCart())
+                        onPress: async () => {
+                            if(await CartService.instance.removeFromCart(target_box)) {
+                                setCartData(await CartService.instance.getCart())
+                                setCartTotal(await CartService.instance.getCartTotal())
+                            }
                         }
                     }
                 ]
@@ -78,7 +90,7 @@ const CartScreen = () => {
         }
 
         return cartData.map((box, index) => 
-            <View style={[styles.itemContainer, cartData[index+1] ? styles.hr : {}]} key={box._id}>
+            <View style={[styles.itemContainer, cartData[index+1] ? styles.hr : {}]} key={box.key}>
                 <TouchableOpacity style={styles.cardContainer} 
                     onPress={() => Navigator.instance.goToEditCart(box)}>
                     <BoxCard
@@ -113,13 +125,6 @@ const CartScreen = () => {
         )
     }
 
-    const getTotalPrice = () => {
-        let total_price = 0
-        cartData.forEach((item) => {total_price += item.box_accumulated_price * item.box_quantity})
-
-        return Number(total_price.toFixed(2))
-    }
-
     const displayCart = () => {
         if(cartData.length == 0) {
             return (
@@ -146,7 +151,15 @@ const CartScreen = () => {
                                     alert("Por favor inicie una sesión o cree una cuenta nueva para proceder con su orden.")
                                     Navigator.instance.goToLogin(true)
                                 } else {
-                                    Navigator.instance.goToCheckout()
+                                    const order = {
+                                        order_info: {
+                                            total_price: cartTotal
+                                        },
+
+                                        order_content: cartData
+                                    }
+
+                                    Navigator.instance.goToCheckout(order)
                                 }
                                 
                             }}
@@ -157,8 +170,6 @@ const CartScreen = () => {
             )
         }
     }
-
-    const [cartTotal, setCartTotal] = React.useState(getTotalPrice())
 
     return(
         <ScrollView>

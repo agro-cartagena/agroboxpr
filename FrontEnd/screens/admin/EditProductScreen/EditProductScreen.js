@@ -80,6 +80,7 @@ const ProductScreen = (props) => {
                 <View style={styles.button}>
                     <Button
                         text="Guardar"
+                        style={{backgroundColor: '#EAC71D'}}
                         onTouch = {submitHandler}
                     />
                 </View>
@@ -100,7 +101,6 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewProduct ? 'ejemplo: Brocoli' : productData.product_name}
-                        value = {productData.product_name}
                         onChangeText = { (text) => changeProductData({...productData, product_name: text}) }
                     />
                 </View>
@@ -109,7 +109,6 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewProduct ? 'ejemplo: Vegetales': productData.product_category}
-                        value = {productData.product_category}
                         onChangeText = { (text) => changeProductData({...productData, product_category: text}) }
                     />
                 </View>
@@ -119,7 +118,6 @@ const ProductScreen = (props) => {
                     <FormInput
                         keyboardType = "numeric"
                         placeholder = { _isNewProduct ? 'ejemplo: 3': String(productData.product_quantity_stock)}
-                        value = {productData.product_quantity_stock}
                         onChangeText = { (text) => changeProductData({...productData, product_quantity_stock: Number(text)}) }
                     />
                 </View>
@@ -129,7 +127,6 @@ const ProductScreen = (props) => {
                     <FormInput
                         autoCapitalize="none"
                         placeholder = { _isNewProduct ? 'ejemplo: lbs' : productData.product_units}
-                        value = {productData.product_units}
                         onChangeText = { (text) => changeProductData({...productData, product_units: text}) }
                     />
                 </View>

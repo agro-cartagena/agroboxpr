@@ -26,6 +26,7 @@ import EditCartScreen from './screens/customer/EditCartScreen/EditCartScreen'
 
 import ManageOrdersScreen from './screens/admin/ManageOrdersScreen/ManageOrdersScreen'
 import ContactUsScreen from './screens/customer/ContactUsScreen/ContactUsScreen'
+import OrderConfirmationScreen from './screens/customer/OrderConfirmationScreen/OrderConfirmationScreen'
 
 const Routes = () => {
     return(
@@ -50,6 +51,7 @@ const Routes = () => {
                 <Scene key="edit_cart" component={EditCartScreen} title="Edit Cart" hideNavBar={true} />
                 <Scene key="order_management" component={ManageOrdersScreen} title="Order Management" hideNavBar={true} />
                 <Scene key="contact_us" component={ContactUsScreen} title="Contact Us" hideNavBar={true} />
+                <Scene key="order_confirmation" component={OrderConfirmationScreen} title="Order Confirmation" hideNavBar={true} />
             </Scene>
         </Router>
     )

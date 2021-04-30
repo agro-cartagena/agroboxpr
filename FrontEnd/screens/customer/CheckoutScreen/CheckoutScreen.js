@@ -13,9 +13,9 @@ import global_styles from '../../../styles'
 
 import Localizer from '../../../components/Localizer/Localizer'
 
-const CheckoutScreen = () => {
-    const [userData, changeUserData] = React.useState({})
+const CheckoutScreen = (props) => {
 
+    const [userData, changeUserData] = React.useState({})
     const [addressData, changeAddressData] = React.useState({})
 
     React.useEffect(() => {
@@ -28,6 +28,37 @@ const CheckoutScreen = () => {
 
         fetchData()
     }, [])
+
+    const submitHandler = () => {
+        for(property in userData){
+            if(!userData[property]) {
+                alert("Entrada vacía.")
+                return
+            }
+        }
+
+        for(property in addressData) {
+            if(!addressData[property]) {
+                alert("Entrada vacía.")
+                return
+            }
+        }
+
+        const order = {
+            order_info: {
+                ...props.params.order_info,
+                order_name: userData.name,
+                order_number: userData.phone,
+                delivery_address: addressData.address,
+                delivery_city: addressData.city,
+                delivery_state: addressData.state,
+                delivery_zipcode: addressData.zipcode
+            }, 
+            order_content: props.params.order_content
+        }
+
+        Navigator.instance.goToPayment(order)
+    }
 
     return (
         <KeyboardAwareScrollView>
@@ -93,23 +124,7 @@ const CheckoutScreen = () => {
             <View style={styles.buttonContainer}>
                 <View style={styles.button}>
                     <Button
-                        onTouch={() => {
-                            for(property in userData){
-                                if(!userData[property]) {
-                                    alert("Entrada vacía.")
-                                    return
-                                }
-                            }
-
-                            for(property in addressData) {
-                                if(!addressData[property]) {
-                                    alert("Entrada vacía.")
-                                    return
-                                }
-                            }
-
-                            Navigator.instance.goToPayment()
-                        }}
+                        onTouch={submitHandler}
                         text="Continuar"
                     />
                 </View>

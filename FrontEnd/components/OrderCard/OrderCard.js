@@ -14,13 +14,13 @@ const OrderCard = (props) => {
     const [displayContent, toggleDisplay] = React.useState(false)
     const [content, setContent] = React.useState([])
 
-    // React.useEffect(() => {
-    //     async function fetchData() {
-    //         setContent(await OrderService.instance.getOrderContent(order_info._id))
-    //     }
+    React.useEffect(() => {
+        async function fetchData() {
+            setContent(await OrderService.instance.getOrderContent(order_info._id))
+        }
 
-    //     fetchData()
-    // }, [])
+        fetchData()
+    }, [])
 
     const fetchAddress = () => {
         const {delivery_address, delivery_city, delivery_state, delivery_zipcode} = order_info
@@ -116,7 +116,7 @@ const OrderCard = (props) => {
                 return {
                     name: box.box_name,
                     quantity: box.box_quantity,
-                    price: box.box_price,
+                    price: box.box_accumulated_price,
                     data: box.box_content,
                 }
             })
@@ -173,7 +173,7 @@ const OrderCard = (props) => {
                 </ScrollView>
 
                 <View style={styles.textContainer}>
-                        <Text>Precio total de la orden: <Text style={{fontWeight: 'bold'}}>${order_info.order_total}</Text></Text>
+                        <Text>Precio total de la orden: <Text style={{fontWeight: 'bold'}}>${order_info.total_price}</Text></Text>
                         <Text>Método de pago: <Text style={{fontWeight: 'bold'}}>{order_info.payment_method}</Text></Text>
                         <Text>Número de transacción: <Text style={{fontWeight: 'bold'}}>{order_info.transaction_id}</Text></Text>
                 </View>
@@ -185,27 +185,35 @@ const OrderCard = (props) => {
         <View>
             <TouchableOpacity style={[styles.cardContainer, global_styles.shadow]} onPress={() => toggleDisplay(!displayContent)}>
                 <View style={styles.info}>
-                    <TouchableOpacity onPress={askToCall}>
-                        <Text style={styles.text}>{order_info.order_name}</Text>
-                        <Text style={styles.text}>{order_info.order_number}</Text>
-                    </TouchableOpacity>
+                    <View style={styles.quartet}>
+                        <TouchableOpacity onPress={askToCall} style={{alignSelf: 'flex-start'}}>
+                            <Text style={styles.text}>{order_info.order_name}</Text>
+                            <Text style={styles.text}>{order_info.order_number}</Text>
+                        </TouchableOpacity>
+                    </View>
                 
-                    <TouchableOpacity onPress={askToLaunchGPS}>
-                        <Text style={styles.text}>{order_info.delivery_address}</Text>
-                        <Text style={styles.text}>{order_info.delivery_city} {order_info.delivery_state} {order_info.delivery_zipcode}</Text>
-                    </TouchableOpacity>
+                    <View style={[styles.quartet, {justifyContent: 'flex-end'}]}>
+                        <TouchableOpacity onPress={askToLaunchGPS} style={{alignSelf: 'flex-start'}}>
+                            <Text style={styles.text}>{order_info.delivery_address}</Text>
+                            <Text style={styles.text}>{order_info.delivery_city} {order_info.delivery_state} {order_info.delivery_zipcode}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 <View style={styles.info}>
-                    <TouchableOpacity style={styles.orderInfo} onPress={props.updateStatus}>
-                        <Text style={styles.text}>#{order_info._id}</Text>
-                        <Text style={styles.text}>{order_info.order_status}</Text>
-                    </TouchableOpacity>
+                    <View style={styles.orderInfo}style={[styles.quartet]}>
+                        <TouchableOpacity onPress={props.updateStatus} style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
+                            <Text style={styles.text}>#{order_info.uid}</Text>
+                            <Text style={styles.text}>{order_info.order_status}</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                    <TouchableOpacity style={styles.orderInfo} onPress={askToCopyTransactionId}>
-                        <Text style={styles.text}>{order_info.order_date}</Text>
-                        <Text style={styles.text}>${order_info.order_total} - {order_info.payment_method}</Text>
-                    </TouchableOpacity>
+                    <View style={styles.orderInfo}style={[styles.quartet, {justifyContent: 'flex-end'}]}>
+                        <TouchableOpacity onPress={askToCopyTransactionId} style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
+                           <Text style={styles.text}>{order_info.order_date}</Text>
+                            <Text style={styles.text}>${order_info.total_price} - {order_info.payment_method}</Text> 
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </TouchableOpacity>
 

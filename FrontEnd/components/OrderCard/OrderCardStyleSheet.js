@@ -26,11 +26,20 @@ const styles = StyleSheet.create({
     },
 
     info: {
+        width: '50%',
+        height: '100%',
         justifyContent: 'space-between'
     },
 
     orderInfo: {
         alignItems: 'flex-end'
+    },
+
+    quartet: {
+        width: '100%',
+        height: '50%',
+        // borderWidth: 1,
+        // borderColor: 'black', 
     },
 
     text: {

@@ -12,8 +12,7 @@ export default class ProductService extends Service {
             .then(response => {
                 switch(response.status){
                     case 200:
-                        response.json()
-                        break;
+                        return response.json()
 
                     default:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
@@ -34,7 +33,7 @@ export default class ProductService extends Service {
             })
             .catch((error) => {
                 alert("Error de conexión.")
-                return false
+                return catalog
             })
     }
 

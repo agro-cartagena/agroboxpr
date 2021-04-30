@@ -1,36 +1,52 @@
 import React from 'react'
-import { Text, View, ScrollView, TouchableOpacity, Linking, Image } from 'react-native'
+import { Text, View, ScrollView, TouchableOpacity, Linking, Image, Alert } from 'react-native'
 import { WebView } from 'react-native-webview'
 
 import Navigator from '../../../Navigator'
 import BackArrow from '../../../components/BackArrow/BackArrow'
-import BoxCard from '../../../components/BoxCard/BoxCard'
+import PopUp from '../../../components/PopUp/PopUp'
 
+import OrderService from '../../../services/OrderService'
 import CartService from '../../../services/CartService'
 import Logo from '../../../components/Logo/Logo'
 import styles from './PaymentScreenStyleSheet'
 
-import PopUp from '../../../components/PopUp/PopUp'
-
 const PaymentScreen = (props) => {
-
-    const [paymentData, setPaymentData] = React.useState(CartService.instance.getCart())
     const [showPayPal, togglePayPal] = React.useState(false)
+    const [price, setPrice] = React.useState(0)
+    const [transactionId, setTransactionId] = React.useState('N/A')
 
-    const getTotalPrice = () => {
-        return CartService.instance.getCartTotal()
+    React.useEffect(() => {
+        setPrice(props.params.order_info.total_price)
+    }, [])
+
+    const submitOrder = async (payment_method) => {
+        const order = {
+            order: {
+                ...props.params.order_info,
+                payment_method: payment_method, 
+                transaction_id: transactionId, 
+                order_status: "Pendiente"
+            }, 
+            order_content: props.params.order_content
+        }
+
+        if(await OrderService.instance.submitOrder(order)) {
+            await CartService.instance.refreshCart();
+            Navigator.instance.goToOrderConfirmation()
+        }
     }
 
     const displayPayPal = () => {
-        const handlePayPal = (data) => {
+        const handlePayPal = async (data) => {
             switch(data.title) {
                 case 'success':
-                    // Submit order.
                     togglePayPal(!showPayPal)
+
+                    submitOrder("PayPal")
                     break;
 
                 case 'cancel':
-                    alert("Canceled")
                     togglePayPal(!showPayPal)
                     break;
 
@@ -42,9 +58,35 @@ const PaymentScreen = (props) => {
         return (
             <WebView
                 style={{width: '100%', height: '100%'}}
+                // Change uri source to deployed route url.
                 source={{uri: 'http://10.0.0.6:5000/api/payment/paypal'}}
                 onNavigationStateChange={handlePayPal}
+                onMessage={(event) => {setTransactionId(event.nativeEvent.data)}}
+                injectedJavaScript={`document.getElementById("price").value=${price}; document.f1.submit(); true;`}
             />
+        )
+    }
+
+    const handleCash = () => {
+        Alert.alert(
+            'Términos y Condiciones', 
+            `Al escoger el metodo de pago "Cash" usted se compromete 
+            a hacer el pagarés en el momento de entregársele su orden. 
+            De no ser así, su orden puede quedar anulada y no se le 
+            entregarán los productos. Por favor indique si acepta nuestros 
+            términos y condiciones.`, 
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Aceptar',
+                    onPress: () => {
+                        submitOrder("Cash")
+                    }
+                }
+            ]
         )
     }
 
@@ -54,7 +96,7 @@ const PaymentScreen = (props) => {
 
             <Logo/>
 
-            <Text style={styles.header}>Total a pagar: <Text style={{color: '#EAC71D'}}>${getTotalPrice()}</Text></Text>
+            <Text style={styles.header}>Total a pagar: <Text style={{color: '#EAC71D'}}>${price}</Text></Text>
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('http://10.0.0.6:5000/api/payment/athm')}>
@@ -89,7 +131,7 @@ const PaymentScreen = (props) => {
                     />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={handleCash}>
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>Cash</Text>
                     </View>

@@ -1,8 +1,6 @@
 import box_list from '../db_mockup/box.db'
 import box_content from '../db_mockup/box.content.db'
 
-// import RNFS from 'react-native-fs'
-
 import Service from './Service'
 import UserService from './UserService'
 
@@ -26,11 +24,10 @@ export default class BoxService extends Service {
             .then(response => {
                 switch(response.status){
                     case 200:
-                        response.json()
-                        break;
+                        return response.json()
 
                     default:
-                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        // alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false;
                 }
             })
@@ -48,9 +45,8 @@ export default class BoxService extends Service {
             .then(response => {
                 switch(response.status){
                     case 200:
-                        response.json()
-                        break;
-
+                        return response.json()
+                        
                     default:
                         alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false;
@@ -70,8 +66,7 @@ export default class BoxService extends Service {
             .then((response) => {
                 switch(response.status){
                     case 200:
-                        response.json()
-                        break;
+                        return response.json()
 
                     case 404:
                         alert("Caja no existe en el sistema.")
@@ -91,7 +86,7 @@ export default class BoxService extends Service {
             })
     }
 
-    async addNewBox(data, image_path) {
+    async addNewBox(data, image) {
         // for(detail in box){
         //     if(! box[detail] && detail != "box_content"){
         //         alert("Entrada vacía.")
@@ -110,15 +105,16 @@ export default class BoxService extends Service {
         // box.box_content = filtered_content
 
         // Filter box_content to only include product id and quantity per box.
-        data.box_content = data.box_content.map((item) => {
-            const { _id, product_quantity_box} = item
-            return { _id, product_quantity_box }
-        })
+        // data.box_content = data.box_content.map((item) => {
+        //     const { _id, product_quantity_box} = item
+        //     return { _id, product_quantity_box }
+        // })
 
         const body = new FormData()
-        for (let atrr in data) 
-            body.append(atrr, data[atrr])
+        // for (let atrr in data) 
+        //     body.append(atrr, data[atrr])
 
+        body.append('file', image)
         // const fs = new FileReader()
         // fs.readAsDataURL(image)
         //     .then(blob => {
@@ -134,12 +130,11 @@ export default class BoxService extends Service {
             method: 'POST',
             headers: {
                 'x-access-token': UserService.instance.webToken,
-                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: body
         }
 
-        return fetch(this._url + 'box', payload)
+        return fetch(this._url + 'image/upload', payload)
             .then(response => {
                 switch(response.status){
                     case 201:
@@ -291,7 +286,7 @@ export default class BoxService extends Service {
                         return false;
 
                     default:
-                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        alert
                         return false
                 }
             })

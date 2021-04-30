@@ -1,12 +1,24 @@
-import React from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default class CartService {
     static instance = CartService.instance || new CartService()
-    _cart = []
 
     constructor() { }
 
-    addToCart(item) {
+    async getCart() {
+        return AsyncStorage.getItem('cart')
+            .then(async (result) => {
+                if(!result) {
+                    // If key does not yet exist in storage, create it.
+                    await AsyncStorage.setItem('cart', JSON.stringify([]))
+                    return []
+                } else {
+                    return JSON.parse(result)
+                }
+            })
+    }
+
+    async addToCart(item) {
         const randomize = (string) => {
             let arr = string.split(""),
                 size = arr.length;
@@ -19,27 +31,67 @@ export default class CartService {
             return arr.join("");
         }
 
-        item._id = randomize(item._id)
-        this._cart.push({...item})
+        let cart = await this.getCart()
+        item.key = randomize(item._id)
+
+        cart.push(item)
+
+        return AsyncStorage.setItem('cart', JSON.stringify(cart))
+            .then(() => {
+                return true;
+            })
+            .catch(() => {
+                return false;
+            })
     }
 
-    getCart() {
-        return [...this._cart]
-    }
+    async getCartTotal() {
+        let cart = await this.getCart(),
+            total = 0
 
-    getCartTotal() {
-        let total = 0
-        this._cart.forEach((item) => total = total + (item.box_accumulated_price * item.box_quantity))
+        cart.forEach((item) => total += (item.box_accumulated_price * item.box_quantity))
         return total
     }
 
-    updateCart(box_id, content) {
-        this._cart.find((item) => item._id == box_id).box_content = content
+    async removeFromCart(target_box) {
+        let cart = await this.getCart();
+        cart = cart.filter((item) => item.key != target_box.key)
+
+        return await AsyncStorage.setItem('cart', JSON.stringify(cart))
+            .then(() => {
+                return true;
+            })
+            .catch(() => {
+                alert("Ha ocurrido un error. Por favor intente más tarde.")
+                return false;
+            })
     }
 
-    removeFromCart(target_box) {
-        let index = this._cart.indexOf(target_box)
-        if(index != -1)
-            this._cart.splice(index, 1);
+    async updateCart(box) {
+        let cart = await this.getCart(), 
+            target_box = cart.find((item) => item.key == box.key)
+
+        target_box.box_accumulated_price = box.box_accumulated_price;
+        target_box.box_content = box.box_content;
+        
+        return await AsyncStorage.setItem('cart', JSON.stringify(cart))
+            .then(() => {
+                return true;
+            })
+            .catch(() => {
+                alert("Ha ocurrido un error. Por favor intente más tarde.")
+                return false;
+            })
+    }
+
+    async refreshCart() {
+        return await AsyncStorage.setItem('cart', JSON.stringify([]))
+            .then(() => {
+                return true;
+            })
+            .catch(() => {
+                alert("Ha ocurrido un error. Por favor intente más tarde.")
+                return false;
+            })
     }
 }

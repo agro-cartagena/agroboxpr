@@ -73,12 +73,12 @@ export default class Navigator {
         Actions.view_orders()
     }
     
-    goToCheckout = () => {
-        Actions.checkout()
+    goToCheckout = (order) => {
+        Actions.checkout({ params: order })
     }
     
-    goToPayment = () => {
-        Actions.payment()
+    goToPayment = (order) => {
+        Actions.payment({ params: order })
     }
     
     goToEditCart = (box_content) => {
@@ -91,5 +91,9 @@ export default class Navigator {
 
     goToContactUs = () => {
         Actions.contact_us()
+    }
+
+    goToOrderConfirmation = () => {
+        Actions.order_confirmation()
     }
 }

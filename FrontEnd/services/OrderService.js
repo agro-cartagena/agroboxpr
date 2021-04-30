@@ -18,25 +18,59 @@ export default class OrderService extends Service {
             }
         }
 
-        return fetch(this._url + 'order/status', payload)
+        return fetch(this._url + 'order/user', payload)
             .then((response) => {
                 if (response.status == 200)
                     return response.json()
                 else 
                     //handle error
-                    return orders
+                    return false;
             })
             .then((orders) => {
+                if(!orders.hasOwnProperty("Pendiente"))
+                    orders["Pendiente"] = []
+
+                if(!orders.hasOwnProperty("En Camino"))
+                    orders["En Camino"] = []
+
+                if(!orders.hasOwnProperty("Completada"))
+                    orders["Completada"] = []
+                    
                 return orders
             })
             .catch((error) => {
-                // alert('Error de conexión.')
-                return orders
+                alert('Error de conexión.')
+                return false;
             })
     }
 
     async getAllOrders() {
-        return "TO-DO"
+        let payload = {
+            method: 'GET', 
+            headers: {
+                Accept: 'application/json',
+                'x-access-token': UserService.instance.webToken
+            }
+        }
+
+        return fetch(this._url + 'order/', payload)
+            .then((response) => {
+                switch(response.status){
+                    case 200:
+                        return response.json()
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
+            })
+            .then((orders) => {                    
+                return orders
+            })
+            .catch((error) => {
+                alert('Error de conexión.')
+                return false
+            })
     }
 
     async updateOrderStatus(order_id, status) {
@@ -46,17 +80,17 @@ export default class OrderService extends Service {
                 'Content-Type': 'application/json',
                 'x-access-token': UserService.instance.webToken
             },
-            body: JSON.stringify({ status : status })
+            body: JSON.stringify({ order_status : status })
         }
 
-        return true
-        return fetch(this._url + `order/update/${order_id}`, payload)
+        return fetch(this._url + `order/${order_id}`, payload)
             .then((response) => {
                 switch(response.status){
                     case 200: 
                         return true
                     
                     default: 
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
                         return false
                 }
             })
@@ -66,7 +100,7 @@ export default class OrderService extends Service {
             })
     }
 
-    getOrderContent(order_id) {
+    async getOrderContent(order_id) {
         let payload = {
             method: 'GET',
             headers: {
@@ -75,13 +109,12 @@ export default class OrderService extends Service {
             }
         }
 
-        return content
-        return fetch(this._url + `route/${order_id}`, payload)
+        // return content
+        return fetch(this._url + `content/${order_id}`, payload)
             .then((response) => {
                 switch(response.status){
                     case 200:
-                        response.json()
-                        break;
+                        return response.json()
 
                     default:
                         return false
@@ -92,7 +125,49 @@ export default class OrderService extends Service {
             })
             .catch((error) => {
                 alert("Error de conexión.")
-                return content
+                return false
+            })
+    }
+
+    async submitOrder(order_info) {
+        function generateId(length) {
+            const result = [],
+                  characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+                  charLength = characters.length;
+
+            for (let i = 0; i < length; i++) 
+              result.push(characters.charAt(Math.floor(Math.random() * charLength)));
+           
+           return result.join('');
+        }
+
+        const date = new Date();
+        order_info.order.uid = generateId(10);
+        order_info.order.order_date = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()}`
+        
+        let payload = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': UserService.instance.webToken
+            },
+            body: JSON.stringify(order_info)
+        }
+
+        return fetch(this._url + 'order/', payload)
+            .then((response) => {
+                switch(response.status){
+                    case 200: // Should be 201
+                        return true
+
+                    default: 
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false
+                }
+            })
+            .catch((error) => {
+                alert("Error de conexión.")
+                return false
             })
     }
 }

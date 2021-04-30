@@ -19,8 +19,7 @@ const MediaUploader = (props) => {
                 mediaTypes: ImagePicker.MediaTypeOptions.All,
                 allowsEditing: true,
                 aspect: [4, 3],
-                quality: 1,
-                base64: true
+                quality: 1
             });
 
             if (!result.cancelled) {
@@ -28,7 +27,7 @@ const MediaUploader = (props) => {
                 // let url = Platform.OS == "ios" ? result.uri.replace('file://', '') : result.uri
                 // props.setMedia(url)
 
-                props.setMedia(result.base64);
+                props.setMedia(result);
             }
         }
         
@@ -38,10 +37,10 @@ const MediaUploader = (props) => {
         <TouchableOpacity style={styles.container} onPress={handleUpload}>
             <View style={[styles.imageContainer, global_styles.shadow]}>
                 <Image
-                    source={props.media ? {uri: `data:image/png;base64,${props.media}`} : require('../../assets/icons/Upload.png')}
+                    source={props.media.hasOwnProperty('uri') ? {uri: `data:image/png;base64,${props.media}`} : require('../../assets/icons/Upload.png')}
                     // source={{uri: 'http://10.0.0.6:5000/api/image/file/e7766494d6b731821aa4eaa0ce25c5ea'}}
                     // source={props.media ? {uri: `${url}/${props.media}`} : require('../../assets/icons/Upload.png')}
-                    style={props.media ? {...styles.image, resizeMode: 'stretch'} : {...styles.image, resizeMode: 'center'}}
+                    style={props.media.hasOwnProperty('uri') ? {...styles.image, resizeMode: 'stretch'} : {...styles.image, resizeMode: 'center'}}
                 />
             </View>
 

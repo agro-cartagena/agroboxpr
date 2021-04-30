@@ -56,7 +56,6 @@ const ContactUsScreen = () => {
                         <SocialIcon
                             title='WhatsApp'
                             button
-                            light
                             type='whatsapp'
                             style={[styles.icon, {backgroundColor: '#25D366'}]}
                             raised={true}

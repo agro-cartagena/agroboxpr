@@ -1,14 +1,23 @@
 const { boxService } = require('../services')
 const { createBox, readAllBoxes, readAvailableBoxes, readBoxProducts, getBoxById } = boxService
 const { updateEntry, addProductList, deleteBoxById } = boxService
+const { uploadImage } = require('../services/upload.service')
 
 const postBox = async (req, res, next) => {
 	const { box_name, box_price, box_content } = req.body
+	const image = req.file
+
+	console.log(req.file)
+	console.log(req.body)
+
+	if(!uploadImage(image))
+		return res.status(409).send("Error uploading file.")
 
 	const box = {
-		box_name, 
-		box_price, 
-		box_content
+		box_name: JSON.parse(box_name), 
+		box_price: Number(box_price), 
+		box_content: JSON.parse(box_content),
+		box_image: image.filename
 	}
 
 	try {

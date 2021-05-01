@@ -1,16 +1,22 @@
 const { productService } = require('../services')
 
 const { insertProduct, readAllProducts, getProductById, updateProduct, deleteProduct } = productService
+const { uploadImage } = require('../services/upload.service')
 
 const postProduct = async (req, res, next) => {
 	const { product_name, product_category, product_quantity_stock, product_units, product_price } = req.body;
+	const image = req.file
+
+	if(!uploadImage(image))
+		return res.status(409).send("Error uploading file.")
 
 	const product = {
 		product_name, 
 		product_category, 
 		product_quantity_stock, 
 		product_units, 
-		product_price
+		product_price,
+		product_image: image.filename
 	}
 
 	try {

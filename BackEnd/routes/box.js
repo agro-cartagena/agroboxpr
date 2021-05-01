@@ -3,12 +3,13 @@ var router = express.Router()
 var { auth, adminAuth, ownerAuth } = require('../middleware/auth.middleware')
 var { validateEntity } = require('../middleware/dataValidation.middleware')
 var { boxSchema } = require('../middleware/validators.middleware')
+const upload = require('../middleware/multer.middleware')
 
 const { boxController } = require('../controllers')
 
-
 //insert new box to box db
-router.post('/', adminAuth, validateEntity(boxSchema), boxController.postBox)
+router.post('/', adminAuth, upload.single('file'), boxController.postBox)
+// router.post('/', adminAuth, validateEntity(boxSchema), boxController.postBox)
 
 router.put('/enable/:id', adminAuth, boxController.enableBox)
 router.put('/disable/:id', adminAuth, boxController.disableBox)

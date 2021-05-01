@@ -1,4 +1,4 @@
-const { Logger } = require('mongodb')
+const { Logger, ObjectId } = require('mongodb')
 const { orderDb, orderContentDb, productDb } = require('../db')
 const { getProductById } = require('./product.service')
 
@@ -14,12 +14,22 @@ const {
 const { createOrderContentDb, getOrderContentByOrder } = orderContentDb
 const { decreaseProductDb, getProductByIdDb } = productDb
 
+/**
+ * Uses order information to create an order document inside the database, appending the user's id and an
+ * initial "pending" status. Afterwards, using the object id returned from the insertion and
+ * the orderContent value, an order content document is created.
+ * @param {JSON} order Object containing relevant order information.
+ * @param {JSON} orderContent Object containing the order's contents
+ * @param {String} userId Id related to the user submitting the order.
+ * @returns {Promise<true|Error>} Returns true if insertion process was succesful, otherwise it
+ * throws an error.
+ */
 const createOrder = async (order, orderContent, userId) => {
 	try {
 		let order_id
 		order_id = await createOrderDb({
 			user_id: userId,
-			order_status: 'pendiente',
+			order_status: 'Pendiente',
 			...order,
 		})
 
@@ -30,14 +40,27 @@ const createOrder = async (order, orderContent, userId) => {
 	}
 }
 
+/**
+ * Connects to the orders collection within the database and retrieves the orders for a given user.
+ * The orders are then returned into a JSON where each key has a list related to the order's status.
+ * @param {String} userId
+ * @returns {Promise<JSON | Error>} Returns JSON object if fetch is succesful, otherwise it
+ * throws an error.
+ */
 const readUserOrders = async (userId) => {
 	try {
-		return await filterByStatusWithParameter(getAllUserOrdersDb,userId)
+		return await filterByStatusWithParameter(getAllUserOrdersDb, userId)
 	} catch (e) {
 		throw new Error(e.message)
 	}
 }
 
+/**
+ * Connects to the orders collection within the database and retrieves an order matching specified id.
+ * @param {ObjectId} id ObjectId of the order to fetch.
+ * @returns {Promise<JSON| Error>} Returns JSON if fetch is succesful, otherwise it
+ * throws an error.
+ */
 const getOrderById = async (id) => {
 	try {
 		return await getOrderByIdDb(id)
@@ -46,6 +69,12 @@ const getOrderById = async (id) => {
 	}
 }
 
+/**
+ * Connects to the orders collection within the database and retrieves all the orders stored.
+ * The orders are then returned into a JSON where each key has a list related to the order's status.
+ * @returns {Promise<JSON | Error>} Returns JSON object if fetch is succesful, otherwise it
+ * throws an error.
+ */
 const getAllOrders = async () => {
 	try {
 		return await filterByStatus(readAllOrdersDb)
@@ -54,6 +83,13 @@ const getAllOrders = async () => {
 	}
 }
 
+/**
+ * Connects to the orders collection within the database and retrieves all the orders stored.
+ * The orders are then returned into a JSON where each key has a list related to the order's status.
+ * @deprecated Fetching all orders using getAllOrders returns them sorted by status
+ * @returns {Promise<JSON | Error>} Returns JSON object if fetch is succesful, otherwise it
+ * throws an error.
+ */
 const getOrderByStatus = async () => {
 	try {
 		let categories = []
@@ -83,6 +119,13 @@ const getOrderByStatus = async () => {
 	}
 }
 
+/**
+ * Connects to the orders collection within the database and updates the document using a specified document id
+ * and the changes to be applied.
+ * @param {ObjectId} id Document to update's object id.
+ * @param {JSON} changes JSON object containing the changes to apply.
+ * @returns {Promise<JSON | Error>} Returns JSON object if update is succesful, otherwise it
+ * throws an error. */
 const updateOrder = async (id, changes) => {
 	try {
 		return await updateOrderDb(id, changes)
@@ -91,6 +134,12 @@ const updateOrder = async (id, changes) => {
 	}
 }
 
+/**
+ * Connects to the orders collection within the database and retrieves the orders for a given city.
+ * @param {String} city City to filter documents in the database by.
+ * @returns {Promise<JSON | Error>} Returns JSON object if fetch is succesful, otherwise it
+ * throws an error.
+ */
 const getOrderByCity = async (city) => {
 	try {
 		return await getOrderByCityDb(city)
@@ -99,6 +148,14 @@ const getOrderByCity = async (city) => {
 	}
 }
 
+/**
+ * Connects to the oreder Contents collection in the database and retrieves the document matching
+ * the specified order id. The result of the fetch processed to return a list of JSON objects,
+ * whose key value pairs are the number of boxes, the product_id and amounts of each product in each box.
+ * This is a helper function to be used inside manageInventory.
+ * @param {ObjectId} orderId
+ * @returns {Promise<JSON|Error>} Returns a list of boxes, product_id & product amounts per each box if
+ */
 const retrieveProductList = async (orderId) => {
 	try {
 		let order, orderList
@@ -140,12 +197,14 @@ const manageInventory = async (orderId) => {
 		let productList = []
 
 		await retrieveProductList(orderId).then((list) => {
+			//mock return of products
 			productList = list
 		})
 
 		// Verify product amounts in the inventory
 		for (const product of productList) {
 			const item = await getProductByIdDb(product.product_id)
+			//mock finding the products
 			const orderAmount = product.amount * product.boxes
 			const stockAmount = parseInt(item.product_quantity_stock)
 
@@ -158,6 +217,8 @@ const manageInventory = async (orderId) => {
 					order: orderAmount,
 				}
 			}
+
+			//store ammounts here
 		}
 
 		// reduce stock in inventory accordingly

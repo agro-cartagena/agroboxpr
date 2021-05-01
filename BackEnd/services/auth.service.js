@@ -1,9 +1,13 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const { userDb } = require('../db');
+const crypto = require("crypto");
+const { userDb, tokenDb } = require('../db');
+const { sendEmail } = require('../utils/email/email')
 const { ObjectID } = require("mongodb");
 
+
 const { registerNewUserDb, findUserByFilterDb, findUserByQueryAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
+const { createResetPasswordTokenDb } = tokenDb
 
 const registerUser = async (name, email, password, phone) => {
 
@@ -211,6 +215,41 @@ const readUserById = async (userId) => {
 	}
 }
 
+const forgotPassword = async (email) => {
+    //Check if a user exists with the given email
+    const user = await findUserByFilterDb({ email: email })
+
+    // If user exists not exist return false
+    if (user.length < 1) {
+        return false
+    } // Else check if token exists
+    else{
+        // let token = await Token.findOne({ userId: user._id });
+        // if (token) { 
+        //       await token.deleteOne()
+        // };
+        const userEmail = user[0].email
+        const userName = user[0].name
+
+        let passwordResetToken = crypto.randomBytes(32).toString("hex");
+
+        const bcryptSalt = 10;
+        const hash = await bcrypt.hash(passwordResetToken, Number(bcryptSalt));
+
+        const newToken = {
+            user_id : user._id,
+            token : hash,
+            created_date : Date.now(),
+            expires : 3600 // Expiration time in seconds
+        }
+
+        const createdToken = await createResetPasswordTokenDb(newToken)
+
+        const link = `/passwordReset?token=${passwordResetToken}&id=${user._id}`;
+        return await sendEmail(userEmail,"Password Reset Request",{name: userName, link: link,},"./template/resetPassword.handlebars");
+    }
+}
+
 const createJWT = (email, userId, role) => {
     const payload = {
         email,
@@ -231,5 +270,6 @@ module.exports = {
     readAllAdmin,
     updateUserPassword,
     updateUserInfo,
-    readUserById
+    readUserById,
+    forgotPassword
 }

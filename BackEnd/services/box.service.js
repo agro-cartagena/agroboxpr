@@ -38,6 +38,12 @@ const readAllBoxes = async () => {
 				available : box.available
 			}
 		})
+		
+		//Sort available boxes first
+		response.sort((x, y) => {
+			return (x.available === y.available)? 0 : x.available? -1 : 1;
+		});
+
 		return response
 	} catch (e) {
 		throw new Error(e.message)
@@ -59,6 +65,7 @@ const readAvailableBoxes = async () => {
 				box_image : box.box_image
 			}
 		})
+
 		return response
 	} catch (e) {
 		throw new Error(e.message)

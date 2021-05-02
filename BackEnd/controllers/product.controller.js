@@ -7,15 +7,16 @@ const postProduct = async (req, res, next) => {
 	const { product_name, product_category, product_quantity_stock, product_units, product_price } = req.body;
 	const image = req.file
 
+	console.log(req.body)
 	if(!uploadImage(image))
 		return res.status(409).send("Error uploading file.")
 
 	const product = {
 		product_name, 
 		product_category, 
-		product_quantity_stock, 
+		product_quantity_stock: Number(product_quantity_stock), 
 		product_units, 
-		product_price,
+		product_price: Number(product_price),
 		product_image: image.filename
 	}
 

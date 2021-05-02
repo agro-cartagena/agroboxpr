@@ -14,7 +14,7 @@ const postBox = async (req, res, next) => {
 		return res.status(409).send("Error uploading file.")
 
 	const box = {
-		box_name: JSON.parse(box_name), 
+		box_name: box_name, 
 		box_price: Number(box_price), 
 		box_content: JSON.parse(box_content),
 		box_image: image.filename

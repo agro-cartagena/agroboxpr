@@ -26,8 +26,8 @@ class PaymentController {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `http://localhost:5000/api/payment/success?price=${price}`,
-                "cancel_url": "http://localhost:5000/api/payment/cancel"
+                "return_url": `http://10.0.0.6:5000/api/payment/success?price=${price}`,
+                "cancel_url": "http://10.0.0.6:5000/api/payment/cancel"
             },
             "transactions": [{
                 "amount": {

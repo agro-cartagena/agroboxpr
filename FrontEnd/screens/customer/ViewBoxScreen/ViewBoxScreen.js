@@ -1,19 +1,18 @@
 import React from 'react';
-import { View, Text, Alert, ActivityIndicator, Image } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Loader from '../../../components/Loader/Loader'
 
-import { Card } from 'react-native-elements'
 import CachedImage from '../../../components/CachedImage/CachedImage'
 import Button from '../../../components/Button/Button'
 
 import styles from './ViewBoxScreenStyleSheet';
-import global_styles from '../../../styles'
 import Navigator from '../../../Navigator'
 
 import BoxService from '../../../services/BoxService'
 import ProductService from '../../../services/ProductService'
 import CartService from '../../../services/CartService'
+import ImageService from '../../../services/ImageService'
 
 import InteractiveProductCard from '../../../components/InteractiveProductCard/InteractiveProductCard'
 import QuantitySpecifier from '../../../components/QuantitySpecifier/QuantitySpecifier'
@@ -26,7 +25,6 @@ const BoxScreen = (props) => {
     let _isBuildYourBox = props.params.box_name.includes("Crea") || props.params.box_name.includes("Build")
     
     const [loading, setLoading] = React.useState(true)
-    const [imageLoading, setImageLoading] = React.useState(true)
     const [boxData, setBoxData] = React.useState({})
     const [content, setContent] = React.useState([])
     const [productCatalog, setProductCatalog] = React.useState({})
@@ -302,7 +300,7 @@ const BoxScreen = (props) => {
                 <View style={styles.card}>
                     <View style={styles.cardImage}>
                         <CachedImage
-                            source={{uri: `${BoxService.instance.getURL()}image/file/${props.params.box_image}`}}
+                            source={{uri: ImageService.instance.getURL(props.params.box_image)}}
                             resizeMode='stretch'
                         />
                     </View>

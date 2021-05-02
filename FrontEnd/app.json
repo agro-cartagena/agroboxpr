@@ -5,14 +5,20 @@
     "name": "FrontEnd",
     "slug": "FrontEnd",
     "version": "1.0.0",
+    "icon": "./assets/AgroBoxLogo.png",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "bundleIdentifier": "com.agroboxpr.app",
+      "buildNumber": "1.0.0",
       "infoPlist" : {
         "NSFaceIDUsageDescription": "ABPR needs to use Face ID / Touch ID to authenticate you"
       }
+    },
+    "android": {
+      "package": "com.agroboxpr.app",
+      "versionCode": 1
     }
   }
 }

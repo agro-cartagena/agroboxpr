@@ -36,71 +36,61 @@ const LoginScreen = (props) => {
     }, [])
 
     const sendCredentials = async () => {
-        // let local_password = await SecureStore.getItemAsync(formData.email)
-        let local_password = await AsyncStorage.getItem(formData.email)
-        if(local_password != formData.password) {
-            Alert.alert(
-                '¿Desea actualizar o guardar su contraseña?', '',
-                [
-                    {
-                        text: 'No',
-                        style: 'cancel',
-                        onPress: async () => {
-                            setValidating(true)
-                            if(await UserService.instance.sendLogin(formData)) {
-                                setValidating(false)
-                            
+        setValidating(true)
+
+        if(await UserService.instance.sendLogin(formData)) {
+            setValidating(false)
+        
+            // To enable biometrics authentication,
+            // Remove if(false) and uncomment the three lines prior to that one.
+
+            // let local_password = await SecureStore.getItemAsync(formData.email)
+            // local_password = atob(local_password)
+            // if(local_password != formData.password) {
+            if(false) {
+                Alert.alert(
+                    '¿Desea actualizar o guardar su contraseña?', '',
+                    [
+                        {
+                            text: 'No',
+                            style: 'cancel',
+                            onPress: async () => {
+                                // redirect == true
+                                if(props.params)
+                                    Navigator.instance.goToCart()
+            
+                                else
+                                    Navigator.instance.goToHome()   
+                            }
+                        },
+                        {
+                            text: 'Aceptar',
+                            onPress: async () => {
+                                // Functionality needs to be properly tested.
+                                let password = btoa(formData.password)
+                                await SecureStore.setItemAsync(formData.email, password)
+
                                 // redirect == true
                                 if(props.params)
                                     Navigator.instance.goToCart()
                 
                                 else
-                                    Navigator.instance.goToHome()    
-                            } else {
-                                setValidating(false)
+                                    Navigator.instance.goToHome()  
                             }
                         }
-                    },
-                    {
-                        text: 'Aceptar',
-                        onPress: async () => {
-                            setValidating(true)
-
-                            // await SecureStore.setItemAsync(formData.email, formData.password)
-                            await AsyncStorage.setItem(formData.email, formData.password)
-
-                            if(await UserService.instance.sendLogin(formData)) {
-                                setValidating(false)
-                            
-                                // redirect == true
-                                if(props.params)
-                                    Navigator.instance.goToCart()
-                
-                                else
-                                    Navigator.instance.goToHome()    
-                            } else {
-                                setValidating(false)
-                            }
-                        }
-                    }
-                ]
-            )
-        } else {
-            setValidating(true)
-            if(await UserService.instance.sendLogin(formData)) {
+                    ]
+                )
+            }  else {
                 setValidating(false)
-             
-                    // redirect == true
-                    if(props.params)
-                        Navigator.instance.goToCart()
-    
-                    else
-                        Navigator.instance.goToHome()
-                
-            } else {
-                setValidating(false)
-            }
-        }        
+
+                // redirect == true
+                if(props.params)
+                    Navigator.instance.goToCart()
+
+                else
+                    Navigator.instance.goToHome() 
+            }    
+        } else { setValidating(false) }
     }
 
     // This method is for debugging only.
@@ -109,9 +99,13 @@ const LoginScreen = (props) => {
     }
 
     const validateBiometrics = async () => {
-        if(isCompatible && isEnrolled) {
-            // let password = await SecureStore.getItemAsync(formData.email)
-            let password = await AsyncStorage.getItem(formData.email)
+        // To enable biometrics authentication (FaceID/ TouchID),
+        // Remove if(false) and uncomment the line prior to that one.
+
+        // if(isCompatible && isEnrolled) {
+        if(false) {
+            let password = await SecureStore.getItemAsync(formData.email)
+            password = atob(password)
 
             if(password) {
                 if(await LocalAuthentication.authenticateAsync()) {

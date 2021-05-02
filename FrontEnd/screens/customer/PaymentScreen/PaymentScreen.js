@@ -15,12 +15,16 @@ import styles from './PaymentScreenStyleSheet'
 
 const PaymentScreen = (props) => {
     const [showPayPal, togglePayPal] = React.useState(false)
-    const [price, setPrice] = React.useState(0)
+    const [price, setPrice] = React.useState()
     const [transactionId, setTransactionId] = React.useState('N/A')
     const [uploading, setUploading] = React.useState(false)
 
     React.useEffect(() => {
-        setPrice(props.params.order_info.total_price)
+        async function fetchData() {
+            setPrice(props.params.order_info.total_price)
+        }
+
+        fetchData()
     }, [])
 
     const submitOrder = async (payment_method) => {

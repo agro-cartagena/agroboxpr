@@ -1,9 +1,9 @@
 import React from 'react'
-import { Text, View, ActivityIndicator} from 'react-native'
+import { Text, View } from 'react-native'
 import { Card } from 'react-native-elements'
 import CachedImage from '../CachedImage/CachedImage'
 
-import ProductService from '../../services/ProductService'
+import ImageService from '../../services/ImageService'
 import styles from './ProductCardStyleSheet'
 import global_styles from '../../styles'
 
@@ -16,7 +16,7 @@ const ProductCard = (props) => {
             </View>
             <Card containerStyle={[styles.card, styles.radius, global_styles.shadow]}>
                 <CachedImage 
-                    source={{uri: `${ProductService.instance.getURL()}image/file/${props.uri}`}}
+                    source={{uri: ImageService.instance.getURL(props.uri)}}
                     imageStyle={[styles.image]}
                 />
             </Card>

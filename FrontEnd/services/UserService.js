@@ -1,8 +1,7 @@
 import Service from './Service'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store'
 import jwt_decode from 'jwt-decode'
 
-import Navigator from '../Navigator'
 import user from '../db_mockup/user.db'
 
 export default class UserAuthenticationService extends Service {
@@ -27,14 +26,14 @@ export default class UserAuthenticationService extends Service {
     async loadWebToken() {
         // Try-Catch to overkill solution as error is devastating. 
         try {
-            AsyncStorage.getItem('jwt_key')
+            SecureStore.getItemAsync('jwt_key')
                 .then((token) => {
                     // Resolves to token if it exists; 
                     // otherwise, resolves to null.
                     this.webToken = token
                 })
                 .catch((error) => {
-                    alert("error loading token.")
+                    alert("Error loading token.")
                     console.error(error)
                 })
         } catch(error) {
@@ -43,7 +42,7 @@ export default class UserAuthenticationService extends Service {
     }
 
     async setWebToken(token) {
-        AsyncStorage.setItem('jwt_key', token)
+        SecureStore.setItemAsync('jwt_key', token)
             .then(() => {
                 this.webToken = token
             })
@@ -54,7 +53,7 @@ export default class UserAuthenticationService extends Service {
     }
 
     async removeWebToken() {
-        AsyncStorage.removeItem('jwt_key')
+        SecureStore.deleteItemAsync('jwt_key')
             .then(() => {
                 this.webToken = null
             })

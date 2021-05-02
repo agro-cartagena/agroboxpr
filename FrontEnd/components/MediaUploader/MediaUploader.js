@@ -1,14 +1,13 @@
 import React from 'react'
-import { View, ImageBackground, TouchableOpacity, Text, Platform, ActivityIndicator } from 'react-native'
+import { View, Image, TouchableOpacity, Text, Platform } from 'react-native'
+import CachedImage from '../CachedImage/CachedImage'
 import * as ImagePicker from 'expo-image-picker';
 
-import ProductService from '../../services/ProductService'
+import ImageService from '../../services/ImageService'
 import styles from './MediaUploaderStyleSheet'
 import global_styles from '../../styles'
 
 const MediaUploader = (props) => {
-    const url = 'http://10.0.0.6:5000/api/image/file'
-    const [loading, setLoading] = React.useState(true)
 
     const handleUpload = async () => {
         // Verify permissions to access photo library. 
@@ -38,42 +37,38 @@ const MediaUploader = (props) => {
         
     }
 
-    const getMediaSource = () => {
-        if(typeof props.media != 'string') { 
-            if(props.media.hasOwnProperty('uri'))
-                return {uri: props.media.uri}
-            
-            else
-                return require('../../assets/icons/Upload.png')
-        } else
-            return {uri: `${ProductService.instance.getURL()}image/file/${props.media}`}
-    }
-
-    const getMediaResize = () => {
-        if(typeof props.media != 'string' && !props.media.hasOwnProperty('uri'))
-            return 'center'
-
-        return 'stretch'
-    }
-
     return (
         <TouchableOpacity style={styles.container} onPress={handleUpload}>
             <View style={[styles.imageContainer, global_styles.shadow]}>
-                <ImageBackground
-                    source={getMediaSource()}
-                    style={styles.image}
-                    resizeMode={getMediaResize()}
-                    onLoadEnd={() => setLoading(false)}
-                >
-                    {
-                        loading
-                            &&
-                                <ActivityIndicator
-                                    size="large"
-                                    color="#8C0634"
+                {
+                    typeof props.media != 'string'
+                        ? 
+                            props.media.hasOwnProperty('uri')
+                                ?
+                                    (
+                                        <Image
+                                            source={{uri: props.media.uri}}
+                                            style={styles.image}
+                                            resizeMode='stretch'
+                                        />
+                                    )
+                                :
+                                    (
+                                        <Image
+                                            source={require('../../assets/icons/Upload.png')}
+                                            style={styles.image}
+                                            resizeMode='center'
+                                        />
+                                    )
+                        :
+                            (
+                                <CachedImage
+                                    source={{uri: ImageService.instance.getURL(props.media)}}
+                                    imageStyle={styles.image}
+                                    resizeMode='stretch'
                                 />
-                    }
-                </ImageBackground>
+                            )
+                }
             </View>
 
             <View style={styles.textContainer}>

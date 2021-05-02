@@ -11,14 +11,17 @@ import ProductService from '../../../services/ProductService'
 import Navigator from '../../../Navigator'
 import Button from '../../../components/Button/Button'
 import BackArrow from '../../../components/BackArrow/BackArrow'
+import Loader from '../../../components/Loader/Loader'
 
 const InventoryManagementScreen = () => {
 
     const [productCatalog, setProductCatalog] = React.useState({})
+    const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
         async function fetchData() {
             setProductCatalog(await ProductService.instance.getProductCatalog())
+            setLoading(false)
         }
 
         fetchData()
@@ -58,26 +61,32 @@ const InventoryManagementScreen = () => {
         return _dropMenus
     }
 
-    return(
-        <ScrollView contentContainerStyle={styles.screen}>
-            <BackArrow
-                    onTouch={Navigator.instance.goToInventoryManagement}
-            />
-            
-            <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Productos)</Text>
+    return loading 
+        ? 
+            (
+                <Loader loading={loading} />
+            )
+        :
+            (
+                <ScrollView contentContainerStyle={styles.screen}>
+                    <BackArrow
+                            onTouch={Navigator.instance.goToInventoryManagement}
+                    />
+                    
+                    <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Productos)</Text>
 
-            <View style={styles.menuContainer}>
-                {displayDropMenus()}
-            </View>
+                    <View style={styles.menuContainer}>
+                        {displayDropMenus()}
+                    </View>
 
-            <View style={styles.buttonContainer}>
-                <Button
-                    text="Añadir Producto Nuevo"
-                    onTouch={() => Navigator.instance.goToEditProduct("new")}
-                />
-            </View>
-        </ScrollView>
-    )
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            text="Añadir Producto Nuevo"
+                            onTouch={() => Navigator.instance.goToEditProduct("new")}
+                        />
+                    </View>
+                </ScrollView>
+            )
 }
 
 export default InventoryManagementScreen

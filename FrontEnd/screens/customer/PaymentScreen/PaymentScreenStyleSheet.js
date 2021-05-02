@@ -2,6 +2,19 @@ import { StyleSheet, Dimensions } from 'react-native'
 import {RFPercentage} from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({
+    loaderOverlay: {
+        width: '100%',
+        height: '100%',
+
+        position: 'absolute',
+        top: 0, bottom: 0, 
+        left: 0, right: 0,
+        zIndex: 3,
+
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+
     header: {
         fontSize: 20,
         margin: 25,

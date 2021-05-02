@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, ActivityIndicator, Image } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import Loader from '../../../components/Loader/Loader'
 
 import { Card } from 'react-native-elements'
 import Button from '../../../components/Button/Button'
@@ -21,8 +22,10 @@ import DropDown from '../../../components/DropDown/DropDown'
 // Route parameters are stored in props.params object
 // i.e., alert(props.params.box_name)
 const BoxScreen = (props) => {
-    let _isBuildYourBox = props.params.box_name.includes("Crea")
-
+    let _isBuildYourBox = props.params.box_name.includes("Crea") || props.params.box_name.includes("Build")
+    
+    const [loading, setLoading] = React.useState(true)
+    const [imageLoading, setImageLoading] = React.useState(true)
     const [boxData, setBoxData] = React.useState({})
     const [content, setContent] = React.useState([])
     const [productCatalog, setProductCatalog] = React.useState({})
@@ -41,6 +44,8 @@ const BoxScreen = (props) => {
 
             if (_isBuildYourBox)
                 setProductCatalog(await ProductService.instance.getProductCatalog())
+
+            setLoading(false)
         }
 
         fetchData()
@@ -67,6 +72,7 @@ const BoxScreen = (props) => {
                         onPress: () => {
                             CartService.instance.addToCart({...boxData, box_content: content})
                             alert("Caja ha sido añadida al carrito.")
+                            Navigator.instance.goToHome()
                         }
                     }
                 ]
@@ -278,51 +284,66 @@ const BoxScreen = (props) => {
             return displayPremadeBox()
     }
 
-    return (
-        <KeyboardAwareScrollView>
+    return loading
+        ? (
+            <Loader
+                loading={loading}
+            />
+        )
+        : (
+            <KeyboardAwareScrollView>
 
-            {/* GO BACK ARROW */}
-            <BackArrow onTouch={Navigator.instance.goToHome}/>
+                {/* GO BACK ARROW */}
+                <BackArrow onTouch={Navigator.instance.goToHome}/>
 
-            {/* BOX CARD */}
-            <Text style={[styles.text, styles.cardText, styles.cardTitle]}>{props.params.box_name}</Text>
-            <Card containerStyle={[styles.card, global_styles.shadow]}>
-                {/* <Card.Image source={props.params.box_image}> */}
-                <Card.Image 
-                    style={styles.imageRadius}
-                    source={{uri: `data:image/png;base64,${props.params.box_image}`}}
-                    resizeMode="stretch"
-                />
-                <Text style={[styles.text, styles.cardText]}>Precio Mínimo: <Text style={{color: 'rgb(252,0,29)'}}>${props.params.box_price}</Text></Text>
-            </Card>
+                {/* BOX CARD */}
+                <Text style={[styles.text, styles.cardText, styles.cardTitle]}>{props.params.box_name}</Text>
+                <Card containerStyle={[styles.card, global_styles.shadow]}>
+                    <Card.Image 
+                        style={[styles.cardImage, imageLoading ? {backgroundColor: 'rgb(151, 184, 56)'} : {backgroundColor: 'transparent'}]}
+                        source={{uri: `${BoxService.instance.getURL()}image/file/${props.params.box_image}`}}
+                        resizeMode="stretch"
+                        onLoadEnd={() => setImageLoading(false)}
+                    >
+                        {
+                            imageLoading 
+                                && 
+                                    <ActivityIndicator
+                                        size="large"
+                                        color="#8C0634"
+                                    />
+                        }
+                    </Card.Image>
+                    <Text style={[styles.text, styles.cardText]}>Precio Mínimo: <Text style={{color: 'rgb(252,0,29)'}}>${props.params.box_price}</Text></Text>
+                </Card>
 
-            {  displayContent() }
+                {  displayContent() }
 
-            <Text style={styles.text}>Precio acumulado hasta el momento es: $ {boxData.box_accumulated_price}</Text>
+                <Text style={styles.text}>Precio acumulado hasta el momento es: $ {boxData.box_accumulated_price}</Text>
 
-            {/* ADD TO CART */}
-            <View style={styles.addToCartContainer}>
+                {/* ADD TO CART */}
+                <View style={styles.addToCartContainer}>
 
-                {/* Input field */}
-                <View style={styles.QuantitySpecifierContainer}>
-                    <QuantitySpecifier
-                        onMinus={() => { if(boxData.box_quantity > 1) setBoxData({ ...boxData, box_quantity: boxData.box_quantity -= 1})}}
-                        onPlus={()=>{ if(boxData.box_quantity < 100) setBoxData({ ...boxData, box_quantity: boxData.box_quantity += 1}) }}
-                        // onText={(quantity) => { boxData.box_quantity = Number(quantity) }}
-                        placeholder={ boxData.box_quantity }
-                    />
+                    {/* Input field */}
+                    <View style={styles.QuantitySpecifierContainer}>
+                        <QuantitySpecifier
+                            onMinus={() => { if(boxData.box_quantity > 1) setBoxData({ ...boxData, box_quantity: boxData.box_quantity -= 1})}}
+                            onPlus={()=>{ if(boxData.box_quantity < 100) setBoxData({ ...boxData, box_quantity: boxData.box_quantity += 1}) }}
+                            // onText={(quantity) => { boxData.box_quantity = Number(quantity) }}
+                            placeholder={ boxData.box_quantity }
+                        />
+                    </View>
+
+                    {/* Add Button */}
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            text="Agregar"
+                            onTouch={askToAddToCart}
+                        />
+                    </View>
                 </View>
 
-                {/* Add Button */}
-                <View style={styles.buttonContainer}>
-                    <Button
-                        text="Agregar"
-                        onTouch={askToAddToCart}
-                    />
-                </View>
-            </View>
-
-        </KeyboardAwareScrollView>
+            </KeyboardAwareScrollView>
     )
 }
 

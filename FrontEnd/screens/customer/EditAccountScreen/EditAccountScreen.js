@@ -11,10 +11,12 @@ import UserService from '../../../services/UserService'
 
 import DropDown from '../../../components/DropDown/DropDown'
 import Localizer from '../../../components/Localizer/Localizer'
+import Loader from '../../../components/Loader/Loader'
 
 const EditAccountScreen = () => {
 
     const [userData, changeUserData] = React.useState({})
+    const [loading, setLoading] = React.useState(true)
 
     const [passwordData, changePasswordData] = React.useState({
         current_password: '',
@@ -30,6 +32,7 @@ const EditAccountScreen = () => {
 
             changeUserData(userInfo)
             changeAddressData(addressInfo)
+            setLoading(false)
         }
 
         fetchData()
@@ -184,29 +187,35 @@ const EditAccountScreen = () => {
         ]
     }
 
-    return (
-        <KeyboardAwareScrollView
-            contentContainerStyle={[global_styles.container]}
-        >
-            <Text style={styles.header}>Mi Información</Text>
+    return loading
+        ?
+            (
+                <Loader loading={loading}/>
+            )
+        :
+            (
+                <KeyboardAwareScrollView
+                    contentContainerStyle={[global_styles.container]}
+                >
+                    <Text style={styles.header}>Mi Información</Text>
 
-            <View style={[global_styles.container, styles.formContainer]}>
-                <DropDown
-                    title="Personal"
-                    list={getUserFields()}
-                    active={true}
-                />
-                <DropDown
-                    title="Contraseña"
-                    list={getPasswordFields()}
-                />
-                <DropDown
-                    title="Dirección Física"
-                    list={getAddressFields()}
-                />
-            </View>
-        </KeyboardAwareScrollView>
-    )
+                    <View style={[global_styles.container, styles.formContainer]}>
+                        <DropDown
+                            title="Personal"
+                            list={getUserFields()}
+                            active={true}
+                        />
+                        <DropDown
+                            title="Contraseña"
+                            list={getPasswordFields()}
+                        />
+                        <DropDown
+                            title="Dirección Física"
+                            list={getAddressFields()}
+                        />
+                    </View>
+                </KeyboardAwareScrollView>
+            )
 }
 
 export default EditAccountScreen

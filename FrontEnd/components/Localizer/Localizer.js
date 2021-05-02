@@ -1,8 +1,9 @@
 import React from 'react'
-import {TouchableOpacity, Image, Alert} from 'react-native'
+import {TouchableOpacity, Image, Alert, View} from 'react-native'
 
 import styles from './LocalizerStyleSheet'
 import GeoCodingService from '../../services/GeoCodingService'
+import { Dimensions } from 'react-native'
 
 const Localizer = (props) => {
     const askToUseLocation = () => {
@@ -15,7 +16,7 @@ const Localizer = (props) => {
                 },
                 {
                     text: 'Aceptar',
-                    onPress: async () => {
+                    onPress: () => {
                         navigator.geolocation.getCurrentPosition(
                             async (position) => {
                                 const {latitude, longitude} = position.coords

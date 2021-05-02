@@ -1,10 +1,11 @@
 import React from 'react'
-import { TouchableOpacity, View, Text, Image, Alert } from 'react-native'
+import { TouchableOpacity, View, Text, Image, Alert, TouchableWithoutFeedback } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import FormInput from '../../../components/FormInput/FormInput'
 import Button from '../../../components/Button/Button'
+import Loader from '../../../components/Loader/Loader'
 
 import DropDown from '../../../components/DropDown/DropDown'
 import InteractiveProductCard from '../../../components/InteractiveProductCard/InteractiveProductCard'
@@ -18,13 +19,15 @@ import ProductService from '../../../services/ProductService'
 import BoxService from '../../../services/BoxService'
 
 const EditBoxScreen = (props) => {
-    let _isNewBox = props.params == "new"
+    const _isNewBox = props.params == "new"
 
     const [boxData, setBoxData] = React.useState({})
     const [productCatalog, setProductCatalog] = React.useState({})
     const [boxImage, setBoxImage] = React.useState({})
-    // const [isAvailable, setAvailable] = React.useState(props.params.available)
     const [isAvailable, setAvailable] = React.useState(props.params.available)
+
+    const [loading, setLoading] = React.useState(true)
+    const [uploading, setUploading] = React.useState(false)
 
     React.useEffect(() => {
         async function fetchData() {            
@@ -40,6 +43,7 @@ const EditBoxScreen = (props) => {
             setBoxData(_box)
             setBoxImage(_box.box_image)
             setProductCatalog(await ProductService.instance.getProductCatalog())
+            setLoading(false)
         }
 
         fetchData()
@@ -107,14 +111,14 @@ const EditBoxScreen = (props) => {
                     boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
                 
                 else
-                    product.product_quantity_box = newQuantity
+                    product.product_quantity_box = Number(newQuantity)
             }
 
             // Product does not yet exist in content list.
             else if (newQuantity > 0){
                 boxData.box_content.push({
                     ...target_product,
-                    product_quantity_box: newQuantity
+                    product_quantity_box: Number(newQuantity)
                 })
             }
 
@@ -229,85 +233,76 @@ const EditBoxScreen = (props) => {
     }
 
     const submitHandler = async () => {
-        if(boxData.box_content.length == 0 && (!boxData.box_name.includes("Crea") || !boxData.box_name.includes("Build"))) {
+        if(boxData.box_content.length == 0 && !(boxData.box_name.includes("Crea") || boxData.box_name.includes("Build"))) {
             alert("El contenido de la caja no puede estar vacío.")
             return
         }
 
-        // let body = new FormData()
-        // body.append('file', boxImage)
-
-        // let payload = {
-        //     method: 'POST',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/multipart-formdata'
-        //     },
-        //     body: JSON.stringify(body)
-        // }
-
-        // fetch('http:/10.0.0.6:5000/api/image/upload', payload)
-        //     .then((response) => {
-        //         alert("Resolved")
-        //     })
-        //     .catch((error) => {
-        //         alert("Rejected")
-        //     })
-
+        setUploading(true)
         let result = null
 
         if(_isNewBox)
-            result = await BoxService.instance.addNewBox(boxData, boxImage)
+            result = await BoxService.instance.addNewBox({...boxData, box_image: boxImage})
 
         else 
-            result = await BoxService.instance.updateBox({
-                ...boxData, 
-                box_image: boxImage
-            })
+            result = await BoxService.instance.updateBox({...boxData, box_image: boxImage})
 
+        setUploading(false)
         if(result){
             Navigator.instance.goToBoxManagement()
         }
     }
 
-    return(
-        <KeyboardAwareScrollView>
-            <BackArrow onTouch={Navigator.instance.goToBoxManagement}/>
+    return loading
+        ? 
+            (
+                <Loader loading={loading }/>
+            )
+        :
+            (
+                <KeyboardAwareScrollView>
+                    <TouchableWithoutFeedback style={styles.loaderOverlay}>
+                        <Loader
+                            loading={uploading}
+                        />
+                    </TouchableWithoutFeedback>
 
-            <MediaUploader
-                media = {boxImage}
-                setMedia = {setBoxImage}
-            />
+                    <BackArrow onTouch={Navigator.instance.goToBoxManagement}/>
 
-            <View style={styles.formContainer}>
-                <Text style={[global_styles.text, styles.formText]}>Nombre de la Caja</Text>
-                <View style={global_styles.formEntry}>
-                    <FormInput
-                        placeholder = { _isNewBox? 'ejemplo: AgroBox' : boxData.box_name}
-                        value = {boxData.box_name}
-                        onChangeText = { (text) => setBoxData({...boxData, box_name: text}) }
+                    <MediaUploader
+                        media = {boxImage}
+                        setMedia = {setBoxImage}
                     />
-                </View>
 
-                <Text style={[global_styles.text, styles.formText]}>Precio de la Caja</Text>
-                <View style={global_styles.formEntry}>
-                    <FormInput
-                        placeholder = { _isNewBox ? 'ejemplo: 45.00': String(boxData.box_price) }
-                        onChangeText = { (text) => setBoxData({...boxData, box_price: Number(text)}) }
-                    />
-                </View>
-            </View>
+                    <View style={styles.formContainer}>
+                        <Text style={[global_styles.text, styles.formText]}>Nombre de la Caja</Text>
+                        <View style={global_styles.formEntry}>
+                            <FormInput
+                                placeholder = { _isNewBox? 'ejemplo: AgroBox' : boxData.box_name}
+                                // value = {boxData.box_name}
+                                onChangeText = { (text) => setBoxData({...boxData, box_name: text}) }
+                            />
+                        </View>
 
-            <Text style={[global_styles.text, styles.header]}>Contenido:</Text>
-            <View style={styles.dropDownContainer}>
-                {displayDropMenus()}
-            </View>
+                        <Text style={[global_styles.text, styles.formText]}>Precio de la Caja</Text>
+                        <View style={global_styles.formEntry}>
+                            <FormInput
+                                placeholder = { _isNewBox ? 'ejemplo: 45.00': String(boxData.box_price) }
+                                onChangeText = { (text) => setBoxData({...boxData, box_price: Number(text)}) }
+                            />
+                        </View>
+                    </View>
 
-            <View style={styles.buttonContainer}>
-                {displayButtons()}
-            </View>
-        </KeyboardAwareScrollView>
-    )
+                    <Text style={[global_styles.text, styles.header]}>Contenido:</Text>
+                    <View style={styles.dropDownContainer}>
+                        {displayDropMenus()}
+                    </View>
+
+                    <View style={styles.buttonContainer}>
+                        {displayButtons()}
+                    </View>
+                </KeyboardAwareScrollView>
+            )
 }
 
 export default EditBoxScreen

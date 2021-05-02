@@ -3,7 +3,7 @@ import { ScrollView, TouchableOpacity, View } from 'react-native'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 
 import Navigator from '../../../Navigator'
-
+import Loader from '../../../components/Loader/Loader'
 import BoxService from '../../../services/BoxService'
 import BoxCard from '../../../components/BoxCard/BoxCard'
 
@@ -12,11 +12,13 @@ import global_styles from '../../../styles'
 import Logo from '../../../components/Logo/Logo'
 
 const HomeScreen = () => {
-    const [ boxList, setBoxList ] = React.useState([])
+    const [boxList, setBoxList] = React.useState([])
+    const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
         async function fetchData() { 
             setBoxList(await BoxService.instance.getAllAvailableBoxes()) 
+            setLoading(false);
         }
 
         fetchData()
@@ -40,14 +42,20 @@ const HomeScreen = () => {
         )
     }
 
-    return (
-        <ScrollView>
-            <Logo/>
-            <View style={styles.cardContainer}>
-                { displayBoxes() }
-            </View>
-        </ScrollView>
-    )
+    return loading 
+        ? (
+            <Loader
+                loading={loading}
+            />
+        )
+        : (
+            <ScrollView>
+                <Logo/>
+                <View style={styles.cardContainer}>
+                    { displayBoxes() }
+                </View>
+            </ScrollView>
+        )
 }
 
 export default HomeScreen

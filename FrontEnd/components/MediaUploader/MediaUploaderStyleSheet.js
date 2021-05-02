@@ -36,7 +36,12 @@ const styles = StyleSheet.create({
     image: {
         height: '100%',
         width: '100%',
-        borderRadius: 8
+        borderRadius: 8,
+
+        alignItems: 'center',
+        justifyContent: 'center',
+
+        overflow: 'hidden'
     }
 })
 

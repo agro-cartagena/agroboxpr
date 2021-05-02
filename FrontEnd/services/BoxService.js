@@ -10,6 +10,8 @@ export default class BoxService extends Service {
 
     constructor() { super() }
 
+    getURL() { return this._url }
+
     // Used BoxManagementScreen
     async getAllBoxes() {
         let payload = {
@@ -86,55 +88,40 @@ export default class BoxService extends Service {
             })
     }
 
-    async addNewBox(data, image) {
-        // for(detail in box){
-        //     if(! box[detail] && detail != "box_content"){
-        //         alert("Entrada vacía.")
-        //         return false
-        //     }
-        // }
-
-        // Filter box_content
-        // let filtered_content = []
-        // box.box_content.forEach((item) => {
-        //     filtered_content.push({
-        //         _id: item._id, 
-        //         product_quantity_box: item.product_quantity_box
-        //     })
-        // })
-        // box.box_content = filtered_content
+    async addNewBox(box) {
+        for(let detail in box){
+            // Verify for empty fields. Only box_content may be empty because of BuildYourBox.
+            if(!box[detail] && detail != "box_content"){
+                alert("Entrada vacía.")
+                return false
+            }
+        }
 
         // Filter box_content to only include product id and quantity per box.
-        // data.box_content = data.box_content.map((item) => {
-        //     const { _id, product_quantity_box} = item
-        //     return { _id, product_quantity_box }
-        // })
+        box.box_content = box.box_content.map((item) => {
+            const { _id, product_quantity_box} = item
+            return { _id, product_quantity_box }
+        })
 
+        // Append fields to Form Data
         const body = new FormData()
-        // for (let atrr in data) 
-        //     body.append(atrr, data[atrr])
+        for (let attr in box) 
+            body.append(attr, typeof box[attr] != "string" ? JSON.stringify(box[attr]) : box[attr])
+        
+        body.append('file', box.box_image)
 
-        body.append('file', image)
-        // const fs = new FileReader()
-        // fs.readAsDataURL(image)
-        //     .then(blob => {
-        //         const file = new Blob([blob], { type: 'image/jpeg' })
-        //         // const file = new File([blob], { type: 'image/*' })
-        //         body.append('file', file)
-        //     })
-        //     .catch((error) => {
-        //         alert(error)
-        //     })
-
+        // Declare payload.
         let payload = {
             method: 'POST',
             headers: {
                 'x-access-token': UserService.instance.webToken,
+                'Content-Type': 'multipart/form-data'
             },
             body: body
         }
 
-        return fetch(this._url + 'image/upload', payload)
+        // Send request and return response.
+        return fetch(this._url + 'box', payload)
             .then(response => {
                 switch(response.status){
                     case 201:
@@ -156,12 +143,12 @@ export default class BoxService extends Service {
     }
 
     async updateBox(box) {
-        // for(detail in box){
-        //     if(! box[detail] && detail != "box_content"){
-        //         alert("Entrada vacía.")
-        //         return false
-        //     }
-        // }
+        for(let detail in box){
+            if(!box[detail] && detail != "box_content"){
+                alert("Entrada vacía.")
+                return false
+            }
+        }
 
         // Filter box_content
         let filtered_content = []
@@ -179,11 +166,18 @@ export default class BoxService extends Service {
         const boxId = box._id
         delete box._id
 
+        const body = new FormData()
+        for (let attr in box)
+            body.append(attr, typeof box[attr] != "string" ? JSON.stringify(box[attr]) : box[attr])
+
+        // New image was uploaded.
+        if(typeof box.box_image != "string")
+            body.append('file', box.box_image)
+
         let payload = {
             method: 'PUT',
             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 'x-access-token': UserService.instance.webToken
             },
             body: JSON.stringify(box)

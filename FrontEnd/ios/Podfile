@@ -10,6 +10,8 @@ target 'FrontEnd' do
 
 
 
+  pod 'expo-react-native-fast-image', :path => '../node_modules/expo-react-native-fast-image'
+
   target 'FrontEndTests' do
     inherit! :complete
     # Pods for testing

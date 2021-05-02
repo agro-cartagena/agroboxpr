@@ -10,6 +10,7 @@ import BackArrow from '../../../components/BackArrow/BackArrow'
 
 import Navigator from '../../../Navigator'
 import AdminService from '../../../services/AdminService'
+import Loader from '../../../components/Loader/Loader'
 
 // Ignore harmless warning about redundant ScrollView.
 LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
@@ -18,10 +19,12 @@ const ManageAdministratorsScreen = () => {
 
     const [admins, setAdmins] = React.useState({})
     const [textInput, changeTextInput] = React.useState("")
+    const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
         async function fetchData() {
             setAdmins(await AdminService.instance.getAdmins())
+            setLoading(false)
         }
 
         fetchData()
@@ -107,38 +110,44 @@ const ManageAdministratorsScreen = () => {
         }
     }
 
-    return (
-        <KeyboardAwareScrollView>
-            <BackArrow onTouch={Navigator.instance.goToMenu}/>
-            
-            <Text style={styles.header}>Administradores de AgroBox</Text>
+    return loading 
+        ?
+            (
+                <Loader loading={loading}/>
+            )
+        :
+            (
+                <KeyboardAwareScrollView>
+                    <BackArrow onTouch={Navigator.instance.goToMenu}/>
+                    
+                    <Text style={styles.header}>Administradores de AgroBox</Text>
 
-            <View style={styles.sectionContainer}>
-                <SectionList
-                        sections={getSections()}
-                        renderItem={renderItem}
-                        renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-                        keyExtractor={(item, index) => item + index}
-                    />  
-            </View>
+                    <View style={styles.sectionContainer}>
+                        <SectionList
+                                sections={getSections()}
+                                renderItem={renderItem}
+                                renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+                                keyExtractor={(item, index) => item + index}
+                            />  
+                    </View>
 
-            <Text style={styles.subheader}>Añadir Administrador Nuevo:</Text>
+                    <Text style={styles.subheader}>Añadir Administrador Nuevo:</Text>
 
-            <View style={[styles.searchContainer, global_styles.shadow]}>
-                <TextInput 
-                    onChangeText = {(text) => changeTextInput(text)}
-                    value={textInput}
-                    style={styles.inputField}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                />
+                    <View style={[styles.searchContainer, global_styles.shadow]}>
+                        <TextInput 
+                            onChangeText = {(text) => changeTextInput(text)}
+                            value={textInput}
+                            style={styles.inputField}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                        />
 
-                <TouchableOpacity style={styles.iconContainer} onPress={askToAddAdmin}>
-                    <Image style={styles.icon} source={require('../../../assets/icons/Search.png')}/>
-                </TouchableOpacity>
-            </View>
-        </KeyboardAwareScrollView>
-    )
+                        <TouchableOpacity style={styles.iconContainer} onPress={askToAddAdmin}>
+                            <Image style={styles.icon} source={require('../../../assets/icons/Search.png')}/>
+                        </TouchableOpacity>
+                    </View>
+                </KeyboardAwareScrollView>
+            )
 }
 
 export default ManageAdministratorsScreen

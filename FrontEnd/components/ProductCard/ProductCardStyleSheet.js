@@ -34,13 +34,18 @@ const styles = StyleSheet.create({
         margin: 0,
 
         borderWidth: 1,
-        borderColor: 'black'
+        borderColor: 'black',
     },
 
     image: {
         width: '100%',
         height: '100%', 
-        resizeMode: 'stretch'
+        resizeMode: 'stretch',
+
+        borderRadius: 14,
+
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     radius: {

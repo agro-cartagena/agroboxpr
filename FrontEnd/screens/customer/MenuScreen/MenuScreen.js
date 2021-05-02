@@ -45,7 +45,7 @@ const MenuScreen = () => {
                     />
                 </View>
 
-                <View style={isAuthenticated ? {} : {display: 'none'}}>
+                <View style={isAuthenticated ? {height: '80%'} : {display: 'none'}}>
                     {/* Admin options */}
                     <View style={isAdmin ? {} : {display: 'none'}}>
                         <View style={styles.button}>

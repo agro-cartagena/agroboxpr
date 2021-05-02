@@ -1,26 +1,30 @@
 import React from 'react'
-import { Text, View, ScrollView, TouchableOpacity, Linking, Image, Alert } from 'react-native'
+import { Text, View, ScrollView, TouchableOpacity, Linking, Image, Alert, TouchableWithoutFeedback } from 'react-native'
 import { WebView } from 'react-native-webview'
 
 import Navigator from '../../../Navigator'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import PopUp from '../../../components/PopUp/PopUp'
+import Loader from '../../../components/Loader/Loader'
 
 import OrderService from '../../../services/OrderService'
 import CartService from '../../../services/CartService'
 import Logo from '../../../components/Logo/Logo'
 import styles from './PaymentScreenStyleSheet'
 
+
 const PaymentScreen = (props) => {
     const [showPayPal, togglePayPal] = React.useState(false)
     const [price, setPrice] = React.useState(0)
     const [transactionId, setTransactionId] = React.useState('N/A')
+    const [uploading, setUploading] = React.useState(false)
 
     React.useEffect(() => {
         setPrice(props.params.order_info.total_price)
     }, [])
 
     const submitOrder = async (payment_method) => {
+        setUploading(true)
         const order = {
             order: {
                 ...props.params.order_info,
@@ -33,6 +37,8 @@ const PaymentScreen = (props) => {
 
         if(await OrderService.instance.submitOrder(order)) {
             await CartService.instance.refreshCart();
+            
+            setUploading(false)
             Navigator.instance.goToOrderConfirmation()
         }
     }
@@ -92,6 +98,12 @@ const PaymentScreen = (props) => {
 
     return (
         <ScrollView>
+            <TouchableWithoutFeedback style={styles.loaderOverlay}>
+                <Loader
+                    loading={uploading}
+                />
+            </TouchableWithoutFeedback>
+
             <BackArrow onTouch={Navigator.instance.goToCheckout} />
 
             <Logo/>

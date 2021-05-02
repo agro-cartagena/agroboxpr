@@ -7,6 +7,8 @@ export default class ProductService extends Service {
 
     constructor() { super() }
 
+    getURL () { return this._url }
+
     async getProductCatalog() {
         return fetch(this._url + 'product')
             .then(response => {
@@ -38,20 +40,26 @@ export default class ProductService extends Service {
     }
 
     async addNewProduct(product) {
-        for(detail in product){
+        for(let detail in product){
             if(! product[detail]){
                 alert("Entrada vacía.")
                 return false
             }
         }
 
+        const body = new FormData()
+        for(let attr in product) 
+            body.append(attr, typeof product[attr] != "string" ? JSON.stringify(product[attr]) : product[attr])
+        
+        body.append('file', product.product_image)
+
         let payload = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 'x-access-token': UserService.instance.webToken
             },
-            body: JSON.stringify(product)
+            body: body
         }
 
         return fetch(this._url + 'product', payload)
@@ -76,7 +84,7 @@ export default class ProductService extends Service {
     }
 
     async updateProduct(product) {
-        for(detail in product){
+        for(let detail in product){
             if(! product[detail]){
                 alert("Entrada vacía.")
                 return false
@@ -88,13 +96,21 @@ export default class ProductService extends Service {
         const productId = product._id
         delete product._id
 
+        const body = new FormData()
+        for(let attr in product)
+            body.append(attr, typeof product[attr] != "string" ? JSON.stringify(product[attr]) : product[attr])
+        
+        // New image was uploaded.
+        if(typeof product.product_image != 'string')
+            body.append('file', product.product_image)
+
         let payload = {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'x-access-token': UserService.instance.webToken
             },
-            body: JSON.stringify(product)
+            body: body
         }
 
         return fetch(this._url + `product/${productId}`, payload)

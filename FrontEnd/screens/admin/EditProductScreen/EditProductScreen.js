@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, Alert } from 'react-native'
+import { View, Text, Alert, TouchableWithoutFeedback } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import styles from './EditProductScreenStyleSheet'
 import global_styles from '../../../styles'
+import Loader from '../../../components/Loader/Loader'
 
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import FormInput from '../../../components/FormInput/FormInput'
@@ -13,30 +14,43 @@ import Navigator from '../../../Navigator'
 import MediaUploader from '../../../components/MediaUploader/MediaUploader'
 import ProductService from '../../../services/ProductService'
 
-const ProductScreen = (props) => {
-    let _isNewProduct = props.params == "new", 
-        _product = _isNewProduct ? {
-            product_name: "",
-            product_category: "",
-            product_quantity_stock: "",
-            product_units: "",
-            product_price: ""
-        } : props.params
+const EditProductScreen = (props) => {
+    const _isNewProduct = props.params == "new"
 
-    const [productData, changeProductData] = React.useState(_product)
-    const [productImage, changeProductImage] = React.useState('')
+    const [productData, setProductData] = React.useState({})
+    const [productImage, setProductImage] = React.useState({})
+    const [uploading, setUploading] = React.useState(false)
     
-    const submitHandler = async () => {
-        let result = null
+    React.useEffect(() => {
+        async function fetchData() {
+            let _product = _isNewProduct ? {
+                product_name: "",
+                product_category: "",
+                product_quantity_stock: 0,
+                product_units: "",
+                product_image: {},
+                product_price: 0
+            } : { ...props.params }
+    
+            setProductData(_product)
+            setProductImage(_product.product_image)
+        }
 
+        fetchData()
+    }, [])
+
+    const submitHandler = async () => {
+        setUploading(true)
+
+        let result = null
         if(_isNewProduct)
-            result = await ProductService.instance.addNewProduct(productData)
+            result = await ProductService.instance.addNewProduct({...productData, product_image: productImage})
         
         else
-            result = await ProductService.instance.updateProduct(productData)
+            result = await ProductService.instance.updateProduct({...productData, product_image: productImage})
 
-        if(result){
-            alert("Producto ha sido guardado.")
+        setUploading(false)
+        if(result) {
             Navigator.instance.goToProductManagement()
         }
     }
@@ -53,8 +67,10 @@ const ProductScreen = (props) => {
                     {
                         text: 'Remover',
                         onPress: async () => {
-                            if(await ProductService.instance.removeProduct(productData._id))
+                            if(await ProductService.instance.removeProduct(productData._id)) {
+                                setUploading(false)
                                 Navigator.instance.goToProductManagement()
+                            }
                         }
                     }
                 ]
@@ -89,11 +105,18 @@ const ProductScreen = (props) => {
 
     return (
         <KeyboardAwareScrollView>
+            <TouchableWithoutFeedback style={styles.loaderOverlay}>
+                <Loader
+                    loading={uploading}
+                />
+            </TouchableWithoutFeedback>
+            
+
             <BackArrow onTouch={Navigator.instance.goToProductManagement}/>
 
             <MediaUploader
                 media = {productImage}
-                setMedia = {changeProductImage}
+                setMedia = {setProductImage}
             />
 
             <View style={[styles.formContainer]}>
@@ -101,7 +124,8 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewProduct ? 'ejemplo: Brocoli' : productData.product_name}
-                        onChangeText = { (text) => changeProductData({...productData, product_name: text}) }
+                        value = { productData.product_name}
+                        onChangeText = { (text) => setProductData({...productData, product_name: text}) }
                     />
                 </View>
 
@@ -109,7 +133,8 @@ const ProductScreen = (props) => {
                 <View style={global_styles.formEntry}>
                     <FormInput
                         placeholder = { _isNewProduct ? 'ejemplo: Vegetales': productData.product_category}
-                        onChangeText = { (text) => changeProductData({...productData, product_category: text}) }
+                        value = { productData.product_category}
+                        onChangeText = { (text) => setProductData({...productData, product_category: text}) }
                     />
                 </View>
 
@@ -118,7 +143,8 @@ const ProductScreen = (props) => {
                     <FormInput
                         keyboardType = "numeric"
                         placeholder = { _isNewProduct ? 'ejemplo: 3': String(productData.product_quantity_stock)}
-                        onChangeText = { (text) => changeProductData({...productData, product_quantity_stock: Number(text)}) }
+                        value = { String(productData.product_quantity_stock)}
+                        onChangeText = { (text) => setProductData({...productData, product_quantity_stock: Number(text)}) }
                     />
                 </View>
 
@@ -127,7 +153,8 @@ const ProductScreen = (props) => {
                     <FormInput
                         autoCapitalize="none"
                         placeholder = { _isNewProduct ? 'ejemplo: lbs' : productData.product_units}
-                        onChangeText = { (text) => changeProductData({...productData, product_units: text}) }
+                        value = { productData.product_units}
+                        onChangeText = { (text) => setProductData({...productData, product_units: text}) }
                     />
                 </View>
 
@@ -136,18 +163,16 @@ const ProductScreen = (props) => {
                     <FormInput
                         keyboardType = "numeric"
                         placeholder = { _isNewProduct ? 'ejemplo: 2.49' : String(productData.product_price)}
-                        onChangeText = { (text) => changeProductData({...productData, product_price: Number(text)}) }
+                        // value = { String(productData.product_price)}
+                        onChangeText = { (text) => setProductData({...productData, product_price: Number(text)}) }
                     />
                 </View>
             </View>
 
-            {/* <View style={[global_styles.container, styles.buttonContainer]}>
-                <Button text="Guardar" onTouch={submitHandler}/>
-            </View> */}
             {displayButtons()}
 
         </KeyboardAwareScrollView>
     )    
 }
 
-export default ProductScreen
+export default EditProductScreen

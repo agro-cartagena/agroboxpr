@@ -11,13 +11,16 @@ import BoxCard from '../../../components/BoxCard/BoxCard'
 
 import BoxService from '../../../services/BoxService'
 import Navigator from '../../../Navigator'
+import Loader from '../../../components/Loader/Loader'
 
 const BoxManagementScreen = () => {
     const [boxList, setBoxList] = React.useState([])
+    const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
         async function fetchData() {
             setBoxList(await BoxService.instance.getAllBoxes())
+            setLoading(false)
         }
 
         fetchData()
@@ -43,26 +46,32 @@ const BoxManagementScreen = () => {
         )
     }
 
-    return (
-        <ScrollView>
-            <BackArrow
-                onTouch={Navigator.instance.goToInventoryManagement}
-            />
+    return loading 
+        ? 
+            (
+                <Loader loading={loading}/>
+            )
+        :
+            (
+                <ScrollView>
+                    <BackArrow
+                        onTouch={Navigator.instance.goToInventoryManagement}
+                    />
 
-            <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Cajas)</Text>
+                    <Text style={[global_styles.text, styles.header]}>Manejar el Inventario (Cajas)</Text>
 
-            <View style={styles.boxCardContainer}>
-                {displayBoxes()}
-            </View>
+                    <View style={styles.boxCardContainer}>
+                        {displayBoxes()}
+                    </View>
 
-            <View style={styles.buttonContainer}>
-                <Button
-                    text="Crear Caja Nueva"
-                    onTouch={() => Navigator.instance.goToEditBox("new")}
-                />
-            </View>
-        </ScrollView>
-    )
+                    <View style={styles.buttonContainer}>
+                        <Button
+                            text="Crear Caja Nueva"
+                            onTouch={() => Navigator.instance.goToEditBox("new")}
+                        />
+                    </View>
+                </ScrollView>
+            )
 }
 
 export default BoxManagementScreen

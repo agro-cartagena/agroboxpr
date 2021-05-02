@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Text, TouchableOpacity, Image, Alert, Modal, TouchableWithoutFeedback } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity, Image, Alert, TouchableWithoutFeedback } from 'react-native'
 
 import styles from './ManageOrdersScreenStyleSheet'
 import OrderService from '../../../services/OrderService'
@@ -9,13 +9,17 @@ import DropDown from '../../../components/DropDown/DropDown'
 
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import Navigator from '../../../Navigator'
+import Loader from '../../../components/Loader/Loader'
 
 const ManageOrdersScreen = () => {
     const [orders, setOrders] = React.useState({})
+    const [loading, setLoading] = React.useState(true)
+    const [uploading, setUploading] = React.useState(false)
 
     React.useEffect(() => {
         async function fetchData() {
             setOrders(await OrderService.instance.getAllOrders())
+            setLoading(false)
         }
 
         fetchData()
@@ -34,29 +38,34 @@ const ManageOrdersScreen = () => {
                         {
                             text: 'En Camino',
                             onPress: async () => {
+                                setUploading(true)
                                 if(await OrderService.instance.updateOrderStatus(item._id, 'En Camino')){
                                     setOrders(await OrderService.instance.getAllOrders())
                                 }
+                                setUploading(false)
                             }
 
                         },
                         {
                             text: 'Pendiente',
                             onPress: async () => {
+                                setUploading(true)
                                 if(await OrderService.instance.updateOrderStatus(item._id, 'Pendiente')){
                                     setOrders(await OrderService.instance.getAllOrders())
                                 }
+                                setUploading(false)
                             }
 
                         },
                         {
                             text: 'Completada',
                             onPress: async () => {
+                                setUploading(true)
                                 if(await OrderService.instance.updateOrderStatus(item._id, 'Completada')){
                                     setOrders(await OrderService.instance.getAllOrders())
                                 }
+                                setUploading(false)
                             }
-                            
                         }
                     ]
                 )
@@ -103,7 +112,7 @@ const ManageOrdersScreen = () => {
                             {
                                 text: 'Precio',
                                 onPress: () => {
-                                    sortOrders('order_total', -1)
+                                    sortOrders('total_price', -1)
                                 }
                             },
                             {
@@ -141,17 +150,29 @@ const ManageOrdersScreen = () => {
         )
     }
 
-    return (
-        <ScrollView>
-            <BackArrow onTouch={Navigator.instance.goToMenu}/>
+    return loading 
+        ?
+            (
+                <Loader loading={loading}/>
+            )
+        :
+            (
+                <ScrollView>
+                    <TouchableWithoutFeedback style={styles.loaderOverlay}>
+                        <Loader
+                            loading={uploading}
+                        />
+                    </TouchableWithoutFeedback>
 
-            <Text style={styles.header}>Manejar Órdenes</Text>
+                    <BackArrow onTouch={Navigator.instance.goToMenu}/>
 
-            <View style={styles.dropDownContainer}>
-                {displayOrders()}
-            </View>
-        </ScrollView>
-    )
+                    <Text style={styles.header}>Manejar Órdenes</Text>
+
+                    <View style={styles.dropDownContainer}>
+                        {displayOrders()}
+                    </View>
+                </ScrollView>
+            )
 }
 
 export default ManageOrdersScreen

@@ -21,9 +21,12 @@ const styles = StyleSheet.create({
         margin: 8
     },
 
-    imageRadius: {
+    cardImage: {
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
+
+        alignItems: 'center',
+        justifyContent: 'center'
     },
 
     productContainer: {

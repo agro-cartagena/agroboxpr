@@ -8,14 +8,17 @@ import UserService from '../../../services/UserService'
 import OrderCard from '../../../components/OrderCard/OrderCard'
 import DropDown from '../../../components/DropDown/DropDown'
 import Navigator from '../../../Navigator'
+import Loader from '../../../components/Loader/Loader'
 
 const ViewOrdersScreen = () => {
     const [orders, setOrders] = React.useState({})
+    const [loading, setLoading] = React.useState(true)
 
     React.useEffect(() => {
         async function fetchData() {
             if(UserService.instance.isAuthenticated())
                 setOrders(await OrderService.instance.getUserOrders())
+            setLoading(false)
         }
 
         fetchData()
@@ -54,15 +57,21 @@ const ViewOrdersScreen = () => {
             )
     }
 
-    return (
-        <ScrollView>
-            <Text style={styles.header}>Mis Órdenes</Text>
+    return loading
+        ?
+            (
+                <Loader loading={loading}/>
+            )
+        :
+            (
+                <ScrollView>
+                    <Text style={styles.header}>Mis Órdenes</Text>
 
-            <View style={styles.cardContainer}>
-                {displayOrders()}
-            </View>
-        </ScrollView>
-    )
+                    <View style={styles.cardContainer}>
+                        {displayOrders()}
+                    </View>
+                </ScrollView>
+            )
 }
 
 export default ViewOrdersScreen

@@ -41,6 +41,15 @@ const updateProductDb = async (id, changes) => {
 	return collection.updateOne({ _id: ObjectId(id) }, { $set: changes })
 }
 
+/**
+ * Initially used for inventory management, updateProductDb is now being used for 
+ * stock management.
+ * @deprecated Product management done at the order service layer with use of
+ * service functions.
+ * @param {*} id Product id
+ * @param {*} changes amount by which the product stock decreases.
+ * @returns 
+ */
 const decreaseProductDb = async (id, changes) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')

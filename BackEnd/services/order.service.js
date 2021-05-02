@@ -1,7 +1,4 @@
-const { Logger, ObjectId } = require('mongodb')
 const { orderDb, orderContentDb, productDb } = require('../db')
-const { getProductById } = require('./product.service')
-
 const {
 	createOrderDb,
 	getAllUserOrdersDb,
@@ -10,9 +7,8 @@ const {
 	getOrderByCityDb,
 	readAllOrdersDb,
 } = orderDb
-
 const { createOrderContentDb, getOrderContentByOrder } = orderContentDb
-const { decreaseProductDb, getProductByIdDb } = productDb
+const { updateProductDb, getProductByIdDb } = productDb
 
 /**
  * Uses order information to create an order document inside the database, appending the user's id and an
@@ -171,16 +167,19 @@ const retrieveProductList = async (orderId) => {
 		order.pop('_id')
 		order.pop('order_id')
 
-		order.forEach((box) => {
-			boxList.push(orderList[parseInt(box)])
+		order.map((box) => {
+			boxList.push({
+				amount: orderList[parseInt(box)].box_quantity,
+				content: orderList[parseInt(box)].box_content,
+			})
 		})
 
-		boxList.forEach((box) => {
-			box.box_content.forEach((prod) => {
+		boxList.map((box) => {
+			box.content.map((prod) => {
 				result.push({
-					boxes: box.box_quantity,
-					product_id: prod.productId,
-					amount: prod.amount,
+					_id: prod._id,
+					prod_name: prod.product_name,
+					total_products: prod.product_quantity_box * box.amount,
 				})
 			})
 		})
@@ -194,38 +193,42 @@ const retrieveProductList = async (orderId) => {
 const manageInventory = async (orderId) => {
 	try {
 		//retrieve each unique product within the boxes in the order
-		let productList = []
+		let initial_product_list = []
+		let product_amounts = []
+		let amount_differance = []
 
 		await retrieveProductList(orderId).then((list) => {
 			//mock return of products
-			productList = list
+			initial_product_list = list
 		})
 
 		// Verify product amounts in the inventory
-		for (const product of productList) {
-			const item = await getProductByIdDb(product.product_id)
-			//mock finding the products
-			const orderAmount = product.amount * product.boxes
-			const stockAmount = parseInt(item.product_quantity_stock)
-
-			//Not enough items in inventory to carry out order
-			if (stockAmount < orderAmount) {
-				return {
-					msg: 'inventory management failed',
-					product: product.product_id,
-					stock: stockAmount,
-					order: orderAmount,
-				}
-			}
-
-			//store ammounts here
+		for (const product of initial_product_list) {
+			const item = await getProductByIdDb(product._id) // mock finding the products
+			const orderAmount = product.total_products
+			const stockAmount = item.product_quantity_stock
+			if (orderAmount <= stockAmount)
+				product_amounts.push({
+					_id: item._id,
+					orderAmount: orderAmount,
+					stockAmount: stockAmount,
+				})
+			else return { msg: `cannot do changes for ${item.product_name}` }
 		}
 
-		// reduce stock in inventory accordingly
-		productList.forEach((product) => {
-			const orderAmount = product.amount * product.boxes
-			decreaseProductDb(product.product_id, orderAmount)
+		//store ammounts to change here
+		product_amounts.map((index) => {
+			amount_differance.push({
+				delta: index.stockAmount - index.orderAmount,
+				_id: index._id,
+			})
 		})
+
+		for (let i = 0; i < amount_differance.length; i++) {
+			await updateProductDb(amount_differance[i]._id, {
+				product_quantity_stock: amount_differance[i].delta,
+			})
+		}
 
 		return true
 	} catch (e) {

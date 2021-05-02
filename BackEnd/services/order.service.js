@@ -145,7 +145,7 @@ const getOrderByCity = async (city) => {
 }
 
 /**
- * Connects to the oreder Contents collection in the database and retrieves the document matching
+ * Connects to the order Contents collection in the database and retrieves the document matching
  * the specified order id. The result of the fetch processed to return a list of JSON objects,
  * whose key value pairs are the number of boxes, the product_id and amounts of each product in each box.
  * This is a helper function to be used inside manageInventory.
@@ -158,15 +158,18 @@ const retrieveProductList = async (orderId) => {
 		let boxList = []
 		let result = []
 
-		//get boxes
-		await getOrderContentByOrder(orderId).then((boxes) => {
+		// get boxes from the order
+		await getOrderContentByOrder(orderId).then((boxes) => { // (testing) mock getting content
 			order = Object.keys(boxes)
 			orderList = boxes
 		})
 
+		// remove keys that are not associated with the order's boxes
 		order.pop('_id')
 		order.pop('order_id')
 
+		// isolate the amount of boxes of each type and the content in these from the rest
+		// of the box data
 		order.map((box) => {
 			boxList.push({
 				amount: orderList[parseInt(box)].box_quantity,
@@ -174,6 +177,8 @@ const retrieveProductList = async (orderId) => {
 			})
 		})
 
+		// link together for future use each product's id, name, and total amount
+		// to be remove upon purchase
 		boxList.map((box) => {
 			box.content.map((prod) => {
 				result.push({
@@ -190,23 +195,38 @@ const retrieveProductList = async (orderId) => {
 	}
 }
 
+/**
+ * Modifies the values of products in the stock according to the products amounts contained 
+ * in the order's content. 
+ * @param {ObjectId} orderId id value of the order to get the associated content
+ * @returns {Promise<true|JSON|Error} Function returns the value true if the inventory management
+ * is successful, and a JSON message relaying changes can't be done for a given product
+ * if the resulting update gives a negative value. If there is an error in async functions return Error.
+ */
 const manageInventory = async (orderId) => {
 	try {
-		//retrieve each unique product within the boxes in the order
 		let initial_product_list = []
 		let product_amounts = []
 		let amount_differance = []
-
+		
+		//retrieve each unique product within the boxes in the order
 		await retrieveProductList(orderId).then((list) => {
-			//mock return of products
+			//(testing) mock return of products
 			initial_product_list = list
 		})
 
-		// Verify product amounts in the inventory
+		// Verify product amounts in the inventory, are added to product_amounts if enough
+		// are in stock, otherwise return error msg JSON
 		for (const product of initial_product_list) {
-			const item = await getProductByIdDb(product._id) // mock finding the products
+			
+			//recieve product inventory data
+			const item = await getProductByIdDb(product._id) // (testing) mock finding the products
+			
+			// establish amounts to be used
 			const orderAmount = product.total_products
 			const stockAmount = item.product_quantity_stock
+			
+			//verify if differance won't be negative
 			if (orderAmount <= stockAmount)
 				product_amounts.push({
 					_id: item._id,
@@ -216,7 +236,8 @@ const manageInventory = async (orderId) => {
 			else return { msg: `cannot do changes for ${item.product_name}` }
 		}
 
-		//store ammounts to change here
+		// amount_diferance holds the products _id and the new quantity in stock
+		// after carrying out sale.
 		product_amounts.map((index) => {
 			amount_differance.push({
 				delta: index.stockAmount - index.orderAmount,
@@ -224,24 +245,33 @@ const manageInventory = async (orderId) => {
 			})
 		})
 
+		// inventory update step
 		for (let i = 0; i < amount_differance.length; i++) {
-			await updateProductDb(amount_differance[i]._id, {
+			await updateProductDb(amount_differance[i]._id, {		//mock updating content
 				product_quantity_stock: amount_differance[i].delta,
 			})
 		}
 
+		//management succesful
 		return true
 	} catch (e) {
 		throw new Error(e.message)
 	}
 }
 
+/**
+ * Helper function that organizes the get functions by order status.
+ * @param {Function} getFuncionDb function that recieves all the data from orders collection
+ * @returns {Promise<JSON|Error>} JSON document organized by order status, Error for 
+ * get method errors.
+ */
 const filterByStatus = async (getFuncionDb) => {
 	try {
 		let categories = []
 		let order_catalog = []
 		let response = {}
 
+		// retrieve data, categorizes the order status 
 		await getFuncionDb().then((element) => {
 			order_catalog = element
 			for (const order in element) {
@@ -250,6 +280,7 @@ const filterByStatus = async (getFuncionDb) => {
 			}
 		})
 
+		// organizes the data for the specified status category
 		categories.forEach((category) => {
 			response = {
 				[category]: order_catalog.filter(
@@ -265,6 +296,14 @@ const filterByStatus = async (getFuncionDb) => {
 	}
 }
 
+/**
+ * Helper function that organizes the get functions by order status. Used for get functions
+ * that use a parameter value.
+ * @param {Function} getFuncionDb function that recieves all the data from orders collection
+ * @param {*} parameter parameter to be used inside getFunctionDb
+ * @returns {Promise<JSON|Error>} JSON document organized by order status, Error for 
+ * get method errors.
+ */
 const filterByStatusWithParameter = async (getFuncionDb, parameter) => {
 	try {
 		let categories = []

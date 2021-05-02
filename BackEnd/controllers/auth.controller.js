@@ -1,6 +1,7 @@
 const { authService } = require('../services')
 
-const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, readAllAdmin, updateUserPassword, updateUserInfo, readUserById, forgotPassword } = authService
+const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, readAllAdmin, updateUserPassword, updateUserInfo, readUserById, forgotPassword, 
+        resetPassword } = authService
 
 const postSignup = async (req, res, next) => {
     const { name, email, password, phone } = req.body
@@ -220,6 +221,28 @@ const postForgotPassword = async (req, res, next) => {
     }
 }
 
+const postResetPassword = async (req, res, next) => {
+    const { user_id, reset_token, new_password } = req.body
+    
+    try {
+        //
+        await resetPassword(user_id, reset_token, new_password).then(result => {
+            console.log("Result: ", result)
+            if(result){
+                res.status(200).send()
+                next()
+            } else{
+                res.status(403).json({
+                    errors: [{ user: "Invalid Credentials!" }],
+                });
+            }
+        })
+    } catch (err) { 
+        res.sendStatus(500)
+        next(err)
+    }
+}
+
 module.exports = {
     postSignup,
     postLogin,
@@ -230,5 +253,6 @@ module.exports = {
     putUserPersonalInfo,
     putUserAddress,
     getUser,
-    postForgotPassword
+    postForgotPassword,
+    postResetPassword
 }

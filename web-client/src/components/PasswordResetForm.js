@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import axios from 'axios'
+import NavBar from './NavBar'
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles'
 import IconButton from '@material-ui/core/IconButton';
@@ -15,6 +17,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import Image from 'material-ui-image'
 import AgroboxLogo from '../assets/agrobox_logo.png'
+import queryString from 'query-string'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -50,11 +53,17 @@ const validationSchema = yup.object({
         }),
 });
 
-const PasswordResetForm = () => {
+const PasswordResetForm = (props) => {
     const classes = useStyles()
     const [values, setValues] = React.useState({
         showPassword: false,
     });
+
+    const value = queryString.parse(props.location.search);
+    const token = value.token;
+    const userId = value.id
+    // console.log('Token: ', token)
+    // console.log('User Id: ', userId)
 
     const handleClickShowPassword = () => {
         setValues({ ...values, showPassword: !values.showPassword });
@@ -71,13 +80,24 @@ const PasswordResetForm = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log("Password: ", values)
-            //   alert(JSON.stringify(values, null, 2));
+            const passwordReset = {
+                user_id: userId,
+                reset_token: token,
+                new_password: values.password
+            }
+            console.log(`${process.env.REACT_APP_API_URL}/api/auth/resetPassword`)
+
+            axios.post(`${process.env.REACT_APP_API_URL}/api/auth/resetPassword`, passwordReset).then((response) => {
+                console.log(response)
+            }, (error) => {
+                console.log(error)
+            })
         },
     });
 
     return (
         <div>
+            <NavBar />
             <form onSubmit={formik.handleSubmit}>
                 <Grid
                     container
@@ -89,7 +109,7 @@ const PasswordResetForm = () => {
                 >
                     
                     
-                    <img src={AgroboxLogo} width='60%' height='60%' resizeMode='contain'/>
+                    <img src={AgroboxLogo} width='60%' height='60%'/>
                     <Grid item>
                         <div>
                             <FormControl className={clsx(classes.textField)}>

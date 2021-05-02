@@ -8,7 +8,9 @@ const { authController } = require('../controllers');
 
 router.post('/signup', validateEntity(userSchema), authController.postSignup);
 router.post('/login', authController.postLogin);
+
 router.post('/forgotPassword', authController.postForgotPassword)
+router.post('/resetPassword', authController.postResetPassword)
 
 router.put('/personalInfo', auth, authController.putUserPersonalInfo);
 router.put('/address', auth, authController.putUserAddress);

@@ -4,6 +4,8 @@ const crypto = require("crypto");
 const { userDb, tokenDb } = require('../db');
 const { sendEmail } = require('../utils/email/email')
 const { ObjectID } = require("mongodb");
+const { findTokenByUserIdDb } = require("../db/token.db");
+const { date } = require("yup/lib/locale");
 
 
 const { registerNewUserDb, findUserByFilterDb, findUserByQueryAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
@@ -230,6 +232,7 @@ const forgotPassword = async (email) => {
         // };
         const userEmail = user[0].email
         const userName = user[0].name
+        const userId = user[0]._id
 
         let passwordResetToken = crypto.randomBytes(32).toString("hex");
 
@@ -237,17 +240,53 @@ const forgotPassword = async (email) => {
         const hash = await bcrypt.hash(passwordResetToken, Number(bcryptSalt));
 
         const newToken = {
-            user_id : user._id,
+            user_id : userId,
             token : hash,
             created_date : Date.now(),
-            expires : 3600 // Expiration time in seconds
+            expires : 15 * 60000 // Expiration time in milliseconds, 15 minutes
         }
 
         const createdToken = await createResetPasswordTokenDb(newToken)
 
-        const link = `/passwordReset?token=${passwordResetToken}&id=${user._id}`;
+        // const link = `${process.env.CLIENT_URL}`;
+        const link = `${process.env.CLIENT_URL}/passwordReset?token=${passwordResetToken}&id=${userId}`;
         return await sendEmail(userEmail,"Password Reset Request",{name: userName, link: link,},"./template/resetPassword.handlebars");
     }
+}
+
+const resetPassword = async (user_id, reset_token, new_password) => {
+
+    let resetToken = await findTokenByUserIdDb(user_id)
+    if(!resetToken){
+        return false
+    }
+
+    const isTokenValid = await bcrypt.compare(reset_token, resetToken.token)
+
+    if(!isTokenValid){
+        return false
+    }
+
+    const isTokenExpired = (resetToken.created_date + resetToken.expires) < Date.now()
+    if(isTokenExpired){
+        return false
+    }
+
+    const bcryptSalt = 10;
+    const hash = await bcrypt.hash(new_password, Number(bcryptSalt));
+
+    const updateDocument = {
+        "$set": {
+            "password": hash
+        }
+    }
+
+    const user = await findUserByQueryAndUpdate({ _id: ObjectID(user_id) }, updateDocument)
+
+    const userEmail = user.value.email
+    const userName = user.value.name
+
+    sendEmail(userEmail,"Password Reset Exitoso",{name: userName},"./template/passwordResetSuccessful.handlebars");
 }
 
 const createJWT = (email, userId, role) => {
@@ -271,5 +310,6 @@ module.exports = {
     updateUserPassword,
     updateUserInfo,
     readUserById,
-    forgotPassword
+    forgotPassword,
+    resetPassword
 }

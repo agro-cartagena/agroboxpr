@@ -15,6 +15,14 @@ const createResetPasswordTokenDb = async (newToken) => {
     }).catch(error => console.error(error))
 }
 
+const findTokenByUserIdDb = async (id) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('token')
+
+	return collection.findOne({ user_id: ObjectID(id) })
+}
+
 module.exports = {
-    createResetPasswordTokenDb
+    createResetPasswordTokenDb,
+    findTokenByUserIdDb
 }

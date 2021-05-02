@@ -2,31 +2,43 @@ import { StyleSheet } from 'react-native'
 import { RFPercentage } from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({
+    header: {
+        margin: 25,
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+
     card: {
         width: '65%',
-        padding: 0,
-
-        backgroundColor: 'rgb(151, 184, 56)',
-        borderColor: 'black',
+        height: 200,
 
         alignSelf: 'center',
-        borderRadius: 10
-    },
+        borderRadius: 10,
+        backgroundColor: 'rgb(151, 184, 56)',
 
-    cardTitle: {
-        fontSize: 22
-    },
+        borderWidth: 1,
+        borderColor: 'black',
 
-    cardText: {
-        margin: 8
+        overflow: 'hidden'
     },
 
     cardImage: {
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        height: '80%',
+    },
 
+    cardTextContainer: {
+        height: '20%',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+
+    cardText: {
+        color: 'white',
+        fontWeight: 'bold',
+
+        fontSize: 16
     },
 
     productContainer: {

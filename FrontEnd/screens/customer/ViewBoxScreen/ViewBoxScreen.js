@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import Loader from '../../../components/Loader/Loader'
 
 import { Card } from 'react-native-elements'
+import CachedImage from '../../../components/CachedImage/CachedImage'
 import Button from '../../../components/Button/Button'
 
 import styles from './ViewBoxScreenStyleSheet';
@@ -292,30 +293,24 @@ const BoxScreen = (props) => {
         )
         : (
             <KeyboardAwareScrollView>
-
+                
                 {/* GO BACK ARROW */}
                 <BackArrow onTouch={Navigator.instance.goToHome}/>
 
                 {/* BOX CARD */}
-                <Text style={[styles.text, styles.cardText, styles.cardTitle]}>{props.params.box_name}</Text>
-                <Card containerStyle={[styles.card, global_styles.shadow]}>
-                    <Card.Image 
-                        style={[styles.cardImage, imageLoading ? {backgroundColor: 'rgb(151, 184, 56)'} : {backgroundColor: 'transparent'}]}
-                        source={{uri: `${BoxService.instance.getURL()}image/file/${props.params.box_image}`}}
-                        resizeMode="stretch"
-                        onLoadEnd={() => setImageLoading(false)}
-                    >
-                        {
-                            imageLoading 
-                                && 
-                                    <ActivityIndicator
-                                        size="large"
-                                        color="#8C0634"
-                                    />
-                        }
-                    </Card.Image>
-                    <Text style={[styles.text, styles.cardText]}>Precio Mínimo: <Text style={{color: 'rgb(252,0,29)'}}>${props.params.box_price}</Text></Text>
-                </Card>
+                <Text style={styles.header}>{props.params.box_name}</Text>
+                <View style={styles.card}>
+                    <View style={styles.cardImage}>
+                        <CachedImage
+                            source={{uri: `${BoxService.instance.getURL()}image/file/${props.params.box_image}`}}
+                            resizeMode='stretch'
+                        />
+                    </View>
+
+                    <View style={styles.cardTextContainer}>
+                        <Text style={styles.cardText}>Precio Mínimo: <Text style={{color: 'rgb(252,0,29)'}}>${props.params.box_price}</Text></Text>
+                    </View>
+                </View>
 
                 {  displayContent() }
 

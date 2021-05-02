@@ -7,6 +7,12 @@
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "ios": {
+      "bundleIdentifier": "com.agroboxpr.app",
+      "infoPlist" : {
+        "NSFaceIDUsageDescription": "ABPR needs to use Face ID / Touch ID to authenticate you"
+      }
+    }
   }
 }

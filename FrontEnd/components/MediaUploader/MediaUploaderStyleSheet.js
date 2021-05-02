@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
         height: '80%',
         backgroundColor: 'lightgray',
 
-        borderWidth: 2,
-        borderColor: 'gray', 
+        borderWidth: 1,
+        borderColor: 'black',
         borderRadius: 10
     },
 

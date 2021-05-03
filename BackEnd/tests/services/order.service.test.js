@@ -8,7 +8,6 @@ const { orderDb, orderContentDb, productDb } = require('../../db')
 const newOrder = require('../mock-data/newOrderContent.json')
 const mockDb = require('../mock-data/mockDB.json')
 const db = require('../../db/mdb')
-
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -111,7 +110,8 @@ describe('Order Service Suite', () => {
 	})
 })
 
-// ! Inventory Management Test
+// ! Inventory Management Test 
+// * Mocks the functions locally and get's are adjusted to work with mocked data.
 
 productDb.getProductByIdDb = jest.fn((id) => {
 	for (let i = 0; i < mockDb.length; i++) {
@@ -126,7 +126,9 @@ productDb.updateProductDb = jest.fn((id, changes) => {
 			return {
 				_id: mockDb[i]._id,
 				product_name: mockDb[i].product_name,
-				product_quantity_stock: changes.product_quantity_stock,
+				product_quantity_stock:
+					mockDb[i].product_quantity_stock -
+					changes.product_quantity_stock,
 			}
 	}
 	return id
@@ -171,11 +173,11 @@ orderService.retrieveProductList = jest.fn(() => {
 })
 
 orderService.manageInventory = jest.fn(() => {
+	let start_values = []
+	let final_values = []
 	let initial_product_list = []
 	let product_amounts = []
 	let amount_differance = []
-	let start_values = []
-	let final_product_list = []
 
 	mockDb.map((product) => {
 		start_values.push({
@@ -202,34 +204,54 @@ orderService.manageInventory = jest.fn(() => {
 		if (orderAmount <= stockAmount)
 			product_amounts.push({
 				_id: item._id,
+				name: item.product_name, //added for ease in reading the data
 				orderAmount: orderAmount,
 				stockAmount: stockAmount,
 			})
 		else return { msg: `cannot do changes for ${item.product_name}` }
 	})
 
-	// amount_diferance holds the products _id and the new quantity in stock
-	// after carrying out sale.
-	product_amounts.map((index) => {
-		amount_differance.push({
-			delta: index.stockAmount - index.orderAmount,
-			_id: index._id,
-		})
-	})
+	/*
+	amount_diferance holds the products _id and the new quantity in stock
+	after carrying out sale. Makes sure products aren't repeated since data is
+	not automatically updated like in db and would return two instances of the 
+	same product otherwise
+	*/
+	let inserted = []
+
+	for (let i = 0; i < product_amounts.length; i++) {
+		if (inserted.includes(product_amounts[i]._id)) {
+			amount_differance.forEach((element) => {
+				if (element._id == product_amounts[i]._id) {
+					element.delta += product_amounts[i].orderAmount
+				}
+			})
+		} else {
+			amount_differance.push({
+				delta: product_amounts[i].orderAmount,
+				name: product_amounts[i].name,
+				_id: product_amounts[i]._id,
+			})
+			inserted.push(product_amounts[i]._id)
+		}
+	}
 
 	// inventory update step
 	for (let i = 0; i < amount_differance.length; i++) {
-		final_product_list.push(
-			productDb.updateProductDb(amount_differance[i]._id, {
-				//mock updating content
-				product_quantity_stock: amount_differance[i].delta,
-			})
-		)
+		{
+			final_values.push(
+				productDb.updateProductDb(amount_differance[i]._id, {
+					//mock updating content
+					product_quantity_stock: amount_differance[i].delta,
+				})
+			)
+		}
 	}
 
 	//management succesful
-	return true
+	return [start_values, final_values, amount_differance]
 })
+
 describe('\n\n Manage Inventory Test Case', () => {
 	it('Should have an orderService.updateOrder function', async () => {
 		expect(typeof orderService.manageInventory).toBe('function')
@@ -237,6 +259,34 @@ describe('\n\n Manage Inventory Test Case', () => {
 
 	it('Should expect updateProductDb to be called succesfully', async () => {
 		let product_list = orderService.manageInventory()
-		console.log(product_list)
+		let start = product_list[0]
+		let end = product_list[1]
+		let delta = product_list[2]
+
+		let sorted_start = start.sort(function (a, b) {
+			if (a.product_name > b.product_name) return 1
+			else if (a.product_name < b.product_name) return -1
+
+			return 0
+		})
+		let sorted_end = end.sort(function (a, b) {
+			if (a.product_name > b.product_name) return 1
+			else if (a.product_name < b.product_name) return -1
+
+			return 0
+		})
+		let sorted_delta = delta.sort(function (a, b) {
+			if (a.name > b.name) return 1
+			else if (a.name < b.name) return -1
+
+			return 0
+		})
+
+		console.log({ sorted_start, sorted_delta, sorted_end})
+		for (let i = 0; i < sorted_start.length; i++) {
+			expect(
+				sorted_start[i].product_quantity_stock - sorted_delta[i].delta
+			).toBe(sorted_end[i].product_quantity_stock)
+		}
 	})
 })

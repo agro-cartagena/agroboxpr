@@ -30,6 +30,7 @@ const createOrder = async (order, orderContent, userId) => {
 		})
 
 		await createOrderContentDb({ order_id: order_id, ...orderContent })
+		await manageInventory(order_id)
 		return true
 	} catch (e) {
 		throw new Error(e.message)

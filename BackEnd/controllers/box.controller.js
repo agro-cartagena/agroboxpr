@@ -103,12 +103,13 @@ const getBoxProducts = async (req, res, next) => {
 
 const updateBox = async (req, res, next) => {
 	const id = req.params.id
-	const { box_name, box_price, box_content } = req.body
+	const { box_name, box_price, box_content, box_image } = req.body
 
 	const updateFields = {
 		box_name, 
-		box_price, 
-		box_content
+		box_price: Number(box_price), 
+		box_image: box_image ? box_image : req.file.filename,
+		box_content: JSON.parse(box_content)
 	}
 
 	try {

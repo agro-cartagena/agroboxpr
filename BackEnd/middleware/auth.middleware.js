@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken')
 const { authService } = require('../services')
 
+
+const { userDb } = require('../db');
+const { registerNewUserDb, findUserByFilterDb, findUserByQueryAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
+
 const { getAccessToken } = authService
 
 const auth = async (req, res, next) => {
@@ -72,15 +76,25 @@ const adminAuth = async (req, res, next) => {
 		}
 
 		if (verified.role == 'admin' || verified.role == 'owner') {
+			const admin = await findUserByIdDb(verified.userId)
+			if(!admin.is_active){
+				return res
+				.status(401)
+				.json({ msg: 'Token verification failed, authorization denied' })
+			}
+
 			req.userId = verified.userId
 			next()
 		} else{
 			return res.status(403).json({ msg: 'Not authrorized for request.' })
 		}
+
+
 		//Refresh token and send to client
 		// let newToken = await getAccessToken(verified.id)
 		// res.setHeader("x-auth-token", newToken);
 		
+
 	} catch (err) {
 		res.status(500).json({ error: err.message })
 	}

@@ -118,7 +118,7 @@ const PasswordResetForm = (props) => {
                         direction="column"
                         alignItems="center"
                         justify="center"
-                        style={{ minHeight: '100vh' }}
+                        style={{ minHeight: '80vh' }}
                     >
 
 
@@ -190,13 +190,37 @@ const PasswordResetForm = (props) => {
                 </form>
                 :
                 isResetSuccessful ?
-                    <Typography variant="h1" component="h2">
-                        Password has been reset.
-                    </Typography>
+                    <Grid
+                    container
+                    spacing={1}
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                    style={{ minHeight: '80vh' }}
+                    >
+                        <img src={AgroboxLogo} width='60%' height='60%' />
+                        <Grid item>
+                            <Typography variant="h2" align="center">
+                                Password has been reset.
+                            </Typography>
+                        </Grid>
+                    </Grid>
                     :
-                    <Typography variant="h1" component="h2">
-                        Some error occured. Request another password reset from applicarion. If problem persists give up hope.
-                    </Typography>
+                    <Grid
+                    container
+                    spacing={1}
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                    style={{ minHeight: '80vh' }}
+                    >
+                        <img src={AgroboxLogo} width='60%' height='60%' />
+                        <Grid item>
+                            <Typography variant="subtitle1" align="center">
+                                Some error occured. Request another password reset from application. If problem persists give up hope.
+                            </Typography>
+                        </Grid>
+                    </Grid>
             }
 
         </div>

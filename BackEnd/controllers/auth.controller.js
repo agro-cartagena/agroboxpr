@@ -205,7 +205,6 @@ const postForgotPassword = async (req, res, next) => {
     try {
         //
         await forgotPassword(email).then(result => {
-            console.log("Result: ", result)
             if(result){
                 res.status(200).send()
                 next()
@@ -227,7 +226,6 @@ const postResetPassword = async (req, res, next) => {
     try {
         //
         await resetPassword(user_id, reset_token, new_password).then(result => {
-            console.log("Result: ", result)
             if(result){
                 res.status(200).send()
                 next()

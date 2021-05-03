@@ -26,7 +26,6 @@ const sendEmail = async (email, subject, payload, template) => {
       };
     };
 
-    console.log("AQUI")
     // Send email
     return new Promise((resolve, reject) => {
       transporter.sendMail(options(), (error, info) => {
@@ -34,7 +33,6 @@ const sendEmail = async (email, subject, payload, template) => {
           console.log(error)
           resolve(false)
         } else {
-          console.log("Email has ben sent!")
           resolve(true)
         }
       });

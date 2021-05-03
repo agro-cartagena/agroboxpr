@@ -232,8 +232,8 @@ const postResetPassword = async (req, res, next) => {
                 res.status(200).send()
                 next()
             } else{
-                res.status(403).json({
-                    errors: [{ user: "Invalid Credentials!" }],
+                res.status(400).json({
+                    errors: [{ token: "Invalid or expired Token!" }],
                 });
             }
         })

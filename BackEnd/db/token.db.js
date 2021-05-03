@@ -22,7 +22,15 @@ const findTokenByUserIdDb = async (id) => {
 	return collection.findOne({ user_id: ObjectID(id) })
 }
 
+const deleteTokenDb = async (id) => {
+	const db = mdb.get().db(process.env.DB_NAME)
+	const collection = db.collection('token')
+
+	return collection.deleteOne({ _id: ObjectID(id) })
+}
+
 module.exports = {
     createResetPasswordTokenDb,
-    findTokenByUserIdDb
+    findTokenByUserIdDb,
+    deleteTokenDb
 }

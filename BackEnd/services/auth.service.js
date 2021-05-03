@@ -9,7 +9,7 @@ const { date } = require("yup/lib/locale");
 
 
 const { registerNewUserDb, findUserByFilterDb, findUserByQueryAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
-const { createResetPasswordTokenDb } = tokenDb
+const { createResetPasswordTokenDb, deleteTokenDb } = tokenDb
 
 const registerUser = async (name, email, password, phone) => {
 
@@ -226,13 +226,14 @@ const forgotPassword = async (email) => {
         return false
     } // Else check if token exists
     else{
-        // let token = await Token.findOne({ userId: user._id });
-        // if (token) { 
-        //       await token.deleteOne()
-        // };
         const userEmail = user[0].email
         const userName = user[0].name
         const userId = user[0]._id
+
+        let resetToken = await findTokenByUserIdDb(userId)
+        if (resetToken) { 
+            await deleteTokenDb(resetToken._id)
+        };
 
         let passwordResetToken = crypto.randomBytes(32).toString("hex");
 
@@ -246,7 +247,7 @@ const forgotPassword = async (email) => {
             expires : 15 * 60000 // Expiration time in milliseconds, 15 minutes
         }
 
-        const createdToken = await createResetPasswordTokenDb(newToken)
+        await createResetPasswordTokenDb(newToken)
 
         // const link = `${process.env.CLIENT_URL}`;
         const link = `${process.env.CLIENT_URL}/passwordReset?token=${passwordResetToken}&id=${userId}`;
@@ -287,6 +288,9 @@ const resetPassword = async (user_id, reset_token, new_password) => {
     const userName = user.value.name
 
     sendEmail(userEmail,"Password Reset Exitoso",{name: userName},"./template/passwordResetSuccessful.handlebars");
+
+    await deleteTokenDb(resetToken._id)
+    return true
 }
 
 const createJWT = (email, userId, role) => {

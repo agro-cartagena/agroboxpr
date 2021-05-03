@@ -11,7 +11,7 @@ const sendEmail = async (email, subject, payload, template) => {
       port: 465,
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD, 
+        pass: process.env.EMAIL_PASSWORD,
       },
     });
 
@@ -28,22 +28,22 @@ const sendEmail = async (email, subject, payload, template) => {
 
     console.log("AQUI")
     // Send email
-    transporter.sendMail(options(), (error, info) => {
-      if (error) {
+    return new Promise((resolve, reject) => {
+      transporter.sendMail(options(), (error, info) => {
+        if (error) {
           console.log(error)
-        return error;
-      } else {
-          console.log("WTF")
-        return res.status(200).json({
-          success: true,
-        });
-      }
-    });
+          resolve(false)
+        } else {
+          console.log("Email has ben sent!")
+          resolve(true)
+        }
+      });
+    })
   } catch (error) {
     return error;
   }
 };
 
 module.exports = {
-    sendEmail
+  sendEmail
 };

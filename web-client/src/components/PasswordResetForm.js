@@ -38,18 +38,18 @@ const useStyles = makeStyles(theme => ({
 
 const validationSchema = yup.object({
     password: yup
-        .string('Enter your new password')
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('New password is required'),
+        .string('Entrar contraseña nueva.')
+        .min(8, 'Contraseña debe tener al menos 8 caracteres.')
+        .required('Campo requerido.'),
     confirmPassword: yup
-        .string('Confirm your new password')
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password confirmation is required')
+        .string('Confirmar contraseña nueva.')
+        .min(8, 'Contraseña debe tener al menos 8 caracteres.')
+        .required('Campo requerido.')
         .when("password", {
             is: (val) => (val && val.length > 0 ? true : false),
             then: yup.string().oneOf(
                 [yup.ref("password")],
-                "Password and Confirm Password didn't match"
+                "Ambos campos deben coincidir."
             ),
         }),
 });
@@ -184,7 +184,7 @@ const PasswordResetForm = (props) => {
                         </Grid>
 
                         <Button color="primary" variant="contained" type="submit">
-                            Reset Password
+                            Cambiar Contraseña
                         </Button>
                     </Grid>
                 </form>
@@ -201,7 +201,7 @@ const PasswordResetForm = (props) => {
                         <img src={AgroboxLogo} width='60%' height='60%' />
                         <Grid item>
                             <Typography variant="h2" align="center">
-                                Password has been reset.
+                                Contraseña ha sido cambiada exitosamente. Puede acceseder Agrobox con su contraseña nueva.
                             </Typography>
                         </Grid>
                     </Grid>
@@ -217,7 +217,7 @@ const PasswordResetForm = (props) => {
                         <img src={AgroboxLogo} width='60%' height='60%' />
                         <Grid item>
                             <Typography variant="subtitle1" align="center">
-                                Some error occured. Request another password reset from application. If problem persists give up hope.
+                                Ha surgido algun error. Solicite nuevamente cambiar su contraseña o contacte al equipo de AgroBoxPR.
                             </Typography>
                         </Grid>
                     </Grid>

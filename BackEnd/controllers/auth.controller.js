@@ -1,6 +1,7 @@
 const { authService } = require('../services')
 
-const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, readAllAdmin, updateUserPassword, updateUserInfo, readUserById } = authService
+const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, readAllAdmin, updateUserPassword, updateUserInfo, readUserById, forgotPassword, 
+        resetPassword } = authService
 
 const postSignup = async (req, res, next) => {
     const { name, email, password, phone } = req.body
@@ -198,6 +199,48 @@ const getUser = async (req, res, next) => {
 	}
 }
 
+const postForgotPassword = async (req, res, next) => {
+    const { email } = req.body
+    
+    try {
+        //
+        await forgotPassword(email).then(result => {
+            if(result){
+                res.status(200).send()
+                next()
+            } else{
+                res.status(403).json({
+                    errors: [{ user: "Invalid Credentials!" }],
+                });
+            }
+        })
+    } catch (err) { 
+        res.sendStatus(500)
+        next(err)
+    }
+}
+
+const postResetPassword = async (req, res, next) => {
+    const { user_id, reset_token, new_password } = req.body
+    
+    try {
+        //
+        await resetPassword(user_id, reset_token, new_password).then(result => {
+            if(result){
+                res.status(200).send()
+                next()
+            } else{
+                res.status(400).json({
+                    errors: [{ token: "Invalid or expired Token!" }],
+                });
+            }
+        })
+    } catch (err) { 
+        res.sendStatus(500)
+        next(err)
+    }
+}
+
 module.exports = {
     postSignup,
     postLogin,
@@ -207,5 +250,7 @@ module.exports = {
     putUserPassword,
     putUserPersonalInfo,
     putUserAddress,
-    getUser
+    getUser,
+    postForgotPassword,
+    postResetPassword
 }

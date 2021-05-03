@@ -8,7 +8,7 @@ const upload = require('../middleware/multer.middleware')
 const { boxController } = require('../controllers')
 
 //insert new box to box db
-router.post('/', adminAuth, upload.single('file'), boxController.postBox)
+router.post('/', adminAuth, upload.single('file'), validateEntity(boxSchema), boxController.postBox)
 // router.post('/', adminAuth, validateEntity(boxSchema), boxController.postBox)
 
 router.put('/enable/:id', adminAuth, boxController.enableBox)

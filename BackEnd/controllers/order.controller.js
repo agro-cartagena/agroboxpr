@@ -67,11 +67,11 @@ const getById = async (req, res, next) => {
 			validate = result
 		})
 		if (validate != null) {
-			await getOrderById(id).then((order) => {
+			await getOrderById(id).then((orders) => {
 				if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
 				if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
 				if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
-				res.status(200).send(order)
+				res.status(200).send(orders)
 				next()
 			})
 		} else {
@@ -164,7 +164,7 @@ const manage = async (req, res, next) => {
 			await manageInventory(id).then((result) => {
 				response = result
 				if (response == true) {
-					res.sendStatus(200)
+					res.status(200).send(response)
 					next()
 				} else {
 					res.sendStatus(404) && next()

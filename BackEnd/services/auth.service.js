@@ -1,9 +1,15 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const { userDb } = require('../db');
+const crypto = require("crypto");
+const { userDb, tokenDb } = require('../db');
+const { sendEmail } = require('../utils/email/email')
 const { ObjectID } = require("mongodb");
+const { findTokenByUserIdDb } = require("../db/token.db");
+const { date } = require("yup/lib/locale");
+
 
 const { registerNewUserDb, findUserByFilterDb, findUserByQueryAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
+const { createResetPasswordTokenDb, deleteTokenDb } = tokenDb
 
 const registerUser = async (name, email, password, phone) => {
 
@@ -211,6 +217,82 @@ const readUserById = async (userId) => {
 	}
 }
 
+const forgotPassword = async (email) => {
+    //Check if a user exists with the given email
+    const user = await findUserByFilterDb({ email: email })
+
+    // If user exists not exist return false
+    if (user.length < 1) {
+        return false
+    } // Else check if token exists
+    else{
+        const userEmail = user[0].email
+        const userName = user[0].name
+        const userId = user[0]._id
+
+        let resetToken = await findTokenByUserIdDb(userId)
+        if (resetToken) { 
+            await deleteTokenDb(resetToken._id)
+        };
+
+        let passwordResetToken = crypto.randomBytes(32).toString("hex");
+
+        const bcryptSalt = 10;
+        const hash = await bcrypt.hash(passwordResetToken, Number(bcryptSalt));
+
+        const newToken = {
+            user_id : userId,
+            token : hash,
+            created_date : Date.now(),
+            expires : 15 * 60000 // Expiration time in milliseconds, 15 minutes
+        }
+
+        await createResetPasswordTokenDb(newToken)
+
+        // const link = `${process.env.CLIENT_URL}`;
+        const link = `${process.env.CLIENT_URL}/passwordReset?token=${passwordResetToken}&id=${userId}`;
+        return await sendEmail(userEmail,"Password Reset Request",{name: userName, link: link,},"./template/resetPassword.handlebars");
+    }
+}
+
+const resetPassword = async (user_id, reset_token, new_password) => {
+
+    let resetToken = await findTokenByUserIdDb(user_id)
+    if(!resetToken){
+        return false
+    }
+
+    const isTokenValid = await bcrypt.compare(reset_token, resetToken.token)
+
+    if(!isTokenValid){
+        return false
+    }
+
+    const isTokenExpired = (resetToken.created_date + resetToken.expires) < Date.now()
+    if(isTokenExpired){
+        return false
+    }
+
+    const bcryptSalt = 10;
+    const hash = await bcrypt.hash(new_password, Number(bcryptSalt));
+
+    const updateDocument = {
+        "$set": {
+            "password": hash
+        }
+    }
+
+    const user = await findUserByQueryAndUpdate({ _id: ObjectID(user_id) }, updateDocument)
+
+    const userEmail = user.value.email
+    const userName = user.value.name
+
+    sendEmail(userEmail,"Password Reset Exitoso",{name: userName},"./template/passwordResetSuccessful.handlebars");
+
+    await deleteTokenDb(resetToken._id)
+    return true
+}
+
 const createJWT = (email, userId, role) => {
     const payload = {
         email,
@@ -231,5 +313,7 @@ module.exports = {
     readAllAdmin,
     updateUserPassword,
     updateUserInfo,
-    readUserById
+    readUserById,
+    forgotPassword,
+    resetPassword
 }

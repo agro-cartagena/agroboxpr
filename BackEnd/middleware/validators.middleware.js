@@ -23,7 +23,7 @@ const contentSchema = yup.object({
 const boxSchema = yup.object({
     box_name: yup.string().required(),
     box_price: yup.number().required(),
-    box_content: yup.array().of(contentSchema)
+    box_content: yup.array().of(contentSchema).required()
 })
 
 const orderSchema = yup.object({

@@ -10,7 +10,8 @@ const postBox = async (req, res, next) => {
 	console.log(req.file)
 	console.log(req.body)
 
-	if(!uploadImage(image))
+	const isImage = await uploadImage(image)
+	if(!isImage)
 		return res.status(409).send("Error uploading file.")
 
 	const box = {

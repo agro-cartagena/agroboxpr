@@ -2,8 +2,8 @@ const paypal = require('paypal-rest-sdk')
 
 paypal.configure({
     'mode': 'sandbox',
-    'client_id': 'AdcbaD_WkkTqkhi0KRrePE5xueZJQChV6iSwCXdbD2c5pBrMS8rEY18PHEwfOm6K9VAKaoD9aN4ym_-d',
-    'client_secret': 'EI2fe9phC3ZSdlnJeDSHrL2F1bsy67EGUT-XBD6a7YQE7d4ajlmWqQCUGnoBHeP8vtnqJhJ04bNlE3zQ'
+    'client_id': process.env.PAYPAL_CLIENT_ID,
+    'client_secret': process.env.PAYPAL_CLIENT_SECRET
 })
 
 class PaymentController {
@@ -26,8 +26,8 @@ class PaymentController {
                 "payment_method": "paypal"
             },
             "redirect_urls": {
-                "return_url": `http://10.0.0.6:5000/api/payment/success?price=${price}`,
-                "cancel_url": "http://10.0.0.6:5000/api/payment/cancel"
+                "return_url": `${process.env.CLIENT_URL}/api/payment/success?price=${price}`,
+                "cancel_url": `${process.env.CLIENT_URL}/api/payment/cancel`
             },
             "transactions": [{
                 "amount": {

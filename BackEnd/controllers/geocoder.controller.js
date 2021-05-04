@@ -1,5 +1,5 @@
 const fetch = require('node-fetch')
-const API = 'AIzaSyBfC6e_GixAOvOkAH6O02XV4dyPis3GRas'
+const API = process.env.GEOCODER_API_KEY
 
 class GeocoderController {
     constructor() { }

@@ -4,6 +4,7 @@ const {
 	getOrderContentDb,
 	getOrderContentByIdDb,
 	updateOderContentDb,
+	getOrderContentByOrderDb,
 } = orderContentDb
 
 const createOrderContent = async (orderContent) => {
@@ -16,7 +17,24 @@ const createOrderContent = async (orderContent) => {
 
 const getOrderContent = async () => {
 	try {
-		return await getOrderContentDb()
+		let boxes = await getOrderContentDb()
+		let temp = {}
+		let result = []
+		boxes.forEach((index) => {
+			if (!index.hasOwnProperty('boxes')) result.push(index)
+			else {
+				for (let i = 0; i < index.boxes.length; i++) {
+					temp = { [i]: index.boxes[i], ...temp }
+				}
+				temp = {
+					...temp,
+					_id: index._id,
+					order_id: index.order_id,
+				}
+				result.push(temp)
+			}
+		})
+		return result
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -27,12 +45,44 @@ const getOrderContentById = async (id) => {
 		let order, orderList
 		let boxList = []
 
-
 		//get boxes
+
 		await getOrderContentByIdDb(id).then((boxes) => {
 			order = Object.keys(boxes)
 			orderList = boxes
 		})
+
+		if (orderList.hasOwnProperty('boxes')) {
+			return orderList.boxes
+		}
+
+		order.pop('_id')
+		order.pop('order_id')
+
+		order.forEach((box) => {
+			boxList.push(orderList[parseInt(box)])
+		})
+		return boxList
+	} catch (e) {
+		throw new Error(e.message)
+	}
+}
+
+const getOrderContentByOrder = async (id) => {
+	try {
+		let order, orderList
+		let boxList = []
+
+		//get boxes
+
+		await getOrderContentByOrderDb(id).then((boxes) => {
+			order = Object.keys(boxes)
+			orderList = boxes
+		})
+
+		if (orderList.hasOwnProperty('boxes')) {
+			return orderList.boxes
+		}
 
 		order.pop('_id')
 		order.pop('order_id')
@@ -54,11 +104,10 @@ const updateOderContent = async (id, changes) => {
 	}
 }
 
-
-
 module.exports = {
 	createOrderContent,
 	getOrderContent,
 	getOrderContentById,
+	getOrderContentByOrder,
 	updateOderContent,
 }

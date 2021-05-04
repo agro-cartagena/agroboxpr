@@ -68,9 +68,9 @@ const getById = async (req, res, next) => {
 		})
 		if (validate != null) {
 			await getOrderById(id).then((orders) => {
-				if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
-				if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
-				if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
+				// if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+				// if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+				// if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 				res.status(200).send(orders)
 				next()
 			})

@@ -5,23 +5,15 @@ const {
 } = require('../../services')
 const { orderDb, orderContentDb, productDb } = require('../../db')
 
-const newOrder = require('../mock-data/newOrder.json')
+const newOrder = require('../mock-data/newOrderContent.json')
+const mockDb = require('../mock-data/mockDB.json')
 const db = require('../../db/mdb')
-
 const dotenv = require('dotenv')
 dotenv.config()
 
 //test variables
 let test_order, test_content
 let test_id, test_change
-let ids = [
-	// values taken directly from the dbs for product and orderContent
-	//using order with id = 60834e9f3149974a54f8c008
-	{ id: '60776c524f15dc23034c0a7b', left: 10 },
-	{ id: '60776cd54f15dc23034c0a7c', left: 10 },
-	{ id: '60776cf54f15dc23034c0a7d', left: 5 },
-	{ id: '60776d284f15dc23034c0a7e', left: 5 },
-]
 
 const user_id = '60734b626b9eb2004099f2df'
 
@@ -106,35 +98,6 @@ describe('Order Service Suite', () => {
 		})
 	})
 
-	describe('\n\n Manage Inventory', () => {
-		it('Should have an orderService.updateOrder function', async () => {
-			expect(typeof orderService.manageInventory).toBe('function')
-		})
-
-		it('Should expect updateProductDb to be called succesfully', async () => {
-			let test_id = '60834e9f3149974a54f8c008'
-			console.log(test_id, test_order)
-			let init = [
-				await productService.getProductById(ids[0].id),
-				await productService.getProductById(ids[1].id),
-				await productService.getProductById(ids[2].id),
-				await productService.getProductById(ids[3].id),
-			]
-			await orderService.manageInventory(test_id)
-			let totals = [
-				await productService.getProductById(ids[0].id),
-				await productService.getProductById(ids[1].id),
-				await productService.getProductById(ids[2].id),
-				await productService.getProductById(ids[3].id),
-			]
-			expect(totals[0].product_quantity_stock).toBe(init[0].product_quantity_stock - ids[0].left)
-			expect(totals[1].product_quantity_stock).toBe(init[1].product_quantity_stock - ids[1].left)
-			expect(totals[2].product_quantity_stock).toBe(init[2].product_quantity_stock - ids[2].left)
-			expect(totals[3].product_quantity_stock).toBe(init[3].product_quantity_stock - ids[3].left)
-
-		})
-	})
-
 	afterAll(() => {
 		db.close(function (err) {
 			if (err) {
@@ -144,5 +107,186 @@ describe('Order Service Suite', () => {
 				// console.log('Mongo connection closed')
 			}
 		})
+	})
+})
+
+// ! Inventory Management Test 
+// * Mocks the functions locally and get's are adjusted to work with mocked data.
+
+productDb.getProductByIdDb = jest.fn((id) => {
+	for (let i = 0; i < mockDb.length; i++) {
+		if (mockDb[i]._id == id) return mockDb[i]
+	}
+	return id
+})
+
+productDb.updateProductDb = jest.fn((id, changes) => {
+	for (let i = 0; i < mockDb.length; i++) {
+		if (mockDb[i]._id == id)
+			return {
+				_id: mockDb[i]._id,
+				product_name: mockDb[i].product_name,
+				product_quantity_stock:
+					mockDb[i].product_quantity_stock -
+					changes.product_quantity_stock,
+			}
+	}
+	return id
+})
+
+orderService.retrieveProductList = jest.fn(() => {
+	let order, orderList
+	let boxList = []
+	let result = []
+
+	// get boxes from the order
+
+	order = Object.keys(newOrder)
+	orderList = newOrder
+
+	// remove keys that are not associated with the order's boxes
+	order.pop('_id')
+	order.pop('order_id')
+
+	// isolate the amount of boxes of each type and the content in these from the rest
+	// of the box data
+	order.map((box) => {
+		boxList.push({
+			amount: orderList[parseInt(box)].box_quantity,
+			content: orderList[parseInt(box)].box_content,
+		})
+	})
+
+	// link together for future use each product's id, name, and total amount
+	// to be remove upon purchase
+	boxList.map((box) => {
+		box.content.map((prod) => {
+			result.push({
+				_id: prod._id,
+				prod_name: prod.product_name,
+				total_products: prod.product_quantity_box * box.amount,
+			})
+		})
+	})
+
+	return result
+})
+
+orderService.manageInventory = jest.fn(() => {
+	let start_values = []
+	let final_values = []
+	let initial_product_list = []
+	let product_amounts = []
+	let amount_differance = []
+
+	mockDb.map((product) => {
+		start_values.push({
+			_id: product._id,
+			product_name: product.product_name,
+			product_quantity_stock: product.product_quantity_stock,
+		})
+	})
+
+	//retrieve each unique product within the boxes in the order
+	initial_product_list = orderService.retrieveProductList()
+
+	// Verify product amounts in the inventory, are added to product_amounts if enough
+	// are in stock, otherwise return error msg JSON
+	initial_product_list.forEach((product) => {
+		//recieve product inventory data
+		let item = productDb.getProductByIdDb(product._id)
+
+		// establish amounts to be used
+		const orderAmount = product.total_products
+		const stockAmount = item.product_quantity_stock
+
+		//verify if differance won't be negative
+		if (orderAmount <= stockAmount)
+			product_amounts.push({
+				_id: item._id,
+				name: item.product_name, //added for ease in reading the data
+				orderAmount: orderAmount,
+				stockAmount: stockAmount,
+			})
+		else return { msg: `cannot do changes for ${item.product_name}` }
+	})
+
+	/*
+	amount_diferance holds the products _id and the new quantity in stock
+	after carrying out sale. Makes sure products aren't repeated since data is
+	not automatically updated like in db and would return two instances of the 
+	same product otherwise
+	*/
+	let inserted = []
+
+	for (let i = 0; i < product_amounts.length; i++) {
+		if (inserted.includes(product_amounts[i]._id)) {
+			amount_differance.forEach((element) => {
+				if (element._id == product_amounts[i]._id) {
+					element.delta += product_amounts[i].orderAmount
+				}
+			})
+		} else {
+			amount_differance.push({
+				delta: product_amounts[i].orderAmount,
+				name: product_amounts[i].name,
+				_id: product_amounts[i]._id,
+			})
+			inserted.push(product_amounts[i]._id)
+		}
+	}
+
+	// inventory update step
+	for (let i = 0; i < amount_differance.length; i++) {
+		{
+			final_values.push(
+				productDb.updateProductDb(amount_differance[i]._id, {
+					//mock updating content
+					product_quantity_stock: amount_differance[i].delta,
+				})
+			)
+		}
+	}
+
+	//management succesful
+	return [start_values, final_values, amount_differance]
+})
+
+describe('\n\n Manage Inventory Test Case', () => {
+	it('Should have an orderService.updateOrder function', async () => {
+		expect(typeof orderService.manageInventory).toBe('function')
+	})
+
+	it('Should expect updateProductDb to be called succesfully', async () => {
+		let product_list = orderService.manageInventory()
+		let start = product_list[0]
+		let end = product_list[1]
+		let delta = product_list[2]
+
+		let sorted_start = start.sort(function (a, b) {
+			if (a.product_name > b.product_name) return 1
+			else if (a.product_name < b.product_name) return -1
+
+			return 0
+		})
+		let sorted_end = end.sort(function (a, b) {
+			if (a.product_name > b.product_name) return 1
+			else if (a.product_name < b.product_name) return -1
+
+			return 0
+		})
+		let sorted_delta = delta.sort(function (a, b) {
+			if (a.name > b.name) return 1
+			else if (a.name < b.name) return -1
+
+			return 0
+		})
+
+		console.log({ sorted_start, sorted_delta, sorted_end})
+		for (let i = 0; i < sorted_start.length; i++) {
+			expect(
+				sorted_start[i].product_quantity_stock - sorted_delta[i].delta
+			).toBe(sorted_end[i].product_quantity_stock)
+		}
 	})
 })

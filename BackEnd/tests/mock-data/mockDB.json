@@ -1,0 +1,128 @@
+[
+	{
+		"_id": "608dbba8d5903a3ed763070c",
+		"product_name": "Piña",
+		"product_category": "Frutas",
+		"product_quantity_stock": 80,
+		"product_units": "unidades",
+		"product_price": 3.89,
+		"product_image": "6ee207bd4b34f5a029a62ef11c6bda8a.jpeg"
+	},
+	{
+		"_id": "608dbeb99ab7924041b3a79e",
+		"product_name": "Plátanos",
+		"product_category": "Vegetales",
+		"product_quantity_stock": 75,
+		"product_units": "unidades",
+		"product_price": 2.49,
+		"product_image": "e303dd63eeb553b7eee59240ef7f85a1.jpeg"
+	},
+	{
+		"_id": "608dbee89ab7924041b3a7a3",
+		"product_name": "Calabaza",
+		"product_category": "Vegetales",
+		"product_quantity_stock": 50,
+		"product_units": "unidades",
+		"product_price": 5,
+		"product_image": "4e27ce855b74a49c05771951701c33c4.jpeg"
+	},
+	{
+		"_id": "608dbf0f9ab7924041b3a7a9",
+		"product_name": "Guineos",
+		"product_category": "Frutas",
+		"product_quantity_stock": 30,
+		"product_units": "manos",
+		"product_price": 5,
+		"product_image": "c0cc032fd5ea243274934a089b832940.jpeg"
+	},
+	{
+		"_id": "608dbf559ab7924041b3a7ae",
+		"product_name": "Ñame",
+		"product_category": "Viandas",
+		"product_quantity_stock": 20,
+		"product_units": "lbs",
+		"product_price": 1.5,
+		"product_image": "7d51fb5e749b2d66d92368797284fdb5.jpeg"
+	},
+	{
+		"_id": "608dc3669ab7924041b3a7b1",
+		"product_name": "Tomates",
+		"product_category": "Vegetales",
+		"product_quantity_stock": 30,
+		"product_units": "lbs",
+		"product_price": 0.99,
+		"product_image": "cae913567c7018f227dc859b63bda502.jpeg"
+	},
+	{
+		"_id": "608dc4219ab7924041b3a7b5",
+		"product_name": "Cilantrillo",
+		"product_category": "Especias",
+		"product_quantity_stock": 70,
+		"product_units": "lbs",
+		"product_price": 0.49,
+		"product_image": "0e91448e2d55882ede3c9086349a007b.jpeg"
+	},
+	{
+		"_id": "608dc4b69ab7924041b3a7b9",
+		"product_name": "Naranjas",
+		"product_category": "Frutas",
+		"product_quantity_stock": 80,
+		"product_units": "lbs",
+		"product_price": 3,
+		"product_image": "58af030b2bd60b42ec09a3256f3ccf16.jpeg"
+	},
+	{
+		"_id": "608dc7469ab7924041b3a7bd",
+		"product_name": "Lima",
+		"product_category": "Frutas",
+		"product_quantity_stock": 50,
+		"product_units": "lbs",
+		"product_price": 2.5,
+		"product_image": "794216c8603abeb1fcf57e9a997168ee.jpeg"
+	},
+	{
+		"_id": "608dc7729ab7924041b3a7c4",
+		"product_name": "Pimiento",
+		"product_category": "Vegetales",
+		"product_quantity_stock": 50,
+		"product_units": "lbs",
+		"product_price": 2.35,
+		"product_image": "00602fb9f22382ed639a1167d3c352b9.jpeg"
+	},
+	{
+		"_id": "608dc79b9ab7924041b3a7c7",
+		"product_name": "Cebolla",
+		"product_category": "Vegetales",
+		"product_quantity_stock": 30,
+		"product_units": "lbs",
+		"product_price": 3,
+		"product_image": "60dd4600076c4f4e532e5b0472b4b862.jpeg"
+	},
+	{
+		"_id": "608dd23af6321f45691b0958",
+		"product_name": "Recao",
+		"product_category": "Especias",
+		"product_quantity_stock": 50,
+		"product_units": "lbs",
+		"product_price": 2,
+		"product_image": "0a1c7235527578e5c46e32e42924fa8b.jpeg"
+	},
+	{
+		"_id": "608dd260f6321f45691b095e",
+		"product_name": "Ají Dulce",
+		"product_category": "Vegetales",
+		"product_quantity_stock": 70,
+		"product_units": "lbs",
+		"product_price": 1.5,
+		"product_image": "97be090acc91eff2bb2fbefb52b75ba3.jpeg"
+	},
+	{
+		"_id": "608dd282f6321f45691b0963",
+		"product_name": "Ajo",
+		"product_category": "Vegetales",
+		"product_quantity_stock": 20,
+		"product_units": "unidades",
+		"product_price": 0.5,
+		"product_image": "cec51aa0d232fe2d1ae6a50d2f58dec9.jpeg"
+	}
+]

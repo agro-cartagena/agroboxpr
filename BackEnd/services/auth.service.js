@@ -1,146 +1,162 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const { userDb } = require('../db');
+const crypto = require("crypto");
+const { userDb, tokenDb } = require('../db');
+const { sendEmail } = require('../utils/email/email')
 const { ObjectID } = require("mongodb");
+const { findTokenByUserIdDb } = require("../db/token.db");
+const { date } = require("yup/lib/locale");
 
-const { registerNewUserDb, findUserByFilterDb, findUserByEmailAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
+
+const { registerNewUserDb, findUserByFilterDb, findUserByQueryAndUpdate, findAdminAccountsDb, findUserByIdDb } = userDb
+const { createResetPasswordTokenDb, deleteTokenDb } = tokenDb
 
 const registerUser = async (name, email, password, phone) => {
 
-    const token = await findUserByFilterDb({ email: email })
-        .then(async user => {
-            if (user.length > 0) {
-                throw new Error("Email already exists!")
-            } else {
-                const saltRounds = 10;
-                const toky = await bcrypt.hash(password, saltRounds).then(async (hash) => {
-                    const newUser = {
-                        name: name,
-                        email: email,
-                        password: hash,
-                        phone: phone,
-                        role: "user"
-                    }
-
-                    const tok = await registerNewUserDb(newUser).then(res => {
-                        // console.log("New user created!", res)
-                        const user = res
-
-                        let access_token = createJWT(
-                            user.email,
-                            user._id,
-                            user.role
-                        );
-
-                        return access_token
-                    }).catch(err => {
-                        throw new Error(err.message)
-                    })
-                    return tok
-                }).catch(err => {
-                    throw new Error(err.message)
-                });
-                return toky
+    //Check if a user exists with the given email
+    const user = await findUserByFilterDb({ email: email })
+    
+    //If user exists return false
+    if (user.length > 0) {
+        return false
+    } //If user doesn't exist create new user and return auth token.
+    else {
+        //create new user with hashed password.
+        const saltRounds = 10;
+        const token = await bcrypt.hash(password, saltRounds).then(async (hash) => {
+            const newUser = {
+                name: name,
+                email: email,
+                password: hash,
+                phone: phone,
+                role: "user",
+                is_active: true
             }
+
+            return await registerNewUserDb(newUser).then(res => {
+                // console.log("New user created!", res)
+                const user = res
+
+                let access_token = createJWT(
+                    user.email,
+                    user._id,
+                    user.role,
+                    user.is_active
+                );
+
+                return access_token
+            }).catch(err => {
+                throw new Error(err.message)
+            })
         }).catch(err => {
             throw new Error(err.message)
-        })
-    return token
+        });
+
+        return token
+    }
 }
 
 const loginUser = async (email, password) => {
-    const token = await findUserByFilterDb({ email: email }).then(async user => {
-        console.log("HERE")
-        if (user.length < 1) {
-            throw new Error("Invalid Credentials!")
-        } else {
-            console.log("THERE", user)
-            console.log(password)
-            const isMatch = await bcrypt.compare(password, user[0].password)
+    // Check if a user exists with the given email
+    const user = await findUserByFilterDb({ email: email });
 
-            console.log("Match?: ", isMatch)
-            if (!isMatch) {
-                console.log("Wrong password!")
-                throw new Error("Invalid Credentials!")
-            }
-
-            let access_token = createJWT(
-                user[0].email,
-                user[0]._id,
-                user[0].role
-                // 3600
-            );
-            console.log("Access Token", access_token)
-            return access_token
-
+    // If user not found return false
+    if (user.length < 1) {
+        return false
+    } else {
+        // if user found check if password is correct
+        const isMatch = await bcrypt.compare(password, user[0].password)
+        if (!isMatch) {
+            return false
         }
-    }).catch(err => {
-        throw new Error(err.message)
-    });
-    return token
+
+        // Return access token to client
+        const updateDocument = {
+            "$set": {
+                "is_active": true
+            }
+        }
+
+        await findUserByQueryAndUpdate({ email: email }, updateDocument)
+
+        // If password is correct create JWT
+        let access_token = createJWT(
+            user[0].email,
+            user[0]._id,
+            user[0].role,
+            true
+            // 3600
+        );
+
+        return access_token
+    }
 }
 
-const createJWT = (email, userId, role) => {
-    const payload = {
-        email,
-        userId,
-        role
-        // duration
-    };
-    return jwt.sign(payload, process.env.JWT_SECRET, {
-        // expiresIn: duration,
-    });
-};
+const logoutUser = async (userId) => {
+    // Check if a user exists with the given email
+    const user = await findUserByFilterDb({ _id: ObjectID(userId) });
+
+    // If user not found return false
+    if (user.length < 1) {
+        return false
+    } else {
+        // if user found check if password is correct
+
+        const updateDocument = {
+            "$set": {
+                "is_active": false
+            }
+        }
+
+        await findUserByQueryAndUpdate({ _id: ObjectID(userId) }, updateDocument)
+
+        return true
+    }
+}
 
 const promoteUserToAdmin = async (email) => {
     const updateDocument = {
         "$set": {
-            "role": "admin"
+            "role": "admin",
+            "is_active": false
         }
     }
 
-    await findUserByEmailAndUpdate({ email: email }, updateDocument).then(async user => {
+    // Find user by email
+    // If fount promote to admin and return true
+    // Else return false
+    return await findUserByQueryAndUpdate({ email: email }, updateDocument).then(async user => {
+        console.log(user)
 
-        if (user) {
-            console.log("User has been promoted", user)
+        // If user found and updated return true else return false
+        if (user.value) {
+            return true
         } else {
-            console.log("User not found")
+            return false
         }
     }).catch(err => {
         throw new Error(err.message)
     });
 }
 
-const demoteAdmin = async (email) => {
+const demoteAdmin = async (user_id) => {
     const updateDocument = {
         "$set": {
-            "role": "user"
+            "role": "user",
+            "is_active": false
         }
     }
 
-    await findUserByEmailAndUpdate({ email: email }, updateDocument).then(async user => {
+    // Find user by email
+    // If fount demote to user and return true
+    // Else return false
+    return await findUserByQueryAndUpdate({ _id: ObjectID(user_id) }, updateDocument).then(async user => {
 
-        if (user) {
-            console.log("User has been promoted", user)
+        // If user found and updated return true else return false
+        if (user.value) {
+            return true
         } else {
-            console.log("User not found")
-        }
-    }).catch(err => {
-        throw new Error(err.message)
-    });
-}
-
-const updateUser = async (userId, newUserInfo) => {
-    const updateDocument = {
-        "$set": newUserInfo
-    }
-
-    await findUserByEmailAndUpdate({ _id: ObjectID(userId) }, updateDocument).then(async user => {
-
-        if (user) {
-            console.log("User info has been succesfully updated.", user)
-        } else {
-            console.log("User not found")
+            return false
         }
     }).catch(err => {
         throw new Error(err.message)
@@ -151,17 +167,15 @@ const updateUserPassword = async (userId, newPasswordInfo) => {
     const old_Password = newPasswordInfo.old_Password;
     const new_Password = newPasswordInfo.new_Password
 
+    // Find user and check in password matches
     const user = await findUserByFilterDb({ _id: ObjectID(userId) }).then(async user => {
-        console.log("HERE")
+        
         if (user.length < 1) {
             return false
         } else {
-            // console.log("THERE", user)
-            // console.log(password)
             const isMatch = await bcrypt.compare(old_Password, user[0].password)
 
             if (!isMatch) {
-                console.log("Wrong password!")
                 return false
             } else {
                 return user
@@ -171,21 +185,24 @@ const updateUserPassword = async (userId, newPasswordInfo) => {
         throw new Error(err.message)
     });
 
+    console.log()
+
+    // If user found and password matches, change password. Else return false
     if(user){
         const saltRounds = 10;
-        await bcrypt.hash(new_Password, saltRounds).then(async (hash) => {
+        return await bcrypt.hash(new_Password, saltRounds).then(async (hash) => {
             
             const updateDocument = {
                 "$set": {
                     "password": hash
                 }
             }
-            await findUserByEmailAndUpdate({ _id: ObjectID(userId) }, updateDocument).then(async user => {
+            return await findUserByQueryAndUpdate({ _id: ObjectID(userId) }, updateDocument).then(async user => {
     
-                if (user) {
-                    console.log("User info has been succesfully updated.", user)
+                if (user.value) {
+                    return true
                 } else {
-                    console.log("User not found")
+                    return false
                 }
             }).catch(err => {
                 throw new Error(err.message)
@@ -199,22 +216,29 @@ const updateUserPassword = async (userId, newPasswordInfo) => {
     }
 }
 
-const readAdminEmails = async () => {
+const updateUserInfo = async (userId, newUserInfo) => {
+    const updateDocument = {
+        "$set": newUserInfo
+    }
+
+    return await findUserByQueryAndUpdate({ _id: ObjectID(userId) }, updateDocument).then(async user => {
+
+        if (user.value) {
+            return true
+        } else {
+            return false
+        }
+    }).catch(err => {
+        throw new Error(err.message)
+    });
+}
+
+const readAllAdmin = async () => {
 	// console.log('\nRetrieving boxes \n')
 	const query = { role: "admin" }
 
 	try {
-		const adminAccounts = await findAdminAccountsDb(query)
-		//Only return to client: name, price, imageUrl & boxId
-		const response = adminAccounts.map(admin => {
-			return {
-                _id:admin._id,
-                email: admin.email,
-                role: admin.role,
-                phone: admin.phone
-			}
-		})
-		return response
+		return await findAdminAccountsDb(query)
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -228,13 +252,105 @@ const readUserById = async (userId) => {
 	}
 }
 
+const forgotPassword = async (email) => {
+    //Check if a user exists with the given email
+    const user = await findUserByFilterDb({ email: email })
+
+    // If user exists not exist return false
+    if (user.length < 1) {
+        return false
+    } // Else check if token exists
+    else{
+        const userEmail = user[0].email
+        const userName = user[0].name
+        const userId = user[0]._id
+
+        let resetToken = await findTokenByUserIdDb(userId)
+        if (resetToken) { 
+            await deleteTokenDb(resetToken._id)
+        };
+
+        let passwordResetToken = crypto.randomBytes(32).toString("hex");
+
+        const bcryptSalt = 10;
+        const hash = await bcrypt.hash(passwordResetToken, Number(bcryptSalt));
+
+        const newToken = {
+            user_id : userId,
+            token : hash,
+            created_date : Date.now(),
+            expires : 15 * 60000 // Expiration time in milliseconds, 15 minutes
+        }
+
+        await createResetPasswordTokenDb(newToken)
+
+        // const link = `${process.env.CLIENT_URL}`;
+        const link = `${process.env.CLIENT_URL}/passwordReset?token=${passwordResetToken}&id=${userId}`;
+        return await sendEmail(userEmail,"Password Reset Request",{name: userName, link: link,},"./template/resetPassword.handlebars");
+    }
+}
+
+const resetPassword = async (user_id, reset_token, new_password) => {
+
+    let resetToken = await findTokenByUserIdDb(user_id)
+    if(!resetToken){
+        return false
+    }
+
+    const isTokenValid = await bcrypt.compare(reset_token, resetToken.token)
+
+    if(!isTokenValid){
+        return false
+    }
+
+    const isTokenExpired = (resetToken.created_date + resetToken.expires) < Date.now()
+    if(isTokenExpired){
+        return false
+    }
+
+    const bcryptSalt = 10;
+    const hash = await bcrypt.hash(new_password, Number(bcryptSalt));
+
+    const updateDocument = {
+        "$set": {
+            "password": hash
+        }
+    }
+
+    const user = await findUserByQueryAndUpdate({ _id: ObjectID(user_id) }, updateDocument)
+
+    const userEmail = user.value.email
+    const userName = user.value.name
+
+    sendEmail(userEmail,"Password Reset Exitoso",{name: userName},"./template/passwordResetSuccessful.handlebars");
+
+    await deleteTokenDb(resetToken._id)
+    return true
+}
+
+const createJWT = (email, userId, role, is_active) => {
+    const payload = {
+        email,
+        userId,
+        role,
+        is_active
+        // duration
+    };
+    return jwt.sign(payload, process.env.JWT_SECRET, {
+        // expiresIn: duration,
+    });
+};
+
 module.exports = {
     registerUser,
     loginUser,
     promoteUserToAdmin,
     demoteAdmin,
-    updateUser,
-    readAdminEmails,
+    readAllAdmin,
     updateUserPassword,
-    readUserById
+    updateUserInfo,
+    readUserById,
+    forgotPassword,
+    resetPassword,
+    logoutUser
 }

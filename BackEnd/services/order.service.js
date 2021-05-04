@@ -29,8 +29,11 @@ const createOrder = async (order, orderContent, userId) => {
 			...order,
 		})
 
-		await createOrderContentDb({ order_id: order_id, ...orderContent })
-		await manageInventory(order_id)
+		await createOrderContentDb({
+			order_id: order_id,
+			boxes: [...orderContent],
+		})
+		// await manageInventory(order_id)
 		return true
 	} catch (e) {
 		throw new Error(e.message)
@@ -160,7 +163,8 @@ const retrieveProductList = async (orderId) => {
 		let result = []
 
 		// get boxes from the order
-		await getOrderContentByOrder(orderId).then((boxes) => { // (testing) mock getting content
+		await getOrderContentByOrder(orderId).then((boxes) => {
+			// (testing) mock getting content
 			order = Object.keys(boxes)
 			orderList = boxes
 		})
@@ -197,8 +201,8 @@ const retrieveProductList = async (orderId) => {
 }
 
 /**
- * Modifies the values of products in the stock according to the products amounts contained 
- * in the order's content. 
+ * Modifies the values of products in the stock according to the products amounts contained
+ * in the order's content.
  * @param {ObjectId} orderId id value of the order to get the associated content
  * @returns {Promise<true|JSON|Error} Function returns the value true if the inventory management
  * is successful, and a JSON message relaying changes can't be done for a given product
@@ -209,7 +213,7 @@ const manageInventory = async (orderId) => {
 		let initial_product_list = []
 		let product_amounts = []
 		let amount_differance = []
-		
+
 		//retrieve each unique product within the boxes in the order
 		await retrieveProductList(orderId).then((list) => {
 			//(testing) mock return of products
@@ -219,14 +223,13 @@ const manageInventory = async (orderId) => {
 		// Verify product amounts in the inventory, are added to product_amounts if enough
 		// are in stock, otherwise return error msg JSON
 		for (const product of initial_product_list) {
-			
 			//recieve product inventory data
 			const item = await getProductByIdDb(product._id) // (testing) mock finding the products
-			
+
 			// establish amounts to be used
 			const orderAmount = product.total_products
 			const stockAmount = item.product_quantity_stock
-			
+
 			//verify if differance won't be negative
 			if (orderAmount <= stockAmount)
 				product_amounts.push({
@@ -248,7 +251,8 @@ const manageInventory = async (orderId) => {
 
 		// inventory update step
 		for (let i = 0; i < amount_differance.length; i++) {
-			await updateProductDb(amount_differance[i]._id, {		//mock updating content
+			await updateProductDb(amount_differance[i]._id, {
+				//mock updating content
 				product_quantity_stock: amount_differance[i].delta,
 			})
 		}
@@ -263,7 +267,7 @@ const manageInventory = async (orderId) => {
 /**
  * Helper function that organizes the get functions by order status.
  * @param {Function} getFuncionDb function that recieves all the data from orders collection
- * @returns {Promise<JSON|Error>} JSON document organized by order status, Error for 
+ * @returns {Promise<JSON|Error>} JSON document organized by order status, Error for
  * get method errors.
  */
 const filterByStatus = async (getFuncionDb) => {
@@ -272,7 +276,7 @@ const filterByStatus = async (getFuncionDb) => {
 		let order_catalog = []
 		let response = {}
 
-		// retrieve data, categorizes the order status 
+		// retrieve data, categorizes the order status
 		await getFuncionDb().then((element) => {
 			order_catalog = element
 			for (const order in element) {
@@ -302,7 +306,7 @@ const filterByStatus = async (getFuncionDb) => {
  * that use a parameter value.
  * @param {Function} getFuncionDb function that recieves all the data from orders collection
  * @param {*} parameter parameter to be used inside getFunctionDb
- * @returns {Promise<JSON|Error>} JSON document organized by order status, Error for 
+ * @returns {Promise<JSON|Error>} JSON document organized by order status, Error for
  * get method errors.
  */
 const filterByStatusWithParameter = async (getFuncionDb, parameter) => {

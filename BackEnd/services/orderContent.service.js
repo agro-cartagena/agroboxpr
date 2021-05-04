@@ -16,7 +16,25 @@ const createOrderContent = async (orderContent) => {
 
 const getOrderContent = async () => {
 	try {
-		return await getOrderContentDb()
+		let boxes = await getOrderContentDb()
+		let temp = {}
+		let result = []
+		let j = 0
+		boxes.forEach((index) => {
+			if (!index.hasOwnProperty('boxes')) result.push(index)
+			else {
+				for (let i = 0; i < index.boxes.length; i++) {
+					temp = { [i]: index.boxes[i], ...temp }
+				}
+				temp = {
+					...temp,
+					_id: index._id,
+					order_id: index.order_id,
+				}
+				result.push(temp)
+			}
+		})
+		return result
 	} catch (e) {
 		throw new Error(e.message)
 	}
@@ -27,12 +45,16 @@ const getOrderContentById = async (id) => {
 		let order, orderList
 		let boxList = []
 
-
 		//get boxes
+
 		await getOrderContentByIdDb(id).then((boxes) => {
 			order = Object.keys(boxes)
 			orderList = boxes
 		})
+
+		if (orderList.hasOwnProperty('boxes')) {
+			return orderList.boxes
+		}
 
 		order.pop('_id')
 		order.pop('order_id')
@@ -53,8 +75,6 @@ const updateOderContent = async (id, changes) => {
 		throw new Error(e.message)
 	}
 }
-
-
 
 module.exports = {
 	createOrderContent,

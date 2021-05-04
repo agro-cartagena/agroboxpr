@@ -8,9 +8,9 @@ const upload = require('../middleware/multer.middleware')
 const { productController } = require('../controllers')
 
 // router.post('/', adminAuth, validateEntity(productSchema), productController.postProduct)
-router.post('/', adminAuth, upload.single('file'), productController.postProduct)
+router.post('/', adminAuth, upload.single('file'), validateEntity(productSchema), productController.postProduct)
 
-router.put('/:id', adminAuth, upload.single('file'), productController.update)
+router.put('/:id', adminAuth, upload.single('file'), validateEntity(productSchema), productController.update)
 
 router.get('/:id', productController.getById)
 router.get('/', productController.getProducts)

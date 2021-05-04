@@ -36,6 +36,10 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
+console.log("Env Vars: ")
+console.log(process.env.REACT_APP_API_URL)
+console.log(process.env.CLIENT_URL)
+
 const validationSchema = yup.object({
     password: yup
         .string('Entrar contraseña nueva.')

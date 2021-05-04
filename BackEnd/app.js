@@ -30,6 +30,8 @@ app.engine('ejs', engines.ejs)
 app.set('views', './views')
 app.set('view engine', 'ejs')
 
+app.use(express.static(path.join(__dirname, "web-client", "build")))
+
 //Use Express Routers
 app.use('/api/product', productRouter)
 app.use('/api/box', boxRouter)
@@ -40,5 +42,9 @@ app.use('/api/payment', paymentRouter)
 app.use('/api/geocoder', geocodingRouter)
 app.use('/api/image', imageRouter)
 
+// Tells Herouku how to run client
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "web-client", "build/index.html"));
+});
 
 module.exports = app

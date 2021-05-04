@@ -14,7 +14,7 @@ router.post('/', adminAuth, upload.single('file'), validateEntity(boxSchema), bo
 router.put('/enable/:id', adminAuth, boxController.enableBox)
 router.put('/disable/:id', adminAuth, boxController.disableBox)
 router.put('/addProduct', adminAuth, boxController.addProducts)
-router.put('/:id', adminAuth, boxController.updateBox)
+router.put('/:id', adminAuth, upload.single('file'), boxController.updateBox)
 
 router.get('/products/:id', boxController.getBoxProducts)
 router.get('/available', boxController.getAvailableBoxes)

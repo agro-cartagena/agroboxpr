@@ -65,11 +65,20 @@ const getById = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
-	const change = req.body
+	const { product_name, product_category, product_quantity_stock, product_units, product_price, product_image } = req.body
 	const id = req.params.id
 
+	const product = {
+		product_name, 
+		product_category, 
+		product_quantity_stock: Number(product_quantity_stock), 
+		product_units, 
+		product_price: Number(product_price),
+		product_image: product_image ? product_image : req.file.filename
+	}
+
 	try {
-		const update = await updateProduct(id, change)
+		const update = await updateProduct(id, product)
 		if (update == null) {
 			res.sendStatus(404)
 			next()

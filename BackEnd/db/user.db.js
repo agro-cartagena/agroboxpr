@@ -23,7 +23,7 @@ const findUserByFilterDb = async (filter) => {
   return await collection.find(filter).toArray()
 }
 
-const findUserByEmailAndUpdate = async (query, update) => {
+const findUserByQueryAndUpdate = async (query, update) => {
   const db = mdb.get().db(process.env.DB_NAME)
   const collection = db.collection('user')
 
@@ -55,7 +55,7 @@ const findUserByIdDb = async (id) => {
 module.exports = {
     registerNewUserDb,
     findUserByFilterDb,
-    findUserByEmailAndUpdate,
+    findUserByQueryAndUpdate,
     findAdminAccountsDb,
     findUserByIdDb
 }

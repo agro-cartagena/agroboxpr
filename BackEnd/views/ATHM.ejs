@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>ATHM</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        
+        <script type="text/javascript">
+            ATHM_Checkout = {
+        
+                env: 'sandbox',
+                publicToken: 'sandboxtoken01875617264',
+        
+                timeout: 600,
+        
+                theme: 'btn',
+                lang: 'es',
+        
+                total: 1.00,
+                tax: 1.00,
+                subtotal: 1.00,
+        
+                metadata1: 'metadata1 test',
+                metadata2: 'metadata2 test',
+        
+                items: [
+                    {
+                        "name":"First Item",
+                        "description":"This is a description.",
+                        "quantity":"1",
+                        "price":"1.00",
+                        "tax":"1.00",
+                        "metadata":"metadata test"
+                    },
+                    {
+                        "name":"Second Item",
+                        "description":"This is another description.",
+                        "quantity":"1",
+                        "price":"1.00",
+                        "tax":"1.00",
+                        "metadata":"metadata test"
+                    }
+                ]
+            }
+        </script>
+
+        <style>
+            html, body {
+                height: 100%;
+                background-color: #8C0634;
+            }
+
+            html {
+                display: table;
+                margin: auto;
+            }
+
+            body {
+                display: table-cell;
+                vertical-align: middle;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="ATHMovil_Checkout_Button"></div>
+    
+        <script src="https://www.athmovil.com/api/js/v3/athmovilV3.js"></script>
+    </body>
+</html>

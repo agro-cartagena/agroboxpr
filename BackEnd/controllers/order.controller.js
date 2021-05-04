@@ -9,14 +9,17 @@ const {
 	updateOrder,
 	getAllOrders,
 	manageInventory,
+	getOrderByStatus,
 } = orderService
 const { validateId, validateUserId, validateCity } = validationMiddleware
 
 const postOrder = async (req, res, next) => {
 	const order = req.body.order
-	const content = req.body.orderContent
+	const content = req.body.order_content
+	const userId = req.userId
+
 	try {
-		await createOrder(order, content)
+		await createOrder(order, content, userId)
 		res.sendStatus(200)
 		next()
 	} catch (e) {
@@ -26,7 +29,7 @@ const postOrder = async (req, res, next) => {
 }
 
 const getUserOrders = async (req, res, next) => {
-	const userId = req.params.id
+	const userId = req.userId
 	try {
 		let validate
 		await validateUserId(userId).then((result) => {
@@ -34,11 +37,20 @@ const getUserOrders = async (req, res, next) => {
 		})
 		if (validate != null) {
 			await readUserOrders(userId).then((orders) => {
+				if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+				if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+				if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 				res.status(200).send(orders)
 				next()
 			})
 		} else {
-			res.sendStatus(404) && next()
+			const orders = {
+				"Pendiente": [],
+				"En Camino": [],
+				"Completada": []
+			}
+
+			res.status(200).send(orders) && next()
 		}
 	} catch (e) {
 		console.log(e.message)
@@ -54,8 +66,11 @@ const getById = async (req, res, next) => {
 			validate = result
 		})
 		if (validate != null) {
-			await getOrderById(id).then((order) => {
-				res.status(200).send(order)
+			await getOrderById(id).then((orders) => {
+				// if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+				// if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+				// if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
+				res.status(200).send(orders)
 				next()
 			})
 		} else {
@@ -76,6 +91,9 @@ const getByCity = async (req, res, next) => {
 		})
 		if (validate != null) {
 			await getOrderByCity(city).then((order) => {
+				if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+				if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+				if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 				res.status(200).send(order)
 				next()
 			})
@@ -88,9 +106,24 @@ const getByCity = async (req, res, next) => {
 	}
 }
 
+const getByStatus = async (req, res, next) => {
+	try {
+		await getOrderByStatus().then((orders) => {
+			res.status(200).send(orders)
+			next()
+		})
+	} catch (e) {
+		console.log(e.message)
+		res.sendStatus(500) && next(e)
+	}
+}
+
 const getAll = async (req, res, next) => {
 	try {
 		await getAllOrders().then((orders) => {
+			if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+			if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+			if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 			res.status(200).send(orders)
 			next()
 		})
@@ -121,17 +154,21 @@ const update = async (req, res, next) => {
 const manage = async (req, res, next) => {
 	const id = req.params.id
 	try {
-		let validate
+		let validate, response
 		await validateId(id, 'order').then((result) => {
 			validate = result
 		})
+
 		if (validate != null) {
-			await manageInventory(id).then((order) => {
-				res.status(200).send(order)
-				next()
+			await manageInventory(id).then((result) => {
+				response = result
+				if (response == true) {
+					res.status(200).send(response)
+					next()
+				} else {
+					res.sendStatus(404) && next()
+				}
 			})
-		} else {
-			res.sendStatus(404) && next()
 		}
 	} catch (e) {
 		console.log(e.message)
@@ -147,4 +184,5 @@ module.exports = {
 	update,
 	getAll,
 	manage,
+	getByStatus,
 }

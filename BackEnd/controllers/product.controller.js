@@ -1,27 +1,36 @@
 const { productService } = require('../services')
 
-const {
-	insertProduct,
-	readAllProducts,
-	getProductById,
-	updateProduct,
-	deleteProduct,
-} = productService
+const { insertProduct, readAllProducts, getProductById, updateProduct, deleteProduct } = productService
+const { uploadImage } = require('../services/upload.service')
 
 const postProduct = async (req, res, next) => {
-	const product = req.body
+	const { product_name, product_category, product_quantity_stock, product_units, product_price } = req.body;
+	const image = req.file
+
+	console.log(req.body)
+	if(!uploadImage(image))
+		return res.status(409).send("Error uploading file.")
+
+	const product = {
+		product_name, 
+		product_category, 
+		product_quantity_stock: Number(product_quantity_stock), 
+		product_units, 
+		product_price: Number(product_price),
+		product_image: image.filename
+	}
 
 	try {
-		const insert = await insertProduct(product)
-		if (insert != null) {
-			res.sendStatus(201)
-			next()
-		} else {
-			res.sendStatus(404)
-			next()
-		}
+		await insertProduct(product).then(result => {
+			if (result != null) {
+				res.sendStatus(201)
+				next()
+			} else {
+				res.sendStatus(409)
+				next()
+			}
+		})
 	} catch (e) {
-		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }
@@ -41,8 +50,12 @@ const getProducts = async (req, res, next) => {
 const getById = async (req, res, next) => {
 	const id = req.params.id
 	try {
-		await getProductById(id).then((products) => {
-			res.status(200).send(products)
+		await getProductById(id).then((product) => {
+			if(product){
+				res.status(200).send(product)
+			} else{
+				res.status(404).send()
+			}
 		})
 		next()
 	} catch (e) {
@@ -52,17 +65,29 @@ const getById = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
-	const change = req.body
+	const { product_name, product_category, product_quantity_stock, product_units, product_price, product_image } = req.body
 	const id = req.params.id
 
+	const product = {
+		product_name, 
+		product_category, 
+		product_quantity_stock: Number(product_quantity_stock), 
+		product_units, 
+		product_price: Number(product_price),
+		product_image: product_image ? product_image : req.file.filename
+	}
+
 	try {
-		const update = await updateProduct(id, change)
-		if (update != null) {
-			res.sendStatus(200)
+		const update = await updateProduct(id, product)
+		if (update == null) {
+			res.sendStatus(404)
 			next()
 		}
-		else{
-			res.sendStatus(404)
+		else if(!update){
+			res.sendStatus(409)
+			next()
+		} else{
+			res.sendStatus(200)
 			next()
 		}
 	} catch (e) {
@@ -85,7 +110,6 @@ const deletion = async (req, res, next) => {
 			next()
 		}
 	} catch (e) {
-		console.log(e.message)
 		res.sendStatus(500) && next(e)
 	}
 }

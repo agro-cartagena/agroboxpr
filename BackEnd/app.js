@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const db = require('./db/mdb')
 const engines = require('consolidate')
+const path = require("path")
 
 const {
 	authRouter,

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "cd .. cd web-client && npm install && npm run build",
+    "heroku-postbuild": "cd web-client && npm install && npm run build",
     "start": "node server.js",
     "test": "jest",
     "dev": "nodemon server"

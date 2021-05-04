@@ -1,16 +1,23 @@
 const { productService } = require('../services')
 
 const { insertProduct, readAllProducts, getProductById, updateProduct, deleteProduct } = productService
+const { uploadImage } = require('../services/upload.service')
 
 const postProduct = async (req, res, next) => {
 	const { product_name, product_category, product_quantity_stock, product_units, product_price } = req.body;
+	const image = req.file
+
+	console.log(req.body)
+	if(!uploadImage(image))
+		return res.status(409).send("Error uploading file.")
 
 	const product = {
 		product_name, 
 		product_category, 
-		product_quantity_stock, 
+		product_quantity_stock: Number(product_quantity_stock), 
 		product_units, 
-		product_price
+		product_price: Number(product_price),
+		product_image: image.filename
 	}
 
 	try {
@@ -58,11 +65,20 @@ const getById = async (req, res, next) => {
 }
 
 const update = async (req, res, next) => {
-	const change = req.body
+	const { product_name, product_category, product_quantity_stock, product_units, product_price, product_image } = req.body
 	const id = req.params.id
 
+	const product = {
+		product_name, 
+		product_category, 
+		product_quantity_stock: Number(product_quantity_stock), 
+		product_units, 
+		product_price: Number(product_price),
+		product_image: product_image ? product_image : req.file.filename
+	}
+
 	try {
-		const update = await updateProduct(id, change)
+		const update = await updateProduct(id, product)
 		if (update == null) {
 			res.sendStatus(404)
 			next()

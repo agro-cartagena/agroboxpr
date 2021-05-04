@@ -18,7 +18,6 @@ const postOrder = async (req, res, next) => {
 	const content = req.body.order_content
 	const userId = req.userId
 
-	console.log('Content: ', content)
 	try {
 		await createOrder(order, content, userId)
 		res.sendStatus(200)

@@ -18,7 +18,6 @@ const postOrder = async (req, res, next) => {
 	const content = req.body.order_content
 	const userId = req.userId
 
-	console.log('Content: ', content)
 	try {
 		await createOrder(order, content, userId)
 		res.sendStatus(200)
@@ -45,7 +44,13 @@ const getUserOrders = async (req, res, next) => {
 				next()
 			})
 		} else {
-			res.sendStatus(404) && next()
+			const orders = {
+				"Pendiente": [],
+				"En Camino": [],
+				"Completada": []
+			}
+
+			res.status(200).send(orders) && next()
 		}
 	} catch (e) {
 		console.log(e.message)

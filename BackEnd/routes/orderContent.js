@@ -6,8 +6,8 @@ var { userSchema } = require('../middleware/validators.middleware')
 const { orderContentController } = require('../controllers')
 
 router.post('/', orderContentController.postContent)
-router.get('/', orderContentController.getContent)
 router.get('/:id', orderContentController.getContentById)
+router.get('/', orderContentController.getContent)
 router.put('/:id', orderContentController.putContent)
 
 

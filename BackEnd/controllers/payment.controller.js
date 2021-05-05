@@ -76,13 +76,13 @@ class PaymentController {
                 console.log("Get Payment Response");
                 console.log(JSON.stringify(payment));
 
-                res.render('Success', { paymentId: paymentId })
+                res.render('success', { paymentId: paymentId })
             }
         });
     }
 
     handleCancel = async (req, res) => {
-        res.render('Cancel')
+        res.render('cancel')
     }
 }
 

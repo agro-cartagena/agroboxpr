@@ -22,7 +22,7 @@ const findAllProductsDb = async () => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')
 
-	let product_catalog = collection.find({}).toArray()
+	let product_catalog = collection.find({}).sort( { product_name: 1 } ).toArray()
 	return product_catalog
 }
 

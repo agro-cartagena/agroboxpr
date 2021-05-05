@@ -35,21 +35,21 @@ const findAllBoxesDb = async () => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
 
-	return collection.find({}).toArray()
+	return collection.find({}).sort( { box_name: 1 } ).toArray()
 }
 
 const findAvailableBoxesDb = async (updateDocument) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('box')
 
-	return collection.find(updateDocument).toArray()
+	return collection.find(updateDocument).sort( { box_name: 1 } ).toArray()
 }
 
 const findProductsByIdList = async (query) => {
 	const db = mdb.get().db(process.env.DB_NAME)
 	const collection = db.collection('product')
 
-	return collection.find({ $or: query }).toArray()
+	return collection.find({ $or: query }).sort( { product_name: 1 } ).toArray()
 }
 
 /**

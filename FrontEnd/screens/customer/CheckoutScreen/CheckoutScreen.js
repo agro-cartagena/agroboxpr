@@ -1,11 +1,12 @@
 import React from 'react'
-import { Text, View, ScrollView } from 'react-native'
+import { Text, View, TouchableWithoutFeedback } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import Button from '../../../components/Button/Button'
 import BackArrow from '../../../components/BackArrow/BackArrow'
 import FormInput from '../../../components/FormInput/FormInput'
 import UserService from '../../../services/UserService'
+import CartService from '../../../services/CartService'
 
 import Navigator from '../../../Navigator'
 import styles from './CheckoutScreenStyleSheet'
@@ -19,6 +20,7 @@ const CheckoutScreen = (props) => {
     const [userData, changeUserData] = React.useState({})
     const [addressData, changeAddressData] = React.useState({})
     const [loading, setLoading] = React.useState(true)
+    const [validating, setValidating] = React.useState(false)
 
     React.useEffect(() => {
         async function fetchData() {
@@ -30,9 +32,15 @@ const CheckoutScreen = (props) => {
         }
 
         fetchData()
+        return () => {
+            changeUserData({});
+            changeAddressData({});
+            setLoading(false);
+            setValidating(false);
+        }
     }, [])
 
-    const submitHandler = () => {
+    const submitHandler = async () => {
         for(let property in userData){
             if(!userData[property]) {
                 alert("Entrada vacía.")
@@ -49,7 +57,7 @@ const CheckoutScreen = (props) => {
 
         const order = {
             order_info: {
-                ...props.params.order_info,
+                total_price: await CartService.instance.getCartTotal(),
                 order_name: userData.name,
                 order_number: userData.phone,
                 delivery_address: addressData.address,
@@ -57,7 +65,7 @@ const CheckoutScreen = (props) => {
                 delivery_state: addressData.state,
                 delivery_zipcode: addressData.zipcode
             }, 
-            order_content: props.params.order_content
+            order_content: await CartService.instance.getCart()
         }
 
         Navigator.instance.goToPayment(order)
@@ -71,7 +79,12 @@ const CheckoutScreen = (props) => {
         :
             (
                 <KeyboardAwareScrollView>
-                    {/* Back Arrow */}
+                    <TouchableWithoutFeedback style={styles.loaderOverlay}>
+                        <Loader
+                            loading={validating}
+                        />
+                    </TouchableWithoutFeedback>
+
                     <BackArrow onTouch={Navigator.instance.goToCart} />
 
                     <Text style={styles.header}>Información de Entrega</Text>
@@ -141,6 +154,8 @@ const CheckoutScreen = (props) => {
                         <View style={styles.localizerContainer}>
                             <Localizer
                                 addressHandler={changeAddressData}
+                                loading={validating}
+                                setLoading={setValidating}
                             />
                         </View>
                     </View>

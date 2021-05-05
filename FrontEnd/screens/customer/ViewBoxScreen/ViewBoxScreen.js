@@ -70,7 +70,7 @@ const BoxScreen = (props) => {
                         text: 'Añadir',
                         onPress: () => {
                             CartService.instance.addToCart({...boxData, box_content: content})
-                            alert("Caja ha sido añadida al carrito.")
+                            // alert("Caja ha sido añadida al carrito.")
                             Navigator.instance.goToHome()
                         }
                     }
@@ -167,33 +167,28 @@ const BoxScreen = (props) => {
         }
 
         let product = boxData.box_content.find((item) => item._id == target_product._id),
-            total = boxData.box_accumulated_price
+            total = Number(boxData.box_accumulated_price)
         
         // Product already exists in content list.
         if(product){
-            total -= target_product.product_price * target_product.product_quantity_box
+            total = total - (product.product_price * product.product_quantity_box)
 
-            if(newQuantity == 0)
-                boxData.box_content = boxData.box_content.filter((product) => product._id != target_product._id)
-            
-            else {
-                product.product_quantity_box = newQuantity
-                total += target_product.product_price * newQuantity
-            }
-            
+            product.product_quantity_box = Number(newQuantity)
+            total = total + (product.product_price * Number(newQuantity))
         }
 
         // Product does not yet exist in content list.
         else if (newQuantity > 0){
             boxData.box_content.push({
                 ...target_product,
-                product_quantity_box: newQuantity
+                product_quantity_box: Number(newQuantity)
             })
 
-            total += target_product.product_price * newQuantity
+            total = total + (target_product.product_price * Number(newQuantity))
         }
 
         total = total.toFixed(2)
+
         setBoxData({
             ...boxData,
             box_accumulated_price: Number(total)

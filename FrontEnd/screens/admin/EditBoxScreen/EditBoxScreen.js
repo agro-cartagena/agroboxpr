@@ -278,8 +278,8 @@ const EditBoxScreen = (props) => {
                         <Text style={[global_styles.text, styles.formText]}>Nombre de la Caja</Text>
                         <View style={global_styles.formEntry}>
                             <FormInput
-                                placeholder = { _isNewBox? 'ejemplo: AgroBox' : boxData.box_name}
-                                // value = {boxData.box_name}
+                                placeholder = { _isNewBox ? 'ejemplo: AgroBox' : boxData.box_name}
+                                value = {boxData.box_name}
                                 onChangeText = { (text) => setBoxData({...boxData, box_name: text}) }
                             />
                         </View>
@@ -288,6 +288,7 @@ const EditBoxScreen = (props) => {
                         <View style={global_styles.formEntry}>
                             <FormInput
                                 placeholder = { _isNewBox ? 'ejemplo: 45.00': String(boxData.box_price) }
+                                value ={String(boxData.box_price)}
                                 onChangeText = { (text) => setBoxData({...boxData, box_price: Number(text)}) }
                             />
                         </View>

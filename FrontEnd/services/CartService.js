@@ -18,6 +18,16 @@ export default class CartService {
             })
     }
 
+    async setCart(cart) {
+        return AsyncStorage.setItem('cart', JSON.stringify(cart))
+            .then(() => {
+                return true
+            })
+            .catch(() => {
+                return false
+            })
+    }
+
     async addToCart(item) {
         const randomize = (string) => {
             let arr = string.split(""),
@@ -50,7 +60,8 @@ export default class CartService {
             total = 0
 
         cart.forEach((item) => total += (item.box_accumulated_price * item.box_quantity))
-        return total
+        total = total.toFixed(2)
+        return Number(total)
     }
 
     async removeFromCart(target_box) {

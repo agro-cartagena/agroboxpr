@@ -1,30 +1,36 @@
 import React from 'react';
-import { View, Text, Alert, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Alert, LogBox } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { Buffer } from 'buffer'
 
 import styles from './LoginScreenStylesheet';
 import global_styles from '../../../styles';
 import Navigator from '../../../Navigator'
-import Loader from '../../../components/Loader/Loader'
 
 import FormInput from '../../../components/FormInput/FormInput'
 import UserService from '../../../services/UserService'
 import Logo from '../../../components/Logo/Logo';
+import PopUp from '../../../components/PopUp/PopUp'
 
 import Button from '../../../components/Button/Button'
 import * as LocalAuthentication from 'expo-local-authentication'
 import * as SecureStore from 'expo-secure-store'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+
+// Ignore harmless warnings.
+LogBox.ignoreLogs(['FaceID is not available in Expo Client.', 
+    'Invalid key provided to SecureStore.'])
 
 const LoginScreen = (props) => {
-    const[isCompatible, setIsCompatible] = React.useState(false)
-    const[isEnrolled, setIsEnrolled] = React.useState(false)
-    const[validating, setValidating] = React.useState(false)
+    const [isCompatible, setIsCompatible] = React.useState(false)
+    const [isEnrolled, setIsEnrolled] = React.useState(false)
+    const [showPopup, setShowPopup] = React.useState(false)
 
     const [formData, changeFormData] = React.useState({
         email: '',
         password: ''
     })
+
+    const [email, setEmail] = React.useState('')
 
     React.useEffect(() => {
         async function fetchData() {
@@ -35,19 +41,14 @@ const LoginScreen = (props) => {
         fetchData()
     }, [])
 
-    const sendCredentials = async () => {
-        setValidating(true)
+    const sendCredentials = async (userData) => {
+        if(await UserService.instance.sendLogin(userData)) {
+            
+            let key = Buffer.from(userData.email),
+                local_password = await SecureStore.getItemAsync(key.toString('hex'))
 
-        if(await UserService.instance.sendLogin(formData)) {
-            setValidating(false)
-        
-            // To enable biometrics authentication,
-            // Remove if(false) and uncomment the three lines prior to that one.
+            if(local_password != userData.password) {
 
-            // let local_password = await SecureStore.getItemAsync(formData.email)
-            // local_password = atob(local_password)
-            // if(local_password != formData.password) {
-            if(false) {
                 Alert.alert(
                     '¿Desea actualizar o guardar su contraseña?', '',
                     [
@@ -55,6 +56,7 @@ const LoginScreen = (props) => {
                             text: 'No',
                             style: 'cancel',
                             onPress: async () => {
+
                                 // redirect == true
                                 if(props.params)
                                     Navigator.instance.goToCart()
@@ -66,9 +68,8 @@ const LoginScreen = (props) => {
                         {
                             text: 'Aceptar',
                             onPress: async () => {
-                                // Functionality needs to be properly tested.
-                                let password = btoa(formData.password)
-                                await SecureStore.setItemAsync(formData.email, password)
+                                // Use Hexadecimal encoding to store password in SecureStore.
+                                await SecureStore.setItemAsync(key.toString('hex'), userData.password)
 
                                 // redirect == true
                                 if(props.params)
@@ -81,8 +82,6 @@ const LoginScreen = (props) => {
                     ]
                 )
             }  else {
-                setValidating(false)
-
                 // redirect == true
                 if(props.params)
                     Navigator.instance.goToCart()
@@ -90,30 +89,54 @@ const LoginScreen = (props) => {
                 else
                     Navigator.instance.goToHome() 
             }    
-        } else { setValidating(false) }
-    }
-
-    // This method is for debugging only.
-    const displayToken = () => {
-        alert(UserService.instance.webToken)
+        }
     }
 
     const validateBiometrics = async () => {
         // To enable biometrics authentication (FaceID/ TouchID),
-        // Remove if(false) and uncomment the line prior to that one.
+        // Remove return statement. Feature only works in production.
 
-        // if(isCompatible && isEnrolled) {
-        if(false) {
-            let password = await SecureStore.getItemAsync(formData.email)
-            password = atob(password)
+        // return
+        if(isCompatible && isEnrolled) {
+            let key = Buffer.from(formData.email),
+                password = await SecureStore.getItemAsync(key.toString('hex'))
 
             if(password) {
-                if(await LocalAuthentication.authenticateAsync()) {
-                    changeFormData({...formData, password })
-                    sendCredentials()
+                let authenticated = await LocalAuthentication.authenticateAsync()
+                if(authenticated.success) {
+                    sendCredentials({ email: formData.email, password: password })
                 }
             }   
         }
+    }
+
+    const displayForgotPassword = () => {
+        return (
+            <View style={styles.forgotPasswordContainer}>
+                <Text style={styles.forgotPasswordText}>Por favor ingrese su correo electrónico para restablecer su contraseña.</Text>
+
+                <View style={styles.forgotPasswordFormInput}>
+                    <FormInput
+                        placeholder = 'Correo Electrónico'
+                        onChangeText = {text => setEmail(text)} 
+                        value={email.email}
+                        keyboardType = "email-address"
+                        autoCompleteType = "email"
+                        autoCapitalize="none"
+                    />
+                </View>
+
+                <View style={styles.forgotPasswordButton}>
+                    <Button
+                        text="Enviar"
+                        onTouch={async () => {
+                            if(await UserService.instance.sendForgotPassword(email))
+                                setTimeout(() => setShowPopup(false), 2500)
+                        }}
+                    />
+                </View>
+            </View>
+        )
     }
 
     return (
@@ -121,13 +144,13 @@ const LoginScreen = (props) => {
             contentContainerStyle={styles.screen}
             resetScrollToCoords={{x: 0, y: 0}}
         >
-            <TouchableWithoutFeedback style={styles.loaderOverlay}>
-                <Loader
-                    loading={validating}
-                />
-            </TouchableWithoutFeedback>
-
             <Logo/>
+
+            <PopUp
+                state={showPopup}
+                handler={setShowPopup}
+                content={displayForgotPassword()}
+            />
             
             <View style={[styles.form]}>
                 <View style={global_styles.formEntry}>
@@ -145,20 +168,19 @@ const LoginScreen = (props) => {
                     <FormInput
                         placeholder = 'Contraseña'
                         onChangeText = {text => changeFormData({...formData, password: text})} 
-                        textContentType="password"
-                        autoCompleteType="password"
+                        // textContentType="password"
                         secureTextEntry = {true}
                     />
                 </View>
             </View>
 
             <Text style={[global_styles.text, styles.problemText]}>Problemas para acceder?
-                <Text style={styles.clickText} onPress={displayToken}> Presione aquí.</Text>
+                <Text style={styles.clickText} onPress={() => setShowPopup(true)}> Presione aquí.</Text>
             </Text>
 
             <View style={[global_styles.container, styles.buttonContainer]}>
                 <Button
-                    onTouch={sendCredentials}
+                    onTouch={() => sendCredentials(formData)}
                     text="Acceder"
                 />
             </View>

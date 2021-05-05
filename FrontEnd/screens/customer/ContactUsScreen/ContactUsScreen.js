@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, Image, Text, ScrollView, View, Linking, Platform } from 'react-native'
+import { TouchableOpacity, Text, ScrollView, View, Linking, Platform } from 'react-native'
 import {SocialIcon} from 'react-native-elements'
 import Logo from '../../../components/Logo/Logo'
 import BackArrow from '../../../components/BackArrow/BackArrow'
@@ -39,18 +39,13 @@ const ContactUsScreen = () => {
                     <TouchableOpacity
                         style={styles.iconContainer}
                         onPress={() => {
-                            let number = '939-280-7836',
-                            phone_number = Platform.OS == 'android' ? `tel:${number}` : `telprompt:${number}`
+                            let number = '7872807836',
+                                phone_number = Platform.OS == 'android' ? `tel:${number}` : `telprompt:${number}`,
+                                url = `whatsapp://send?phone=1${phone_number}`
 
-                            Linking.canOpenURL(phone_number)
-                                .then(supported => {
-                                    if (!supported) {
-                                        alert("Teléfono desactivado. Verifique su dispositivo.")
-                                    } else {
-                                        Linking.openURL(phone_number)
-                                    }
-                                })
-                                .catch(() => alert("Ha ocurrido un error."));
+                            Linking.openURL(url)
+                                .catch(err => alert("WhatsApp no está instalado en su móvil."))
+
                         }}
                     >
                         <SocialIcon

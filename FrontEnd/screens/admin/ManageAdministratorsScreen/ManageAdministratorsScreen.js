@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, SectionList, TouchableOpacity, TextInput, 
-        Image, Linking, Platform, LogBox, Alert } from 'react-native'
+        Image, Linking, Platform, LogBox, Alert, TouchableWithoutFeedback } from 'react-native'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
@@ -20,14 +20,20 @@ const ManageAdministratorsScreen = () => {
     const [admins, setAdmins] = React.useState({})
     const [textInput, changeTextInput] = React.useState("")
     const [loading, setLoading] = React.useState(true)
+    const [uploading, setUploading] = React.useState(false)
 
     React.useEffect(() => {
+        let mounted = true;
         async function fetchData() {
-            setAdmins(await AdminService.instance.getAdmins())
-            setLoading(false)
+            if(mounted) {
+                setAdmins(await AdminService.instance.getAdmins())
+                setLoading(false) 
+            }
         }
 
         fetchData()
+
+        return () => { mounted = false; }
     }, [])
 
     const getSections = () => { 
@@ -60,11 +66,17 @@ const ManageAdministratorsScreen = () => {
                     {
                         text: 'Remover',
                         onPress: async () => {
-                            if(await AdminService.instance.removeAdmin(item._id))
+                            setUploading(true)
+
+                            if(await AdminService.instance.removeAdmin(item._id)) {
                                 setAdmins(await AdminService.instance.getAdmins())
+                                setUploading(false) 
+                            }
                             
-                            else 
+                            else {
                                 alert("Ha ocurrido un error. Por favor intente de nuevo.")
+                                setUploading(false)
+                            }
                         }
                     }
                 ]
@@ -96,13 +108,16 @@ const ManageAdministratorsScreen = () => {
                     {
                         text: 'Sí',
                         onPress: async () => {
+                            setUploading(true)
                             if(await AdminService.instance.addAdmin(textInput)){
                                 changeTextInput("")
                                 setAdmins(await AdminService.instance.getAdmins()) 
+                                setUploading(false)
                             }
 
-                            else 
-                                alert("Usuario no existe en la base de datos.")
+                            else {
+                                setTimeout(() => setUploading(false), 2500)
+                            }
                         }
                     }
                 ]
@@ -119,6 +134,11 @@ const ManageAdministratorsScreen = () => {
             (
                 <KeyboardAwareScrollView>
                     <BackArrow onTouch={Navigator.instance.goToMenu}/>
+                    <TouchableWithoutFeedback style={styles.loaderOverlay}>
+                        <Loader
+                            loading={uploading}
+                        />
+                    </TouchableWithoutFeedback>
                     
                     <Text style={styles.header}>Administradores de AgroBox</Text>
 

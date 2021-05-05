@@ -141,25 +141,19 @@ const CartScreen = () => {
                     </View>
 
                     <Text style={[global_styles.text, styles.text]}>Total de compra: 
-                        <Text style={{fontWeight: 'bold', color: '#EAC71D'}}> ${cartTotal}</Text>
+                        <Text style={{fontWeight: 'bold', color: '#EAC71D'}}> ${cartTotal.toFixed(2)}</Text>
                     </Text>
 
                     <View style={styles.buttonContainer}>
                         <Button
-                            onTouch={() => {
+                            onTouch={async () => {
+                                await CartService.instance.setCart(cartData)
+                                
                                 if(!UserService.instance.isAuthenticated()) {
                                     alert("Por favor inicie una sesión o cree una cuenta nueva para proceder con su orden.")
                                     Navigator.instance.goToLogin(true)
                                 } else {
-                                    const order = {
-                                        order_info: {
-                                            total_price: cartTotal
-                                        },
-
-                                        order_content: cartData
-                                    }
-
-                                    Navigator.instance.goToCheckout(order)
+                                    Navigator.instance.goToCheckout()
                                 }
                                 
                             }}

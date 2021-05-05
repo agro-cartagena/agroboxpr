@@ -1,19 +1,6 @@
 import { StyleSheet } from 'react-native'
 
-const styles = StyleSheet.create({
-    loaderOverlay: {
-        width: '100%',
-        height: '100%',
-
-        position: 'absolute',
-        top: 0, bottom: 0, 
-        left: 0, right: 0,
-        zIndex: 3,
-
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-    },
-    
+const styles = StyleSheet.create({    
     screen: {
         width: '100%',
         height: '90%',
@@ -38,6 +25,31 @@ const styles = StyleSheet.create({
     clickText: {
         color: 'rgb(151, 184, 56)',
         fontWeight: "bold"
+    },
+
+    forgotPasswordContainer: {
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    forgotPasswordText: {
+        margin: 25,
+        fontWeight: 'bold',
+        fontSize: 20,
+        textAlign: 'center'
+    },
+
+    forgotPasswordFormInput: {
+        width: '90%',
+        height: 50
+    },
+
+    forgotPasswordButton: {
+        width: '50%',
+        height: 50,
+        margin: 25
     }
 })
 

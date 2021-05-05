@@ -3,7 +3,6 @@ import {TouchableOpacity, Image, Alert, View} from 'react-native'
 
 import styles from './LocalizerStyleSheet'
 import GeoCodingService from '../../services/GeoCodingService'
-import { Dimensions } from 'react-native'
 
 const Localizer = (props) => {
     const askToUseLocation = () => {
@@ -17,8 +16,10 @@ const Localizer = (props) => {
                 {
                     text: 'Aceptar',
                     onPress: () => {
+                        props.setLoading(true)
                         navigator.geolocation.getCurrentPosition(
                             async (position) => {
+                                props.setLoading(false)
                                 const {latitude, longitude} = position.coords
                                 const coordinates = {latitude, longitude}
 
@@ -26,6 +27,7 @@ const Localizer = (props) => {
                             },
 
                             (error) => {
+                                props.setLoading(false)
                                 alert("Ha ocurrido un error. Por favor intente de nuevo.")
                             },
 

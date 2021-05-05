@@ -104,13 +104,6 @@ const OrderCard = (props) => {
     }
 
     const getContent = () => {
-        
-        async function fetchData() {
-            setContent(await OrderService.instance.getOrderContent(order_info._id))
-        }
-
-        fetchData()
-
         const getData = () => {
             return content.map((box) => {
                 return {

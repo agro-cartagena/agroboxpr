@@ -1,7 +1,19 @@
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
+    loaderOverlay: {
+        width: '100%',
+        height: '100%',
 
+        position: 'absolute',
+        top: 0, bottom: 0, 
+        left: 0, right: 0,
+        zIndex: 3,
+
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
+    
     header: {
         fontSize: 22,
         margin: 25,

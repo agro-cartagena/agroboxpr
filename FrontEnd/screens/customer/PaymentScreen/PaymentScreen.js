@@ -17,7 +17,7 @@ const PaymentScreen = (props) => {
     const [showPayPal, togglePayPal] = React.useState(false)
     const [price, setPrice] = React.useState()
     const [transactionId, setTransactionId] = React.useState('N/A')
-    const [uploading, setUploading] = React.useState(false)
+    const [processing, setProcessing] = React.useState(false)
 
     React.useEffect(() => {
         async function fetchData() {
@@ -28,7 +28,7 @@ const PaymentScreen = (props) => {
     }, [])
 
     const submitOrder = async (payment_method) => {
-        setUploading(true)
+        setProcessing(true)
         const order = {
             order: {
                 ...props.params.order_info,
@@ -42,18 +42,18 @@ const PaymentScreen = (props) => {
         if(await OrderService.instance.submitOrder(order)) {
             await CartService.instance.refreshCart();
             
-            setUploading(false)
+            setProcessing(false)
             Navigator.instance.goToOrderConfirmation()
-        }
+        } else { setProcessing(false) }
     }
 
     const displayPayPal = () => {
         const handlePayPal = async (data) => {
             switch(data.title) {
                 case 'success':
+                    await submitOrder("PayPal")
                     togglePayPal(!showPayPal)
 
-                    submitOrder("PayPal")
                     break;
 
                 case 'cancel':
@@ -69,7 +69,8 @@ const PaymentScreen = (props) => {
             <WebView
                 style={{width: '100%', height: '100%'}}
                 // Change uri source to deployed route url.
-                source={{uri: 'http://10.0.0.6:5000/api/payment/paypal'}}
+                // source={{uri: 'http://10.0.0.6:5000/api/payment/paypal'}}
+                source={{uri: 'https://agro-box-pr.herokuapp.com/api/payment/paypal'}}
                 onNavigationStateChange={handlePayPal}
                 onMessage={(event) => {setTransactionId(event.nativeEvent.data)}}
                 injectedJavaScript={`document.getElementById("price").value=${price}; document.f1.submit(); true;`}
@@ -77,10 +78,10 @@ const PaymentScreen = (props) => {
         )
     }
 
-    const handleCash = () => {
+    const handlePayment = (payment_method) => {
         Alert.alert(
             'Términos y Condiciones', 
-            `Al escoger el metodo de pago "Cash" usted se compromete 
+            `Al escoger el metodo de pago "${payment_method}" usted se compromete 
             a hacer el pagarés en el momento de entregársele su orden. 
             De no ser así, su orden puede quedar anulada y no se le 
             entregarán los productos. Por favor indique si acepta nuestros 
@@ -93,7 +94,7 @@ const PaymentScreen = (props) => {
                 {
                     text: 'Aceptar',
                     onPress: () => {
-                        submitOrder("Cash")
+                        submitOrder(payment_method)
                     }
                 }
             ]
@@ -104,7 +105,7 @@ const PaymentScreen = (props) => {
         <ScrollView>
             <TouchableWithoutFeedback style={styles.loaderOverlay}>
                 <Loader
-                    loading={uploading}
+                    loading={processing}
                 />
             </TouchableWithoutFeedback>
 
@@ -115,7 +116,7 @@ const PaymentScreen = (props) => {
             <Text style={styles.header}>Total a pagar: <Text style={{color: '#EAC71D'}}>${price}</Text></Text>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={() => Linking.openURL('http://10.0.0.6:5000/api/payment/athm')}>
+                <TouchableOpacity style={styles.button} onPress={() => handlePayment('ATH Móvil')}>
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>ATH Móvil</Text>
                     </View>
@@ -147,7 +148,7 @@ const PaymentScreen = (props) => {
                     />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button} onPress={handleCash}>
+                <TouchableOpacity style={styles.button} onPress={() => handlePayment('Cash')}>
                     <View style={styles.buttonTextContainer}>
                         <Text style={styles.buttonText}>Cash</Text>
                     </View>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, View, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView } from 'react-native'
+import { Modal, View, TouchableOpacity } from 'react-native'
 
 import styles from './PopUpStyleSheet'
 
@@ -9,6 +9,10 @@ const PopUp = (props) => {
             transparent={true}
             visible={props.state}
             animationType={'fade'}
+            containerStyle={{
+                width: '25%',
+                height: '25%'
+            }}
         >   
             <View style={styles.modalContainer}>
                 <TouchableOpacity style={styles.overlay} 

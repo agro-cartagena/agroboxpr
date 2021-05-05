@@ -10,8 +10,6 @@ export default class BoxService extends Service {
 
     constructor() { super() }
 
-    getURL() { return this._url }
-
     // Used BoxManagementScreen
     async getAllBoxes() {
         let payload = {
@@ -144,7 +142,10 @@ export default class BoxService extends Service {
 
     async updateBox(box) {
         for(let detail in box){
-            if(!box[detail] && detail != "box_content"){
+            if(detail == 'box_content')
+                continue
+
+            else if(!box[detail]){
                 alert("Entrada vacía.")
                 return false
             }
@@ -167,12 +168,19 @@ export default class BoxService extends Service {
         delete box._id
 
         const body = new FormData()
-        for (let attr in box)
-            body.append(attr, typeof box[attr] != "string" ? JSON.stringify(box[attr]) : box[attr])
-
+        let hasFile = false;
         // New image was uploaded.
-        if(typeof box.box_image != "string")
+        if(typeof box.box_image != "string") {
             body.append('file', box.box_image)
+            hasFile = true;
+        } 
+
+        for (let attr in box) {
+            if (attr == "box_image" && hasFile)
+                continue
+            else
+                body.append(attr, typeof box[attr] != "string" ? JSON.stringify(box[attr]) : box[attr])
+        }        
 
         let payload = {
             method: 'PUT',
@@ -180,7 +188,7 @@ export default class BoxService extends Service {
                 'Content-Type': 'multipart/form-data',
                 'x-access-token': UserService.instance.webToken
             },
-            body: JSON.stringify(box)
+            body: body
         }
 
         return fetch(this._url + `box/${boxId}`, payload)

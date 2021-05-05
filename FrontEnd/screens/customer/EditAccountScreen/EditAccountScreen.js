@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Button from '../../../components/Button/Button'
 
@@ -17,6 +17,7 @@ const EditAccountScreen = () => {
 
     const [userData, changeUserData] = React.useState({})
     const [loading, setLoading] = React.useState(true)
+    const [validating, setValidating] = React.useState(false)
 
     const [passwordData, changePasswordData] = React.useState({
         current_password: '',
@@ -36,6 +37,14 @@ const EditAccountScreen = () => {
         }
 
         fetchData()
+
+        return () => {
+            changeUserData({});
+            changePasswordData({});
+            changeAddressData({});
+            setLoading(false);
+            setValidating(false);
+        }
     }, [])
 
     const getUserFields = () => {
@@ -132,6 +141,8 @@ const EditAccountScreen = () => {
                 <View style={styles.localizerContainer}>
                     <Localizer
                         addressHandler={changeAddressData}
+                        loading={validating}
+                        setLoading={setValidating}
                     />
                 </View>
             </View>
@@ -197,6 +208,12 @@ const EditAccountScreen = () => {
                 <KeyboardAwareScrollView
                     contentContainerStyle={[global_styles.container]}
                 >
+                    <TouchableWithoutFeedback style={styles.loaderOverlay}>
+                        <Loader
+                            loading={validating}
+                        />
+                    </TouchableWithoutFeedback>
+
                     <Text style={styles.header}>Mi Información</Text>
 
                     <View style={[global_styles.container, styles.formContainer]}>

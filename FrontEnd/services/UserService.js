@@ -1,5 +1,6 @@
 import Service from './Service'
 import * as SecureStore from 'expo-secure-store'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import jwt_decode from 'jwt-decode'
 
 import user from '../db_mockup/user.db'
@@ -24,32 +25,44 @@ export default class UserAuthenticationService extends Service {
 
     // This method gets called only once on init to fetch the token from storage.
     async loadWebToken() {
-        // Try-Catch to overkill solution as error is devastating. 
-        try {
-            SecureStore.getItemAsync('jwt_key')
-                .then((token) => {
-                    // Resolves to token if it exists; 
-                    // otherwise, resolves to null.
-                    this.webToken = token
-                })
-                .catch((error) => {
-                    alert("Error loading token.")
-                    console.error(error)
-                })
-        } catch(error) {
-            this.webToken = null
-        }
+        AsyncStorage.getItem('authenticated')
+            .then((result) => {
+                // Resolves to token if it exists; 
+                // otherwise, resolves to null.
+                if(result == 'true'){
+                    SecureStore.getItemAsync('jwt_key')
+                    .then((token) => {
+                        this.webToken = token
+                    })
+                    .catch((error) => {
+                        alert("Error loading token.")
+                        console.error(error)
+                    })
+                } 
+            })
+            .catch((error) => {
+                alert("Ha ocurrido un error.")
+                console.error(error)
+            })
     }
 
     async setWebToken(token) {
-        SecureStore.setItemAsync('jwt_key', token)
+        AsyncStorage.setItem('authenticated', 'true')
             .then(() => {
-                this.webToken = token
+                SecureStore.setItemAsync('jwt_key', token)
+                .then(() => {
+                    this.webToken = token
+                })
+                .catch((error) => {
+                    alert("error storing token")
+                    console.error(error)
+                })
             })
             .catch((error) => {
-                alert("error storing token")
+                alert("error saving token")
                 console.error(error)
             })
+        
     }
 
     async removeWebToken() {
@@ -76,11 +89,20 @@ export default class UserAuthenticationService extends Service {
         return false
     }
 
-    logout() {
-        this.removeWebToken()
+    async logout() {
+        // this.removeWebToken()
+        await AsyncStorage.setItem('authenticated', 'false')
+        this.webToken = null;
     }
 
     async sendLogin(data) {
+        for (let field in data){
+            if(!data[field]){
+                alert("Entrada vacía.")
+                return 
+            }     
+        }
+
         // Declare payload
         let payload = {
             method: 'POST',
@@ -119,6 +141,13 @@ export default class UserAuthenticationService extends Service {
     }
 
     async sendRegistration(data) {
+        for (let field in data){
+            if(!data[field]){
+                alert("Entrada vacía.")
+                return 
+            }     
+        }
+
         // Validate Passwords
         if(data["password"] != data["password_confirmation"]) {
             alert("Contraseñas no concuerdan.") 
@@ -162,7 +191,6 @@ export default class UserAuthenticationService extends Service {
                     switch(response.status){
                         case 201:
                             this.setWebToken(await response.text())
-                            alert("Gracias por registrarse!")
                             return true;
 
                         case 409:
@@ -182,7 +210,7 @@ export default class UserAuthenticationService extends Service {
     }
 
     async updateUserInformation(userData) {
-        for (field in userData){
+        for (let field in userData){
             if(!userData[field]){
                 alert("Entrada vacía.")
                 return 
@@ -228,7 +256,7 @@ export default class UserAuthenticationService extends Service {
     }
 
     async updateAddress(addressData) {
-        for (field in addressData){
+        for (let field in addressData){
             if(!addressData[field]){
                 alert("Entrada vacía.")
                 return 
@@ -268,7 +296,7 @@ export default class UserAuthenticationService extends Service {
     }
 
     async updatePassword(passwordData) {
-        for (field in passwordData){
+        for (let field in passwordData){
             if(!passwordData[field]){
                 alert("Entrada vacía.")
                 return 
@@ -361,6 +389,38 @@ export default class UserAuthenticationService extends Service {
             .catch(error => {
                 alert("Error de conexión.")
                 return false
+            })
+    }
+
+    async sendForgotPassword(email) {
+        let payload = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            }, 
+            body: JSON.stringify({ email })
+        }
+
+        return fetch(this._url + 'auth/forgotPassword', payload)
+            .then((response) => {
+                switch(response.status){
+                    case 200: 
+                        alert('¡Verifique su correo electrónico!')
+                        return true
+
+                    case 403:
+                        alert('Correo electrónico no existe en el sistema.')
+                        return false;
+
+                    default:
+                        alert("Ha ocurrido un error. Por favor intente más tarde.")
+                        return false;
+                }
+            })
+            .catch((error) => {
+                alert("Error de conexión.")
+                return false;
             })
     }
 }

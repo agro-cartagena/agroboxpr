@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, Text, TouchableOpacity, Image, Alert, TouchableWithoutFeedback } from 'react-native'
+import { ScrollView, View, Text, TouchableOpacity, Image, Alert, TouchableWithoutFeedback, LogBox } from 'react-native'
 
 import styles from './ManageOrdersScreenStyleSheet'
 import OrderService from '../../../services/OrderService'
@@ -11,18 +11,27 @@ import BackArrow from '../../../components/BackArrow/BackArrow'
 import Navigator from '../../../Navigator'
 import Loader from '../../../components/Loader/Loader'
 
+// Warning ignored for final presentation. Should be mitigated as it indicates a memory leak. (MITIGATED BUT LEFT FOR FUTURE REFERENCE)
+// LogBox.ignoreLogs([`Can't perform a React state update on an unmounted component.`])
+
 const ManageOrdersScreen = () => {
     const [orders, setOrders] = React.useState({})
     const [loading, setLoading] = React.useState(true)
     const [uploading, setUploading] = React.useState(false)
 
     React.useEffect(() => {
+        let mounted = true
         async function fetchData() {
-            setOrders(await OrderService.instance.getAllOrders())
-            setLoading(false)
+            if(mounted) {
+                setOrders(await OrderService.instance.getAllOrders())
+                setLoading(false) 
+            }
+            
         }
 
         fetchData()
+        return () => { mounted = false };
+
     }, [])
 
     const displayOrders = () => {

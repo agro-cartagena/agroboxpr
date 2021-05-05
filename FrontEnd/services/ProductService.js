@@ -7,8 +7,6 @@ export default class ProductService extends Service {
 
     constructor() { super() }
 
-    getURL () { return this._url }
-
     async getProductCatalog() {
         return fetch(this._url + 'product')
             .then(response => {
@@ -97,17 +95,24 @@ export default class ProductService extends Service {
         delete product._id
 
         const body = new FormData()
-        for(let attr in product)
-            body.append(attr, typeof product[attr] != "string" ? JSON.stringify(product[attr]) : product[attr])
-        
+        let hasFile = false;
         // New image was uploaded.
-        if(typeof product.product_image != 'string')
+        if(typeof product.product_image != 'string') {
             body.append('file', product.product_image)
+            hasFile = true;
+        }
+
+        for(let attr in product) {
+            if (attr == "product_image" && hasFile)
+                continue
+            else
+                body.append(attr, typeof product[attr] != "string" ? JSON.stringify(product[attr]) : product[attr])
+        }
 
         let payload = {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 'x-access-token': UserService.instance.webToken
             },
             body: body

@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import * as SecureStore from 'expo-secure-store'
+import { Buffer } from 'buffer'
 
 import styles from './RegisterScreenStylesheet';
 import global_styles from '../../../styles';
@@ -21,14 +23,42 @@ const RegisterScreen = (props) => {
         phone: ''
     })
 
-    const sendCredentials = async () => {
-        if(await UserService.instance.sendRegistration(formData)) {
-            // redirect == true
-            if (props.params)
-                Navigator.instance.goToCart()
+    const sendCredentials = async (userData) => {
+        if(await UserService.instance.sendRegistration(userData)) {
+            Alert.alert(
+                '¡Gracias por registrarse!', '¿Desea guardar su contraseña para acceso sencillo a su cuenta?',
+                [
+                    {
+                        text: 'No',
+                        style: 'cancel',
+                        onPress: async () => {
 
-            else    
-                Navigator.instance.goToHome()
+                            // redirect == true
+                            if(props.params)
+                                Navigator.instance.goToCart()
+        
+                            else
+                                Navigator.instance.goToHome()   
+                        }
+                    },
+                    {
+                        text: 'Aceptar',
+                        onPress: async () => {
+                            let key = Buffer.from(userData.email)
+
+                            // Use Hexadecimal encoding to store password in SecureStore.
+                            await SecureStore.setItemAsync(key.toString('hex'), userData.password)
+
+                            // redirect == true
+                            if(props.params)
+                                Navigator.instance.goToCart()
+            
+                            else
+                                Navigator.instance.goToHome()  
+                        }
+                    }
+                ]
+            ) 
         }
     }
 
@@ -87,7 +117,7 @@ const RegisterScreen = (props) => {
 
             <View style={[global_styles.container, styles.buttonContainer]}>
                 <Button
-                    onTouch={sendCredentials}
+                    onTouch={() => sendCredentials(formData)}
                     text="Registrar"
                 />
             </View>

@@ -37,6 +37,7 @@ const HomeScreen = () => {
                     image={box.box_image}
                     price={`$${box.box_price}`}
                     fontSize={{fontSize: RFPercentage(2.5)}}
+                    still={true}
                 />
             </TouchableOpacity>   
         )

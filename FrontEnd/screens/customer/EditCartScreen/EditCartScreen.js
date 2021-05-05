@@ -5,7 +5,7 @@ import BackArrow from '../../../components/BackArrow/BackArrow'
 
 import Navigator from '../../../Navigator'
 import styles from './EditCartScreenStyleSheet'
-import global_styles from '../../../styles'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import InteractiveProductCard from '../../../components/InteractiveProductCard/InteractiveProductCard'
 import CartService from '../../../services/CartService'
@@ -113,7 +113,7 @@ const EditCartScreen = (props) => {
     }
 
     return(
-        <ScrollView>
+        <KeyboardAwareScrollView>
             <View>
                 <BackArrow 
                     onTouch={() => { 
@@ -136,7 +136,7 @@ const EditCartScreen = (props) => {
                     />
                 </View>
             </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
     )
 }
 export default EditCartScreen

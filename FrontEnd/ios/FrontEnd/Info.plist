@@ -53,5 +53,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSFaceIDUsageDescription</key>
+	<string>ABPR requires FaceID access to allows you quick and secure access.</string>
 </dict>
 </plist>

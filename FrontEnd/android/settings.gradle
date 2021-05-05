@@ -1,3 +1,9 @@
 rootProject.name = 'FrontEnd'
+include ':expo-react-native-fast-image'
+project(':expo-react-native-fast-image').projectDir = new File(rootProject.projectDir, '../node_modules/expo-react-native-fast-image/android')
+include ':react-native-fs'
+project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
+include ':react-native-fs'
+project(':react-native-fs').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fs/android')
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'

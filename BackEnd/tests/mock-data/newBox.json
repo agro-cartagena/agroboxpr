@@ -1,0 +1,18 @@
+{
+    "box_name":"La Verdadera Real Caja",
+    "box_price":"99.99",
+    "box_content": [
+        {
+            "_id" : "60301d76a98ff84b6b45de0z",
+            "product_quantity_box" : 5
+        },
+        {
+            "_id" : "60301d76a98ff84b6b45de3k",
+            "product_quantity_box" : 5
+        },
+        {
+            "_id" : "60301d76a98ff84b6b45de7h",
+            "product_quantity_box" : 5
+        }
+    ]
+}

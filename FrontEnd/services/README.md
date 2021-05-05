@@ -1,6 +1,6 @@
 # Services
 
-This folder will contain all of the services (component logic) the application will use.
+This folder will contain all of the network services (http logic) the application will use.
 <br>
 
 Each file corresponds to one particular service that may be usable throughout various components.

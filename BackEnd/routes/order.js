@@ -2,9 +2,11 @@ var express = require('express')
 var router = express.Router()
 const authentication = require('../middleware/auth.middleware')
 const { orderController } = require('../controllers')
+var { validateEntity } = require('../middleware/dataValidation.middleware')
+var { orderBodySchema } = require('../middleware/validators.middleware')
 
 //Posts
-router.post('/', authentication.auth, orderController.postOrder) //Submit order (auth)
+router.post('/', authentication.auth, validateEntity(orderBodySchema), orderController.postOrder) //Submit order (auth)
 
 //Gets
 router.get('/id/:id', orderController.getById) //get order using orderID

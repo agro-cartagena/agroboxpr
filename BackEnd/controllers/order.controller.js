@@ -18,7 +18,6 @@ const postOrder = async (req, res, next) => {
 	const content = req.body.order_content
 	const userId = req.userId
 
-	console.log('Content: ', content)
 	try {
 		await createOrder(order, content, userId)
 		res.sendStatus(200)
@@ -68,9 +67,9 @@ const getById = async (req, res, next) => {
 		})
 		if (validate != null) {
 			await getOrderById(id).then((orders) => {
-				if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
-				if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
-				if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
+				// if (!orders.hasOwnProperty('Pendiente')) orders['Pendiente'] = []
+				// if (!orders.hasOwnProperty('En Camino')) orders['En Camino'] = []
+				// if (!orders.hasOwnProperty('Completada')) orders['Completada'] = []
 				res.status(200).send(orders)
 				next()
 			})

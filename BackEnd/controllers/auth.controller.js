@@ -1,7 +1,7 @@
 const { authService } = require('../services')
 
 const { registerUser, loginUser, promoteUserToAdmin, demoteAdmin, readAllAdmin, updateUserPassword, updateUserInfo, readUserById, forgotPassword, 
-        resetPassword } = authService
+        resetPassword, logoutUser } = authService
 
 const postSignup = async (req, res, next) => {
     const { name, email, password, phone } = req.body
@@ -31,6 +31,27 @@ const postLogin = async (req, res, next) => {
         await loginUser(email, password).then(result => {
             if(result){
                 res.status(200).send(result)
+                next()
+            } else{
+                res.status(403).json({
+                    errors: [{ user: "Invalid Credentials!" }],
+                });
+            }
+        })
+    } catch (err) { 
+        res.sendStatus(500)
+        next(err)
+    }
+}
+
+const postLogout = async (req, res, next) => {
+    const userId = req.userId
+    
+    try {
+        //
+        await logoutUser(userId).then(result => {
+            if(result){
+                res.status(200).send()
                 next()
             } else{
                 res.status(403).json({
@@ -204,6 +225,22 @@ const getUser = async (req, res, next) => {
 	}
 }
 
+const getIsUserActive = async (req, res, next) => {
+    const userId = req.userId;
+
+	try {
+		await readUserById(userId).then((user) => {
+            console.log(user)
+            const response = {
+                is_active: user.is_active
+            }
+			res.status(200).send(response)
+		})
+	} catch (e) {
+		res.sendStatus(500) && next(e)
+	}
+}
+
 const postForgotPassword = async (req, res, next) => {
     const { email } = req.body
     
@@ -257,5 +294,7 @@ module.exports = {
     putUserAddress,
     getUser,
     postForgotPassword,
-    postResetPassword
+    postResetPassword,
+    postLogout,
+    getIsUserActive
 }

@@ -29,7 +29,8 @@ const registerUser = async (name, email, password, phone) => {
                 email: email,
                 password: hash,
                 phone: phone,
-                role: "user"
+                role: "user",
+                is_active: true
             }
 
             return await registerNewUserDb(newUser).then(res => {
@@ -39,7 +40,8 @@ const registerUser = async (name, email, password, phone) => {
                 let access_token = createJWT(
                     user.email,
                     user._id,
-                    user.role
+                    user.role,
+                    user.is_active
                 );
 
                 return access_token
@@ -68,23 +70,55 @@ const loginUser = async (email, password) => {
             return false
         }
 
+        // Return access token to client
+        const updateDocument = {
+            "$set": {
+                "is_active": true
+            }
+        }
+
+        await findUserByQueryAndUpdate({ email: email }, updateDocument)
+
         // If password is correct create JWT
         let access_token = createJWT(
             user[0].email,
             user[0]._id,
-            user[0].role
+            user[0].role,
+            true
             // 3600
         );
 
-        // Return access token to client
         return access_token
+    }
+}
+
+const logoutUser = async (userId) => {
+    // Check if a user exists with the given email
+    const user = await findUserByFilterDb({ _id: ObjectID(userId) });
+
+    // If user not found return false
+    if (user.length < 1) {
+        return false
+    } else {
+        // if user found check if password is correct
+
+        const updateDocument = {
+            "$set": {
+                "is_active": false
+            }
+        }
+
+        await findUserByQueryAndUpdate({ _id: ObjectID(userId) }, updateDocument)
+
+        return true
     }
 }
 
 const promoteUserToAdmin = async (email) => {
     const updateDocument = {
         "$set": {
-            "role": "admin"
+            "role": "admin",
+            "is_active": false
         }
     }
 
@@ -108,7 +142,8 @@ const promoteUserToAdmin = async (email) => {
 const demoteAdmin = async (user_id) => {
     const updateDocument = {
         "$set": {
-            "role": "user"
+            "role": "user",
+            "is_active": false
         }
     }
 
@@ -293,11 +328,12 @@ const resetPassword = async (user_id, reset_token, new_password) => {
     return true
 }
 
-const createJWT = (email, userId, role) => {
+const createJWT = (email, userId, role, is_active) => {
     const payload = {
         email,
         userId,
-        role
+        role,
+        is_active
         // duration
     };
     return jwt.sign(payload, process.env.JWT_SECRET, {
@@ -315,5 +351,6 @@ module.exports = {
     updateUserInfo,
     readUserById,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    logoutUser
 }

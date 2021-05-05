@@ -235,7 +235,7 @@ const updateUserInfo = async (userId, newUserInfo) => {
 
 const readAllAdmin = async () => {
 	// console.log('\nRetrieving boxes \n')
-	const query = { role: "admin" }
+	const query = { $or : [ { role: "admin" }, {role: "owner"} ]}
 
 	try {
 		return await findAdminAccountsDb(query)

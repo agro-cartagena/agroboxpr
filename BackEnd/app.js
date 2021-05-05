@@ -1,35 +1,51 @@
-const express = require('express');
+const express = require('express')
 const bodyParser = require('body-parser')
-const cors = require('cors');
+const cors = require('cors')
 const db = require('./db/mdb')
-const { authRouter ,productRouter, boxRouter} = require('./routes');
+const engines = require('consolidate')
+const path = require("path")
+
+const {
+	authRouter,
+	productRouter,
+	boxRouter,
+	orderRouter,
+	orderContentRouter
+} = require('./routes')
+
+const paymentRouter = require('./routes/payment')
+const geocodingRouter = require('./routes/geocoding')
+const imageRouter = require('./routes/upload')
 
 //Get environment variables
-const dotenv = require('dotenv');
-dotenv.config();
+const dotenv = require('dotenv')
+dotenv.config()
 
-const app = express();
-const port = process.env.PORT || 5000;
+const app = express()
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors())
+app.use(express.json({ limit: '10mb', extended: true }))
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }))
 
-//Connect to MongoDB cluster
-db.connect(process.env.CONNECTION_STRING, function(err) {
-    if (err) {
-      console.log('Unable to connect to Mongo.')
-      process.exit(1)
-    } else {
-      console.log('Connected to Mongo')
-    }
-})
+app.engine('ejs', engines.ejs)
+app.set('views', './views')
+app.set('view engine', 'ejs')
+
+app.use(express.static(path.join(__dirname, "web-client/build")))
 
 //Use Express Routers
-app.use('/api/product', productRouter);
-app.use('/api/box', boxRouter);
-app.use('/api/auth', authRouter);
+app.use('/api/product', productRouter)
+app.use('/api/box', boxRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/order', orderRouter)
+app.use('/api/content', orderContentRouter) // only to be used for testing build
+app.use('/api/payment', paymentRouter)
+app.use('/api/geocoder', geocodingRouter)
+app.use('/api/image', imageRouter)
 
-app.listen(port, () => {
-    console.log(`Server is running on port: ${port}`);
+// Tells Herouku how to run client
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "web-client/build/index.html"));
 });
+
+module.exports = app
